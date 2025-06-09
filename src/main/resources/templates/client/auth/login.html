@@ -32,7 +32,7 @@
                             <h3 class="title">Đăng nhập</h3>
                             <form class="max-width-auto" th:action="@{/login}" method="post" role="form">
                                 <div class="form-group">
-                                    <input id="username" name="username" type="email" />
+                                    <input id="username" name="username" type="text" />
                                     <label th:classappend="${param.error} ? 'text-danger' : ''">Địa chỉ email *</label>
                                     <span class="focus-border"></span>
                                 </div>
