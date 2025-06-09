@@ -39,15 +39,23 @@ public class AuthController {
     @PostMapping("/register")
     public String handleRegister(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) { // validate form
             model.addAttribute("title", "Đăng ký");
             model.addAttribute("content", "client/auth/register");
             model.addAttribute("registerRequest", registerRequest);
             return "client/layout/index";
         }
 
-        if (userService.isEmailExists(registerRequest.getEmail())) {
-            bindingResult.rejectValue("email", "error.registerRequest", "Email đã tồn tại");
+        if (userService.isEmailExists(registerRequest.getEmail())) { // kiểm tra email đã tồn tại
+            bindingResult.rejectValue("email", "error", "Email đã tồn tại!");
+            model.addAttribute("title", "Đăng ký");
+            model.addAttribute("content", "client/auth/register");
+            model.addAttribute("registerRequest", registerRequest);
+            return "client/layout/index";
+        }
+
+        if (!userService.confirmPassword(registerRequest)) { // Kiểm tra xác nhận mật khẩu
+            bindingResult.rejectValue("confirmPassword", "error", "Xác nhận mật khẩu không khớp!");
             model.addAttribute("title", "Đăng ký");
             model.addAttribute("content", "client/auth/register");
             model.addAttribute("registerRequest", registerRequest);

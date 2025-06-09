@@ -32,36 +32,32 @@
                             <h3 class="title">Đăng ký</h3>
                             <form class="max-width-auto" th:action="@{/register}" method="post"
                                 th:object="${registerRequest}">
+
                                 <div class="form-group">
                                     <input name="register-email" type="email" th:field="*{email}" />
-                                    <label th:classappend="${#fields.hasErrors('email')} ? 'text-danger' : ''">
-                                        Địa chỉ email *
-                                    </label>
+                                    <label>Địa chỉ email *</label>
+                                    <small class="text-danger" th:errors="*{email}"></small>
                                     <span class="focus-border"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <input name="register_user" type="text" th:field="*{fullname}">
-                                    <label th:classappend="${#fields.hasErrors('fullname')} ? 'text-danger' : ''">
-                                        Họ và tên *
-                                    </label>
+                                    <label>Họ và tên *</label>
+                                    <small class="text-danger" th:errors="*{fullname}"></small>
                                     <span class="focus-border"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <input name="register_password" type="password" th:field="*{password}">
-                                    <label th:classappend="${#fields.hasErrors('password')} ? 'text-danger' : ''">
-                                        Mật khẩu *
-                                    </label>
+                                    <label>Mật khẩu *</label>
+                                    <small class="text-danger" th:errors="*{password}"></small>
                                     <span class="focus-border"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <input name="register_conpassword" type="password" th:field="*{confirmPassword}">
-                                    <label
-                                        th:classappend="${#fields.hasErrors('confirmPassword')} ? 'text-danger' : ''">
-                                        Xác nhận mật khẩu *
-                                    </label>
+                                    <label>Xác nhận mật khẩu *</label>
+                                    <small class="text-danger" th:errors="*{confirmPassword}"></small>
                                     <span class="focus-border"></span>
                                 </div>
 

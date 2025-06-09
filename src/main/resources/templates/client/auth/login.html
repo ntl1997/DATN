@@ -31,11 +31,17 @@
                         <div class="rbt-contact-form contact-form-style-1 max-width-auto">
                             <h3 class="title">Đăng nhập</h3>
                             <form class="max-width-auto" th:action="@{/login}" method="post" role="form">
+
+                                <div th:if="${param.RegisterSuccess}">
+                                    <div class="alert alert-success rounded">Đăng ký thành công!</div>
+                                </div>
+
                                 <div class="form-group">
                                     <input id="username" name="username" type="text" />
                                     <label th:classappend="${param.error} ? 'text-danger' : ''">Địa chỉ email *</label>
                                     <span class="focus-border"></span>
                                 </div>
+
                                 <div class="form-group">
                                     <input id="password" name="password" type="password">
                                     <label th:classappend="${param.error} ? 'text-danger' : ''">Mật khẩu *</label>
@@ -43,7 +49,7 @@
                                 </div>
 
                                 <div th:if="${param.error}">
-                                    <div class="alert alert-danger rounded">Thông tin đăng nhập không chính xác</div>
+                                    <div class="alert alert-danger rounded">Thông tin đăng nhập không chính xác!</div>
                                 </div>
 
                                 <div class="row mb--30">
