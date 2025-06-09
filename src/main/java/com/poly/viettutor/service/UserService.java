@@ -2,27 +2,21 @@ package com.poly.viettutor.service;
 
 import java.util.Date;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.poly.viettutor.dto.LoginRequest;
 import com.poly.viettutor.dto.RegisterRequest;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.repository.UserRepository;
 
 @Service
-public class UserSerivce {
+public class UserService {
 
     private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    public UserSerivce(UserRepository userRepository, AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -36,12 +30,6 @@ public class UserSerivce {
         user.setRole("USER");
         user.setCreatedAt(new Date());
         userRepository.save(user);
-    }
-
-    // Đăng nhập bằng tài khoản
-    public void login(LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getEmail(), loginRequest.getPassword()));
     }
 
     // Xác nhận mật khẩu khi đăng ký

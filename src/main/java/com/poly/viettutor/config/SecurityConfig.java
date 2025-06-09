@@ -9,15 +9,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.poly.viettutor.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -32,7 +34,15 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN mới được truy cập
                 .requestMatchers("/user/**").authenticated() // yêu cầu đăng nhập
                 .anyRequest().permitAll()); // Tất cả các request khác đều được phép truy cập
+        http.formLogin(form -> form.loginPage("/login").permitAll());
+        // http.logout(logout ->
+        // logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
 }
