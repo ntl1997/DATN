@@ -27,9 +27,14 @@ public class UserService {
         user.setEmail(registerRequest.getEmail());
         user.setImage(null);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole("USER");
+        user.setRole("Student");
         user.setCreatedAt(new Date());
         userRepository.save(user);
+    }
+
+    // Kiểm tra email đã tồn tại hay chưa
+    public boolean isEmailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     // Xác nhận mật khẩu khi đăng ký

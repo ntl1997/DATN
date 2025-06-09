@@ -34,7 +34,6 @@ public class User {
     private String email;
 
     @Column(name = "Image")
-    @NotEmpty(message = "Hình ảnh không được để trống")
     private String image;
 
     @Column(name = "PasswordHash", nullable = false)
