@@ -11,7 +11,7 @@
                         <div class="breadcrumb-inner text-center">
                             <h2 class="title">Đăng nhập</h2>
                             <ul class="page-list">
-                                <li class="rbt-breadcrumb-item"><a href="index-2.html">Trang chủ</a></li>
+                                <li class="rbt-breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
                                 <li>
                                     <div class="icon-right"><i class="feather-chevron-right"></i></div>
                                 </li>
@@ -30,16 +30,20 @@
                     <div class="col-lg-6">
                         <div class="rbt-contact-form contact-form-style-1 max-width-auto">
                             <h3 class="title">Đăng nhập</h3>
-                            <form class="max-width-auto">
+                            <form class="max-width-auto" th:action="@{/login}" method="post" role="form">
                                 <div class="form-group">
-                                    <input name="con_name" type="text" />
-                                    <label>Địa chỉ email *</label>
+                                    <input id="username" name="username" type="email" />
+                                    <label th:classappend="${param.error} ? 'text-danger' : ''">Địa chỉ email *</label>
                                     <span class="focus-border"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input name="con_email" type="email">
-                                    <label>Mật khẩu *</label>
+                                    <input id="password" name="password" type="password">
+                                    <label th:classappend="${param.error} ? 'text-danger' : ''">Mật khẩu *</label>
                                     <span class="focus-border"></span>
+                                </div>
+
+                                <div th:if="${param.error}">
+                                    <div class="alert alert-danger rounded">Thông tin đăng nhập không chính xác</div>
                                 </div>
 
                                 <div class="row mb--30">
@@ -73,7 +77,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
