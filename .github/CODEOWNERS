@@ -1,0 +1,7 @@
+# CODEOWNERS – Quy định người được phép review và duyệt thay đổi trước khi merge
+
+# Tất cả thay đổi trong frontend (vuejs-FE) cần được duyệt bởi @ntl1997 hoặc @HieuNT-2001
+/vuejs-FE/    @ntl1997 @HieuNT-2001
+
+# Tất cả thay đổi trong backend (spring-BE) cũng cần được duyệt bởi 1 trong 2 người trên
+/spring-BE/   @ntl1997 @HieuNT-2001
