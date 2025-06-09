@@ -20,6 +20,7 @@ CREATE TABLE Users (
     UserId INT PRIMARY KEY IDENTITY,
     FullName NVARCHAR(100),
     Email NVARCHAR(100) UNIQUE,
+    Image NVARCHAR(MAX),
     PasswordHash NVARCHAR(255),
     Role NVARCHAR(20) CHECK (Role IN (N'Guest', N'Student', N'Admin')),
     CreatedAt DATETIME DEFAULT GETDATE()
@@ -224,11 +225,11 @@ GO
 
 
 -- Insert sample users
-INSERT INTO Users (FullName, Email, PasswordHash, Role)
+INSERT INTO Users (FullName, Email, Image, PasswordHash, Role)
 VALUES
-(N'Nguyễn Văn A', 'a@example.com', 'hashed_pw_1', N'Student'),
-(N'Trần Thị B', 'b@example.com', 'hashed_pw_2', N'Student'),
-(N'Admin', 'admin@example.com', 'hashed_pw_admin', N'Admin');
+(N'Nguyễn Văn A', 'a@example.com', 'image1.png', 'hashed_pw_1', N'Student'),
+(N'Trần Thị B', 'b@example.com', 'image2.png', 'hashed_pw_2', N'Student'),
+(N'Admin', 'admin@example.com', 'admin_image.png', 'hashed_pw_admin', N'Admin');
 GO
 
 -- Insert sample courses
