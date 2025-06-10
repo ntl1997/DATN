@@ -6,17 +6,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.poly.viettutor.dto.RegisterRequest;
+import com.poly.viettutor.model.Role;
 import com.poly.viettutor.model.User;
+import com.poly.viettutor.repository.RoleRepository;
 import com.poly.viettutor.repository.UserRepository;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -27,8 +31,8 @@ public class UserService {
         user.setEmail(registerRequest.getEmail());
         user.setImage("user-icon.png");
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole("Student");
         user.setCreatedAt(new Date());
+        setRoleForUser(user);
         userRepository.save(user);
     }
 
@@ -40,6 +44,13 @@ public class UserService {
     // Xác nhận mật khẩu khi đăng ký
     public boolean confirmPassword(RegisterRequest registerRequest) {
         return registerRequest.getPassword().equals(registerRequest.getConfirmPassword());
+    }
+
+    // Gán role cho user đăng ký
+    public void setRoleForUser(User user) {
+        Role role = roleRepository.findByRoleName("student")
+                .orElseThrow(() -> new RuntimeException("Role 'student' does not exist"));
+        user.getRoles().add(role);
     }
 
 }

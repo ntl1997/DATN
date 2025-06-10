@@ -10,9 +10,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.poly.viettutor.service.CustomUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -28,6 +36,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()); // Tất cả các request khác đều được phép truy cập
         http.formLogin(form -> form.loginPage("/login").permitAll());
         http.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
+        http.userDetailsService(userDetailsService); // Sử dụng CustomUserDetailsService để load user
         return http.build();
     }
 

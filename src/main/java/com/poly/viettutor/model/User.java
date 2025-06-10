@@ -1,19 +1,25 @@
 package com.poly.viettutor.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "users")
+@Table(name = "Users")
 @Entity
 @Data
 @NoArgsConstructor
@@ -40,11 +46,14 @@ public class User {
     @NotEmpty(message = "Mật khẩu không được để trống")
     private String password;
 
-    @Column(name = "Role", nullable = false)
-    @NotEmpty(message = "Vai trò không được để trống")
-    private String role;
-
     @Column(name = "CreatedAt", nullable = false)
     private Date createdAt = new Date();
+
+    @ManyToMany(fetch = FetchType.EAGER) // EAGER để nạp dữ liệu role ngay khi nạp user
+    @JoinTable(name = "UserRoles", // Tên bảng trung gian
+            joinColumns = @JoinColumn(name = "UserId"), // FK đến bảng User
+            inverseJoinColumns = @JoinColumn(name = "RoleId") // FK đến bảng Role
+    )
+    private Set<Role> roles = new HashSet<>();
 
 }
