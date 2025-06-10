@@ -25,7 +25,7 @@ public class UserService {
         User user = new User();
         user.setFullname(registerRequest.getFullname());
         user.setEmail(registerRequest.getEmail());
-        user.setImage(null);
+        user.setImage("user-icon.png");
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setRole("Student");
         user.setCreatedAt(new Date());

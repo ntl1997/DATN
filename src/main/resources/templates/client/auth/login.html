@@ -33,7 +33,11 @@
                             <form class="max-width-auto" th:action="@{/login}" method="post" role="form">
 
                                 <div th:if="${param.RegisterSuccess}">
-                                    <div class="alert alert-success rounded">Đăng ký thành công!</div>
+                                    <div class="alert alert-success">Đăng ký thành công!</div>
+                                </div>
+
+                                <div th:if="${param.error}">
+                                    <div class="alert alert-danger">Thông tin đăng nhập không chính xác!</div>
                                 </div>
 
                                 <div class="form-group">
@@ -46,10 +50,6 @@
                                     <input id="password" name="password" type="password">
                                     <label th:classappend="${param.error} ? 'text-danger' : ''">Mật khẩu *</label>
                                     <span class="focus-border"></span>
-                                </div>
-
-                                <div th:if="${param.error}">
-                                    <div class="alert alert-danger rounded">Thông tin đăng nhập không chính xác!</div>
                                 </div>
 
                                 <div class="row mb--30">
