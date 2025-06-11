@@ -36,7 +36,6 @@ public class SecurityConfig {
                 .anyRequest().permitAll()); // Tất cả các request khác đều được phép truy cập
         http.formLogin(form -> form.loginPage("/login").permitAll());
         http.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
-        http.userDetailsService(userDetailsService); // Sử dụng CustomUserDetailsService để load user
         return http.build();
     }
 
