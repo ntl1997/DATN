@@ -2,6 +2,8 @@ package com.poly.viettutor.service;
 
 import java.util.Date;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,10 @@ public class UserService {
         user.getRoles().add(role);
     }
 
-    ////
+    // Lấy thông tin người dùng hiện đang đăng nhập
+    public User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email).orElse(null);
+    }
 
 }

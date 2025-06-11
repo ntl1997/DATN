@@ -139,7 +139,7 @@
                                         <li
                                             class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
                                             <a href="#"><i class="feather-user">
-                                                </i><span th:text="${#authentication.principal.fullName}"></span>
+                                                </i><span sec:authentication="name"></span>
                                             </a>
                                             <div class="rbt-user-menu-list-wrapper">
                                                 <div class="inner">
@@ -150,7 +150,7 @@
                                                         </div>
                                                         <div class="admin-info">
                                                             <span class="name"
-                                                                th:text="${#authentication.principal.fullName}">RainbowIT</span>
+                                                                sec:authentication="name">RainbowIT</span>
                                                             <a class="rbt-btn-link color-primary"
                                                                 href="profile.html">View
                                                                 Profile</a>
@@ -245,7 +245,7 @@
                                                         </div>
                                                         <div class="admin-info">
                                                             <span class="name"
-                                                                th:text="${#authentication.principal.fullName}">RainbowIT</span>
+                                                                sec:authentication="name">RainbowIT</span>
                                                             <a class="rbt-btn-link color-primary"
                                                                 href="profile.html">View
                                                                 Profile</a>

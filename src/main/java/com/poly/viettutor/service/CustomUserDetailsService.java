@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.poly.viettutor.model.CustomUserDetails;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.repository.UserRepository;
 
@@ -26,12 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        return new CustomUserDetails(
-                user.getId(),
-                user.getFullname(),
+        return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                user.getImage(),
                 user.getRoles().stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName()))
                         .collect(Collectors.toList()));
