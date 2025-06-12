@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="content">
+        <!-- Start breadcrumb Area -->
+        <div class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-inner text-center">
+                            <h2 class="title">Đăng nhập</h2>
+                            <ul class="page-list">
+                                <li class="rbt-breadcrumb-item"><a th:href="@{/home}">Trang chủ</a></li>
+                                <li>
+                                    <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                                </li>
+                                <li class="rbt-breadcrumb-item active">Đăng nhập</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumb Area -->
+
+        <div class="rbt-elements-area bg-color-white rbt-section-gap">
+            <div class="container">
+                <div class="row gy-5 row--30 d-flex justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                            <h3 class="title">Đăng nhập</h3>
+                            <form class="max-width-auto" th:action="@{/login}" method="post" role="form">
+
+                                <div th:if="${param.RegisterSuccess}">
+                                    <div class="alert alert-success">Đăng ký thành công!</div>
+                                </div>
+
+                                <div th:if="${param.error}">
+                                    <div class="alert alert-danger">Thông tin đăng nhập không chính xác!</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input id="username" name="username" type="text" />
+                                    <label th:classappend="${param.error} ? 'text-danger' : ''">Địa chỉ email *</label>
+                                    <span class="focus-border"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input id="password" name="password" type="password">
+                                    <label th:classappend="${param.error} ? 'text-danger' : ''">Mật khẩu *</label>
+                                    <span class="focus-border"></span>
+                                </div>
+
+                                <div class="row mb--30">
+                                    <div class="col-lg-6">
+                                        <div class="rbt-checkbox">
+                                            <input type="checkbox" id="rememberme" name="rememberme">
+                                            <label for="rememberme">Lưu thông tin đăng nhập</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="rbt-lost-password text-end">
+                                            <a class="rbt-btn-link" href="#">Quên mật khẩu?</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-submit-group">
+                                    <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                        <span class="icon-reverse-wrapper">
+                                            <span class="btn-text">Đăng nhập</span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div class="row mt--30">
+                                    <div class="col-lg-12 d-flex justify-content-center">
+                                        <div class="rbt-lost-password text-end">
+                                            <a class="rbt-btn-link" th:href="@{/register}">Tạo tài khoản mới?</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
