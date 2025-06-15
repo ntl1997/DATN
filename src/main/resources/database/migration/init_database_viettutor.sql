@@ -1,0 +1,167 @@
+CREATE TABLE Roles (
+    RoleId BIGINT PRIMARY KEY IDENTITY,
+    Role NVARCHAR(10)
+);
+
+CREATE TABLE Users (
+    UserId BIGINT PRIMARY KEY IDENTITY,
+    FullName NVARCHAR(100),
+    Email NVARCHAR(100) UNIQUE,
+    Image NVARCHAR(MAX),
+    PasswordHash NVARCHAR(255),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE UserRoles (
+    RoleId BIGINT FOREIGN KEY REFERENCES Roles(RoleId),
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    PRIMARY KEY (RoleId, UserId)
+);
+
+CREATE TABLE Courses (
+    CourseId BIGINT PRIMARY KEY IDENTITY,
+    Title NVARCHAR(255),
+    Description NVARCHAR(MAX),
+    Curriculum NVARCHAR(MAX),
+    AuthorName NVARCHAR(100),
+    Price DECIMAL(18,2),
+    Discount DECIMAL(5,2),
+    CourseImage NVARCHAR(MAX),
+    Status NVARCHAR(20) CHECK (Status IN (N'Pending', N'Approved', N'Rejected')),
+    CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE CourseObjectives (
+    ObjectiveId BIGINT PRIMARY KEY IDENTITY,
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    ObjectiveText NVARCHAR(500)
+);
+
+CREATE TABLE CourseModules (
+    ModuleId BIGINT PRIMARY KEY IDENTITY,
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    ModuleTitle NVARCHAR(255),
+    SortOrder INT
+);
+
+CREATE TABLE Lectures (
+    LectureId BIGINT PRIMARY KEY IDENTITY,
+    ModuleId BIGINT FOREIGN KEY REFERENCES CourseModules(ModuleId),
+    LectureTitle NVARCHAR(255),
+    Content NVARCHAR(MAX),
+    VideoUrl NVARCHAR(500),
+    SortOrder INT
+);
+
+CREATE TABLE Enrollments (
+    EnrollmentId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    EnrolledAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Cart (
+    CartId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    AddedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Wishlist (
+    WishlistId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    AddedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Reviews (
+    ReviewId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    Comment NVARCHAR(MAX),
+    ReviewedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE PaymentMethods (
+    PaymentMethodId BIGINT PRIMARY KEY IDENTITY,
+    PaymentMethod NVARCHAR(20)
+);
+
+CREATE TABLE Orders (
+    OrderId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    PaymentMethodId BIGINT FOREIGN KEY REFERENCES PaymentMethods(PaymentMethodId),
+    TotalAmount DECIMAL(18,2),
+    CouponCode NVARCHAR(50),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE OrderDetails (
+    OrderDetailId BIGINT PRIMARY KEY IDENTITY,
+    OrderId BIGINT FOREIGN KEY REFERENCES Orders(OrderId),
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    Price DECIMAL(18,2)
+);
+
+CREATE TABLE Coupons (
+    CouponCode NVARCHAR(50) PRIMARY KEY,
+    DiscountPercent DECIMAL(5,2),
+    CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    IsActive BIT DEFAULT 1
+);
+
+CREATE TABLE Certificates (
+    CertificateId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    IssuedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Categories (
+    CategoryId BIGINT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(100),
+    ParentId BIGINT FOREIGN KEY REFERENCES Categories(CategoryId)
+);
+
+CREATE TABLE CourseCategories (
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    CategoryId BIGINT FOREIGN KEY REFERENCES Categories(CategoryId),
+    PRIMARY KEY (CourseId, CategoryId)
+);
+
+CREATE TABLE BlogPosts (
+    PostId BIGINT PRIMARY KEY IDENTITY,
+    Title NVARCHAR(255),
+    Content NVARCHAR(MAX),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId)
+);
+
+CREATE TABLE ContactInfo (
+    ContactId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    Message NVARCHAR(MAX),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Notifications (
+    NotificationId BIGINT PRIMARY KEY IDENTITY,
+    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    Title NVARCHAR(255),
+    Message NVARCHAR(MAX),
+    IsRead BIT DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE CourseMaterials (
+    MaterialId BIGINT PRIMARY KEY IDENTITY,
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    FileName NVARCHAR(255),
+    FileUrl NVARCHAR(500),
+    FileType NVARCHAR(50),
+    UploadedAt DATETIME DEFAULT GETDATE()
+);
