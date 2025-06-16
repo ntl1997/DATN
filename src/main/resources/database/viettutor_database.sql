@@ -253,9 +253,9 @@ GO
 
 -- 1. Roles
 INSERT INTO Roles (Role) VALUES 
-(N'admin'),
-(N'instructor'),
-(N'student');
+(N'ADMIN'),
+(N'INSTRUCTOR'),
+(N'STUDENT');
 
 -- 2. Users (mật khẩu mặc định: 123456)
 INSERT INTO Users (FullName, Email, Image, PasswordHash)

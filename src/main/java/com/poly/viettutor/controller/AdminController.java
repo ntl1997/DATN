@@ -9,7 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping({ "/dashboard" })
+    @GetMapping({ "", "/login" })
+    public String adminLogin(Model model) {
+        model.addAttribute("title", "Admin đăng nhập");
+        return "admin/login";
+    }
+
+    @GetMapping({ "/", "/dashboard" })
     public String adminDashboard(Model model) {
         model.addAttribute("title", "Trang quản trị"); // tiêu đề trang (title)
         model.addAttribute("content", "admin/dashboard"); // nội dung trang (phần content)
