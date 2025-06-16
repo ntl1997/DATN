@@ -257,12 +257,12 @@ INSERT INTO Roles (Role) VALUES
 (N'instructor'),
 (N'student');
 
--- 2. Users
+-- 2. Users (mật khẩu mặc định: 123456)
 INSERT INTO Users (FullName, Email, Image, PasswordHash)
 VALUES 
-(N'Admin User', N'admin@viettutor.com', N'/images/admin.png', N'$2a$10$AdminHash'),
-(N'John Instructor', N'john@viettutor.com', N'/images/john.png', N'$2a$10$JohnHash'),
-(N'Jane Student', N'jane@student.com', N'/images/jane.png', N'$2a$10$JaneHash');
+(N'Admin User', N'admin@viettutor.com', N'/images/admin.png', N'$2a$12$V2XUN.FhiVRyIpev2m6.MOUdKlRveFMlC3C6kfYT/Y7ZrClNep55W'),
+(N'John Instructor', N'john@viettutor.com', N'/images/john.png', N'$2a$12$CvyLQybDyPrkgBjMwVjsj./KYP806nPneY1A7VU/PaRoSL0jkleZS'),
+(N'Jane Student', N'jane@student.com', N'/images/jane.png', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy');
 
 -- 3. UserRoles
 INSERT INTO UserRoles (RoleId, UserId)
