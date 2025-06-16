@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 .logoutUrl("/admin/logout")
                                 .logoutSuccessUrl("/admin")
                                 .permitAll());
+                http.exceptionHandling(e -> e.accessDeniedPage("/admin/login?forbidden=true"));
                 return http.build();
         }
 
