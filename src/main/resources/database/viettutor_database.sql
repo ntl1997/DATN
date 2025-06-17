@@ -30,7 +30,10 @@ CREATE TABLE Users (
     Email NVARCHAR(100) UNIQUE,
     Image NVARCHAR(MAX),
     PasswordHash NVARCHAR(255),
-    CreatedAt DATETIME DEFAULT GETDATE()
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    PhoneNumber NVARCHAR(20),
+    Skill NVARCHAR(100),
+    Biography NVARCHAR(MAX)
 );
 GO
 
