@@ -16,6 +16,8 @@ public class Category {
 
     private String name;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "parentId")
     private Category parent;
