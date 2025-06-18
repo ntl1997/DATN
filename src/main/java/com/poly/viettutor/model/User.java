@@ -49,6 +49,15 @@ public class User {
     @Column(name = "CreatedAt", nullable = false)
     private Date createdAt = new Date();
 
+    @Column(name = "PhoneNumber")
+    private String phoneNumber;
+
+    @Column(name = "Occupation")
+    private String occupation;
+
+    @Column(name = "Biography")
+    private String biography;
+
     @ManyToMany(fetch = FetchType.EAGER) // EAGER để nạp dữ liệu role ngay khi nạp user
     @JoinTable(name = "UserRoles", // Tên bảng trung gian
             joinColumns = @JoinColumn(name = "UserId"), // FK đến bảng User
