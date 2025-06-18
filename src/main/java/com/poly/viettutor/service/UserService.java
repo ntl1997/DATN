@@ -30,7 +30,7 @@ public class UserService {
         User user = new User();
         user.setFullname(registerRequest.getFullname());
         user.setEmail(registerRequest.getEmail());
-        user.setImage("user-icon.png");
+        user.setImage(null); // Ảnh sẽ được xử lý sau
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreatedAt(new Date());
         setRoleForUser(user, "STUDENT"); // Gán role mặc định là STUDENT
