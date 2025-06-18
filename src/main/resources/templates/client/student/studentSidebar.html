@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="student-sidebar">
+        <!-- Start Dashboard Sidebar  -->
+            <div class="rbt-default-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                <div class="inner">
+                    <div class="content-item-content">
+
+                        <div class="rbt-default-sidebar-wrapper">
+                            <div class="section-title mb--20">
+                                <h6 class="rbt-title-style-2" th:text="'Xin chào, ' + ${user.fullname}"></h6>
+                            </div>
+                            <nav class="mainmenu-nav">
+                                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                    <li><a href="student-dashboard.html"><i class="feather-home"></i><span>Bảng điều khiển</span></a></li>
+                                    <li><a th:href="@{/student/student-profile}"><i class="feather-user"></i><span>Thông tin của tôi</span></a></li>
+                                    <li><a href="student-enrolled-courses.html"><i class="feather-book-open"></i><span>Các khóa học đã đăng ký</span></a></li>
+                                    <li><a href="student-wishlist.html"><i class="feather-bookmark"></i><span>Danh sách yêu thích</span></a></li>
+                                    <li><a href="student-reviews.html"><i class="feather-star"></i><span>Đánh giá</span></a></li>
+                                    <li><a href="student-my-quiz-attempts.html"><i class="feather-help-circle"></i><span>Các lần làm bài kiểm tra của tôi</span></a></li>
+                                    <li><a href="student-order-history.html"><i class="feather-shopping-bag"></i><span>Lịch sử đơn hàng</span></a></li>
+                                </ul>
+                            </nav>
+
+                            <div class="section-title mt--40 mb--20">
+                                <h6 class="rbt-title-style-2">Người dùng</h6>
+                            </div>
+
+                            <nav class="mainmenu-nav">
+                                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                                    <li><a href="student-settings.html"><i class="feather-settings"></i><span>Cài đặt</span></a></li>
+                                    <li><a href="index-2.html"><i class="feather-log-out"></i><span>Đăng xuất</span></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        <!-- End Dashboard Sidebar  -->
+    </div>
+</body>
+
+</html>
