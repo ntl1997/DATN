@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.UserService;
+import com.poly.viettutor.utils.FileUtils;
 
 @Controller
 @RequestMapping("/student")
@@ -60,11 +61,10 @@ public class StudentController {
         // Xử lý upload ảnh nếu có file mới
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                String uploadDir = new File("src/main/resources/static/assets/images/users/").getAbsolutePath()
-                        + File.separator;
-                String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                File dest = new File(uploadDir + fileName);
-                imageFile.transferTo(dest);
+                // Xóa ảnh cũ nếu không phải ảnh mặc định
+                FileUtils.deleteImageIfExists(currentUser.getImage(), "uploads/users/");
+                // Lưu ảnh mới
+                String fileName = FileUtils.saveImage(imageFile, "uploads/users/");
                 currentUser.setImage(fileName);
             } catch (IOException e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tải ảnh lên!");
