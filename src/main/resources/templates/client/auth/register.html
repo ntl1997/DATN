@@ -33,41 +33,40 @@
                             <form class="max-width-auto" th:action="@{/register}" method="post"
                                 th:object="${registerRequest}">
 
-                                <div th:if="${param.emailExists}">
-                                    <div class="alert alert-danger">Email đã tồn tại!</div>
+                                <div class="form-group focused">
+                                    <label th:unless="${#fields.hasErrors('email')}">Địa chỉ email *</label>
+                                    <label class="text-danger" th:errors="*{email}"></label>
                                 </div>
-
-                                <div th:if="${param.passwordMismatch}">
-                                    <div class="alert alert-danger">Mật khẩu xác nhận không khớp!</div>
-                                </div>
-
-                                <div th:if="${param.validError}">
-                                    <div class="alert alert-danger">Hãy nhập đầy đủ thông tin!</div>
-                                </div>
-
                                 <div class="form-group">
                                     <input name="register-email" type="email" th:field="*{email}" />
-                                    <label th:classappend="${param.validError} ? 'text-danger' : ''">Địa chỉ email
-                                        *</label>
                                     <span class="focus-border"></span>
                                 </div>
 
+                                <div class="form-group focused">
+                                    <label th:unless="${#fields.hasErrors('fullname')}">Họ và tên *</label>
+                                    <label class="text-danger" th:errors="*{fullname}"></label>
+                                </div>
                                 <div class="form-group">
                                     <input name="register_user" type="text" th:field="*{fullname}">
-                                    <label th:classappend="${param.validError} ? 'text-danger' : ''">Họ và tên *</label>
                                     <span class="focus-border"></span>
                                 </div>
 
+                                <div class="form-group focused">
+                                    <label th:unless="${#fields.hasErrors('password')}">Mật khẩu *</label>
+                                    <label class="text-danger" th:errors="*{password}"></label>
+                                </div>
                                 <div class="form-group">
                                     <input name="register_password" type="password" th:field="*{password}">
-                                    <label th:classappend="${param.validError} ? 'text-danger' : ''">Mật khẩu *</label>
                                     <span class="focus-border"></span>
                                 </div>
 
+                                <div class="form-group focused">
+                                    <label th:unless="${#fields.hasErrors('confirmPassword')}">Xác nhận mật khẩu
+                                        *</label>
+                                    <label class="text-danger" th:errors="*{confirmPassword}"></label>
+                                </div>
                                 <div class="form-group">
                                     <input name="register_conpassword" type="password" th:field="*{confirmPassword}">
-                                    <label th:classappend="${param.validError} ? 'text-danger' : ''">Xác nhận mật khẩu
-                                        *</label>
                                     <span class="focus-border"></span>
                                 </div>
 
