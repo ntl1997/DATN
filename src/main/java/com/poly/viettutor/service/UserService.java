@@ -60,4 +60,9 @@ public class UserService {
         return userRepository.findByEmail(email).orElse(null);
     }
 
+    // Lưu hoặc cập nhật thông tin user
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
 }
