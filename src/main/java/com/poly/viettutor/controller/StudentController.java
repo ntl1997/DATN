@@ -107,6 +107,7 @@ public class StudentController {
         User user = userService.getCurrentUser();
         model.addAttribute("user", user);
         model.addAttribute("content", "client/student/student-settings");
+        model.addAttribute("scripts", "client/student/student-settings");
         model.addAttribute("title", "Cài đặt tài khoản");
         return "client/layout/index";
     }
