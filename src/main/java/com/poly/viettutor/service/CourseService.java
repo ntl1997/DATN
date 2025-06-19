@@ -2,6 +2,8 @@ package com.poly.viettutor.service;
 
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.repository.CourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,12 +11,8 @@ import java.util.Optional;
 
 @Service
 public class CourseService {
-
-    private final CourseRepository courseRepository;
-
-    public CourseService(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
+    @Autowired
+    private CourseRepository courseRepository;
 
     public List<Course> findAll() {
         return courseRepository.findAll();
@@ -30,5 +28,9 @@ public class CourseService {
 
     public void deleteById(Integer id) {
         courseRepository.deleteById(id);
+    }
+
+    public List<Course> getTop6PopularCourses() {
+        return courseRepository.findTop6PopularCourses(PageRequest.of(0, 6));
     }
 }
