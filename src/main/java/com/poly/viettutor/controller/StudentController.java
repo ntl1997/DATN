@@ -33,15 +33,6 @@ public class StudentController {
         return "client/layout/index";
     }
 
-    @GetMapping("/profile/edit")
-    public String editProfile(Model model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("user", user);
-        model.addAttribute("content", "client/student/editProfile");
-        model.addAttribute("title", "Sửa thông tin cá nhân");
-        return "client/layout/index";
-    }
-
     @PostMapping("/profile/update")
     public String updateProfile(
             @ModelAttribute("user") User updatedUser,
@@ -67,23 +58,14 @@ public class StudentController {
                 currentUser.setImage(fileName);
             } catch (IOException e) {
                 redirectAttributes.addFlashAttribute("error", "Lỗi khi tải ảnh lên!");
-                return "redirect:/student/profile/edit";
+                return "redirect:/student/student-settings";
             }
         }
 
         userService.save(currentUser);
 
         redirectAttributes.addFlashAttribute("success", "Cập nhật thông tin thành công!");
-        return "redirect:/student/student-profile";
-    }
-
-    @GetMapping("/change-password")
-    public String showChangePasswordForm(Model model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("user", user);
-        model.addAttribute("content", "client/student/changePassword");
-        model.addAttribute("title", "Đổi mật khẩu");
-        return "client/layout/index";
+        return "redirect:/student/student-settings";
     }
 
     @PostMapping("/change-password")
@@ -117,6 +99,15 @@ public class StudentController {
         userService.save(user);
 
         redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công!");
-        return "redirect:/student/student-profile";
+        return "redirect:/student/student-settings";
+    }
+
+    @GetMapping("/student-settings")
+    public String showStudentSettings(Model model) {
+        User user = userService.getCurrentUser();
+        model.addAttribute("user", user);
+        model.addAttribute("content", "client/student/student-settings");
+        model.addAttribute("title", "Cài đặt tài khoản");
+        return "client/layout/index";
     }
 }
