@@ -2,6 +2,7 @@ package com.poly.viettutor.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -55,5 +57,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "RoleId") // FK đến bảng Role
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "createdBy")
+    private List<BlogPost> blogPosts;
 
 }
