@@ -30,10 +30,10 @@ public class UserService {
         User user = new User();
         user.setFullname(registerRequest.getFullname());
         user.setEmail(registerRequest.getEmail());
-        user.setImage("user-icon.png");
+        user.setImage(null); // Ảnh sẽ được xử lý sau
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreatedAt(new Date());
-        setRoleForUser(user);
+        setRoleForUser(user, "STUDENT"); // Gán role mặc định là STUDENT
         userRepository.save(user);
     }
 
@@ -42,15 +42,10 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    // Xác nhận mật khẩu khi đăng ký
-    public boolean confirmPassword(RegisterRequest registerRequest) {
-        return registerRequest.getPassword().equals(registerRequest.getConfirmPassword());
-    }
-
     // Gán role cho user đăng ký
-    public void setRoleForUser(User user) {
-        Role role = roleRepository.findByRoleName("student")
-                .orElseThrow(() -> new RuntimeException("Role 'student' does not exist"));
+    public void setRoleForUser(User user, String roleName) {
+        Role role = roleRepository.findByRoleName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role " + roleName + " does not exist"));
         user.getRoles().add(role);
     }
 
@@ -58,6 +53,11 @@ public class UserService {
     public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    // Lưu hoặc cập nhật thông tin user
+    public void save(User user) {
+        userRepository.save(user);
     }
 
 }
