@@ -2,6 +2,7 @@ package com.poly.viettutor.model;
 
 import lombok.*;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Categories")
@@ -16,7 +17,12 @@ public class Category {
 
     private String name;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "parentId")
     private Category parent;
+
+    @OneToMany(mappedBy = "category")
+    private List<CourseCategory> courseCategories;
 }

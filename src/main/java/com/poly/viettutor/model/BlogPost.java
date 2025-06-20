@@ -20,6 +20,8 @@ public class BlogPost {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String content;
 
+    private String imageBlog;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 

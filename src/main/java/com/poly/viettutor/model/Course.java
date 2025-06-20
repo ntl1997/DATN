@@ -3,6 +3,7 @@ package com.poly.viettutor.model;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Courses")
@@ -37,6 +38,9 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "createdBy")
     private User createdBy;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseModule> modules;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

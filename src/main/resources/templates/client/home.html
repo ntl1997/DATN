@@ -1,1107 +1,644 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<body>
-  <div th:fragment="content">
-    <!-- Start Banner Area -->
-    <div class="rbt-banner-area rbt-banner-1 variation-2 height-750">
-      <div class="container">
-        <div class="row justify-content-between align-items-center">
-          <div class="col-lg-8">
-            <div class="content">
-              <div class="inner">
-                <div class="rbt-new-badge rbt-new-badge-one">
-                  <span class="rbt-new-badge-icon">🏆</span> Dẫn đầu về học
-                  trực tuyến
+  <body>
+    <div th:fragment="content">
+      <!-- Start Banner Area -->
+      <div class="rbt-banner-area rbt-banner-1 variation-2 height-750">
+        <div class="container">
+          <div class="row justify-content-between align-items-center">
+            <div class="col-lg-8">
+              <div class="content">
+                <div class="inner">
+                  <div class="rbt-new-badge rbt-new-badge-one">
+                    <span class="rbt-new-badge-icon">🏆</span> Dẫn đầu về học
+                    trực tuyến
+                  </div>
+                  <h1 class="title">
+                    Nền tảng
+                    <span class="color-primary">học trực tuyến</span> lớn nhất
+                    để phát triển sự nghiệp của bạn.
+                  </h1>
+                  <div class="slider-btn">
+                    <a class="rbt-btn btn-gradient hover-icon-reverse" href="#">
+                      <span class="icon-reverse-wrapper">
+                        <span class="btn-text">Xem khóa học</span>
+                        <span class="btn-icon"
+                          ><i class="feather-arrow-right"></i
+                        ></span>
+                        <span class="btn-icon"
+                          ><i class="feather-arrow-right"></i
+                        ></span>
+                      </span>
+                    </a>
+                  </div>
                 </div>
-                <h1 class="title">
-                  Nền tảng
-                  <span class="color-primary">học trực tuyến</span> lớn nhất
-                  để phát triển sự nghiệp của bạn.
-                </h1>
-                <div class="slider-btn">
-                  <a class="rbt-btn btn-gradient hover-icon-reverse" href="#">
-                    <span class="icon-reverse-wrapper">
-                      <span class="btn-text">Xem khóa học</span>
-                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                    </span>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="content">
+                <div
+                  class="banner-card pb--60 swiper rbt-dot-bottom-center banner-swiper-active"
+                >
+                  <div class="swiper-wrapper">
+                    <!-- Start Single Card  -->
+                    <div class="swiper-slide" th:each="course : ${courses}">
+                      <div class="rbt-card variation-01 rbt-hover">
+                        <div
+                          class="rbt-card-img"
+                          style="
+                            height: 250px;
+                            overflow: hidden;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                          "
+                        >
+                          <a href="course-details.html">
+                            <img
+                              th:src="@{${course.courseImage}}"
+                              alt="Card image"
+                            />
+                            <div class="rbt-badge-3 bg-white">
+                              <span>-40%</span>
+                              <span>Off</span>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="rbt-card-body">
+                          <ul class="rbt-meta">
+                            <li>
+                              <i class="feather-book"></i>
+                              <span
+                                th:text="${#lists.size(course.modules)}"
+                              ></span>
+                              Bài học
+                            </li>
+                            <li><i class="feather-users"></i>50 Học viên</li>
+                          </ul>
+                          <h4 class="rbt-card-title">
+                            <a
+                              href="course-details.html"
+                              th:text="${course.title}"
+                              >React</a
+                            >
+                          </h4>
+                          <p
+                            class="rbt-card-text"
+                            th:text="${course.description}"
+                          >
+                            Đây là một thực tế lâu đời rằng người đọc sẽ bị phân
+                            tâm.
+                          </p>
+                          <div class="rbt-review">
+                            <div class="rating">
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                            </div>
+                            <span class="rating-count"> (15 Đánh giá)</span>
+                          </div>
+                          <div class="rbt-card-bottom">
+                            <div class="rbt-price" style="font-size: 0.45em">
+                              <span
+                                class="current-price"
+                                th:text="${course.price - (course.price * course.discount)}"
+                                >1.600.000₫</span
+                              >
+                              <span class="off-price" th:text="${course.price}"
+                                >2.000.000₫</span
+                              >
+                            </div>
+                            <a class="rbt-btn-link" href="course-details.html"
+                              >Xem thêm<i class="feather-arrow-right"></i
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Single Card  -->
+                  </div>
+                  <div class="rbt-swiper-pagination"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Banner Area -->
+
+      <!-- Start Service Area -->
+      <div class="rbt-categories-area bg-color-white rbt-section-gap">
+        <div class="container">
+          <div class="row g-5 align-items-start mb--30">
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="section-title">
+                <h4 class="title">Danh mục phổ biến.</h4>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="read-more-btn text-start text-md-end">
+                <a
+                  class="rbt-btn rbt-switch-btn bg-primary-opacity btn-sm"
+                  href="archive.html"
+                >
+                  <span data-text="Xem tất cả">Xem tất cả</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row g-5">
+            <!-- Start Category Box Layout  -->
+            <div
+              class="col-lg-3 col-md-6 col-sm-6 col-12"
+              th:each="cat : ${categories}"
+            >
+              <a
+                class="rbt-cat-box rbt-cat-box-1 list-style"
+                href="course-filter-one-toggle.html"
+              >
+                <div class="inner">
+                  <div class="thumbnail">
+                    <img th:src="@{${cat.imageUrl}}" alt="Category Image" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title" th:text="${cat.name}">Category name</h5>
+                    <div class="read-more-btn">
+                      <span
+                        class="rbt-btn-link"
+                        th:text="${#lists.size(cat.courseCategories)} + ' khóa học'"
+                        >15 khóa học<i class="feather-arrow-right"></i
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <!-- End Category Box Layout  -->
+          </div>
+        </div>
+      </div>
+      <!-- End Service Area -->
+
+      <div class="rbt-newsletter-area bg-gradient-6 ptb--50">
+        <div class="container">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-5 col-md-12 col-12">
+              <div class="inner">
+                <div class="section-title text-center text-lg-start">
+                  <h4 class="title">
+                    <strong>Đăng ký</strong> <br />
+                    <span class="w-400">Nhận bản tin của chúng tôi</span>
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-12 col-12 text-start text-sm-end">
+              <form action="#" class="newsletter-form-1 me-0">
+                <input type="email" placeholder="Nhập email của bạn" />
+                <button
+                  type="submit"
+                  class="rbt-btn btn-md btn-gradient hover-icon-reverse"
+                >
+                  <span class="icon-reverse-wrapper">
+                    <span class="btn-text">Đăng ký</span>
+                    <span class="btn-icon"
+                      ><i class="feather-arrow-right"></i
+                    ></span>
+                    <span class="btn-icon"
+                      ><i class="feather-arrow-right"></i
+                    ></span>
+                  </span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Course Area -->
+      <div class="rbt-course-area bg-color-white rbt-section-gap">
+        <div class="container">
+          <div class="row mb--55 g-5 align-items-end">
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="section-title text-start">
+                <span class="subtitle bg-pink-opacity">Khóa học nổi bật</span>
+                <h2 class="title">
+                  Các khóa học <span class="color-primary">phổ biến nhất</span>
+                </h2>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="load-more-btn text-start text-md-end">
+                <a
+                  class="rbt-btn rbt-switch-btn bg-primary-opacity"
+                  href="course.html"
+                >
+                  <span data-text="Xem tất cả khóa học"
+                    >Xem tất cả khóa học</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- Start Card Area -->
+          <div class="row g-5">
+            <!-- Start Single Course  -->
+            <div
+              class="col-lg-4 col-md-6 col-sm-12 col-12"
+              data-sal-delay="150"
+              data-sal="slide-up"
+              data-sal-duration="800"
+              th:each="course : ${courses}"
+            >
+              <div class="rbt-card variation-01 rbt-hover">
+                <div
+                  class="rbt-card-img"
+                  style="
+                    height: 300px;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <a href="course-details.html">
+                    <img th:src="@{${course.courseImage}}" alt="Card image" />
+                    <div class="rbt-badge-3 bg-white">
+                      <span>-40%</span>
+                      <span>Off</span>
+                    </div>
                   </a>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="content">
-              <div class="banner-card pb--60 swiper rbt-dot-bottom-center banner-swiper-active">
-                <div class="swiper-wrapper">
-                  <!-- Start Single Card  -->
-                  <div class="swiper-slide">
-                    <div class="rbt-card variation-01 rbt-hover">
-                      <div class="rbt-card-img">
-                        <a href="course-details.html">
-                          <img th:src="@{assets/images/course/classic-lms-01.jpg}" alt="Card image" />
-                          <div class="rbt-badge-3 bg-white">
-                            <span>-40%</span>
-                            <span>Off</span>
-                          </div>
-                        </a>
+                <div class="rbt-card-body">
+                  <div class="rbt-card-top">
+                    <div class="rbt-review">
+                      <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
                       </div>
-                      <div class="rbt-card-body">
-                        <ul class="rbt-meta">
-                          <li><i class="feather-book"></i>12 Bài học</li>
-                          <li><i class="feather-users"></i>50 Học viên</li>
-                        </ul>
-                        <h4 class="rbt-card-title">
-                          <a href="course-details.html">React</a>
-                        </h4>
-                        <p class="rbt-card-text">
-                          Đây là một thực tế lâu đời rằng người đọc sẽ bị phân
-                          tâm.
-                        </p>
-                        <div class="rbt-review">
-                          <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <span class="rating-count"> (15 Đánh giá)</span>
-                        </div>
-                        <div class="rbt-card-bottom">
-                          <div class="rbt-price" style="font-size: 0.45em">
-                            <span class="current-price">1.600.000₫</span>
-                            <span class="off-price">2.000.000₫</span>
-                          </div>
-                          <a class="rbt-btn-link" href="course-details.html">Xem thêm<i
-                              class="feather-arrow-right"></i></a>
-                        </div>
-                      </div>
+                      <span class="rating-count"> (15 Đánh giá)</span>
+                    </div>
+                    <div class="rbt-bookmark-btn">
+                      <a class="rbt-round-btn" title="Bookmark" href="#"
+                        ><i class="feather-bookmark"></i
+                      ></a>
                     </div>
                   </div>
-                  <!-- End Single Card  -->
 
-                  <!-- Start Single Card  -->
-                  <div class="swiper-slide">
-                    <div class="rbt-card variation-01 rbt-hover">
-                      <div class="rbt-card-img">
-                        <a href="course-details.html">
-                          <img th:src="@{assets/images/course/course-01.jpg}" alt="Card image" />
-                          <div class="rbt-badge-3 bg-white">
-                            <span>-40%</span>
-                            <span>Off</span>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="rbt-card-body">
-                        <ul class="rbt-meta">
-                          <li><i class="feather-book"></i>12 Bài học</li>
-                          <li><i class="feather-users"></i>50 Học viên</li>
-                        </ul>
-                        <h4 class="rbt-card-title">
-                          <a href="course-details.html">React</a>
-                        </h4>
-                        <p class="rbt-card-text">
-                          Đây là một thực tế lâu đời rằng người đọc sẽ bị phân
-                          tâm.
-                        </p>
-                        <div class="rbt-review">
-                          <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <span class="rating-count"> (15 Đánh giá)</span>
-                        </div>
-                        <div class="rbt-card-bottom">
-                          <div class="rbt-price" style="font-size: 0.75em">
-                            <span class="current-price">1.400.000₫</span>
-                            <span class="off-price">2.400.000₫</span>
-                          </div>
-                          <a class="rbt-btn-link" href="course-details.html">Xem thêm<i
-                              class="feather-arrow-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- End Single Card  -->
+                  <h4 class="rbt-card-title">
+                    <a href="course-details.html" th:text="${course.title}"
+                      >React Front To Back</a
+                    >
+                  </h4>
 
-                  <!-- Start Single Card  -->
-                  <div class="swiper-slide">
-                    <div class="rbt-card variation-01 rbt-hover">
-                      <div class="rbt-card-img">
-                        <a href="course-details.html">
-                          <img th:src="@{assets/images/course/course-online-01.jpg}" alt="Card image" />
-                          <div class="rbt-badge-3 bg-white">
-                            <span>-40%</span>
-                            <span>Off</span>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="rbt-card-body">
-                        <ul class="rbt-meta">
-                          <li><i class="feather-book"></i>12 Bài học</li>
-                          <li><i class="feather-users"></i>50 Học viên</li>
-                        </ul>
-                        <h4 class="rbt-card-title">
-                          <a href="course-details.html">React</a>
-                        </h4>
-                        <p class="rbt-card-text">
-                          Đây là một thực tế lâu đời rằng người đọc sẽ bị phân
-                          tâm.
-                        </p>
-                        <div class="rbt-review">
-                          <div class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <span class="rating-count"> (15 Đánh giá)</span>
-                        </div>
-                        <div class="rbt-card-bottom">
-                          <div class="rbt-price" style="font-size: 0.75em">
-                            <span class="current-price">1.400.000₫</span>
-                            <span class="off-price">2.400.000₫</span>
-                          </div>
-                          <a class="rbt-btn-link" href="course-details.html">Xem thêm<i
-                              class="feather-arrow-right"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- End Single Card  -->
-                </div>
-                <div class="rbt-swiper-pagination"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End Banner Area -->
+                  <ul class="rbt-meta">
+                    <li>
+                      <i class="feather-book"></i>
+                      <span th:text="${#lists.size(course.modules)}"></span>
+                      Bài học
+                    </li>
+                    <li><i class="feather-users"></i>50 Học viên</li>
+                  </ul>
 
-    <!-- Start Service Area -->
-    <div class="rbt-categories-area bg-color-white rbt-section-gap">
-      <div class="container">
-        <div class="row g-5 align-items-start mb--30">
-          <div class="col-lg-6 col-md-6 col-12">
-            <div class="section-title">
-              <h4 class="title">Danh mục phổ biến.</h4>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-12">
-            <div class="read-more-btn text-start text-md-end">
-              <a class="rbt-btn rbt-switch-btn bg-primary-opacity btn-sm" href="archive.html">
-                <span data-text="Xem tất cả">Xem tất cả</span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="row g-5">
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/web-design.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Thiết kế web</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">15 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/graphic-design.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Thiết kế đồ họa</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">25 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <div class="rbt-cat-box rbt-cat-box-1 list-style">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/personal-development.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Phát triển bản thân</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">14 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Category Box Layout  -->
-
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/software.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">CNTT và phần mềm</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">12 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/sales.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Bán hàng & Marketing</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">30 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/arts.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Nghệ thuật & Nhân văn</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">15 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/mobile.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Ứng dụng di động</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">40 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-
-          <!-- Start Category Box Layout  -->
-          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-            <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
-              <div class="inner">
-                <div class="thumbnail">
-                  <img th:src="@{assets/images/category/image/finance.jpg}" alt="Icons Images" />
-                </div>
-                <div class="content">
-                  <h5 class="title">Tài chính & Kế toán</h5>
-                  <div class="read-more-btn">
-                    <span class="rbt-btn-link">20 khóa học<i class="feather-arrow-right"></i></span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!-- End Category Box Layout  -->
-        </div>
-      </div>
-    </div>
-    <!-- End Service Area -->
-
-    <div class="rbt-newsletter-area bg-gradient-6 ptb--50">
-      <div class="container">
-        <div class="row g-5 align-items-center">
-          <div class="col-lg-5 col-md-12 col-12">
-            <div class="inner">
-              <div class="section-title text-center text-lg-start">
-                <h4 class="title">
-                  <strong>Đăng ký</strong> <br />
-                  <span class="w-400">Nhận bản tin của chúng tôi</span>
-                </h4>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-7 col-md-12 col-12 text-start text-sm-end">
-            <form action="#" class="newsletter-form-1 me-0">
-              <input type="email" placeholder="Nhập email của bạn" />
-              <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse">
-                <span class="icon-reverse-wrapper">
-                  <span class="btn-text">Đăng ký</span>
-                  <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                  <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                </span>
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Start Course Area -->
-    <div class="rbt-course-area bg-color-white rbt-section-gap">
-      <div class="container">
-        <div class="row mb--55 g-5 align-items-end">
-          <div class="col-lg-6 col-md-6 col-12">
-            <div class="section-title text-start">
-              <span class="subtitle bg-pink-opacity">Khóa học nổi bật</span>
-              <h2 class="title">
-                Các khóa học <span class="color-primary">phổ biến nhất</span>
-              </h2>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-12">
-            <div class="load-more-btn text-start text-md-end">
-              <a class="rbt-btn rbt-switch-btn bg-primary-opacity" href="course.html">
-                <span data-text="Xem tất cả khóa học">Xem tất cả khóa học</span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <!-- Start Card Area -->
-        <div class="row g-5">
-          <!-- Start Single Course  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12" data-sal-delay="150" data-sal="slide-up"
-            data-sal-duration="800">
-            <div class="rbt-card variation-01 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/course/classic-lms-01.jpg}" alt="Card image" />
-                  <div class="rbt-badge-3 bg-white">
-                    <span>-40%</span>
-                    <span>Off</span>
-                  </div>
-                </a>
-              </div>
-              <div class="rbt-card-body">
-                <div class="rbt-card-top">
-                  <div class="rbt-review">
-                    <div class="rating">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <span class="rating-count"> (15 Đánh giá)</span>
-                  </div>
-                  <div class="rbt-bookmark-btn">
-                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                  </div>
-                </div>
-
-                <h4 class="rbt-card-title">
-                  <a href="course-details.html">React Front To Back</a>
-                </h4>
-
-                <ul class="rbt-meta">
-                  <li><i class="feather-book"></i>12 Bài học</li>
-                  <li><i class="feather-users"></i>50 Học viên</li>
-                </ul>
-
-                <p class="rbt-card-text">
-                  Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
-                </p>
-                <div class="rbt-author-meta mb--10">
-                  <div class="rbt-avater">
-                    <a href="#">
-                      <img th:src="@{assets/images/client/avatar-02.png}" alt="Sophia Jaymes" />
-                    </a>
-                  </div>
-                  <div class="rbt-author-info">
-                    Bởi <a href="profile.html">Angela</a> Trong
-                    <a href="#">Phát triển</a>
-                  </div>
-                </div>
-                <div class="rbt-card-bottom">
-                  <div class="rbt-price" style="font-size: 0.85em">
-                    <span class="current-price">1.600.000₫</span>
-                    <span class="off-price">2.000.000₫</span>
-                  </div>
-                  <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Course  -->
-
-          <!-- Start Single Course  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12" data-sal-delay="200" data-sal="slide-up"
-            data-sal-duration="800">
-            <div class="rbt-card variation-01 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/course/classic-lms-02.jpg}" alt="Card image" />
-                  <div class="rbt-badge-3 bg-white">
-                    <span>-40%</span>
-                    <span>Off</span>
-                  </div>
-                </a>
-              </div>
-              <div class="rbt-card-body">
-                <div class="rbt-card-top">
-                  <div class="rbt-review">
-                    <div class="rating">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <span class="rating-count"> (15 Đánh giá)</span>
-                  </div>
-                  <div class="rbt-bookmark-btn">
-                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                  </div>
-                </div>
-                <h4 class="rbt-card-title">
-                  <a href="course-details.html">PHP Beginner Advanced</a>
-                </h4>
-                <ul class="rbt-meta">
-                  <li><i class="feather-book"></i>12 Bài học</li>
-                  <li><i class="feather-users"></i>50 Học viên</li>
-                </ul>
-
-                <p class="rbt-card-text">
-                  Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
-                </p>
-                <div class="rbt-author-meta mb--10">
-                  <div class="rbt-avater">
-                    <a href="#">
-                      <img th:src="@{assets/images/client/avatar-02.png}" alt="Sophia Jaymes" />
-                    </a>
-                  </div>
-                  <div class="rbt-author-info">
-                    Bởi <a href="profile.html">Angela</a> Trong
-                    <a href="#">Phát triển</a>
-                  </div>
-                </div>
-                <div class="rbt-card-bottom">
-                  <div class="rbt-price" style="font-size: 0.85em">
-                    <span class="current-price">1.400.000₫</span>
-                    <span class="off-price">2.400.000₫</span>
-                  </div>
-                  <a class="rbt-btn-link left-icon" href="course-details.html"><i class="feather-shopping-cart"></i>
-                    Thêm</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Course  -->
-
-          <!-- Start Single Course  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12" data-sal-delay="250" data-sal="slide-up"
-            data-sal-duration="800">
-            <div class="rbt-card variation-01 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/course/classic-lms-03.jpg}" alt="Card image" />
-                  <div class="rbt-badge-3 bg-white">
-                    <span>-40%</span>
-                    <span>Off</span>
-                  </div>
-                </a>
-              </div>
-              <div class="rbt-card-body">
-                <div class="rbt-card-top">
-                  <div class="rbt-review">
-                    <div class="rating">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <span class="rating-count"> (5 Đánh giá)</span>
-                  </div>
-                  <div class="rbt-bookmark-btn">
-                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                  </div>
-                </div>
-                <h4 class="rbt-card-title">
-                  <a href="course-details.html">Angular Zero to Mastery</a>
-                </h4>
-                <ul class="rbt-meta">
-                  <li><i class="feather-book"></i>8 Bài học</li>
-                  <li><i class="feather-users"></i>30 Học viên</li>
-                </ul>
-                <p class="rbt-card-text">
-                  Angular Js là một thực tế lâu đời rằng người đọc sẽ bị phân
-                  tâm bởi nội dung dễ đọc.
-                </p>
-
-                <div class="rbt-author-meta mb--20">
-                  <div class="rbt-avater">
-                    <a href="#">
-                      <img th:src="@{assets/images/client/avatar-03.png}" alt="Sophia Jaymes" />
-                    </a>
-                  </div>
-                  <div class="rbt-author-info">
-                    Bởi <a href="profile.html">Slaughter</a> Trong
-                    <a href="#">Ngôn ngữ</a>
-                  </div>
-                </div>
-                <div class="rbt-card-bottom">
-                  <div class="rbt-price" style="font-size: 0.85em">
-                    <span class="current-price">1.600.000₫</span>
-                    <span class="off-price">2.000.000₫</span>
-                  </div>
-                  <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Course  -->
-
-          <!-- Start Single Card  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12" data-sal-delay="150" data-sal="slide-up"
-            data-sal-duration="800">
-            <div class="rbt-card variation-01 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/course/classic-lms-04.jpg}" alt="Card image" />
-                  <div class="rbt-badge-3 bg-white">
-                    <span>-40%</span>
-                    <span>Off</span>
-                  </div>
-                </a>
-              </div>
-              <div class="rbt-card-body">
-                <div class="rbt-card-top">
-                  <div class="rbt-review">
-                    <div class="rating">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <span class="rating-count"> (15 Đánh giá)</span>
-                  </div>
-                  <div class="rbt-bookmark-btn">
-                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                  </div>
-                </div>
-
-                <h4 class="rbt-card-title">
-                  <a href="course-details.html">Web Front To Back</a>
-                </h4>
-                <ul class="rbt-meta">
-                  <li><i class="feather-book"></i>20 Bài học</li>
-                  <li><i class="feather-users"></i>40 Học viên</li>
-                </ul>
-                <p class="rbt-card-text">
-                  Web Js là một thực tế lâu đời rằng người đọc sẽ bị phân tâm
-                  bởi nội dung dễ đọc.
-                </p>
-                <div class="rbt-author-meta mb--20">
-                  <div class="rbt-avater">
-                    <a href="#">
-                      <img th:src="@{assets/images/client/avater-01.png}" alt="Sophia Jaymes" />
-                    </a>
-                  </div>
-                  <div class="rbt-author-info">
-                    Bởi <a href="profile.html">Patrick</a> Trong
-                    <a href="#">Ngôn ngữ</a>
-                  </div>
-                </div>
-
-                <div class="rbt-card-bottom">
-                  <div class="rbt-price" style="font-size: 0.85em">
-                    <span class="current-price">1.600.000₫</span>
-                    <span class="off-price">2.000.000₫</span>
-                  </div>
-                  <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Card  -->
-
-          <!-- Start Single Card  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12" data-sal-delay="200" data-sal="slide-up"
-            data-sal-duration="800">
-            <div class="rbt-card variation-01 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/course/classic-lms-05.jpg}" alt="Card image" />
-                  <div class="rbt-badge-3 bg-white">
-                    <span>-40%</span>
-                    <span>Off</span>
-                  </div>
-                </a>
-              </div>
-              <div class="rbt-card-body">
-                <div class="rbt-card-top">
-                  <div class="rbt-review">
-                    <div class="rating">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <span class="rating-count"> (15 Đánh giá)</span>
-                  </div>
-                  <div class="rbt-bookmark-btn">
-                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                  </div>
-                </div>
-                <h4 class="rbt-card-title">
-                  <a href="course-details.html">SQL Beginner Advanced</a>
-                </h4>
-                <ul class="rbt-meta">
-                  <li><i class="feather-book"></i>12 Bài học</li>
-                  <li><i class="feather-users"></i>50 Học viên</li>
-                </ul>
-                <p class="rbt-card-text">
-                  Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm bởi
-                  nội dung dễ đọc.
-                </p>
-                <div class="rbt-author-meta mb--20">
-                  <div class="rbt-avater">
-                    <a href="#">
-                      <img th:src="@{assets/images/client/avatar-02.png}" alt="Sophia Jaymes" />
-                    </a>
-                  </div>
-                  <div class="rbt-author-info">
-                    Bởi <a href="profile.html">Angela</a> Trong
-                    <a href="#">Phát triển</a>
-                  </div>
-                </div>
-                <div class="rbt-card-bottom">
-                  <div class="rbt-price" style="font-size: 0.85em">
-                    <span class="current-price">1.400.000₫</span>
-                    <span class="off-price">2.400.000₫</span>
-                  </div>
-                  <a class="rbt-btn-link left-icon" href="course-details.html"><i class="feather-shopping-cart"></i>
-                    Thêm</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Card  -->
-
-          <!-- Start Single Card  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12" data-sal-delay="250" data-sal="slide-up"
-            data-sal-duration="800">
-            <div class="rbt-card variation-01 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/course/classic-lms-06.jpg}" alt="Card image" />
-                  <div class="rbt-badge-3 bg-white">
-                    <span>-40%</span>
-                    <span>Off</span>
-                  </div>
-                </a>
-              </div>
-              <div class="rbt-card-body">
-                <div class="rbt-card-top">
-                  <div class="rbt-review">
-                    <div class="rating">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <span class="rating-count"> (5 Đánh giá)</span>
-                  </div>
-                  <div class="rbt-bookmark-btn">
-                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                  </div>
-                </div>
-                <h4 class="rbt-card-title">
-                  <a href="course-details.html">JS Zero to Mastery</a>
-                </h4>
-                <ul class="rbt-meta">
-                  <li><i class="feather-book"></i>8 Bài học</li>
-                  <li><i class="feather-users"></i>30 Học viên</li>
-                </ul>
-                <p class="rbt-card-text">
-                  Angular Js là một thực tế lâu đời rằng người đọc sẽ bị phân
-                  tâm bởi nội dung dễ đọc.
-                </p>
-
-                <div class="rbt-author-meta mb--20">
-                  <div class="rbt-avater">
-                    <a href="#">
-                      <img th:src="@{assets/images/client/avatar-03.png}" alt="Sophia Jaymes" />
-                    </a>
-                  </div>
-                  <div class="rbt-author-info">
-                    Bởi <a href="profile.html">Slaughter</a> Trong
-                    <a href="#">Ngôn ngữ</a>
-                  </div>
-                </div>
-                <div class="rbt-card-bottom">
-                  <div class="rbt-price" style="font-size: 0.85em">
-                    <span class="current-price">1.600.000₫</span>
-                    <span class="off-price">2.000.000₫</span>
-                  </div>
-                  <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Card  -->
-        </div>
-        <!-- End Card Area -->
-      </div>
-    </div>
-    <!-- End Course Area -->
-
-    <div class="rbt-testimonial-area bg-color-extra2 rbt-section-gap">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 mb--60">
-            <div class="section-title text-center">
-              <span class="subtitle bg-primary-opacity">GIÁO DỤC CHO MỌI NGƯỜI</span>
-              <h2 class="title">
-                Phản hồi của <span class="color-primary">học viên</span>
-              </h2>
-            </div>
-          </div>
-        </div>
-        <div class="row g-5">
-          <!-- Start Single Testimonial  -->
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="rbt-testimonial-box">
-              <div class="inner">
-                <div class="clint-info-wrapper">
-                  <div class="thumb">
-                    <img th:src="@{assets/images/testimonial/client-01.png}" alt="Clint Images" />
-                  </div>
-                  <div class="client-info">
-                    <h5 class="title">Martha Maldonado</h5>
-                    <span>Chủ tịch điều hành <i>@ Google</i></span>
-                  </div>
-                </div>
-                <div class="description">
-                  <p class="subtitle-3">
-                    Sau khi ra mắt, tôi rất hài lòng với chất lượng khóa học
-                    tại đây. Nội dung dễ hiểu, giảng viên nhiệt tình hỗ trợ.
+                  <p class="rbt-card-text" th:text="${course.description}">
+                    Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
                   </p>
-                  <div class="rating mt--20">
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
+                  <div class="rbt-author-meta mb--10">
+                    <div class="rbt-author-info">
+                      Bởi
+                      <a href="profile.html" th:text="${course.authorName}"
+                        >Angela</a
+                      >
+                      Trong
+                      <a href="#">Nhóm phát triển</a>
+                    </div>
+                  </div>
+                  <div class="rbt-card-bottom">
+                    <div class="rbt-price" style="font-size: 0.85em">
+                      <span class="current-price" th:text="${course.price}"
+                        >1.600.000₫</span
+                      >
+                      <span
+                        class="off-price"
+                        th:text="${course.price - (course.price * course.discount)}"
+                        >2.000.000₫</span
+                      >
+                    </div>
+                    <a class="rbt-btn-link" href="course-details.html"
+                      >Xem thêm<i class="feather-arrow-right"></i
+                    ></a>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- End Single Course  -->
           </div>
-          <!-- End Single Testimonial  -->
+          <!-- End Card Area -->
+        </div>
+      </div>
+      <!-- End Course Area -->
 
-          <!-- Start Single Testimonial  -->
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="rbt-testimonial-box">
-              <div class="inner">
-                <div class="clint-info-wrapper">
-                  <div class="thumb">
-                    <img th:src="@{assets/images/testimonial/client-02.png}" alt="Clint Images" />
+      <div class="rbt-testimonial-area bg-color-extra2 rbt-section-gap">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 mb--60">
+              <div class="section-title text-center">
+                <span class="subtitle bg-primary-opacity"
+                  >GIÁO DỤC CHO MỌI NGƯỜI</span
+                >
+                <h2 class="title">
+                  Phản hồi của <span class="color-primary">học viên</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="row g-5">
+            <!-- Start Single Testimonial  -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="rbt-testimonial-box">
+                <div class="inner">
+                  <div class="clint-info-wrapper">
+                    <div class="thumb">
+                      <img
+                        th:src="@{assets/images/testimonial/client-01.png}"
+                        alt="Clint Images"
+                      />
+                    </div>
+                    <div class="client-info">
+                      <h5 class="title">Martha Maldonado</h5>
+                      <span>Chủ tịch điều hành <i>@ Google</i></span>
+                    </div>
                   </div>
-                  <div class="client-info">
-                    <h5 class="title">Michael D. Lovelady</h5>
-                    <span>Giám đốc điều hành <i>@ Google</i></span>
+                  <div class="description">
+                    <p class="subtitle-3">
+                      Sau khi ra mắt, tôi rất hài lòng với chất lượng khóa học
+                      tại đây. Nội dung dễ hiểu, giảng viên nhiệt tình hỗ trợ.
+                    </p>
+                    <div class="rating mt--20">
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                    </div>
                   </div>
                 </div>
-                <div class="description">
-                  <p class="subtitle-3">
-                    Hệ thống học tập rất tiện lợi, tôi có thể học mọi lúc mọi
-                    nơi. Rất phù hợp với người bận rộn như tôi.
+              </div>
+            </div>
+            <!-- End Single Testimonial  -->
+
+            <!-- Start Single Testimonial  -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="rbt-testimonial-box">
+                <div class="inner">
+                  <div class="clint-info-wrapper">
+                    <div class="thumb">
+                      <img
+                        th:src="@{assets/images/testimonial/client-02.png}"
+                        alt="Clint Images"
+                      />
+                    </div>
+                    <div class="client-info">
+                      <h5 class="title">Michael D. Lovelady</h5>
+                      <span>Giám đốc điều hành <i>@ Google</i></span>
+                    </div>
+                  </div>
+                  <div class="description">
+                    <p class="subtitle-3">
+                      Hệ thống học tập rất tiện lợi, tôi có thể học mọi lúc mọi
+                      nơi. Rất phù hợp với người bận rộn như tôi.
+                    </p>
+                    <div class="rating mt--20">
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Single Testimonial  -->
+
+            <!-- Start Single Testimonial  -->
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="rbt-testimonial-box">
+                <div class="inner">
+                  <div class="clint-info-wrapper">
+                    <div class="thumb">
+                      <img
+                        th:src="@{assets/images/testimonial/client-03.png}"
+                        alt="Clint Images"
+                      />
+                    </div>
+                    <div class="client-info">
+                      <h5 class="title">Valerie J. Creasman</h5>
+                      <span>Nhà thiết kế trưởng <i>@ Google</i></span>
+                    </div>
+                  </div>
+                  <div class="description">
+                    <p class="subtitle-3">
+                      Tôi đã nâng cao kỹ năng chuyên môn nhờ các khóa học tại
+                      đây. Nội dung cập nhật, thực tế và hữu ích cho công việc.
+                    </p>
+                    <div class="rating mt--20">
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                      <a href="#"><i class="fa fa-star"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Single Testimonial  -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Blog Style -->
+      <div class="rbt-rbt-blog-area rbt-section-gapTop bg-color-white">
+        <div class="container">
+          <div class="row mb--55 g-5 align-items-end">
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="section-title text-start">
+                <span class="subtitle bg-pink-opacity">Tin tức nổi bật</span>
+                <h2 class="title">
+                  Xem qua
+                  <span class="color-primary">tin tức của chúng tôi</span>
+                </h2>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="load-more-btn text-start text-md-end">
+                <a
+                  class="rbt-btn rbt-switch-btn bg-primary-opacity"
+                  href="blog.html"
+                >
+                  <span data-text="Xem tất cả tin tức">Xem tất cả tin tức</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- Start Card Area -->
+          <div class="row g-5">
+            <!-- Start Single Card  -->
+            <div
+              class="col-lg-4 col-md-6 col-sm-12 col-12"
+              th:each="blog : ${blogPosts}"
+            >
+              <div class="rbt-card variation-02 rbt-hover">
+                <div class="rbt-card-img">
+                  <a href="course-details.html">
+                    <img th:src="@{${blog.imageBlog}}" alt="Card image" />
+                  </a>
+                </div>
+                <div class="rbt-card-body">
+                  <h5 class="rbt-card-title">
+                    <a th:text="${blog.title}" href="course-details.html"
+                      >LMS có phải là xu hướng hiện nay?</a
+                    >
+                  </h5>
+                  <p class="rbt-card-text" th:text="${blog.content}">
+                    Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
                   </p>
-                  <div class="rating mt--20">
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
+                  <div class="rbt-card-bottom">
+                    <a class="transparent-button" href="course-details.html"
+                      >Tìm hiểu thêm<i
+                        ><svg
+                          width="17"
+                          height="12"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g stroke="#27374D" fill="none" fill-rule="evenodd">
+                            <path d="M10.614 0l5.629 5.629-5.63 5.629" />
+                            <path
+                              stroke-linecap="square"
+                              d="M.663 5.572h14.594"
+                            />
+                          </g></svg></i
+                    ></a>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- End Single Card  -->
           </div>
-          <!-- End Single Testimonial  -->
-
-          <!-- Start Single Testimonial  -->
-          <div class="col-lg-4 col-md-6 col-12">
-            <div class="rbt-testimonial-box">
-              <div class="inner">
-                <div class="clint-info-wrapper">
-                  <div class="thumb">
-                    <img th:src="@{assets/images/testimonial/client-03.png}" alt="Clint Images" />
-                  </div>
-                  <div class="client-info">
-                    <h5 class="title">Valerie J. Creasman</h5>
-                    <span>Nhà thiết kế trưởng <i>@ Google</i></span>
-                  </div>
-                </div>
-                <div class="description">
-                  <p class="subtitle-3">
-                    Tôi đã nâng cao kỹ năng chuyên môn nhờ các khóa học tại
-                    đây. Nội dung cập nhật, thực tế và hữu ích cho công việc.
-                  </p>
-                  <div class="rating mt--20">
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                    <a href="#"><i class="fa fa-star"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Single Testimonial  -->
+          <!-- End Card Area -->
         </div>
       </div>
-    </div>
+      <!-- End Blog Style -->
 
-    <!-- Start Blog Style -->
-    <div class="rbt-rbt-blog-area rbt-section-gapTop bg-color-white">
-      <div class="container">
-        <div class="row mb--55 g-5 align-items-end">
-          <div class="col-lg-6 col-md-6 col-12">
-            <div class="section-title text-start">
-              <span class="subtitle bg-pink-opacity">Tin tức nổi bật</span>
-              <h2 class="title">
-                Xem qua
-                <span class="color-primary">tin tức của chúng tôi</span>
-              </h2>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-12">
-            <div class="load-more-btn text-start text-md-end">
-              <a class="rbt-btn rbt-switch-btn bg-primary-opacity" href="blog.html">
-                <span data-text="Xem tất cả tin tức">Xem tất cả tin tức</span>
-              </a>
+      <div class="rbt-instagram-area bg-color-white rbt-section-gapTop">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 mb--60">
+              <div class="section-title text-center">
+                <span class="subtitle bg-secondary-opacity">Instagram</span>
+                <h2 class="title">
+                  Theo dõi Vietutor trên
+                  <span class="color-primary">Instagram</span>
+                </h2>
+              </div>
             </div>
           </div>
         </div>
-        <!-- Start Card Area -->
-        <div class="row g-5">
-          <!-- Start Single Card  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="rbt-card variation-02 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/blog/blog-grid-01.jpg}" alt="Card image" />
+        <div class="container-fluid">
+          <div class="row g-3">
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+              <div class="instagram-grid">
+                <a href="#">
+                  <img
+                    th:src="@{assets/images/instagram/instagram-01.jpg}"
+                    alt="instagram"
+                  />
+                  <span class="user-info">
+                    <span class="icon"><i class="icon-instagram"></i></span>
+                    <span class="user-name">@Histudy</span>
+                  </span>
                 </a>
               </div>
-              <div class="rbt-card-body">
-                <h5 class="rbt-card-title">
-                  <a href="course-details.html">LMS có phải là xu hướng hiện nay?</a>
-                </h5>
-                <p class="rbt-card-text">
-                  Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
-                </p>
-                <div class="rbt-card-bottom">
-                  <a class="transparent-button" href="course-details.html">Tìm hiểu thêm<i><svg width="17" height="12"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g stroke="#27374D" fill="none" fill-rule="evenodd">
-                          <path d="M10.614 0l5.629 5.629-5.63 5.629" />
-                          <path stroke-linecap="square" d="M.663 5.572h14.594" />
-                        </g>
-                      </svg></i></a>
-                </div>
-              </div>
             </div>
-          </div>
-          <!-- End Single Card  -->
-
-          <!-- Start Single Card  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="rbt-card variation-02 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/blog/blog-grid-02.jpg}" alt="Card image" />
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+              <div class="instagram-grid">
+                <a href="#">
+                  <img
+                    th:src="@{assets/images/instagram/instagram-02.jpg}"
+                    alt="instagram"
+                  />
+                  <span class="user-info">
+                    <span class="icon"><i class="icon-instagram"></i></span>
+                    <span class="user-name">@Histudy</span>
+                  </span>
                 </a>
               </div>
-              <div class="rbt-card-body">
-                <h5 class="rbt-card-title">
-                  <a href="course-details.html">Học LMS để kiếm nhiều tiền hơn.</a>
-                </h5>
-                <p class="rbt-card-text">
-                  Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
-                </p>
-                <div class="rbt-card-bottom">
-                  <a class="transparent-button" href="course-details.html">Tìm hiểu thêm<i><svg width="17" height="12"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g stroke="#27374D" fill="none" fill-rule="evenodd">
-                          <path d="M10.614 0l5.629 5.629-5.63 5.629" />
-                          <path stroke-linecap="square" d="M.663 5.572h14.594" />
-                        </g>
-                      </svg></i></a>
-                </div>
-              </div>
             </div>
-          </div>
-          <!-- End Single Card  -->
-
-          <!-- Start Single Card  -->
-          <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="rbt-card variation-02 rbt-hover">
-              <div class="rbt-card-img">
-                <a href="course-details.html">
-                  <img th:src="@{assets/images/blog/blog-grid-03.jpg}" alt="Card image" />
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+              <div class="instagram-grid">
+                <a href="#">
+                  <img
+                    th:src="@{assets/images/instagram/instagram-03.jpg}"
+                    alt="instagram"
+                  />
+                  <span class="user-info">
+                    <span class="icon"><i class="icon-instagram"></i></span>
+                    <span class="user-name">@Histudy</span>
+                  </span>
                 </a>
               </div>
-              <div class="rbt-card-body">
-                <h5 class="rbt-card-title">
-                  <a href="course-details.html">Hiểu về nguồn gốc của LMS.</a>
-                </h5>
-                <p class="rbt-card-text">
-                  Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
-                </p>
-                <div class="rbt-card-bottom">
-                  <a class="transparent-button" href="course-details.html">Tìm hiểu thêm<i><svg width="17" height="12"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g stroke="#27374D" fill="none" fill-rule="evenodd">
-                          <path d="M10.614 0l5.629 5.629-5.63 5.629" />
-                          <path stroke-linecap="square" d="M.663 5.572h14.594" />
-                        </g>
-                      </svg></i></a>
-                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+              <div class="instagram-grid">
+                <a href="#">
+                  <img
+                    th:src="@{assets/images/instagram/instagram-04.jpg}"
+                    alt="instagram"
+                  />
+                  <span class="user-info">
+                    <span class="icon"><i class="icon-instagram"></i></span>
+                    <span class="user-name">@Histudy</span>
+                  </span>
+                </a>
               </div>
             </div>
-          </div>
-          <!-- End Single Card  -->
-        </div>
-        <!-- End Card Area -->
-      </div>
-    </div>
-    <!-- End Blog Style -->
-
-    <div class="rbt-instagram-area bg-color-white rbt-section-gapTop">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 mb--60">
-            <div class="section-title text-center">
-              <span class="subtitle bg-secondary-opacity">Instagram</span>
-              <h2 class="title">
-                Theo dõi Histudy trên
-                <span class="color-primary">Instagram</span>
-              </h2>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+              <div class="instagram-grid">
+                <a href="#">
+                  <img
+                    th:src="@{assets/images/instagram/instagram-05.jpg}"
+                    alt="instagram"
+                  />
+                  <span class="user-info">
+                    <span class="icon"><i class="icon-instagram"></i></span>
+                    <span class="user-name">@Histudy</span>
+                  </span>
+                </a>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="container-fluid">
-        <div class="row g-3">
-          <div class="col-lg-2 col-md-4 col-sm-6 col-6">
-            <div class="instagram-grid">
-              <a href="#">
-                <img th:src="@{assets/images/instagram/instagram-01.jpg}" alt="instagram" />
-                <span class="user-info">
-                  <span class="icon"><i class="icon-instagram"></i></span>
-                  <span class="user-name">@Histudy</span>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-6">
-            <div class="instagram-grid">
-              <a href="#">
-                <img th:src="@{assets/images/instagram/instagram-02.jpg}" alt="instagram" />
-                <span class="user-info">
-                  <span class="icon"><i class="icon-instagram"></i></span>
-                  <span class="user-name">@Histudy</span>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-6">
-            <div class="instagram-grid">
-              <a href="#">
-                <img th:src="@{assets/images/instagram/instagram-03.jpg}" alt="instagram" />
-                <span class="user-info">
-                  <span class="icon"><i class="icon-instagram"></i></span>
-                  <span class="user-name">@Histudy</span>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-6">
-            <div class="instagram-grid">
-              <a href="#">
-                <img th:src="@{assets/images/instagram/instagram-04.jpg}" alt="instagram" />
-                <span class="user-info">
-                  <span class="icon"><i class="icon-instagram"></i></span>
-                  <span class="user-name">@Histudy</span>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-6">
-            <div class="instagram-grid">
-              <a href="#">
-                <img th:src="@{assets/images/instagram/instagram-05.jpg}" alt="instagram" />
-                <span class="user-info">
-                  <span class="icon"><i class="icon-instagram"></i></span>
-                  <span class="user-name">@Histudy</span>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-4 col-sm-6 col-6">
-            <div class="instagram-grid">
-              <a href="#">
-                <img th:src="@{assets/images/instagram/instagram-06.jpg}" alt="instagram" />
-                <span class="user-info">
-                  <span class="icon"><i class="icon-instagram"></i></span>
-                  <span class="user-name">@Histudy</span>
-                </span>
-              </a>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+              <div class="instagram-grid">
+                <a href="#">
+                  <img
+                    th:src="@{assets/images/instagram/instagram-06.jpg}"
+                    alt="instagram"
+                  />
+                  <span class="user-info">
+                    <span class="icon"><i class="icon-instagram"></i></span>
+                    <span class="user-name">@Histudy</span>
+                  </span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>
