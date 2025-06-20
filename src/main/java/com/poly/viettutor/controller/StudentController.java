@@ -43,7 +43,6 @@ public class StudentController {
 
         // Cập nhật các trường cho user hiện tại
         currentUser.setFullname(updatedUser.getFullname());
-        currentUser.setEmail(updatedUser.getEmail());
         currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
         currentUser.setOccupation(updatedUser.getOccupation());
         currentUser.setBiography(updatedUser.getBiography());
@@ -107,6 +106,7 @@ public class StudentController {
         User user = userService.getCurrentUser();
         model.addAttribute("user", user);
         model.addAttribute("content", "client/student/student-settings");
+        model.addAttribute("scripts", "client/student/student-settings");
         model.addAttribute("title", "Cài đặt tài khoản");
         return "client/layout/index";
     }
