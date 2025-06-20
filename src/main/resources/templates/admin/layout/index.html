@@ -16,6 +16,11 @@
     <link rel="stylesheet" th:href="@{../admin-assets/vendors/bootstrap-icons/bootstrap-icons.css}">
     <link rel="stylesheet" th:href="@{../admin-assets/css/app.css}">
     <link rel="shortcut icon" th:href="@{../admin-assets/images/favicon.svg}" type="image/x-icon">
+
+    <!-- JS tuỳ chỉnh từ file con nếu có -->
+    <th:block th:if="${scripts}">
+        <th:block th:replace="~{${scripts} :: scripts}"></th:block>
+    </th:block>
 </head>
 
 <body>
@@ -34,6 +39,11 @@
     <script th:src="@{../admin-assets/js/pages/dashboard.js}"></script>
 
     <script th:src="@{../admin-assets/js/main.js}"></script>
+
+    <!-- JS tuỳ chỉnh từ file con nếu có -->
+    <th:block th:if="${scripts}">
+        <th:block th:replace="~{${scripts} :: scripts}"></th:block>
+    </th:block>
 </body>
 
 </html>
