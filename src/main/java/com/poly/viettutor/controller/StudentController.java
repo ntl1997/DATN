@@ -79,19 +79,19 @@ public class StudentController {
         User user = userService.getCurrentUser();
         if (user == null) {
             redirectAttributes.addFlashAttribute("error", "Bạn cần đăng nhập để thực hiện chức năng này!");
-            return "redirect:/student/change-password";
+            return "redirect:/student/student-settings";
         }
 
         // So sánh mật khẩu hiện tại (đã mã hóa)
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu hiện tại không đúng!");
-            return "redirect:/student/change-password";
+            return "redirect:/student/student-settings";
         }
 
         // Kiểm tra xác nhận mật khẩu mới
         if (!newPassword.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu mới và xác nhận không khớp!");
-            return "redirect:/student/change-password";
+            return "redirect:/student/student-settings";
         }
 
         // Cập nhật mật khẩu mới (mã hóa)
