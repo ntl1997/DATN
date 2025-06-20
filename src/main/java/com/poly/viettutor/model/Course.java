@@ -33,6 +33,9 @@ public class Course {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String courseImage;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
+    private String demoVideoUrl; // Đường dẫn hoặc URL video demo
+
     private String status;
 
     @ManyToOne
