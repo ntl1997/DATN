@@ -23,36 +23,43 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLogin(Model model) {
-        model.addAttribute("title", "Đăng nhập");
-        model.addAttribute("content", "client/auth/login");
-        return "client/layout/index";
+        return loadPage(model, "Đăng nhập", "client/auth/login");
     }
 
     @GetMapping("/register")
-    public String showRegister(Model model) {
-        model.addAttribute("title", "Đăng ký");
-        model.addAttribute("content", "client/auth/register");
-        model.addAttribute("registerRequest", new RegisterRequest());
-        return "client/layout/index";
+    public String showRegister(@ModelAttribute("registerRequest") RegisterRequest registerRequest, Model model) {
+        return loadPage(model, "Đăng ký", "client/auth/register");
     }
 
     @PostMapping("/register")
     public String handleRegister(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
             BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) { // validate form
-            return "redirect:/register?validError=true";
+        // validate form
+        if (bindingResult.hasErrors()) {
+            return loadPage(model, "Đăng ký", "client/auth/register");
         }
 
-        if (userService.isEmailExists(registerRequest.getEmail())) { // kiểm tra email đã tồn tại
-            return "redirect:/register?emailExists=true";
+        // kiểm tra email đã tồn tại
+        if (userService.isEmailExists(registerRequest.getEmail())) {
+            bindingResult.rejectValue("email", null, "Email đã tồn tại");
+            return loadPage(model, "Đăng ký", "client/auth/register");
         }
 
-        if (!userService.confirmPassword(registerRequest)) { // Kiểm tra xác nhận mật khẩu
-            return "redirect:/register?passwordMismatch=true";
+        // Kiểm tra xác nhận mật khẩu
+        if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
+            bindingResult.rejectValue("confirmPassword", null, "Mật khẩu không khớp");
+            return loadPage(model, "Đăng ký", "client/auth/register");
         }
 
         userService.register(registerRequest);
         return "redirect:/login?RegisterSuccess=true";
+    }
+
+    // Tải trang với tiêu đề và nội dung (viewPath là đường dẫn đến file template)
+    private String loadPage(Model model, String title, String viewPath) {
+        model.addAttribute("title", title);
+        model.addAttribute("content", viewPath);
+        return "client/layout/index";
     }
 
 }
