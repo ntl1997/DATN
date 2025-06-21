@@ -2,7 +2,6 @@ package com.poly.viettutor.controller;
 
 import java.util.Optional;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +22,9 @@ public class CourseDetailController {
     @GetMapping("/detail/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
         Optional<Course> existingItemOptional = courseService.findById(id);
+        ;
         if (existingItemOptional.isPresent()) {
-            model.addAttribute("course", existingItemOptional.get());
+            model.addAttribute("course", existingItemOptional.get()); // Thêm danh sách mục tiêu khóa học vào mô hình
         } else {
             // Xử lý khi không tìm thấy khóa học, ví dụ chuyển hướng hoặc báo lỗi
             return "redirect:/error";
