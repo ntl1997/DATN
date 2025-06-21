@@ -32,6 +32,9 @@
 
     <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
 
+    <!-- CSS tuỳ chỉnh của header -->
+    <th:block th:replace="~{client/layout/header :: header-styles}"></th:block>
+
     <!-- CSS tuỳ chỉnh từ file con nếu có -->
     <th:block th:if="${styles}">
         <th:block th:replace="~{${styles} :: styles}"></th:block>
@@ -86,6 +89,9 @@
 
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
+
+    <!-- JS tuỳ chỉnh của header -->
+    <th:block th:replace="~{client/layout/header :: header-scripts}"></th:block>
 
     <!-- JS tuỳ chỉnh từ file con nếu có -->
     <th:block th:if="${scripts}">
