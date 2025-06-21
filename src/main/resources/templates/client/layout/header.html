@@ -14,6 +14,11 @@
         .parent-list li {
           cursor: pointer; /* Thêm con trỏ chuột vào mục cha */
         }
+
+        /* Thêm hiệu ứng cho hover */
+        .parent-list li:hover {
+          background-color: #f0f0f0; /* Màu nền khi hover */
+        }
       </style>
     </th:block>
   </head>
@@ -290,8 +295,8 @@
                           </ul>
                         </div>
                         <div class="rbt-vertical-nav-content">
-                          <!-- Start One Item  -->
-                          <div class="rbt-vertical-inner tab-content" id="tab1" style="display: block">
+                          <!-- Lập Trình - CNTT -->
+                          <div class="rbt-vertical-inner tab-content" id="tab1">
                             <div class="rbt-vertical-single">
                               <div class="row category-hover-area">
                                 <div class="col-lg-6 col-sm-6 col-6">
@@ -300,18 +305,6 @@
                                     <ul class="rbt-vertical-nav-list-wrapper parent-list">
                                       <li data-category="frontend"><a href="#">Lập Trình Front-end</a></li>
                                       <li data-category="backend"><a href="#">Lập Trình Back-end</a></li>
-                                      <li data-category="ngoaingu"><a href="#">Ngoại Ngữ</a></li>
-                                      <li data-category="phattrien"><a href="#">Phát Triển Bản Thân</a></li>
-                                      <li data-category="kinhdoanh"><a href="#">Kinh Doanh - Khởi Nghiệp</a></li>
-                                      <li data-category="thethao"><a href="#">Thể Thao - Sức Khỏe</a></li>
-                                      <li data-category="honnhan"><a href="#">Hôn Nhân - Gia Đình</a></li>
-                                      <li data-category="nhiepanh"><a href="#">Nhiếp Ảnh - Dựng Phim</a></li>
-                                      <li data-category="thietke"><a href="#">Thiết Kế - Đồ Họa</a></li>
-                                      <li data-category="marketing"><a href="#">Marketing - Bán Hàng</a></li>
-                                      <li data-category="nghethuat"><a href="#">Nghệ Thuật - Đời Sống</a></li>
-                                      <li data-category="dautu"><a href="#">Đầu Tư - Tài Chính</a></li>
-                                      <li data-category="kienthuc"><a href="#">Kiến Thức Chuyên Ngành</a></li>
-                                      <li data-category="tinhoc"><a href="#">Tin Học Văn Phòng</a></li>
                                     </ul>
                                   </div>
                                 </div>
@@ -323,23 +316,10 @@
                                         <li><a href="#">JavaScript</a></li>
                                         <li><a href="#">Python</a></li>
                                       </ul>
-                                      <ul class="subcategory" data-category="amnhac" style="display: none">
-                                        <li><a href="#">Guitar</a></li>
-                                        <li><a href="#">Piano</a></li>
+                                      <ul class="subcategory" data-category="backend" style="display: none">
+                                        <li><a href="#">Node.js</a></li>
+                                        <li><a href="#">Java</a></li>
                                       </ul>
-                                      <ul class="subcategory" data-category="ngoaingu" style="display: none">
-                                        <li><a href="#">English</a></li>
-                                        <li><a href="#">Japanese</a></li>
-                                      </ul>
-                                      <ul class="subcategory" data-category="phattrien" style="display: none">
-                                        <li><a href="#">Self-Improvement</a></li>
-                                        <li><a href="#">Time Management</a></li>
-                                      </ul>
-                                      <ul class="subcategory" data-category="kinhdoanh" style="display: none">
-                                        <li><a href="#">Entrepreneurship</a></li>
-                                        <li><a href="#">Marketing Strategies</a></li>
-                                      </ul>
-                                      <!-- Thêm các danh mục con khác ở đây -->
                                     </div>
                                   </div>
                                 </div>
@@ -347,9 +327,7 @@
                             </div>
                           </div>
 
-                          <!-- End One Item  -->
-
-                          <!-- Start One Item  -->
+                          <!-- Âm Nhạc -->
                           <div class="rbt-vertical-inner tab-content" id="tab2">
                             <div class="rbt-vertical-single">
                               <div class="row">
@@ -357,14 +335,9 @@
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục</h3>
                                     <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Lập Trình - CNTT</a></li>
-                                      <li><a href="#">Ngoại Ngữ</a></li>
-                                      <li><a href="#">Kinh Doanh - Khởi Nghiệp</a></li>
-                                      <li><a href="#">Thiết Kế - Đồ Họa</a></li>
-                                      <li><a href="#">Marketing - Bán Hàng</a></li>
-                                      <li><a href="#">Đầu Tư - Tài Chính</a></li>
-                                      <li><a href="#">Kiến Thức Chuyên Ngành</a></li>
-                                      <li><a href="#">Tin Học Văn Phòng</a></li>
+                                      <li><a href="#">Guitar</a></li>
+                                      <li><a href="#">Piano</a></li>
+                                      <li><a href="#">Sáng tác</a></li>
                                     </ul>
                                   </div>
                                 </div>
@@ -372,19 +345,16 @@
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục con</h3>
                                     <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Web Design</a></li>
-                                      <li><a href="#">Art</a></li>
-                                      <li><a href="#">Figma</a></li>
-                                      <li><a href="#">Adobe</a></li>
+                                      <li><a href="#">Classical Guitar</a></li>
+                                      <li><a href="#">Jazz Piano</a></li>
                                     </ul>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <!-- End One Item  -->
 
-                          <!-- Start One Item  -->
+                          <!-- Ngoại Ngữ -->
                           <div class="rbt-vertical-inner tab-content" id="tab3">
                             <div class="rbt-vertical-single">
                               <div class="row">
@@ -392,53 +362,184 @@
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục</h3>
                                     <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Âm Nhạc</a></li>
-                                      <li><a href="#">Phát Triển Bản Thân</a></li>
-                                      <li><a href="#">Thể Thao - Sức Khỏe</a></li>
-                                      <li><a href="#">Hôn Nhân - Gia Đình</a></li>
-                                      <li><a href="#">Nhiếp Ảnh - Dựng Phim</a></li>
-                                      <li><a href="#">Nghệ Thuật - Đời Sống</a></li>
+                                      <li><a href="#">Tiếng Anh</a></li>
+                                      <li><a href="#">Tiếng Nhật</a></li>
+                                      <li><a href="#">Tiếng Pháp</a></li>
                                     </ul>
-                                    <div class="read-more-btn"></div>
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục con</h3>
                                     <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Web Design</a></li>
-                                      <li><a href="#">Art</a></li>
-                                      <li><a href="#">Figma</a></li>
-                                      <li><a href="#">Adobe</a></li>
+                                      <li><a href="#">Tiếng Anh giao tiếp</a></li>
+                                      <li><a href="#">Tiếng Nhật giao tiếp</a></li>
+                                      <li><a href="#">Tiếng Pháp cơ bản</a></li>
                                     </ul>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <!-- End One Item  -->
 
-                          <!-- Start One Item  -->
+                          <!-- Phát Triển Bản Thân -->
                           <div class="rbt-vertical-inner tab-content" id="tab4">
                             <div class="rbt-vertical-single">
                               <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục</h3>
                                     <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Lập Trình - CNTT</a></li>
-                                      <li><a href="#">Ngoại Ngữ</a></li>
-                                      <li><a href="#">Âm Nhạc</a></li>
-                                      <li><a href="#">Đầu Tư - Tài Chính</a></li>
-                                      <li><a href="#">Kiến Thức Chuyên Ngành</a></li>
-                                      <li><a href="#">Tin Học Văn Phòng</a></li>
+                                      <li><a href="#">Quản lý thời gian</a></li>
+                                      <li><a href="#">Kỹ năng lãnh đạo</a></li>
+                                      <li><a href="#">Tư duy sáng tạo</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Quản lý công việc hiệu quả</a></li>
+                                      <li><a href="#">Khóa học lãnh đạo</a></li>
                                     </ul>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <!-- End One Item  -->
+
+                          <!-- Kinh Doanh - Khởi Nghiệp -->
+                          <div class="rbt-vertical-inner tab-content" id="tab5">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Khởi nghiệp</a></li>
+                                      <li><a href="#">Chiến lược Marketing</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Startup Funding</a></li>
+                                      <li><a href="#">Xây dựng thương hiệu</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Thể Thao - Sức Khỏe -->
+                          <div class="rbt-vertical-inner tab-content" id="tab6">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Yoga</a></li>
+                                      <li><a href="#">Chạy bộ</a></li>
+                                      <li><a href="#">Thể hình</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Yoga cho người mới bắt đầu</a></li>
+                                      <li><a href="#">Chạy bộ hiệu quả</a></li>
+                                      <li><a href="#">Tập thể hình tại nhà</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Nhiếp Ảnh - Dựng Phim -->
+                          <div class="rbt-vertical-inner tab-content" id="tab8">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Nhiếp ảnh</a></li>
+                                      <li><a href="#">Dựng phim</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Chụp ảnh chân dung</a></li>
+                                      <li><a href="#">Dựng phim bằng Adobe Premiere</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Thiết Kế - Đồ Họa -->
+                          <div class="rbt-vertical-inner tab-content" id="tab9">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Thiết kế web</a></li>
+                                      <li><a href="#">Thiết kế đồ họa</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">UX/UI Design</a></li>
+                                      <li><a href="#">Photoshop</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Marketing - Bán Hàng -->
+                          <div class="rbt-vertical-inner tab-content" id="tab10">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">Digital Marketing</a></li>
+                                      <li><a href="#">Social Media</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper">
+                                      <li><a href="#">SEO</a></li>
+                                      <li><a href="#">PPC Advertising</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -712,33 +813,47 @@
           const subcategories = document.querySelectorAll(".subcategory");
 
           // Kiểm tra xem có tìm thấy các phần tử không
-          console.log("Các mục cha:", parentItems); // Kiểm tra phần tử parentItems có được chọn không
-          console.log("Các danh mục con:", subcategories); // Kiểm tra phần tử subcategories có được chọn không
+          console.log("Các mục cha:", parentItems);
+          console.log("Các danh mục con:", subcategories);
 
           // Lắng nghe sự kiện hover vào mỗi mục cha
           parentItems.forEach((item) => {
             item.addEventListener("mouseenter", function () {
-              console.log("Hover vào mục:", item); // Kiểm tra mục cha có nhận diện được sự kiện hover
+              console.log("Hover vào mục:", item);
 
               // Ẩn tất cả các danh mục con
               subcategories.forEach((sub) => {
                 sub.classList.remove("active");
-                console.log("Ẩn danh mục con:", sub); // Kiểm tra nếu danh mục con bị ẩn
+                console.log("Ẩn danh mục con:", sub);
               });
 
               // Lấy giá trị category của mục cha và hiển thị danh mục con tương ứng
               const cat = item.getAttribute("data-category");
               const sub = document.querySelector('.subcategory[data-category="' + cat + '"]');
-              console.log("Danh mục con tìm thấy:", sub); // Kiểm tra xem danh mục con có được tìm thấy không
+              console.log("Danh mục con tìm thấy:", sub);
 
               if (sub) {
                 sub.classList.add("active"); // Hiển thị danh mục con tương ứng
-                console.log("Hiển thị danh mục con:", sub); // Kiểm tra xem danh mục con có được hiển thị không
+                console.log("Hiển thị danh mục con:", sub);
+              }
+            });
+
+            // Lắng nghe sự kiện rời chuột khỏi mục cha
+            item.addEventListener("mouseleave", function () {
+              console.log("Rời chuột khỏi mục:", item);
+
+              // Ẩn tất cả danh mục con khi chuột rời khỏi mục cha
+              const cat = item.getAttribute("data-category");
+              const sub = document.querySelector('.subcategory[data-category="' + cat + '"]');
+
+              if (sub) {
+                sub.classList.remove("active"); // Ẩn danh mục con khi rời chuột
+                console.log("Ẩn danh mục con:", sub);
               }
             });
           });
 
-          // Ẩn tất cả danh mục con khi chuột rời khỏi vùng danh mục
+          // Ẩn tất cả danh mục con khi chuột rời khỏi vùng danh mục (category-hover-area)
           const hoverArea = document.querySelector(".category-hover-area");
           if (hoverArea) {
             hoverArea.addEventListener("mouseleave", function () {
