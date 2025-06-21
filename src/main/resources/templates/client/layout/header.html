@@ -19,6 +19,38 @@
         .parent-list li:hover {
           background-color: #f0f0f0; /* Màu nền khi hover */
         }
+        /* Làm cho chữ trong danh mục con giống chữ trong danh mục chính */
+        .subcategory a {
+          font-size: 16px; /* Kích thước chữ giống với danh mục chính */
+          color: #333; /* Màu chữ giống với danh mục chính */
+          text-decoration: none; /* Bỏ gạch dưới cho chữ */
+          font-weight: normal; /* Đảm bảo font chữ giống với danh mục chính */
+        }
+
+        /* Loại bỏ dấu chấm đầu mỗi mục con */
+        .subcategory {
+          list-style-type: none; /* Loại bỏ dấu chấm */
+          padding-left: 0; /* Xóa lề trái của danh sách */
+        }
+
+        /* Đảm bảo các mục cha (Danh mục) có kiểu giống nhau */
+        .parent-list li a {
+          font-size: 16px; /* Đảm bảo kích thước chữ giống với mục con */
+          color: #333; /* Màu chữ giống mục con */
+          text-decoration: none; /* Bỏ gạch dưới */
+          font-weight: normal; /* Đảm bảo font chữ giống mục con */
+        }
+
+        .parent-list li {
+          list-style-type: none; /* Loại bỏ dấu chấm đầu mỗi mục cha */
+          padding-left: 0; /* Xóa lề trái của danh sách */
+        }
+
+        /* Tùy chọn để thay đổi màu sắc của các mục khi hover */
+        .parent-list li a:hover,
+        .subcategory a:hover {
+          color: #007bff; /* Màu chữ khi hover */
+        }
       </style>
     </th:block>
   </head>
@@ -373,21 +405,49 @@
                                 <div class="col-lg-6">
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục</h3>
-                                    <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Nhạc Cụ</a></li>
-                                      <li><a href="#">Sản Xuất Và Sáng Tác</a></li>
-                                      <li><a href="#">Luyện Thanh</a></li>
-                                      <li><a href="#">Phần Mềm Âm Nhạc</a></li>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="nhaccu"><a href="#">Nhạc Cụ</a></li>
+                                      <li data-category="sangtac"><a href="#">Sản Xuất Và Sáng Tác</a></li>
+                                      <li data-category="luyenthanh"><a href="#">Luyện Thanh</a></li>
+                                      <li data-category="phanmemamnhac"><a href="#">Phần Mềm Âm Nhạc</a></li>
                                     </ul>
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục con</h3>
-                                    <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Classical Guitar</a></li>
-                                      <li><a href="#">Jazz Piano</a></li>
-                                    </ul>
+                                    <div class="subcategories">
+                                      <!-- Nhạc Cụ -->
+                                      <ul class="subcategory" data-category="nhaccu" style="display: none">
+                                        <li><a href="#">Đàn Piano</a></li>
+                                        <li><a href="#">Đàn Guitar</a></li>
+                                        <li><a href="#">Đàn Ukulele</a></li>
+                                        <li><a href="#">Sáo Trúc</a></li>
+                                        <li><a href="#">Đàn Organ</a></li>
+                                      </ul>
+
+                                      <!-- Sản Xuất Và Sáng Tác -->
+                                      <ul class="subcategory" data-category="sangtac" style="display: none">
+                                        <li><a href="#">Sản xuất âm nhạc</a></li>
+                                        <li><a href="#">Sáng tác nhạc</a></li>
+                                      </ul>
+
+                                      <!-- Luyện Thanh -->
+                                      <ul class="subcategory" data-category="luyenthanh" style="display: none">
+                                        <li><a href="#">Luyện thanh Piano</a></li>
+                                        <li><a href="#">Luyện thanh Guitar</a></li>
+                                        <li><a href="#">Luyện thanh Ukulele</a></li>
+                                        <li><a href="#">Luyện thanh Organ</a></li>
+                                      </ul>
+
+                                      <!-- Phần Mềm Âm Nhạc -->
+                                      <ul class="subcategory" data-category="phanmemamnhac" style="display: none">
+                                        <li><a href="#">Phần mềm sản xuất âm nhạc</a></li>
+                                        <li><a href="#">Phần mềm chỉnh sửa âm thanh</a></li>
+                                        <li><a href="#">Phần mềm học nhạc cụ</a></li>
+                                        <li><a href="#">Phần mềm luyện thanh</a></li>
+                                      </ul>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
