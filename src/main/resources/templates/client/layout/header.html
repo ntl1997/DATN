@@ -461,21 +461,45 @@
                                 <div class="col-lg-6">
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục</h3>
-                                    <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Tiếng Anh</a></li>
-                                      <li><a href="#">Tiếng Nhật</a></li>
-                                      <li><a href="#">Tiếng Pháp</a></li>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="tienganh"><a href="#">Tiếng Anh</a></li>
+                                      <li data-category="tiengnhat"><a href="#">Tiếng Nhật</a></li>
+                                      <li data-category="tiengphap"><a href="#">Tiếng Pháp</a></li>
+                                      <li data-category="tiengduc"><a href="#">Tiếng Đức</a></li>
+                                      <li data-category="tiengtrung"><a href="#">Tiếng Trung</a></li>
                                     </ul>
                                   </div>
                                 </div>
                                 <div class="col-lg-6">
                                   <div class="vartical-nav-content-menu">
                                     <h3 class="rbt-short-title">Danh mục con</h3>
-                                    <ul class="rbt-vertical-nav-list-wrapper">
-                                      <li><a href="#">Tiếng Anh giao tiếp</a></li>
-                                      <li><a href="#">Tiếng Nhật giao tiếp</a></li>
-                                      <li><a href="#">Tiếng Pháp cơ bản</a></li>
-                                    </ul>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="tienganh" style="display: none">
+                                        <li><a href="#">Tiếng Anh giao tiếp</a></li>
+                                        <li><a href="#">Tiếng Anh luyện thi TOEIC</a></li>
+                                        <li><a href="#">Tiếng Anh cho người mới bắt đầu</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengnhat" style="display: none">
+                                        <li><a href="#">Tiếng Nhật giao tiếp</a></li>
+                                        <li><a href="#">Tiếng Nhật cho người mới bắt đầu</a></li>
+                                        <li><a href="#">Luyện thi JLPT</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengphap" style="display: none">
+                                        <li><a href="#">Tiếng Pháp cơ bản</a></li>
+                                        <li><a href="#">Tiếng Pháp giao tiếp</a></li>
+                                        <li><a href="#">Luyện thi DELF/DALF</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengduc" style="display: none">
+                                        <li><a href="#">Tiếng Đức giao tiếp</a></li>
+                                        <li><a href="#">Tiếng Đức cơ bản</a></li>
+                                        <li><a href="#">Luyện thi Goethe</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengtrung" style="display: none">
+                                        <li><a href="#">Tiếng Trung giao tiếp</a></li>
+                                        <li><a href="#">Tiếng Trung HSK</a></li>
+                                        <li><a href="#">Tiếng Trung cho người mới bắt đầu</a></li>
+                                      </ul>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -941,15 +965,20 @@
             // Lắng nghe sự kiện rời chuột khỏi mục cha
             item.addEventListener("mouseleave", function () {
               console.log("Rời chuột khỏi mục:", item);
+              // Không ẩn danh mục con ở đây nữa, vì khi chuột ra ngoài vẫn cần giữ danh mục con hiển thị
+            });
+          });
 
-              // Ẩn tất cả danh mục con khi chuột rời khỏi mục cha
-              const cat = item.getAttribute("data-category");
-              const sub = document.querySelector('.subcategory[data-category="' + cat + '"]');
+          // Lắng nghe sự kiện mouseenter cho các danh mục con để giữ chúng hiển thị khi di chuột vào danh mục con
+          subcategories.forEach((sub) => {
+            sub.addEventListener("mouseenter", function () {
+              console.log("Hover vào danh mục con:", sub);
+              sub.classList.add("active"); // Giữ danh mục con hiển thị khi chuột vào
+            });
 
-              if (sub) {
-                sub.classList.remove("active"); // Ẩn danh mục con khi rời chuột
-                console.log("Ẩn danh mục con:", sub);
-              }
+            sub.addEventListener("mouseleave", function () {
+              console.log("Rời chuột khỏi danh mục con:", sub);
+              // Không ẩn ngay danh mục con khi chuột rời khỏi danh mục con
             });
           });
 
@@ -958,7 +987,7 @@
           if (hoverArea) {
             hoverArea.addEventListener("mouseleave", function () {
               subcategories.forEach((sub) => {
-                sub.classList.remove("active"); // Ẩn tất cả danh mục con
+                sub.classList.remove("active"); // Ẩn tất cả danh mục con khi chuột rời khỏi vùng hover
                 console.log("Ẩn tất cả danh mục con khi rời khỏi vùng hover");
               });
             });
