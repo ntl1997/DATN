@@ -28,5 +28,6 @@ public class Lecture {
 
     private Integer sortOrder;
 
+    @Column(nullable = true)
     private Integer duration; // thời lượng (phút)
 }
