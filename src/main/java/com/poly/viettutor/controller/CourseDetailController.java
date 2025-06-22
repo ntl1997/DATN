@@ -22,7 +22,6 @@ public class CourseDetailController {
     @GetMapping("/detail/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
         Optional<Course> existingItemOptional = courseService.findById(id);
-        ;
         if (existingItemOptional.isPresent()) {
             Course course = existingItemOptional.get();
             model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
