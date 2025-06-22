@@ -1,6 +1,7 @@
 package com.poly.viettutor.service;
 
 import com.poly.viettutor.model.Course;
+import com.poly.viettutor.model.Lecture;
 import com.poly.viettutor.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -32,5 +33,12 @@ public class CourseService {
 
     public List<Course> getTop6PopularCourses() {
         return courseRepository.findTop6PopularCourses(PageRequest.of(0, 6));
+    }
+
+    public int totalDuration(Course course) {
+        return course.getModules().stream()
+                .flatMap(module -> module.getLectures().stream())
+                .mapToInt(Lecture::getDuration)
+                .sum();
     }
 }
