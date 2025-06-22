@@ -70,4 +70,7 @@ public class User {
     @OneToMany(mappedBy = "createdBy")
     private List<BlogPost> blogPosts;
 
+    @OneToMany(mappedBy = "createdBy")
+    private List<Course> courses;
+
 }
