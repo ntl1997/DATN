@@ -27,4 +27,6 @@ public class Lecture {
     private String videoUrl;
 
     private Integer sortOrder;
+
+    private Integer duration; // thời lượng (phút)
 }
