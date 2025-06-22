@@ -36,7 +36,11 @@ public class CourseService {
     }
 
     public int totalDuration(Course course) {
+        if (course.getModules() == null) {
+            return 0;
+        }
         return course.getModules().stream()
+                .filter(module -> module.getLectures() != null)
                 .flatMap(module -> module.getLectures().stream())
                 .mapToInt(Lecture::getDuration)
                 .sum();
