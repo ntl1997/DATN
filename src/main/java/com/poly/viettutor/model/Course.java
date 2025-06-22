@@ -40,7 +40,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "createdBy")
-    private User createdBy;
+    private User createdBy; // Quan hệ @ManyToOne tới User đã đúng, không cần chỉnh sửa
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseModule> modules;
@@ -51,9 +51,24 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CourseObjective> objectives;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    @Column(name = "TargetAudience", length = 100)
+    private String targetAudience;
+
+    @Column(name = "HasCertificate")
+    private Boolean hasCertificate;
+
+    @Column(name = "PassPercentage")
+    private int passPercentage;
+
+    @Column(name = "Language", length = 50)
+    private String language;
 }
