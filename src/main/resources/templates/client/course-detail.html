@@ -130,9 +130,6 @@
                         <a href="#coursecontent">Nội dung khóa học</a>
                       </li>
                       <li>
-                        <a href="#details">Chi tiết</a>
-                      </li>
-                      <li>
                         <a href="#intructor">Giảng viên</a>
                       </li>
                       <li>
@@ -259,7 +256,7 @@
                       <div class="thumbnail">
                         <a href="#">
                           <img
-                            src="assets/images/testimonial/testimonial-7.jpg"
+                            th:src="@{${course.createdBy.image}}"
                             alt="Author Images"
                           />
                         </a>
@@ -270,28 +267,34 @@
                             <a
                               class="hover-flip-item-wrapper"
                               href="author.html"
+                              th:text="${course.createdBy.fullname}"
                               >B.M. Rafekul Islam</a
                             >
                           </h5>
-                          <span class="b3 subtitle">Advanced Educator</span>
                           <ul class="rbt-meta mb--20 mt--10">
                             <li>
                               <i class="fa fa-star color-warning"></i>75,237
-                              Reviews
-                              <span class="rbt-badge-5 ml--5">4.4 Rating</span>
+                              Đánh giá
+                              <span class="rbt-badge-5 ml--5">4.4 Sao</span>
                             </li>
                             <li>
-                              <i class="feather-users"></i>912,970 Students
+                              <i class="feather-users"></i>912,970 Học viên
                             </li>
                             <li>
                               <a href="#"
-                                ><i class="feather-video"></i>16 Courses</a
-                              >
+                                ><i class="feather-video"></i
+                                ><span
+                                  th:text="${#lists.size(course.createdBy.courses) + ' Khóa học'}"
+                                ></span
+                              ></a>
                             </li>
                           </ul>
                         </div>
                         <div class="content">
-                          <p class="description">
+                          <p
+                            class="description"
+                            th:text="${course.createdBy.biography}"
+                          >
                             John is a brilliant educator, whose life was spent
                             for computer science and love of nature.
                           </p>
@@ -402,7 +405,7 @@
                               />
                             </svg>
                           </div>
-                          <span class="sub-title">Course Rating</span>
+                          <span class="sub-title">Đánh giá khóa học</span>
                         </div>
                       </div>
                       <div class="col-lg-9">
@@ -802,9 +805,13 @@
                   <div
                     class="has-show-more-inner-content rbt-featured-review-list-wrapper"
                   >
-                    <div class="rbt-course-review about-author">
+                    <div
+                      class="rbt-course-review about-author"
+                      th:each="review : ${course.reviews}"
+                    >
                       <div class="media">
                         <div class="thumbnail">
+                          <!-- Ảnh người đánh giá -->
                           <a href="#">
                             <img
                               src="assets/images/testimonial/testimonial-3.jpg"
@@ -815,20 +822,39 @@
                         <div class="media-body">
                           <div class="author-info">
                             <h5 class="title">
-                              <a class="hover-flip-item-wrapper" href="#">
+                              <!-- Tên người đánh giá -->
+                              <a
+                                class="hover-flip-item-wrapper"
+                                href="#"
+                                th:text="${review.user.fullname}"
+                              >
                                 Farjana Bawnia
                               </a>
                             </h5>
-                            <div class="rating">
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
+                            <div
+                              class="rating"
+                              th:if="${review.rating != null}"
+                            >
+                              <!-- Sao được đánh giá (sáng) -->
+                              <a
+                                href="#"
+                                th:each="i : ${#numbers.sequence(1, review.rating)}"
+                              >
+                                <i class="fa fa-star"></i>
+                              </a>
+
+                              <!-- Sao chưa được đánh giá (tối màu, rỗng) -->
+                              <a
+                                href="#"
+                                th:each="i : ${#numbers.sequence(1, 5 - review.rating)}"
+                              >
+                                <i class="fa fa-star-o"></i>
+                                <!-- dùng fa-star-o cho sao rỗng -->
+                              </a>
                             </div>
                           </div>
                           <div class="content">
-                            <p class="description">
+                            <p class="description" th:text="${review.comment}">
                               At 29 years old, my favorite compliment is being
                               told that I look like my mom. Seeing myself in her
                               image, like this daughter up top.
@@ -851,204 +877,8 @@
                         </div>
                       </div>
                     </div>
-                    <div class="rbt-course-review about-author">
-                      <div class="media">
-                        <div class="thumbnail">
-                          <a href="#">
-                            <img
-                              src="assets/images/testimonial/testimonial-4.jpg"
-                              alt="Author Images"
-                            />
-                          </a>
-                        </div>
-                        <div class="media-body">
-                          <div class="author-info">
-                            <h5 class="title">
-                              <a class="hover-flip-item-wrapper" href="#"
-                                >Razwan Islam</a
-                              >
-                            </h5>
-                            <div class="rating">
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                            </div>
-                          </div>
-                          <div class="content">
-                            <p class="description">
-                              My favorite compliment is being told that I look
-                              like my mom. Seeing myself in her image, like this
-                              daughter up top.
-                            </p>
-                            <ul
-                              class="social-icon social-default transparent-with-border justify-content-start"
-                            >
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-up"></i>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-down"></i>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="rbt-course-review about-author">
-                      <div class="media">
-                        <div class="thumbnail">
-                          <a href="#">
-                            <img
-                              src="assets/images/testimonial/testimonial-1.jpg"
-                              alt="Author Images"
-                            />
-                          </a>
-                        </div>
-                        <div class="media-body">
-                          <div class="author-info">
-                            <h5 class="title">
-                              <a class="hover-flip-item-wrapper" href="#"
-                                >Babor Azom</a
-                              >
-                            </h5>
-                            <div class="rating">
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                            </div>
-                          </div>
-                          <div class="content">
-                            <p class="description">
-                              My favorite compliment is being told that I look
-                              like my mom. Seeing myself in her image, like this
-                              daughter up top.
-                            </p>
-                            <ul
-                              class="social-icon social-default transparent-with-border justify-content-start"
-                            >
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-up"></i>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-down"></i>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="rbt-course-review about-author">
-                      <div class="media">
-                        <div class="thumbnail">
-                          <a href="#">
-                            <img
-                              src="assets/images/testimonial/testimonial-6.jpg"
-                              alt="Author Images"
-                            />
-                          </a>
-                        </div>
-                        <div class="media-body">
-                          <div class="author-info">
-                            <h5 class="title">
-                              <a class="hover-flip-item-wrapper" href="#"
-                                >Mohammad Ali</a
-                              >
-                            </h5>
-                            <div class="rating">
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                            </div>
-                          </div>
-                          <div class="content">
-                            <p class="description">
-                              My favorite compliment is being told that I look
-                              like my mom. Seeing myself in her image, like this
-                              daughter up top.
-                            </p>
-                            <ul
-                              class="social-icon social-default transparent-with-border justify-content-start"
-                            >
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-up"></i>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-down"></i>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="rbt-course-review about-author">
-                      <div class="media">
-                        <div class="thumbnail">
-                          <a href="#">
-                            <img
-                              src="assets/images/testimonial/testimonial-8.jpg"
-                              alt="Author Images"
-                            />
-                          </a>
-                        </div>
-                        <div class="media-body">
-                          <div class="author-info">
-                            <h5 class="title">
-                              <a class="hover-flip-item-wrapper" href="#"
-                                >Sakib Al Hasan</a
-                              >
-                            </h5>
-                            <div class="rating">
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                              <a href="#"><i class="fa fa-star"></i></a>
-                            </div>
-                          </div>
-                          <div class="content">
-                            <p class="description">
-                              My favorite compliment is being told that I look
-                              like my mom. Seeing myself in her image, like this
-                              daughter up top.
-                            </p>
-                            <ul
-                              class="social-icon social-default transparent-with-border justify-content-start"
-                            >
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-up"></i>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <i class="feather-thumbs-down"></i>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
-                  <div class="rbt-show-more-btn">Show More</div>
+                  <div class="rbt-show-more-btn">Xem thêm</div>
                 </div>
               </div>
             </div>
@@ -1061,28 +891,27 @@
                   <div class="content-item-content">
                     <div
                       class="rbt-price-wrapper d-flex flex-wrap align-items-center justify-content-between"
-                    >
-                      <div class="rbt-price">
-                        <h5 class="current-price mb--5">Free</h5>
-                      </div>
-                    </div>
+                    ></div>
 
                     <div class="add-to-card-button mt--15">
                       <a
                         class="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
                         href="#"
                       >
-                        <span class="btn-text">Enroll now</span>
+                        <span class="btn-text">Đăng ký ngay</span>
                         <span class="btn-icon"
                           ><i class="feather-arrow-right"></i
                         ></span>
                       </a>
                     </div>
 
-                    <span class="subtitle">Free access this course</span>
+                    <span
+                      class="subtitle"
+                      th:text="${course.price} +' đ'"
+                    ></span>
                     <span class="b3"
-                      ><i class="feather-calendar"></i> Enrollment validity:
-                      Lifetime</span
+                      ><i class="feather-calendar"></i> Thời gian sử dụng: Trọn
+                      đời</span
                     >
 
                     <div class="rbt-widget-details has-show-more">
@@ -1090,30 +919,42 @@
                         class="has-show-more-inner-content rbt-course-details-list-wrapper"
                       >
                         <li>
-                          <span>Start Date</span
-                          ><span class="rbt-feature-value rbt-badge-5"
+                          <span>Tổng thời lượng khóa học</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${totalDuration} + ' Min'"
                             >5 Hrs 20 Min</span
                           >
                         </li>
                         <li>
-                          <span>Enrolled</span
-                          ><span class="rbt-feature-value rbt-badge-5"
+                          <span>Đã đăng ký</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${course.enrollments.size()}"
                             >100</span
                           >
                         </li>
                         <li>
-                          <span>Lectures</span
-                          ><span class="rbt-feature-value rbt-badge-5">50</span>
+                          <span>Bài giảng</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${course.modules.size()}"
+                            >50</span
+                          >
                         </li>
                         <li>
-                          <span>Skill Level</span
-                          ><span class="rbt-feature-value rbt-badge-5"
+                          <span>Đối tượng phù hợp</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${course.targetAudience}"
                             >Basic</span
                           >
                         </li>
                         <li>
-                          <span>Language</span
-                          ><span class="rbt-feature-value rbt-badge-5"
+                          <span>Ngôn ngữ</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${course.language}"
                             >English</span
                           >
                         </li>
@@ -1122,19 +963,23 @@
                           ><span class="rbt-feature-value rbt-badge-5">10</span>
                         </li>
                         <li>
-                          <span>Certificate</span
-                          ><span class="rbt-feature-value rbt-badge-5"
+                          <span>Chứng chỉ</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${course.hasCertificate == 0 ? 'Có': 'Không'}"
                             >Yes</span
                           >
                         </li>
                         <li>
-                          <span>Pass Percentage</span
-                          ><span class="rbt-feature-value rbt-badge-5"
+                          <span>Yêu cầu vượt qua</span
+                          ><span
+                            class="rbt-feature-value rbt-badge-5"
+                            th:text="${course.passPercentage} + '%'"
                             >95%</span
                           >
                         </li>
                       </ul>
-                      <div class="rbt-show-more-btn">Show More</div>
+                      <div class="rbt-show-more-btn">Xem thêm</div>
                     </div>
 
                     <div class="social-share-wrapper mt--30 text-center">
@@ -1168,12 +1013,13 @@
                       </div>
                       <hr class="mt--20" />
                       <div class="contact-with-us text-center">
-                        <p>For details about the course</p>
+                        <p>Để biết thêm chi tiết về khóa học</p>
                         <p
                           class="rbt-badge-2 mt--10 justify-content-center w-100"
                         >
-                          <i class="feather-phone mr--5"></i> Call Us:
-                          <a href="#"><strong>+444 555 666 777</strong></a>
+                          <i class="feather-phone mr--5"></i> Liên hệ với chúng
+                          tôi:
+                          <a href="#"><strong>0979888626</strong></a>
                         </p>
                       </div>
                     </div>
@@ -1193,16 +1039,20 @@
             <div class="row g-5 align-items-end mb--40">
               <div class="col-lg-8 col-md-8 col-12">
                 <div class="section-title">
-                  <span class="subtitle bg-pink-opacity">Top Course</span>
                   <h4 class="title">
-                    More Course By <strong class="color-primary">Angela</strong>
+                    Thêm khóa học về
+                    <strong
+                      class="color-primary"
+                      th:text="${course.createdBy.fullname}"
+                      >Angela</strong
+                    >
                   </h4>
                 </div>
               </div>
               <div class="col-lg-4 col-md-4 col-12">
                 <div class="read-more-btn text-start text-md-end">
                   <a class="rbt-btn rbt-switch-btn btn-border btn-sm" href="#">
-                    <span data-text="View All Course">View All Course</span>
+                    <span data-text="View All Course">Tất cả khóa học</span>
                   </a>
                 </div>
               </div>
@@ -1214,14 +1064,21 @@
                 data-sal-delay="150"
                 data-sal="slide-up"
                 data-sal-duration="800"
+                th:each="course : ${course.createdBy.courses}"
               >
                 <div class="rbt-card variation-01 rbt-hover">
-                  <div class="rbt-card-img">
+                  <div
+                    class="rbt-card-img"
+                    style="
+                      height: 200px;
+                      overflow: hidden;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
                     <a href="course-details.html">
-                      <img
-                        src="assets/images/course/course-online-04.jpg"
-                        alt="Card image"
-                      />
+                      <img th:src="@{${course.courseImage}}" alt="Card image" />
                       <div class="rbt-badge-3 bg-white">
                         <span>-40%</span>
                         <span>Off</span>
@@ -1238,7 +1095,12 @@
                           <i class="fas fa-star"></i>
                           <i class="fas fa-star"></i>
                         </div>
-                        <span class="rating-count"> (15 Reviews)</span>
+                        <span
+                          class="rating-count"
+                          th:text="${#lists.size(course.reviews) +' Bình luận'}"
+                        >
+                          (15 Reviews)</span
+                        >
                       </div>
                       <div class="rbt-bookmark-btn">
                         <a class="rbt-round-btn" title="Bookmark" href="#"
@@ -1248,13 +1110,26 @@
                     </div>
 
                     <h4 class="rbt-card-title">
-                      <a href="course-details.html">Web Front To Back</a>
+                      <a href="course-details.html" th:text="${course.title}"
+                        >Web Front To Back</a
+                      >
                     </h4>
                     <ul class="rbt-meta">
-                      <li><i class="feather-book"></i>20 Lessons</li>
-                      <li><i class="feather-users"></i>40 Students</li>
+                      <li>
+                        <i class="feather-book"></i>
+                        <span
+                          th:text="${#lists.size(course.modules) + ' Khóa học'}"
+                        ></span>
+                      </li>
+                      <li>
+                        <i class="feather-users"></i>
+                        <span
+                          th:text="${#lists.size(course.enrollments) + ' Học viên'}"
+                        ></span>
+                      </li>
                     </ul>
-                    <p class="rbt-card-text">
+
+                    <p class="rbt-card-text" th:text="${course.description}">
                       Web Js long fact that a reader will be distracted by the
                       readable.
                     </p>
@@ -1262,177 +1137,32 @@
                       <div class="rbt-avater">
                         <a href="#">
                           <img
-                            src="assets/images/client/avater-01.png"
+                            th:src="@{${course.createdBy.image}}"
                             alt="Sophia Jaymes"
                           />
                         </a>
                       </div>
                       <div class="rbt-author-info">
-                        By <a href="profile.html">Patrick</a> In
-                        <a href="#">Languages</a>
+                        By
+                        <a href="profile.html" th:text="${course.authorName}"
+                          >Patrick</a
+                        >
                       </div>
                     </div>
 
                     <div class="rbt-card-bottom">
-                      <div class="rbt-price">
-                        <span class="current-price">$60</span>
-                        <span class="off-price">$120</span>
+                      <div class="rbt-price" style="font-size: 0.85em">
+                        <span class="current-price" th:text="${course.price}"
+                          >1.600.000₫</span
+                        >
+                        <span
+                          class="off-price"
+                          th:text="${course.price - (course.price * course.discount)}"
+                          >2.000.000₫</span
+                        >
                       </div>
                       <a class="rbt-btn-link" href="course-details.html"
-                        >Learn More<i class="feather-arrow-right"></i
-                      ></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- End Single Card  -->
-
-              <!-- Start Single Card  -->
-              <div
-                class="col-lg-4 col-md-6 col-sm-6 col-12"
-                data-sal-delay="150"
-                data-sal="slide-up"
-                data-sal-duration="800"
-              >
-                <div class="rbt-card variation-01 rbt-hover">
-                  <div class="rbt-card-img">
-                    <a href="course-details.html">
-                      <img
-                        src="assets/images/course/course-online-05.jpg"
-                        alt="Card image"
-                      />
-                      <div class="rbt-badge-3 bg-white">
-                        <span>-20%</span>
-                        <span>Off</span>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="rbt-card-body">
-                    <div class="rbt-card-top">
-                      <div class="rbt-review">
-                        <div class="rating">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span class="rating-count"> (15 Reviews)</span>
-                      </div>
-                      <div class="rbt-bookmark-btn">
-                        <a class="rbt-round-btn" title="Bookmark" href="#"
-                          ><i class="feather-bookmark"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <h4 class="rbt-card-title">
-                      <a href="course-details.html">SQL Beginner Advanced</a>
-                    </h4>
-                    <ul class="rbt-meta">
-                      <li><i class="feather-book"></i>12 Lessons</li>
-                      <li><i class="feather-users"></i>50 Students</li>
-                    </ul>
-                    <p class="rbt-card-text">
-                      It is a long established fact that a reader will be
-                      distracted by the readable.
-                    </p>
-                    <div class="rbt-author-meta mb--20">
-                      <div class="rbt-avater">
-                        <a href="#">
-                          <img
-                            src="assets/images/client/avatar-02.png"
-                            alt="Sophia Jaymes"
-                          />
-                        </a>
-                      </div>
-                      <div class="rbt-author-info">
-                        By <a href="profile.html">Angela</a> In
-                        <a href="#">Development</a>
-                      </div>
-                    </div>
-                    <div class="rbt-card-bottom">
-                      <div class="rbt-price">
-                        <span class="current-price">$60</span>
-                        <span class="off-price">$120</span>
-                      </div>
-                      <a
-                        class="rbt-btn-link left-icon"
-                        href="course-details.html"
-                        ><i class="feather-shopping-cart"></i> Add To Cart</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- End Single Card  -->
-
-              <!-- Start Single Card  -->
-              <div
-                class="col-lg-4 col-md-6 col-sm-6 col-12"
-                data-sal-delay="150"
-                data-sal="slide-up"
-                data-sal-duration="800"
-              >
-                <div class="rbt-card variation-01 rbt-hover">
-                  <div class="rbt-card-img">
-                    <a href="course-details.html">
-                      <img
-                        src="assets/images/course/course-online-06.jpg"
-                        alt="Card image"
-                      />
-                    </a>
-                  </div>
-                  <div class="rbt-card-body">
-                    <div class="rbt-card-top">
-                      <div class="rbt-review">
-                        <div class="rating">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span class="rating-count"> (5 Reviews)</span>
-                      </div>
-                      <div class="rbt-bookmark-btn">
-                        <a class="rbt-round-btn" title="Bookmark" href="#"
-                          ><i class="feather-bookmark"></i
-                        ></a>
-                      </div>
-                    </div>
-                    <h4 class="rbt-card-title">
-                      <a href="course-details.html">JS Zero to Mastery</a>
-                    </h4>
-                    <ul class="rbt-meta">
-                      <li><i class="feather-book"></i>8 Lessons</li>
-                      <li><i class="feather-users"></i>30 Students</li>
-                    </ul>
-                    <p class="rbt-card-text">
-                      Angular Js long fact that a reader will be distracted by
-                      the readable.
-                    </p>
-
-                    <div class="rbt-author-meta mb--20">
-                      <div class="rbt-avater">
-                        <a href="#">
-                          <img
-                            src="assets/images/client/avatar-03.png"
-                            alt="Sophia Jaymes"
-                          />
-                        </a>
-                      </div>
-                      <div class="rbt-author-info">
-                        By <a href="profile.html">Slaughter</a> In
-                        <a href="#">Languages</a>
-                      </div>
-                    </div>
-                    <div class="rbt-card-bottom">
-                      <div class="rbt-price">
-                        <span class="current-price">$80</span>
-                        <span class="off-price">$100</span>
-                      </div>
-                      <a class="rbt-btn-link" href="course-details.html"
-                        >Learn More<i class="feather-arrow-right"></i
+                        >Xem thêm<i class="feather-arrow-right"></i
                       ></a>
                     </div>
                   </div>
@@ -1452,7 +1182,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="section-title text-center text-md-start">
                 <h5 class="title mb--0">
-                  The Complete Histudy 2024: From Zero to Expert!
+                  Khóa học Histudy 2025: Từ cơ bản đến chuyên gia!
                 </h5>
               </div>
             </div>
@@ -1461,8 +1191,14 @@
                 <div
                   class="rbt-single-list rbt-price large-size justify-content-center"
                 >
-                  <span class="current-price color-primary">$750.00</span>
-                  <span class="off-price">$1500.00</span>
+                  <span class="current-price" th:text="${course.price}"
+                    >1.600.000₫</span
+                  >
+                  <span
+                    class="off-price"
+                    th:text="${course.price - (course.price * course.discount)}"
+                    >2.000.000₫</span
+                  >
                 </div>
                 <div class="rbt-single-list action-btn">
                   <a
