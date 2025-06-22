@@ -24,7 +24,10 @@ public class CourseDetailController {
         Optional<Course> existingItemOptional = courseService.findById(id);
         ;
         if (existingItemOptional.isPresent()) {
-            model.addAttribute("course", existingItemOptional.get()); // Thêm danh sách mục tiêu khóa học vào mô hình
+            Course course = existingItemOptional.get();
+            model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
+            int totalDuration = courseService.totalDuration(course);
+            model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
         } else {
             // Xử lý khi không tìm thấy khóa học, ví dụ chuyển hướng hoặc báo lỗi
             return "redirect:/error";
