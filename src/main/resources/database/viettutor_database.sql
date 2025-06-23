@@ -289,6 +289,7 @@ INSERT INTO UserRoles (RoleId, UserId) VALUES
 (2, 2), -- Instructor
 (3, 3); -- Student
 
+
 -- 4. Categories (độc lập)
 INSERT INTO Categories (Name, ParentId, ImageUrl, Level) VALUES 
 (N'Programming', NULL, N'/category/programming.jpg', 1),
@@ -331,6 +332,7 @@ INSERT INTO Lectures (
 INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 
 (1, N'Understand basic Java syntax'),
 (1, N'Build OOP Java applications');
+
 
 -- 11. CourseMaterials (phụ thuộc Courses)
 INSERT INTO CourseMaterials (
