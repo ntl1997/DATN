@@ -1197,35 +1197,25 @@
           const parentItems = document.querySelectorAll(".parent-list li[data-category]");
           const subcategories = document.querySelectorAll(".subcategory");
 
-          // Kiểm tra xem có tìm thấy các phần tử không
-          console.log("Các mục cha:", parentItems);
-          console.log("Các danh mục con:", subcategories);
-
           // Lắng nghe sự kiện hover vào mỗi mục cha
           parentItems.forEach((item) => {
             item.addEventListener("mouseenter", function () {
-              console.log("Hover vào mục:", item);
-
               // Ẩn tất cả các danh mục con
               subcategories.forEach((sub) => {
                 sub.classList.remove("active");
-                console.log("Ẩn danh mục con:", sub);
               });
 
               // Lấy giá trị category của mục cha và hiển thị danh mục con tương ứng
               const cat = item.getAttribute("data-category");
               const sub = document.querySelector('.subcategory[data-category="' + cat + '"]');
-              console.log("Danh mục con tìm thấy:", sub);
 
               if (sub) {
                 sub.classList.add("active"); // Hiển thị danh mục con tương ứng
-                console.log("Hiển thị danh mục con:", sub);
               }
             });
 
             // Lắng nghe sự kiện rời chuột khỏi mục cha
             item.addEventListener("mouseleave", function () {
-              console.log("Rời chuột khỏi mục:", item);
               // Không ẩn danh mục con ở đây nữa, vì khi chuột ra ngoài vẫn cần giữ danh mục con hiển thị
             });
           });
@@ -1233,12 +1223,10 @@
           // Lắng nghe sự kiện mouseenter cho các danh mục con để giữ chúng hiển thị khi di chuột vào danh mục con
           subcategories.forEach((sub) => {
             sub.addEventListener("mouseenter", function () {
-              console.log("Hover vào danh mục con:", sub);
               sub.classList.add("active"); // Giữ danh mục con hiển thị khi chuột vào
             });
 
             sub.addEventListener("mouseleave", function () {
-              console.log("Rời chuột khỏi danh mục con:", sub);
               // Không ẩn ngay danh mục con khi chuột rời khỏi danh mục con
             });
           });
@@ -1249,7 +1237,6 @@
             hoverArea.addEventListener("mouseleave", function () {
               subcategories.forEach((sub) => {
                 sub.classList.remove("active"); // Ẩn tất cả danh mục con khi chuột rời khỏi vùng hover
-                console.log("Ẩn tất cả danh mục con khi rời khỏi vùng hover");
               });
             });
           }
