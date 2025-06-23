@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title th:text="${title} ?: 'Histudy LMS'">Histudy LMS</title>
-    <meta name="robots" content="noindex, follow">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title th:text="${title} ?: 'Vietstudy LMS'">Vietstudy LMS</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon.png}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon-vtt.png}" />
 
     <!-- CSS
 	============================================ -->
-    <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/vendor/slick.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/vendor/slick-theme.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/sal.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/feather.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/fontawesome.min.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/euclid-circulara.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/odometer.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/animation.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/magnigy-popup.min.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/plyr.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/jodit.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/slick.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/slick-theme.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/sal.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/feather.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/fontawesome.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/euclid-circulara.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/odometer.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/animation.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/magnigy-popup.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/plyr.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jodit.min.css}" />
 
-    <link rel="stylesheet" th:href="@{/assets/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
+
+    <!-- CSS tuỳ chỉnh của header -->
+    <th:block th:replace="~{client/layout/header :: header-styles}"></th:block>
 
     <!-- CSS tuỳ chỉnh từ file con nếu có -->
     <th:block th:if="${styles}">
-        <th:block th:replace="~{${styles} :: styles}"></th:block>
+      <th:block th:replace="~{${styles} :: styles}"></th:block>
     </th:block>
-</head>
+  </head>
 
-<body class="rbt-header-sticky">
-
+  <body class="rbt-header-sticky">
     <!-- Include Header -->
     <div th:replace="~{client/layout/header :: header}"></div>
 
@@ -87,10 +88,12 @@
     <!-- Main JS -->
     <script th:src="@{/assets/js/main.js}"></script>
 
+    <!-- JS tuỳ chỉnh của header -->
+    <th:block th:replace="~{client/layout/header :: header-scripts}"></th:block>
+
     <!-- JS tuỳ chỉnh từ file con nếu có -->
     <th:block th:if="${scripts}">
-        <th:block th:replace="~{${scripts} :: scripts}"></th:block>
+      <th:block th:replace="~{${scripts} :: scripts}"></th:block>
     </th:block>
-</body>
-
+  </body>
 </html>
