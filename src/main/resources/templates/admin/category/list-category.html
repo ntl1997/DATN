@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div id="main" th:fragment="content">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Danh mục</h3>
+                        <div th:if="${param.createSuccess}" class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> Thêm danh mục thành công!
+                        </div>
+                        <div th:if="${param.updateSuccess}" class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> Cập nhật danh mục thành công!
+                        </div>
+                        <div th:if="${param.deleteSuccess}" class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> Xóa danh mục thành công!
+                        </div>
+                        <div th:if="${createError}" class="alert alert-danger">
+                            <i class="bi bi-file-excel"></i> Tạo danh mục thất bại!
+                            <p th:text="${createError}"></p>
+                        </div>
+                        <div th:if="${updateError}" class="alert alert-danger">
+                            <i class="bi bi-file-excel"></i> Cập nhật danh mục thất bại!
+                            <p th:text="${updateError}"></p>
+                        </div>
+                        <div th:if="${deleteError}" class="alert alert-danger">
+                            <i class="bi bi-file-excel"></i> Xóa danh mục thất bại!
+                            <p th:text="${deleteError}"></p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Tổng quan</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh mục</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <a th:href="@{/admin/categories/new}" class="btn btn-primary">Tạo danh mục</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên danh mục</th>
+                                    <th>Cấp danh mục</th>
+                                    <th>Ảnh danh mục</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="category, stat : ${categories}">
+                                    <td th:text="${stat.index + 1}"></td>
+                                    <td th:text="${category.name}">tên</td>
+                                    <td th:text="${category.level}">cấp</td>
+                                    <td th:text="${category.imageUrl}"></td>
+                                    <td>
+                                        <a th:href="@{'/admin/categories/edit/' + ${category.categoryId}}"
+                                            class="btn btn-warning btn-sm">Sửa</a>
+                                        <form th:action="@{'/admin/categories/delete/' + ${category.categoryId} }"
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')"
+                                            method="post" style="display: inline;">
+                                            <input type="hidden" name="_method" value="delete" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+    <th:block th:fragment="scripts">
+        <script>
+            // Simple Datatable
+            let table1 = document.querySelector('#table1');
+            let dataTable = new simpleDatatables.DataTable(table1);
+        </script>
+    </th:block>
+</body>
+
+</html>

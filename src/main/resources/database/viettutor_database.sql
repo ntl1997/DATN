@@ -194,6 +194,8 @@ GO
 CREATE TABLE Categories (
     CategoryId BIGINT PRIMARY KEY IDENTITY,
     Name NVARCHAR(100),
+    ImageUrl NVARCHAR(255),
+    Level INT,
     ParentId BIGINT FOREIGN KEY REFERENCES Categories(CategoryId)
 );
 GO
@@ -275,11 +277,11 @@ VALUES
 (3, 3); -- Student
 
 -- 4. Categories
-INSERT INTO Categories (Name, ParentId)
+INSERT INTO Categories (Name, ParentId, ImageUrl, Level)
 VALUES 
-(N'Programming', NULL),         -- ID 1
-(N'Web Development', 1),        -- ID 2
-(N'Data Science', 1);           -- ID 3
+(N'Programming', NULL, N'/category/programming.jpg', 1),         -- ID 1
+(N'Web Development', 1, N'/category/web-development.jpg', 2),        -- ID 2
+(N'Data Science', 1, N'/category/data-science.jpg', 2);           -- ID 3
 
 -- 5. Courses
 INSERT INTO Courses (Title, Description, Curriculum, AuthorName, Price, Discount, CourseImage, Status, CreatedBy)
