@@ -59,13 +59,18 @@
                           <ul class="rbt-meta">
                             <li>
                               <i class="feather-book"></i>
-                              <span th:text="${#lists.size(course.modules)}"></span>
-                              Bài học
+
+                              <span
+                                th:text="${#lists.size(course.modules) + ' Bài học'}"
+                              ></span>
                             </li>
                             <li>
                               <i class="feather-users"></i>
-                              50 Học viên
+                              <span
+                                th:text="${#lists.size(course.enrollments) + ' Học viên'}"
+                              ></span>
                             </li>
+
                           </ul>
                           <h4 class="rbt-card-title">
                             <a href="course-details.html" th:text="${course.title}">React</a>
@@ -81,7 +86,14 @@
                               <i class="fas fa-star"></i>
                               <i class="fas fa-star"></i>
                             </div>
-                            <span class="rating-count">(15 Đánh giá)</span>
+
+                            <span
+                              class="rating-count"
+                              th:text="${#lists.size(course.reviews) +' Bình luận'}"
+                            >
+                              (15 Đánh giá)</span
+                            >
+
                           </div>
                           <div class="rbt-card-bottom">
                             <div class="rbt-price" style="font-size: 0.45em">
@@ -236,7 +248,14 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                       </div>
-                      <span class="rating-count">(15 Đánh giá)</span>
+
+                      <span
+                        class="rating-count"
+                        th:text="${#lists.size(course.reviews) +' Bình luận'}"
+                      >
+                        (15 Đánh giá)</span
+                      >
+
                     </div>
                     <div class="rbt-bookmark-btn">
                       <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
@@ -250,13 +269,17 @@
                   <ul class="rbt-meta">
                     <li>
                       <i class="feather-book"></i>
-                      <span th:text="${#lists.size(course.modules)}"></span>
-                      Bài học
+                      <span
+                        th:text="${#lists.size(course.modules) + ' Khóa học'}"
+                      ></span>
                     </li>
                     <li>
                       <i class="feather-users"></i>
-                      50 Học viên
+                      <span
+                        th:text="${#lists.size(course.enrollments) + ' Học viên'}"
+                      ></span>
                     </li>
+
                   </ul>
 
                   <p class="rbt-card-text" th:text="${course.description}">

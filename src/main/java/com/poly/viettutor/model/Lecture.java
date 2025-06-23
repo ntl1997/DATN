@@ -27,4 +27,7 @@ public class Lecture {
     private String videoUrl;
 
     private Integer sortOrder;
+
+    @Column(nullable = true)
+    private Integer duration; // thời lượng (phút)
 }

@@ -1,7 +1,8 @@
 package com.poly.viettutor.model;
 
-import lombok.*;
 import jakarta.persistence.*;
+import lombok.*;
+import java.util.List;
 
 @Entity
 @Table(name = "CourseModules")
@@ -14,11 +15,12 @@ public class CourseModule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer moduleId;
 
+    private String moduleTitle;
+
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Lecture> lectures;
+
     @ManyToOne
     @JoinColumn(name = "courseId")
     private Course course;
-
-    private String moduleTitle;
-
-    private Integer sortOrder;
 }
