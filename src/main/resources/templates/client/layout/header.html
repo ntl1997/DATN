@@ -937,11 +937,11 @@
             </div>
 
             <nav class="side-nav w-100">
-              <ul class="rbt-vertical-nav-list-wrapper vertical-nav-menu">
+              <ul class="rbt-vertical-nav-list-wrapper vertical-nav-menu parent-list">
                 <!-- Danh mục cha: Lập Trình - CNTT -->
-                <li class="vertical-nav-item">
+                <li class="vertical-nav-item" data-category="lap-trinh-cntt">
                   <a href="#">Lập Trình - CNTT</a>
-                  <ul class="subcategory">
+                  <ul class="subcategory" data-category="lap-trinh-cntt">
                     <li><a href="#">Lập Trình Front-end</a></li>
                     <li><a href="#">Lập Trình Back-end</a></li>
                     <li><a href="#">Lập Trình Ứng Dụng Di Động</a></li>
@@ -954,9 +954,9 @@
                 </li>
 
                 <!-- Danh mục cha: Âm Nhạc -->
-                <li class="vertical-nav-item">
+                <li class="vertical-nav-item" data-category="am-nhac">
                   <a href="#">Âm Nhạc</a>
-                  <ul class="subcategory">
+                  <ul class="subcategory" data-category="am-nhac">
                     <li><a href="#">Nhạc Cụ</a></li>
                     <li><a href="#">Sản Xuất Và Sáng Tác</a></li>
                     <li><a href="#">Luyện Thanh</a></li>
@@ -965,9 +965,9 @@
                 </li>
 
                 <!-- Danh mục cha: Ngoại Ngữ -->
-                <li class="vertical-nav-item">
+                <li class="vertical-nav-item" data-category="ngoai-ngu">
                   <a href="#">Ngoại Ngữ</a>
-                  <ul class="subcategory">
+                  <ul class="subcategory" data-category="ngoai-ngu">
                     <li><a href="#">Tiếng Anh</a></li>
                     <li><a href="#">Tiếng Nhật</a></li>
                     <li><a href="#">Tiếng Pháp</a></li>
@@ -976,7 +976,88 @@
                   </ul>
                 </li>
 
-                <!-- Thêm các danh mục khác ở đây -->
+                <!-- Danh mục cha: Phát Triển Bản Thân -->
+                <li class="vertical-nav-item" data-category="phat-trien-ban-than">
+                  <a href="#">Phát Triển Bản Thân</a>
+                  <ul class="subcategory" data-category="phat-trien-ban-than">
+                    <li><a href="#">Quản Lý Thời Gian</a></li>
+                    <li><a href="#">Tư Duy Sáng Tạo</a></li>
+                    <li><a href="#">Kỹ Năng Giao Tiếp</a></li>
+                    <li><a href="#">Kỹ Năng Đàm Phán</a></li>
+                    <li><a href="#">Kỹ Năng Giải Quyết Vấn Đề</a></li>
+                    <li><a href="#">Kỹ Năng Làm Việc Nhóm</a></li>
+                    <li><a href="#">Kỹ Năng Thuyết Trình</a></li>
+                  </ul>
+                </li>
+
+                <!-- Danh mục cha: Kinh Doanh - Khởi Nghiệp -->
+                <li class="vertical-nav-item" data-category="kinh-doanh-khoi-nghiep">
+                  <a href="#">Kinh Doanh - Khởi Nghiệp</a>
+                  <ul class="subcategory" data-category="kinh-doanh-khoi-nghiep">
+                    <li><a href="#">Khởi Nghiệp</a></li>
+                    <li><a href="#">Chiến Lược Marketing</a></li>
+                    <li><a href="#">Quản Lý Doanh Nghiệp</a></li>
+                    <li><a href="#">Tài Chính Doanh Nghiệp</a></li>
+                    <li><a href="#">Kinh Doanh Online</a></li>
+                  </ul>
+                </li>
+
+                <!-- Danh mục cha: Thể Thao - Sức Khỏe -->
+                <li class="vertical-nav-item" data-category="the-thao-suc-khoe">
+                  <a href="#">Thể Thao - Sức Khỏe</a>
+                  <ul class="subcategory" data-category="the-thao-suc-khoe">
+                    <li><a href="#">Yoga</a></li>
+                    <li><a href="#">Chạy Bộ</a></li>
+                    <li><a href="#">Thể Hình</a></li>
+                    <li><a href="#">Thiền</a></li>
+                    <li><a href="#">Dinh Dưỡng Thể Thao</a></li>
+                    <li><a href="#">Sức Khỏe Tâm Lý</a></li>
+                    <li><a href="#">Chăm Sóc Sức Khỏe</a></li>
+                    <li><a href="#">Gym - Fitness</a></li>
+                    <li><a href="#">Calisthenics</a></li>
+                  </ul>
+                </li>
+
+                <!-- Danh mục cha: Nhiếp Ảnh - Dựng Phim -->
+                <li class="vertical-nav-item" data-category="nhiep-anh-dung-phim">
+                  <a href="#">Nhiếp Ảnh - Dựng Phim</a>
+                  <ul class="subcategory" data-category="nhiep-anh-dung-phim">
+                    <li><a href="#">Nhiếp Ảnh</a></li>
+                    <li><a href="#">Dựng Phim</a></li>
+                    <li><a href="#">Chụp Ảnh Chân Dung</a></li>
+                    <li><a href="#">Chụp Ảnh Sản Phẩm</a></li>
+                    <li><a href="#">Chụp Ảnh Thiên Nhiên</a></li>
+                  </ul>
+                </li>
+
+                <!-- Danh mục cha: Thiết Kế - Đồ Họa -->
+                <li class="vertical-nav-item" data-category="thiet-ke-do-hoa">
+                  <a href="#">Thiết Kế - Đồ Họa</a>
+                  <ul class="subcategory" data-category="thiet-ke-do-hoa">
+                    <li><a href="#">Thiết Kế Web</a></li>
+                    <li><a href="#">Thiết Kế Đồ Họa</a></li>
+                    <li><a href="#">Thiết Kế UX/UI</a></li>
+                    <li><a href="#">Photoshop</a></li>
+                    <li><a href="#">Illustrator</a></li>
+                    <li><a href="#">Figma</a></li>
+                    <li><a href="#">Adobe</a></li>
+                  </ul>
+                </li>
+
+                <!-- Danh mục cha: Marketing - Bán Hàng -->
+                <li class="vertical-nav-item" data-category="marketing-ban-hang">
+                  <a href="#">Marketing - Bán Hàng</a>
+                  <ul class="subcategory" data-category="marketing-ban-hang">
+                    <li><a href="#">Digital Marketing</a></li>
+                    <li><a href="#">Social Media</a></li>
+                    <li><a href="#">Bán Hàng Online</a></li>
+                    <li><a href="#">Content Marketing</a></li>
+                    <li><a href="#">SEO</a></li>
+                    <li><a href="#">PPC Advertising</a></li>
+                    <li><a href="#">Email Marketing</a></li>
+                    <li><a href="#">Affiliate Marketing</a></li>
+                  </ul>
+                </li>
               </ul>
 
               <div class="read-more-btn">
