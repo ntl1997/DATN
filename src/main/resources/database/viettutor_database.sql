@@ -231,6 +231,7 @@ CREATE TABLE BlogPosts (
     PostId BIGINT PRIMARY KEY IDENTITY,
     Title NVARCHAR(255),
     Content NVARCHAR(MAX),
+    imageBlog NVARCHAR(MAX),
     CreatedAt DATETIME DEFAULT GETDATE(),
     CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId)
 );
