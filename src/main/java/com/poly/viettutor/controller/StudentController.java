@@ -13,6 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.UserService;
 import com.poly.viettutor.utils.FileUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/student")
@@ -23,6 +26,14 @@ public class StudentController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/student-dashboard")
+    public String showDashboard(Model model) {
+        model.addAttribute("content", "client/student/student-dashboard");
+        model.addAttribute("title", "Bảng Điều Khiển");
+        return "client/layout/index";
+    }
+    
 
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {
