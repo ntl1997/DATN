@@ -4,7 +4,9 @@ import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Lecture;
 import com.poly.viettutor.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +37,12 @@ public class CourseService {
         return courseRepository.findTop6PopularCourses(PageRequest.of(0, 6));
     }
 
+    // Lấy dữ liệu Course phân trang
+    public Page<Course> findAll(Pageable pageable) {
+        return courseRepository.findAll(pageable);
+    }
+
+    // Tính tổng thời gian của tất cả các bài giảng trong khóa học
     public int totalDuration(Course course) {
         if (course.getModules() == null) {
             return 0;
