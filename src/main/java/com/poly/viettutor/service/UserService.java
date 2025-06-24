@@ -1,6 +1,7 @@
 package com.poly.viettutor.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,6 +59,11 @@ public class UserService {
     // Lưu hoặc cập nhật thông tin user
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    // Lấy danh sách tất cả giảng viên
+    public List<User> getAllInstructors() {
+        return userRepository.findByRolesRoleName("INSTRUCTOR");
     }
 
 }
