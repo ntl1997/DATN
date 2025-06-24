@@ -373,7 +373,7 @@ INSERT INTO Certificates (UserId, CourseId) VALUES (3, 1);
 
 -- 20. BlogPosts (phụ thuộc Users)
 INSERT INTO BlogPosts (Title, Content, CreatedBy) VALUES 
-(N'5 Tips to Learn Programming Faster', N'Practice, practice, practice...', 2);
+(N'5 Tips to Learn Programming Faster', N'Practice, practice, practice...', N'/assets/images/blog/blog-card-01.jpg', 2);
 
 -- 21. ContactInfo (phụ thuộc Users)
 INSERT INTO ContactInfo (UserId, Message) VALUES 
