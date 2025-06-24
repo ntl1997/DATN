@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="content">
+      <a class="close_side_menu" href="javascript:void(0);"></a>
+
+      <div class="rbt-page-banner-wrapper">
+        <!-- Start Banner BG Image  -->
+        <div class="rbt-banner-image"></div>
+        <!-- End Banner BG Image  -->
+        <div class="rbt-banner-content">
+          <!-- Start Banner Content Top  -->
+          <div class="rbt-banner-content-top">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <!-- Start Breadcrumb Area  -->
+                  <ul class="page-list">
+                    <li class="rbt-breadcrumb-item">
+                      <a href="index-2.html">Home</a>
+                    </li>
+                    <li>
+                      <div class="icon-right">
+                        <i class="feather-chevron-right"></i>
+                      </div>
+                    </li>
+                    <li class="rbt-breadcrumb-item active">All Courses</li>
+                  </ul>
+                  <!-- End Breadcrumb Area  -->
+
+                  <div class="title-wrapper">
+                    <h1 class="title mb--0">Tất cả khóa học</h1>
+                    <a href="#" class="rbt-badge-2">
+                      <div class="image">🎉</div>
+                      50 Khóa học
+                    </a>
+                  </div>
+
+                  <p class="description">
+                    Các khóa học giúp nhà thiết kế mới bắt đầu trở thành chuyên
+                    gia thực thụ.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Banner Content Top  -->
+          <!-- Start Course Top  -->
+          <div class="rbt-course-top-wrapper mt--40">
+            <div class="container">
+              <div class="row g-5 align-items-center">
+                <div class="col-lg-5 col-md-12">
+                  <div
+                    class="rbt-sorting-list d-flex flex-wrap align-items-center"
+                  >
+                    <div class="rbt-short-item switch-layout-container">
+                      <ul class="course-switch-layout">
+                        <li class="course-switch-item">
+                          <button
+                            class="rbt-grid-view active"
+                            title="Grid Layout"
+                          >
+                            <i class="feather-grid"></i>
+                            <span class="text">Grid</span>
+                          </button>
+                        </li>
+                        <li class="course-switch-item">
+                          <button class="rbt-list-view" title="List Layout">
+                            <i class="feather-list"></i>
+                            <span class="text">List</span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="rbt-short-item">
+                      <span class="course-index"
+                        >Hiển thị 1-9 trong tổng số 19 kết quả</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-7 col-md-12">
+                  <div
+                    class="rbt-sorting-list d-flex flex-wrap align-items-center justify-content-start justify-content-lg-end"
+                  >
+                    <div class="rbt-short-item">
+                      <div class="filter-select">
+                        <span class="select-label d-block">Sắp xếp theo</span>
+                        <div
+                          class="filter-select rbt-modern-select search-by-category"
+                        >
+                          <select data-size="7">
+                            <option>Mặc định</option>
+                            <option>Mới nhất</option>
+                            <option>Phổ biến</option>
+                            <option>Xu hướng</option>
+                            <option>Giá: thấp đến cao</option>
+                            <option>Giá: cao đến thấp</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Course Top  -->
+        </div>
+      </div>
+
+      <!-- Start Card Style -->
+      <div class="rbt-section-overlayping-top rbt-section-gapBottom">
+        <div class="container">
+          <div class="row row--30 gy-5">
+            <div class="col-lg-3 order-2 order-lg-1">
+              <aside class="rbt-sidebar-widget-wrapper">
+                <!-- Start Widget Area  -->
+                <div class="rbt-single-widget rbt-widget-search">
+                  <div class="inner">
+                    <form action="#" class="rbt-search-style-1">
+                      <input type="text" placeholder="Tìm kiếm khóa học" />
+                      <button class="search-btn">
+                        <i class="feather-search"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <!-- End Widget Area  -->
+
+                <!-- Start Widget Area  -->
+                <div
+                  class="rbt-single-widget rbt-widget-categories has-show-more"
+                >
+                  <div class="inner">
+                    <h4 class="rbt-widget-title">Danh mục</h4>
+                    <ul
+                      class="rbt-sidebar-list-wrapper categories-list-check has-show-more-inner-content"
+                    >
+                      <li
+                        class="rbt-check-group"
+                        th:each="category, iterStat : ${categories}"
+                      >
+                        <input
+                          th:id="'cat-list-' + ${iterStat.index}"
+                          type="checkbox"
+                          th:name="'cat-list-' + ${iterStat.index}"
+                        />
+                        <label
+                          th:for="'cat-list-' + ${iterStat.index}"
+                          th:text="${category.name}"
+                          >Art &amp; Humanities
+                          <span
+                            class="rbt-btn-link"
+                            th:text="${#lists.size(category.courseCategories)}"
+                            >15</span
+                          ></label
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="rbt-show-more-btn">Hiển thị thêm</div>
+                </div>
+                <!-- End Widget Area  -->
+
+                <!-- Start Widget Area  -->
+                <div class="rbt-single-widget rbt-widget-rating">
+                  <div class="inner">
+                    <h4 class="rbt-widget-title">Đánh giá</h4>
+                    <ul class="rbt-sidebar-list-wrapper rating-list-check">
+                      <li class="rbt-check-group">
+                        <input id="cat-radio-1" type="radio" name="rbt-radio" />
+                        <label for="cat-radio-1">
+                          <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                          </span>
+                          <span class="rbt-lable count">5</span>
+                        </label>
+                      </li>
+                      <li class="rbt-check-group">
+                        <input id="cat-radio-2" type="radio" name="rbt-radio" />
+                        <label for="cat-radio-2">
+                          <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                          </span>
+                          <span class="rbt-lable count">4</span>
+                        </label>
+                      </li>
+                      <li class="rbt-check-group">
+                        <input id="cat-radio-3" type="radio" name="rbt-radio" />
+                        <label for="cat-radio-3">
+                          <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                          </span>
+                          <span class="rbt-lable count">3</span>
+                        </label>
+                      </li>
+                      <li class="rbt-check-group">
+                        <input id="cat-radio-4" type="radio" name="rbt-radio" />
+                        <label for="cat-radio-4">
+                          <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                          </span>
+                          <span class="rbt-lable count">2</span>
+                        </label>
+                      </li>
+
+                      <li class="rbt-check-group">
+                        <input id="cat-radio-5" type="radio" name="rbt-radio" />
+                        <label for="cat-radio-5">
+                          <span class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                            <i class="off fas fa-star"></i>
+                          </span>
+                          <span class="rbt-lable count">1</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- End Widget Area  -->
+
+                <!-- Start Widget Area  -->
+                <div class="rbt-single-widget rbt-widget-instructor">
+                  <div class="inner">
+                    <h4 class="rbt-widget-title">Giảng viên</h4>
+                    <ul class="rbt-sidebar-list-wrapper instructor-list-check">
+                      <li
+                        class="rbt-check-group"
+                        th:each="instructor, iterStat : ${instructors}"
+                      >
+                        <input
+                          id="ins-list-1"
+                          type="checkbox"
+                          name="ins-list-1"
+                        />
+                        <label for="ins-list-1" th:text="${instructor.fullname}"
+                          >Slaughter
+                          <span
+                            class="rbt-lable count"
+                            th:text="${#lists.size(instructor.courses)}"
+                            >15</span
+                          ></label
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- End Widget Area  -->
+
+                <!-- Start Widget Area  -->
+                <div class="rbt-single-widget rbt-widget-prices">
+                  <div class="inner">
+                    <h4 class="rbt-widget-title">Giá</h4>
+                    <ul class="rbt-sidebar-list-wrapper prices-list-check">
+                      <li class="rbt-check-group">
+                        <input
+                          id="prices-list-1"
+                          type="checkbox"
+                          name="prices-list-1"
+                        />
+                        <label for="prices-list-1"
+                          >All <span class="rbt-lable count">15</span></label
+                        >
+                      </li>
+                      <li class="rbt-check-group">
+                        <input
+                          id="prices-list-2"
+                          type="checkbox"
+                          name="prices-list-2"
+                        />
+                        <label for="prices-list-2"
+                          >Free <span class="rbt-lable count">0</span></label
+                        >
+                      </li>
+                      <li class="rbt-check-group">
+                        <input
+                          id="prices-list-3"
+                          type="checkbox"
+                          name="prices-list-3"
+                        />
+                        <label for="prices-list-3"
+                          >Paid <span class="rbt-lable count">10</span></label
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- End Widget Area  -->
+              </aside>
+            </div>
+            <div class="col-lg-9 order-1 order-lg-2">
+              <div class="rbt-course-grid-column">
+                <!-- Start Single Card  -->
+                <div class="course-grid-3" th:each="course : ${courses}">
+                  <div class="rbt-card variation-01 rbt-hover">
+                    <div
+                      class="rbt-card-img"
+                      style="
+                        height: 200px;
+                        overflow: hidden;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <a href="course-details.html">
+                        <img
+                          th:src="@{${course.courseImage}}"
+                          alt="Card image"
+                        />
+                        <div class="rbt-badge-3 bg-white">
+                          <span
+                            th:text="${#numbers.formatDecimal(course.discount, 0, 0) + '%'}"
+                            >-40%</span
+                          >
+                          <span>Off</span>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="rbt-card-body">
+                      <div class="rbt-card-top">
+                        <div class="rbt-review">
+                          <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                          </div>
+                          <span
+                            class="rating-count"
+                            th:text="${#lists.size(course.reviews) +' Bình luận'}"
+                          >
+                            (15 Reviews)</span
+                          >
+                        </div>
+                        <div class="rbt-bookmark-btn">
+                          <a class="rbt-round-btn" title="Bookmark" href="#"
+                            ><i class="feather-bookmark"></i
+                          ></a>
+                        </div>
+                      </div>
+
+                      <h4 class="rbt-card-title">
+                        <a href="course-details.html" th:text="${course.title}"
+                          >React Front To Back</a
+                        >
+                      </h4>
+
+                      <ul class="rbt-meta">
+                        <li>
+                          <i class="feather-book"></i>
+
+                          <span
+                            th:text="${#lists.size(course.modules) + ' Bài học'}"
+                          ></span>
+                        </li>
+                        <li>
+                          <i class="feather-users"></i>
+                          <span
+                            th:text="${#lists.size(course.enrollments) + ' Học viên'}"
+                          ></span>
+                        </li>
+                      </ul>
+
+                      <p class="rbt-card-text" th:text="${course.description}">
+                        It is a long established fact that a reader will be
+                        distracted.
+                      </p>
+                      <div class="rbt-author-meta mb--10">
+                        <div class="rbt-avater">
+                          <a href="#">
+                            <img
+                              th:src="@{${course.createdBy.image}}"
+                              alt="Sophia Jaymes"
+                            />
+                          </a>
+                        </div>
+                        <div class="rbt-author-info">
+                          Tạo bởi
+                          <a href="profile.html" th:text="${course.authorName}"
+                            >Angela</a
+                          >
+                          Trong
+                          <a href="#">Nhóm Phát Triển</a>
+                        </div>
+                      </div>
+                      <div
+                        class="rbt-card-bottom d-flex align-items-center justify-content-between"
+                        style="gap: 10px"
+                      >
+                        <div
+                          class="rbt-price"
+                          style="
+                            font-size: 1.3rem;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                          "
+                        >
+                          <span
+                            class="current-price fw-bold"
+                            style="font-size: 2rem"
+                            th:text="${#numbers.formatDecimal(course.price - (course.price * course.discount / 100), 0, 0)}"
+                            >500000</span
+                          >
+                          <span
+                            class="off-price text-muted"
+                            style="
+                              text-decoration: line-through;
+                              font-size: 1.2rem;
+                            "
+                            th:text="${#numbers.formatDecimal(course.price, 0, 0)}"
+                            >600000</span
+                          >
+                        </div>
+                        <a
+                          class="rbt-btn-link left-icon"
+                          href="course-details.html"
+                          style="white-space: nowrap"
+                        >
+                          <i class="feather-shopping-cart"></i> Thêm
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Single Card  -->
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12 mt--60">
+                  <nav>
+                    <ul class="rbt-pagination">
+                      <li>
+                        <a href="#" aria-label="Previous"
+                          ><i class="feather-chevron-left"></i
+                        ></a>
+                      </li>
+                      <li><a href="#">1</a></li>
+                      <li class="active"><a href="#">2</a></li>
+                      <li><a href="#">3</a></li>
+                      <li>
+                        <a href="#" aria-label="Next"
+                          ><i class="feather-chevron-right"></i
+                        ></a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Card Style -->
+
+      <div class="rbt-separator-mid">
+        <div class="container">
+          <hr class="rbt-separator m-0" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
