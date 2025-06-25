@@ -52,19 +52,17 @@
                             <div class="col-12 mt--30" th:each="post : ${blogPosts}">
                                 <div class="rbt-card variation-02 height-auto rbt-hover">
                                     <div class="rbt-card-img">
-                                        <a th:href="@{'/blog-details'(id=${post.postId})}">
+                                        <a th:href="@{'/bai-viet'(id=${post.postId})}">
                                             <img th:src="@{${post.imageBlog}}" alt="Blog image" />
                                         </a>
                                     </div>
                                     <div class="rbt-card-body">
                                         <h3 class="rbt-card-title">
-                                            <a th:href="@{'/blog-details'(id=${post.postId})}"
-                                                th:text="${post.title}">Blog
+                                            <a th:href="@{'/bai-viet'(id=${post.postId})}" th:text="${post.title}">Blog
                                                 Title</a>
                                         </h3>
                                         <div class="rbt-card-bottom">
-                                            <a class="transparent-button"
-                                                th:href="@{'/blog-details'(id=${post.postId})}">
+                                            <a class="transparent-button" th:href="@{'/bai-viet'(id=${post.postId})}">
                                                 Learn More<i><svg width="17" height="12"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <g stroke="#27374D" fill="none" fill-rule="evenodd">
