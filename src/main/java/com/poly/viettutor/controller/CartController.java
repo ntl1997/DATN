@@ -26,7 +26,6 @@ public class CartController {
         model.addAttribute("title", "giỏ hàng");
         model.addAttribute("content", "client/cart");
         model.addAttribute("scripts", "client/cart");
-        model.addAttribute("coupon", new Coupon());
         return "client/layout/index";
     }
 
