@@ -18,16 +18,15 @@
                                 <img src="assets/images/testimonial/client-06.png" alt="blog-image">
                             </div>
                             <div class="author-info">
-                                <a href="#"><strong>Jone Song</strong></a> in <a href="#"><strong>Design</strong></a>
+                                <a href="#"><strong th:text="${creatorName}"></strong></a>
                             </div>
                         </li>
                         <li class="list-item">
                             <i class="feather-clock"></i>
-                            <span>20 Aug 2021</span>
+                            <span th:text="${#dates.format(blogPost.createdAt, 'dd MMM yyyy')}"></span>
                         </li>
                     </ul>
-                    <h1 class="title">Skills That You Can Learn From Education.</h1>
-                    <p>Ten Advices That You Must Listen Before Studying Education.</p>
+                    <h1 class="title" th:text="${blogPost.title}"></h1>
                 </div>
             </div>
 
@@ -36,12 +35,13 @@
                     <div class="content">
                         <div class="post-thumbnail mb--30 position-relative wp-block-image alignwide">
                             <figure>
-                                <img src="assets/images/blog/blog-single-03.png" alt="Blog Images">
-                                <figcaption>Business and core management app are for enterprise.</figcaption>
+                                <img th:src="@{${blogPost.imageBlog}}" alt="Blog Images">
+                                <figcaption th:text="${blogPost.title}"></figcaption>
                             </figure>
                         </div>
+                        <div class="blog-post-content" th:utext="${blogPost.content}">
+                        </div>
                     </div>
-
                 </div>
                 <div class="related-post pt--60">
                     <div class="section-title text-start mb--40">
