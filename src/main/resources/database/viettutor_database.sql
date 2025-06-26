@@ -122,15 +122,15 @@ CREATE TABLE Enrollments (
 );
 GO
 
--- 9
--- CART
-CREATE TABLE Cart (
-    CartId BIGINT PRIMARY KEY IDENTITY,
-    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    AddedAt DATETIME DEFAULT GETDATE()
-);
-GO
+-- -- 9
+-- -- CART
+-- CREATE TABLE Cart (
+--     CartId BIGINT PRIMARY KEY IDENTITY,
+--     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+--     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+--     AddedAt DATETIME DEFAULT GETDATE()
+-- );
+-- GO
 
 -- 10
 -- WISHLIST
@@ -359,8 +359,8 @@ INSERT INTO Enrollments (UserId, CourseId) VALUES
 -- 16. Wishlist (phụ thuộc Users + Courses)
 INSERT INTO Wishlist (UserId, CourseId) VALUES (3, 1);
 
--- 17. Cart (phụ thuộc Users + Courses)
-INSERT INTO Cart (UserId, CourseId) VALUES (3, 2);
+-- -- 17. Cart (phụ thuộc Users + Courses)
+-- INSERT INTO Cart (UserId, CourseId) VALUES (3, 2);
 
 -- 18. Reviews (phụ thuộc Users + Courses)
 INSERT INTO Reviews (UserId, CourseId, Rating, Comment) VALUES 
