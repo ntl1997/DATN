@@ -139,7 +139,7 @@
     <th:block th:fragment="scripts">
       <script th:inline="javascript">
         const discount = /*[[${coupon != null ? coupon.discountPercent : 0}]]*/ 0;
-        console.log(discount);
+
         function getCart() {
           return JSON.parse(localStorage.getItem("cart")) || [];
         }
