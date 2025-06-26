@@ -1,11 +1,13 @@
 package com.poly.viettutor.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.viettutor.model.BlogPost;
@@ -26,12 +28,20 @@ public class BlogController {
         return "client/layout/index";
     }
 
-    // @GetMapping("/blog-details")
-    // public String showBlogDetails(Model model, @RequestParam("title") String
-    // title) {
-    // model.addAttribute("content", "client/blog/blog-details");
-    // model.addAttribute("title", title);
-    // return "client/layout/index";
-    // }
+    @GetMapping("/bai-viet/{id}")
+    public String showBlogDetails(Model model, @RequestParam("title") String title, @PathVariable("id") Integer id) {
+        Optional<BlogPost> blogOptional = bService.findById(id);
+        if (blogOptional.isPresent()) {
+            BlogPost post = blogOptional.get();
+            String creatorName = post.getCreatedBy().getFullname();
+            model.addAttribute("blogPost", post);
+            model.addAttribute("creatorName", creatorName);
+            model.addAttribute("title", title);
+            model.addAttribute("content", "client/blog/blog-details");
+            return "client/layout/index";
+        } else {
+            return null;
+        }
+    }
 
 }
