@@ -893,9 +893,21 @@
                       class="rbt-price-wrapper d-flex flex-wrap align-items-center justify-content-between"
                     ></div>
 
+                    <div class="buy-now-btn mt--15">
+                      <a
+                        class="rbt-btn btn-border icon-hover w-100 d-block text-center add-to-cart"
+                        href="#"
+                      >
+                        <span class="btn-text">Thêm vào giỏ hàng</span>
+                        <span class="btn-icon"
+                          ><i class="feather-arrow-right"></i
+                        ></span>
+                      </a>
+                    </div>
+
                     <div class="add-to-card-button mt--15">
                       <a
-                        class="rbt-btn btn-gradient icon-hover w-100 d-block text-center"
+                        class="rbt-btn btn-gradient icon-hover w-100 d-block text-center register-now"
                         href="#"
                       >
                         <span class="btn-text">Đăng ký ngay</span>
@@ -904,6 +916,18 @@
                         ></span>
                       </a>
                     </div>
+
+                    <div
+                      hidden
+                      id="course-data"
+                      th:attr="data-id=${course.courseId}, data-name=${course.title}, data-price=${course.price}, data-image=${course.courseImage}"
+                    ></div>
+
+                    <div
+                      hidden
+                      id="auth"
+                      th:attr="auth=${#authorization.expression('isAuthenticated()')}"
+                    ></div>
 
                     <span
                       class="subtitle"
@@ -1229,4 +1253,68 @@
       </div>
     </div>
   </body>
+
+  <th:block th:fragment="scripts">
+    <script th:inline="javascript">
+      // Xác định trạng thái đăng nhập
+      const auth = document.querySelector("#auth");
+      const isAuthenticated = auth.getAttribute("auth") === "true";
+
+      // Lấy dữ liệu khóa học
+      const course = document.querySelector("#course-data");
+      const id = course.getAttribute("data-id");
+      const name = course.getAttribute("data-name");
+      const price = course.getAttribute("data-price");
+      const image = course.getAttribute("data-image");
+
+      // Lấy thông tin sản phẩm từ local storage (Nếu có)
+      function getCart() {
+        return JSON.parse(localStorage.getItem("cart")) || [];
+      }
+
+      // Lưu thông tin sản phẩm vào local storage
+      function saveCart(cart) {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+
+      // Hàm thêm sản phẩm vào giỏ hàng
+      function addToCart(id, name, price, image) {
+        let cart = getCart();
+        let existing = cart.find((item) => item.id === id);
+        if (existing) {
+          return;
+        } else {
+          cart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
+          console.log(cart);
+        }
+        saveCart(cart);
+      }
+
+      // Gắn sự kiện cho nút
+      document.addEventListener("DOMContentLoaded", () => {
+        const addToCartBtn = document.querySelector(".add-to-cart");
+        const registerNowBtn = document.querySelector(".register-now");
+        // Nút thêm vào giỏ hang
+        addToCartBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (!isAuthenticated) {
+            window.location.href = "/login";
+            return;
+          }
+          addToCart(id, name, price, image);
+          alert("Đã thêm vào giỏ hàng!");
+        });
+        // Nút đăng ký ngay
+        registerNowBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (!isAuthenticated) {
+            window.location.href = "/login";
+            return;
+          }
+          addToCart(id, name, price, image);
+          window.location.href = "/cart";
+        });
+      });
+    </script>
+  </th:block>
 </html>
