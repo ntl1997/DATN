@@ -52,18 +52,20 @@
                             <div class="col-12 mt--30" th:each="post : ${blogPosts}">
                                 <div class="rbt-card variation-02 height-auto rbt-hover">
                                     <div class="rbt-card-img">
-                                        <a th:href="@{'/bai-viet'(id=${post.postId})}">
+                                        <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
                                             <img th:src="@{${post.imageBlog}}" alt="Blog image" />
                                         </a>
                                     </div>
                                     <div class="rbt-card-body">
                                         <h3 class="rbt-card-title">
-                                            <a th:href="@{'/bai-viet'(id=${post.postId})}" th:text="${post.title}">Blog
+                                            <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}"
+                                                th:text="${post.title}">Blog
                                                 Title</a>
                                         </h3>
                                         <div class="rbt-card-bottom">
-                                            <a class="transparent-button" th:href="@{'/bai-viet'(id=${post.postId})}">
-                                                Learn More<i><svg width="17" height="12"
+                                            <a class="transparent-button"
+                                                th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
+                                                Tìm hiểu thêm<i><svg width="17" height="12"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <g stroke="#27374D" fill="none" fill-rule="evenodd">
                                                             <path d="M10.614 0l5.629 5.629-5.63 5.629" />
