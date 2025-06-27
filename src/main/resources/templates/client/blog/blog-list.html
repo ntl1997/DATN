@@ -49,7 +49,7 @@
                     <div class="col-lg-10 offset-lg-1 mt_dec--30">
                         <!-- Start Single Card  -->
                         <div class="row">
-                            <div class="col-12 mt--30" th:each="post : ${blogPosts}">
+                            <div class="col-12 mt--30" th:each="post : ${blogPage}">
                                 <div class="rbt-card variation-02 height-auto rbt-hover">
                                     <div class="rbt-card-img">
                                         <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
@@ -86,11 +86,14 @@
                     <div class="col-lg-12 mt--60">
                         <nav>
                             <ul class="rbt-pagination">
-                                <li><a href="#" aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
-                                <li><a href="#">1</a></li>
-                                <li class="active"><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#" aria-label="Next"><i class="feather-chevron-right"></i></a></li>
+                                <li th:if="${currentPage > 1}"><a th:href="@{'/bai-viet?page=' + (${currentPage} - 1)}"
+                                        aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
+                                <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                                    th:classappend="${i == currentPage} ? 'active'"><a
+                                        th:href="@{'/bai-viet?page=' + ${i}}" th:text="${i}"></a></li>
+                                <li th:if="${currentPage < totalPages}"><a
+                                        th:href="@{'/bai-viet?page=' + (${currentPage} + 1)}" aria-label="Next"><i
+                                            class="feather-chevron-right"></i></a></li>
                             </ul>
                         </nav>
                     </div>
