@@ -122,15 +122,15 @@ CREATE TABLE Enrollments (
 );
 GO
 
--- 9
--- CART
-CREATE TABLE Cart (
-    CartId BIGINT PRIMARY KEY IDENTITY,
-    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    AddedAt DATETIME DEFAULT GETDATE()
-);
-GO
+-- -- 9
+-- -- CART
+-- CREATE TABLE Cart (
+--     CartId BIGINT PRIMARY KEY IDENTITY,
+--     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+--     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+--     AddedAt DATETIME DEFAULT GETDATE()
+-- );
+-- GO
 
 -- 10
 -- WISHLIST
@@ -279,9 +279,9 @@ INSERT INTO Roles (Role) VALUES
 INSERT INTO Users (
     FullName, Email, PasswordHash, CreatedAt, Image, Biography, Occupation, PhoneNumber
 ) VALUES 
-(N'Nguyễn Văn A', N'a@example.com', N'hashed_pw_1', GETDATE(), N'https://short.com.vn/6tMs', N'An experienced software engineer passionate about building scalable applications.', N'Software Engineer', N'0901234567'),
-(N'Trần Thị B', N'b@example.com', N'hashed_pw_2', GETDATE(), N'https://short.com.vn/U9Ow', N'Marketing specialist with a focus on digital campaigns and brand growth.', N'Digital Marketer', N'0902345678'),
-(N'Admin', N'admin@example.com', N'hashed_pw_admin', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789');
+(N'Admin User', N'admin@viettutor.com', N'$2a$12$V2XUN.FhiVRyIpev2m6.MOUdKlRveFMlC3C6kfYT/Y7ZrClNep55W', GETDATE(), N'https://short.com.vn/6tMs', N'An experienced software engineer passionate about building scalable applications.', N'Software Engineer', N'0901234567'),
+(N'John Instructor', N'john@viettutor.com', N'$2a$12$CvyLQybDyPrkgBjMwVjsj./KYP806nPneY1A7VU/PaRoSL0jkleZS', GETDATE(), N'https://short.com.vn/U9Ow', N'Marketing specialist with a focus on digital campaigns and brand growth.', N'Digital Marketer', N'0902345678'),
+(N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789');
 
 -- 3. UserRoles (phụ thuộc Roles + Users)
 INSERT INTO UserRoles (RoleId, UserId) VALUES 
@@ -359,8 +359,8 @@ INSERT INTO Enrollments (UserId, CourseId) VALUES
 -- 16. Wishlist (phụ thuộc Users + Courses)
 INSERT INTO Wishlist (UserId, CourseId) VALUES (3, 1);
 
--- 17. Cart (phụ thuộc Users + Courses)
-INSERT INTO Cart (UserId, CourseId) VALUES (3, 2);
+-- -- 17. Cart (phụ thuộc Users + Courses)
+-- INSERT INTO Cart (UserId, CourseId) VALUES (3, 2);
 
 -- 18. Reviews (phụ thuộc Users + Courses)
 INSERT INTO Reviews (UserId, CourseId, Rating, Comment) VALUES 
