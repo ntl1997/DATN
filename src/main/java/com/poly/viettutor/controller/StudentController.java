@@ -29,6 +29,8 @@ public class StudentController {
 
     @GetMapping("/student-dashboard")
     public String showDashboard(Model model) {
+        User user = userService.getCurrentUser();
+        model.addAttribute("user", user);
         model.addAttribute("content", "client/student/student-dashboard");
         model.addAttribute("title", "Bảng Điều Khiển");
         return "client/layout/index";
