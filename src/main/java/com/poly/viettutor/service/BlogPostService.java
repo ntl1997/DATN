@@ -2,6 +2,9 @@ package com.poly.viettutor.service;
 
 import com.poly.viettutor.model.BlogPost;
 import com.poly.viettutor.repository.BlogPostRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +33,9 @@ public class BlogPostService {
 
     public void deleteById(Integer id) {
         blogPostRepository.deleteById(id);
+    }
+
+    public Page<BlogPost> findAll(Pageable pageable) {
+        return blogPostRepository.findAll(pageable);
     }
 }
