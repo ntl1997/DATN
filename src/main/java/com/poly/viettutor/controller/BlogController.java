@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +23,17 @@ public class BlogController {
     private BlogPostService bService;
 
     @GetMapping("/bai-viet")
-    public String showBlog(Model model) {
-        List<BlogPost> bPosts = bService.findAll();
-        model.addAttribute("blogPosts", bPosts);
+    public String showBlog(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "3") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<BlogPost> blogPage = bService.findAll(pageable);
+        // List<BlogPost> bPosts = bService.findAll();
+        // model.addAttribute("blogPosts", bPosts);
+        // model.addAttribute("content", "client/blog/blog-list");
+        // model.addAttribute("title", "Bài viết");
+        model.addAttribute("blogPage", blogPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", blogPage.getTotalPages());
         model.addAttribute("content", "client/blog/blog-list");
         model.addAttribute("title", "Bài viết");
         return "client/layout/index";
