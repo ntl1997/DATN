@@ -375,7 +375,10 @@ INSERT INTO Certificates (UserId, CourseId) VALUES (3, 1);
 INSERT INTO BlogPosts (Title, Content, imageBlog, CreatedBy) VALUES 
 (N'5 Tips to Learn Programming Faster', N'Practice, practice, practice...', N'/assets/images/blog/blog-card-01.jpg', 2),
 (N'Trở Thành Lập Trình Viên Giỏi Trong 6 Tháng', N'Hãy bắt đầu với nền tảng vững chắc và dự án thực tế.', N'/assets/images/blog/blog-card-02.jpg', 2),
-(N'Những Lỗi Thường Gặp Khi Học Lập Trình', N'Tìm hiểu và tránh các lỗi phổ biến giúp bạn tiến bộ nhanh hơn.', N'/assets/images/blog/blog-card-03.jpg', 2);
+(N'Những Lỗi Thường Gặp Khi Học Lập Trình', N'Tìm hiểu và tránh các lỗi phổ biến giúp bạn tiến bộ nhanh hơn.', N'/assets/images/blog/blog-card-03.jpg', 2),
+(N'Học Java Có Khó Không? Hướng Dẫn Cho Người Mới Bắt Đầu', N'Java là ngôn ngữ mạnh mẽ nhưng không hề khó nếu bạn học đúng cách.', N'/assets/images/blog/blog-card-04.jpg', 2),
+(N'Frontend vs Backend: Nên Học Gì Trước?', N'Bài viết giúp bạn phân biệt rõ giữa frontend và backend, cũng như lộ trình học phù hợp.', N'/assets/images/blog/blog-card-05.jpg', 2),
+(N'5 Kênh YouTube Học Lập Trình Chất Lượng Miễn Phí', N'Cùng khám phá những kênh YouTube giúp bạn tự học lập trình hiệu quả.', N'/assets/images/blog/blog-card-06.jpg', 2);
 
 -- 21. ContactInfo (phụ thuộc Users)
 INSERT INTO ContactInfo (UserId, Message) VALUES 
