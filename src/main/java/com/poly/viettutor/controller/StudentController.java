@@ -36,6 +36,14 @@ public class StudentController {
         return "client/layout/index";
     }
     
+    @GetMapping("/student-enrolled-courses")
+    public String showEnrolledCourses(Model model) {
+        User user = userService.getCurrentUser();
+        model.addAttribute("user", user);
+        model.addAttribute("content", "client/student/student-enrolled-courses");
+        model.addAttribute("title", "Các khóa học đã đăng ký");
+        return "client/layout/index";
+    }
 
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {
