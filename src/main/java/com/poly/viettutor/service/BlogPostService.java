@@ -38,4 +38,12 @@ public class BlogPostService {
     public Page<BlogPost> findAll(Pageable pageable) {
         return blogPostRepository.findAll(pageable);
     }
+
+    public List<BlogPost> getAny3Posts() {
+        return blogPostRepository.findTop3ByOrderByPostIdDesc();
+    }
+
+    public long countAllPosts() {
+        return blogPostRepository.count();
+    }
 }
