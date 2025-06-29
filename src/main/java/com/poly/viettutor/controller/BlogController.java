@@ -45,7 +45,9 @@ public class BlogController {
         if (blogOptional.isPresent()) {
             BlogPost post = blogOptional.get();
             String creatorName = post.getCreatedBy().getFullname();
+            String creatorImage = post.getCreatedBy().getImage();
             model.addAttribute("blogPost", post);
+            model.addAttribute("creatorImage", creatorImage);
             model.addAttribute("creatorName", creatorName);
             model.addAttribute("title", title);
             model.addAttribute("content", "client/blog/blog-details");
