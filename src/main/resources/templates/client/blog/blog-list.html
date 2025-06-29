@@ -25,10 +25,10 @@
                                 </ul>
                                 <!-- End Breadcrumb Area  -->
 
-                                <div class=" title-wrapper">
+                                <div class="title-wrapper">
                                     <h1 class="title mb--0">All Blog</h1>
                                     <a href="#" class="rbt-badge-2">
-                                        <div class="image">🎉</div> 50 Articles
+                                        <div class="image">🎉</div> <span th:text="${totalPosts}">0</span>&nbsp;Articles
                                     </a>
                                 </div>
 
@@ -86,14 +86,25 @@
                     <div class="col-lg-12 mt--60">
                         <nav>
                             <ul class="rbt-pagination">
-                                <li th:if="${currentPage > 1}"><a th:href="@{'/bai-viet?page=' + (${currentPage} - 1)}"
-                                        aria-label="Previous"><i class="feather-chevron-left"></i></a></li>
+                                <!-- Previous -->
+                                <li th:if="${currentPage > 1}">
+                                    <a th:href="@{/bai-viet(page=${currentPage - 1}, size=3)}" aria-label="Previous">
+                                        <i class="feather-chevron-left"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Số trang -->
                                 <li th:each="i : ${#numbers.sequence(1, totalPages)}"
-                                    th:classappend="${i == currentPage} ? 'active'"><a
-                                        th:href="@{'/bai-viet?page=' + ${i}}" th:text="${i}"></a></li>
-                                <li th:if="${currentPage < totalPages}"><a
-                                        th:href="@{'/bai-viet?page=' + (${currentPage} + 1)}" aria-label="Next"><i
-                                            class="feather-chevron-right"></i></a></li>
+                                    th:classappend="${i == currentPage} ? 'active'">
+                                    <a th:href="@{/bai-viet(page=${i}, size=3)}" th:text="${i}"></a>
+                                </li>
+
+                                <!-- Next -->
+                                <li th:if="${currentPage < totalPages}">
+                                    <a th:href="@{/bai-viet(page=${currentPage + 1}, size=3)}" aria-label="Next">
+                                        <i class="feather-chevron-right"></i>
+                                    </a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
