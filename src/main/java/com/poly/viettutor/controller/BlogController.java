@@ -25,6 +25,7 @@ public class BlogController {
     @GetMapping("/bai-viet")
     public String showBlog(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "3") int size) {
+        long totalPosts = bService.countAllPosts();
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<BlogPost> blogPage = bService.findAll(pageable);
         // List<BlogPost> bPosts = bService.findAll();
@@ -32,6 +33,7 @@ public class BlogController {
         // model.addAttribute("content", "client/blog/blog-list");
         // model.addAttribute("title", "Bài viết");
         model.addAttribute("blogPage", blogPage);
+        model.addAttribute("totalPosts", totalPosts);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", blogPage.getTotalPages());
         model.addAttribute("content", "client/blog/blog-list");
@@ -42,10 +44,12 @@ public class BlogController {
     @GetMapping("/bai-viet/{id}")
     public String showBlogDetails(Model model, @RequestParam("title") String title, @PathVariable("id") Integer id) {
         Optional<BlogPost> blogOptional = bService.findById(id);
+        List<BlogPost> any3Posts = bService.getAny3Posts();
         if (blogOptional.isPresent()) {
             BlogPost post = blogOptional.get();
             String creatorName = post.getCreatedBy().getFullname();
             String creatorImage = post.getCreatedBy().getImage();
+            model.addAttribute("any3Posts", any3Posts);
             model.addAttribute("blogPost", post);
             model.addAttribute("creatorImage", creatorImage);
             model.addAttribute("creatorName", creatorName);
