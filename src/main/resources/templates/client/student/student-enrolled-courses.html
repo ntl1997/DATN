@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:fragment="student-enrolled-courses-styles">
+      <style>
+        .rbt-price {
+          display: block;
+        }
+      </style>
+    </th:block>
+  </head>
   <body>
     <div th:fragment="content">
       <div class="rbt-page-banner-wrapper">
@@ -328,6 +337,7 @@
                                   <div class="rbt-card-bottom">
                                     <div class="rbt-price">
                                       <span class="current-price">1.050.000đ</span>
+                                      <br />
                                       <span class="off-price">2.250.000đ</span>
                                     </div>
                                     <a class="rbt-btn-link" href="course-details.html">
