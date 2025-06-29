@@ -46,6 +46,7 @@ public class SecurityConfig {
         public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
                 http.csrf(csrf -> csrf.disable()); // Tắt CSRF (Cross-Site Request Forgery)
                 http.authorizeHttpRequests(auth -> auth // Cấu hình phân quyền cho các request
+                                .requestMatchers("/cart").authenticated() // yêu cầu đăng nhập
                                 .requestMatchers("/student/**").authenticated() // yêu cầu đăng nhập
                                 .anyRequest().permitAll()); // Tất cả các request khác đều được phép truy cập
                 http.formLogin(login -> login
