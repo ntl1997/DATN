@@ -1913,16 +1913,26 @@
                   </div>
                 </div>
               </div>
-              <!-- Nội dung của thanh điều hướng chính sẽ được hiển thị ở đây. -->
-              <div class="rbt-main-navigation d-none d-xl-block">
-                <nav class="mainmenu-nav">
-                  <ul class="mainmenu d-flex gap-5 fw-bold">
-                    <li><a href="#">Khóa học</a></li>
-                    <li><a href="#">Bài viết</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                    <li><a href="#">Giới thiệu về chúng tôi</a></li>
-                  </ul>
-                </nav>
+
+            </div>
+            <!-- Nội dung của thanh điều hướng chính sẽ được hiển thị ở đây. -->
+            <div class="rbt-main-navigation d-none d-xl-block">
+              <nav class="mainmenu-nav">
+                <ul class="mainmenu d-flex gap-5 fw-bold">
+                  <li><a href="#">Khóa học</a></li>
+                  <li><a th:href="@{/bai-viet}">Bài viết</a></li>
+                  <li><a href="#">Liên hệ</a></li>
+                  <li><a href="#">Giới thiệu về chúng tôi</a></li>
+                </ul>
+              </nav>
+            </div>
+
+            <div class="header-right">
+              <div class="rbt-btn-wrapper d-none d-xl-block">
+                <a class="rbt-btn rbt-switch-btn btn-gradient btn-sm hover-transform-none" href="#">
+                  <span data-text="Tham gia ngay">Tham gia ngay</span>
+                </a>
+
               </div>
 
               <div class="header-right">

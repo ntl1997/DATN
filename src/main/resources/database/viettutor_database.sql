@@ -231,6 +231,7 @@ CREATE TABLE BlogPosts (
     PostId BIGINT PRIMARY KEY IDENTITY,
     Title NVARCHAR(255),
     Content NVARCHAR(MAX),
+    imageBlog NVARCHAR(MAX),
     CreatedAt DATETIME DEFAULT GETDATE(),
     CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId)
 );
@@ -279,9 +280,11 @@ INSERT INTO Roles (Role) VALUES
 INSERT INTO Users (
     FullName, Email, PasswordHash, CreatedAt, Image, Biography, Occupation, PhoneNumber
 ) VALUES 
+
 (N'Admin User', N'admin@viettutor.com', N'$2a$12$V2XUN.FhiVRyIpev2m6.MOUdKlRveFMlC3C6kfYT/Y7ZrClNep55W', GETDATE(), N'https://short.com.vn/6tMs', N'An experienced software engineer passionate about building scalable applications.', N'Software Engineer', N'0901234567'),
 (N'John Instructor', N'john@viettutor.com', N'$2a$12$CvyLQybDyPrkgBjMwVjsj./KYP806nPneY1A7VU/PaRoSL0jkleZS', GETDATE(), N'https://short.com.vn/U9Ow', N'Marketing specialist with a focus on digital campaigns and brand growth.', N'Digital Marketer', N'0902345678'),
 (N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789');
+
 
 -- 3. UserRoles (phụ thuộc Roles + Users)
 INSERT INTO UserRoles (RoleId, UserId) VALUES 
@@ -371,8 +374,13 @@ INSERT INTO Reviews (UserId, CourseId, Rating, Comment) VALUES
 INSERT INTO Certificates (UserId, CourseId) VALUES (3, 1);
 
 -- 20. BlogPosts (phụ thuộc Users)
-INSERT INTO BlogPosts (Title, Content, CreatedBy) VALUES 
-(N'5 Tips to Learn Programming Faster', N'Practice, practice, practice...', 2);
+INSERT INTO BlogPosts (Title, Content, imageBlog, CreatedBy) VALUES 
+(N'5 Tips to Learn Programming Faster', N'Practice, practice, practice...', N'/assets/images/blog/blog-card-01.jpg', 1),
+(N'Trở Thành Lập Trình Viên Giỏi Trong 6 Tháng', N'Hãy bắt đầu với nền tảng vững chắc và dự án thực tế.', N'/assets/images/blog/blog-card-02.jpg', 2),
+(N'Những Lỗi Thường Gặp Khi Học Lập Trình', N'Tìm hiểu và tránh các lỗi phổ biến giúp bạn tiến bộ nhanh hơn.', N'/assets/images/blog/blog-card-03.jpg', 1),
+(N'Học Java Có Khó Không? Hướng Dẫn Cho Người Mới Bắt Đầu', N'Java là ngôn ngữ mạnh mẽ nhưng không hề khó nếu bạn học đúng cách.', N'/assets/images/blog/blog-card-04.jpg', 2),
+(N'Frontend vs Backend: Nên Học Gì Trước?', N'Bài viết giúp bạn phân biệt rõ giữa frontend và backend, cũng như lộ trình học phù hợp.', N'/assets/images/blog/blog-card-05.jpg', 2),
+(N'5 Kênh YouTube Học Lập Trình Chất Lượng Miễn Phí', N'Cùng khám phá những kênh YouTube giúp bạn tự học lập trình hiệu quả.', N'/assets/images/blog/blog-card-06.jpg', 1);
 
 -- 21. ContactInfo (phụ thuộc Users)
 INSERT INTO ContactInfo (UserId, Message) VALUES 

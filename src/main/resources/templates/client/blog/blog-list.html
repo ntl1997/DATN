@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<body class="rbt-header-sticky">
+    <div th:fragment="content">
+
+        <div class="rbt-page-banner-wrapper">
+            <!-- Start Banner BG Image  -->
+            <div class="rbt-banner-image"></div>
+            <!-- End Banner BG Image  -->
+            <div class="rbt-banner-content">
+
+                <!-- Start Banner Content Top  -->
+                <div class="rbt-banner-content-top">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 offset-lg-1">
+                                <!-- Start Breadcrumb Area  -->
+                                <ul class="page-list">
+                                    <li class="rbt-breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                    <li>
+                                        <div class="icon-right"><i class="feather-chevron-right"></i></div>
+                                    </li>
+                                    <li class="rbt-breadcrumb-item active">All Blog</li>
+                                </ul>
+                                <!-- End Breadcrumb Area  -->
+
+                                <div class="title-wrapper">
+                                    <h1 class="title mb--0">All Blog</h1>
+                                    <a href="#" class="rbt-badge-2">
+                                        <div class="image">🎉</div> <span th:text="${totalPosts}">0</span>&nbsp;Articles
+                                    </a>
+                                </div>
+
+                                <p class="description">Blog that help beginner designers become true unicorns. </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Banner Content Top  -->
+            </div>
+        </div>
+
+        <!-- Start Card Style -->
+        <div class="rbt-blog-area rbt-section-overlayping-top rbt-section-gapBottom">
+            <div class="container">
+                <!-- Start Card Area -->
+                <div class="row">
+                    <div class="col-lg-10 offset-lg-1 mt_dec--30">
+                        <!-- Start Single Card  -->
+                        <div class="row">
+                            <div class="col-12 mt--30" th:each="post : ${blogPage}">
+                                <div class="rbt-card variation-02 height-auto rbt-hover">
+                                    <div class="rbt-card-img">
+                                        <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
+                                            <img th:src="@{${post.imageBlog}}" alt="Blog image" />
+                                        </a>
+                                    </div>
+                                    <div class="rbt-card-body">
+                                        <h3 class="rbt-card-title">
+                                            <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}"
+                                                th:text="${post.title}">Blog
+                                                Title</a>
+                                        </h3>
+                                        <div class="rbt-card-bottom">
+                                            <a class="transparent-button"
+                                                th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
+                                                Tìm hiểu thêm<i><svg width="17" height="12"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <g stroke="#27374D" fill="none" fill-rule="evenodd">
+                                                            <path d="M10.614 0l5.629 5.629-5.63 5.629" />
+                                                            <path stroke-linecap="square" d="M.663 5.572h14.594" />
+                                                        </g>
+                                                    </svg></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Card  -->
+                    </div>
+                </div>
+                <!-- End Card Area -->
+                <div class="row">
+                    <div class="col-lg-12 mt--60">
+                        <nav>
+                            <ul class="rbt-pagination">
+                                <!-- Previous -->
+                                <li th:if="${currentPage > 1}">
+                                    <a th:href="@{/bai-viet(page=${currentPage - 1}, size=3)}" aria-label="Previous">
+                                        <i class="feather-chevron-left"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Số trang -->
+                                <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                                    th:classappend="${i == currentPage} ? 'active'">
+                                    <a th:href="@{/bai-viet(page=${i}, size=3)}" th:text="${i}"></a>
+                                </li>
+
+                                <!-- Next -->
+                                <li th:if="${currentPage < totalPages}">
+                                    <a th:href="@{/bai-viet(page=${currentPage + 1}, size=3)}" aria-label="Next">
+                                        <i class="feather-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Card Style -->
+
+        <div class="rbt-separator-mid">
+            <div class="container">
+                <hr class="rbt-separator m-0">
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
