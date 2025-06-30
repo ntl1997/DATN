@@ -54,7 +54,15 @@ public class StudentController {
         return "client/layout/index";
     }
 
-    
+    @GetMapping("/student-certificate-detail")
+    public String showCertificateDetail(Model model) {
+        User user = userService.getCurrentUser();
+        model.addAttribute("user", user);
+        model.addAttribute("content", "client/student/student-certificate-detail");
+        model.addAttribute("title", "Chi tiết chứng chỉ");
+        return "client/layout/index";
+    }
+
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {
         User user = userService.getCurrentUser();
