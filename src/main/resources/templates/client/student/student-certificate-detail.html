@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="content">
+      <div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <div class="card shadow-sm">
+                <div class="card-body">
+                  <h3 class="fw-bold mb-3" th:text="${certificate.title}">Tên chứng chỉ</h3>
+                  <p class="text-muted">
+                    <strong>Ngày cấp:</strong>
+                    <span th:text="${#dates.format(certificate.issueDate, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
+                  </p>
+                  <p class="text-muted" th:if="${certificate.description}">
+                    <strong>Mô tả:</strong>
+                    <span th:text="${certificate.description}">Mô tả chứng chỉ</span>
+                  </p>
+                  <a th:href="@{/student-certificate}" class="btn btn-secondary mt-3">← Quay lại danh sách</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
