@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class Certificate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer certificateId;
@@ -25,4 +26,19 @@ public class Certificate {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date issuedAt;
+
+    private String description; // thêm mô tả
+
+    // getter cho hiển thị
+    public String getTitle() {
+        return course != null ? course.getTitle() : "Không rõ khóa học";
+    }
+
+    public Date getIssueDate() {
+        return issuedAt;
+    }
+
+    public Integer getId() {
+        return certificateId;
+    }
 }
