@@ -52,10 +52,10 @@
                     <div class="col-md-6" th:each="cert : ${certificates}">
                       <div class="card h-100">
                         <div class="card-body">
-                          <h5 class="fw-semibold mb-1" th:text="${cert.title}">Tên chứng chỉ</h5>
+                          <h5 class="fw-semibold mb-1" th:text="${cert.course.title}">Tên chứng chỉ</h5>
                           <p class="mb-3 text-muted">
                             Ngày cấp:
-                            <span th:text="${#dates.format(cert.issueDate, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
+                            <span th:text="${#dates.format(cert.issuedAt, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
                           </p>
                           <a th:href="@{'/student-certificate/' + ${cert.id}}" class="btn btn-primary">Xem chi tiết</a>
                         </div>
