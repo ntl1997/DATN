@@ -170,6 +170,7 @@ CREATE TABLE Orders (
     PaymentMethodId BIGINT FOREIGN KEY REFERENCES PaymentMethods(PaymentMethodId),
     TotalAmount DECIMAL(18,2),
     CouponCode NVARCHAR(50),
+    Status NVARCHAR(10),
     CreatedAt DATETIME DEFAULT GETDATE()
 );
 GO
@@ -348,8 +349,8 @@ INSERT INTO Coupons (CouponCode, DiscountPercent, CreatedBy) VALUES
 (N'WELCOME10', 10.00, 1);
 
 -- 13. Orders (phụ thuộc Users + PaymentMethods)
-INSERT INTO Orders (UserId, PaymentMethodId, TotalAmount, CouponCode)
-VALUES (3, 1, 85.00, NULL); -- ID 1
+INSERT INTO Orders (UserId, PaymentMethodId, TotalAmount, CouponCode, Status)
+VALUES (3, 1, 85.00, NULL, 'paid'); -- ID 1
 
 -- 14. OrderDetails (phụ thuộc Orders + Courses)
 INSERT INTO OrderDetails (OrderId, CourseId, Price)
