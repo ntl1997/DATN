@@ -1,6 +1,7 @@
 package com.poly.viettutor.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.poly.viettutor.model.Certificate;
 import com.poly.viettutor.model.User;
+import com.poly.viettutor.service.CertificateService;
 import com.poly.viettutor.service.UserService;
 import com.poly.viettutor.utils.FileUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Controller
@@ -22,10 +26,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class StudentController {
 
     @Autowired
-    private UserService userService;
+    private UserService UserService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CertificateService certificateService;
+
+    @Autowired
+    private UserService userService;
+
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @GetMapping("/student-dashboard")
     public String showDashboard(Model model) {
@@ -46,20 +58,33 @@ public class StudentController {
     }
 
     @GetMapping("/student-certificate")
-    public String showCertificate(Model model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("user", user);
-        model.addAttribute("content", "client/student/student-certificate");
-        model.addAttribute("title", "Chứng chỉ");
-        return "client/layout/index";
-    }
+    public String showCertificates(@RequestParam(value = "query", required = false) String query, Model model) {
+    User user = userService.getCurrentUser();
 
-    @GetMapping("/student-certificate-detail")
-    public String showCertificateDetail(Model model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("user", user);
+    List<Certificate> certificates = (query != null && !query.isBlank())
+            ? certificateService.searchCertificatesByUserAndTitle(user.getId(), query)
+            : certificateService.getCertificatesByUserId(user.getId());
+
+    logger.info("Found {} certificates for user ID: {}", certificates.size(), user.getId()); // 👈 log size
+
+    model.addAttribute("certificates", certificates);
+    model.addAttribute("user", user);
+    model.addAttribute("content", "client/student/student-certificate");
+    model.addAttribute("title", "Chứng chỉ");
+
+    return "client/layout/index";
+}
+
+
+    // Hiển thị chi tiết chứng chỉ theo ID
+    @GetMapping("/student-certificate/{id}")
+    public String showCertificateDetail(@PathVariable("id") Integer id, Model model) {
+        Certificate certificate = certificateService.getCertificateById(id);
+
+        model.addAttribute("certificate", certificate);
         model.addAttribute("content", "client/student/student-certificate-detail");
         model.addAttribute("title", "Chi tiết chứng chỉ");
+
         return "client/layout/index";
     }
 
