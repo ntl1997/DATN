@@ -15,13 +15,19 @@ public class ContactInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer contactId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    @Column(name = "Name")
+    private String name;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "Email")
+    private String email;
+
+    @Column(name = "PhoneNumber")
+    private String phoneNumber;
+
+    @Column(name = "Message")
     private String message;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CreatedAt")
     private Date createdAt;
 }
