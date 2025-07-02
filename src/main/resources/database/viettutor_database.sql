@@ -241,7 +241,9 @@ GO
 -- CONTACT INFO
 CREATE TABLE ContactInfo (
     ContactId BIGINT PRIMARY KEY IDENTITY,
-    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    Name NVARCHAR(50),
+    Email NVARCHAR(100),
+    PhoneNumber NVARCHAR(15),
     Message NVARCHAR(MAX),
     CreatedAt DATETIME DEFAULT GETDATE()
 );
@@ -383,8 +385,8 @@ INSERT INTO BlogPosts (Title, Content, imageBlog, CreatedBy) VALUES
 (N'5 Kênh YouTube Học Lập Trình Chất Lượng Miễn Phí', N'Cùng khám phá những kênh YouTube giúp bạn tự học lập trình hiệu quả.', N'/assets/images/blog/blog-card-06.jpg', 1);
 
 -- 21. ContactInfo (phụ thuộc Users)
-INSERT INTO ContactInfo (UserId, Message) VALUES 
-(3, N'I need help accessing my course');
+INSERT INTO ContactInfo (Name, Email, PhoneNumber, Message) VALUES 
+(N'Trần Thị B', N'tranthiB@gmail.com', N'0987654321', N'Tôi muốn được tư vấn về khóa học Lập trình Python.');
 
 -- 22. Notifications (phụ thuộc Users)
 INSERT INTO Notifications (UserId, Title, Message) VALUES 
