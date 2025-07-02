@@ -57,7 +57,9 @@
                             Ngày cấp:
                             <span th:text="${#dates.format(cert.issuedAt, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
                           </p>
-                          <a th:href="@{'/student-certificate/' + ${cert.id}}" class="btn btn-primary">Xem chi tiết</a>
+                          <a th:href="@{'/student/student-certificate/' + ${cert.id}}" class="btn btn-primary">
+                            Xem chi tiết
+                          </a>
                         </div>
                       </div>
                     </div>
