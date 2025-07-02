@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -68,6 +70,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "createdBy")
+    @JsonIgnore
     private List<BlogPost> blogPosts;
 
     @OneToMany(mappedBy = "createdBy")

@@ -41,11 +41,6 @@
 
     <!-- CSS tuy chỉnh cho trang các khoá học đã đăng ký -->
     <th:block th:replace="~{client/student/student-enrolled-courses :: student-enrolled-courses-styles}"></th:block>
-
-    <!-- CSS tuỳ chỉnh từ file con nếu có -->
-    <th:block th:if="${styles}">
-      <th:block th:replace="~{${styles} :: styles}"></th:block>
-    </th:block>
   </head>
 
   <body class="rbt-header-sticky">

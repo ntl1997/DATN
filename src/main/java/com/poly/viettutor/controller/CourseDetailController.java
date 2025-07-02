@@ -33,6 +33,7 @@ public class CourseDetailController {
         }
         model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
         model.addAttribute("content", "client/course-detail"); // nội dung trang (phần content)
+        model.addAttribute("scripts", "client/course-detail");
         return "client/layout/index";
     }
 
