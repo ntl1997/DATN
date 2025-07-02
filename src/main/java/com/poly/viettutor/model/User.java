@@ -76,4 +76,6 @@ public class User {
     @OneToMany(mappedBy = "createdBy")
     private List<Course> courses;
 
+    @OneToMany(mappedBy = "user")
+    private List<Enrollment> enrollments;
 }
