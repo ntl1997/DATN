@@ -245,6 +245,7 @@ CREATE TABLE ContactInfo (
     Email NVARCHAR(100),
     PhoneNumber NVARCHAR(15),
     Message NVARCHAR(MAX),
+    IsRead BIT DEFAULT 0,
     CreatedAt DATETIME DEFAULT GETDATE()
 );
 GO
