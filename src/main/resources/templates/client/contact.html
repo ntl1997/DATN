@@ -70,26 +70,30 @@
                             
                             <form id="contact-form" method="POST" th:action="@{/contact}" th:object="${contactInfo}" class="rainbow-dynamic-form max-width-auto">
                                 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-                                        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                                <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
                                 <div class="form-group">
                                     <input th:field="*{name}" type="text" required>
                                     <label>Họ Tên</label>
                                     <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
                                 </div>
                                 <div class="form-group">
                                     <input th:field="*{email}" type="email" required>
                                     <label>Email</label>
                                     <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
                                 </div>
                                 <div class="form-group">
                                     <input th:field="*{phoneNumber}" type="text" required>
                                     <label>Số điện thoại</label>
                                     <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger" th:errors="*{phoneNumber}"></div>
                                 </div>
                                 <div class="form-group">
                                     <textarea th:field="*{message}" required></textarea>
                                     <label>Lời nhắn</label>
                                     <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('message')}" class="text-danger" th:errors="*{message}"></div>
                                 </div>
                                 <div class="form-submit-group">
                                     <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
