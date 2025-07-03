@@ -10,14 +10,6 @@
 }
 .list-group-item {
     cursor: pointer;
-    transition: background 0.2s;
-}
-.list-group-item:hover {
-    background: #e3f2fd;
-}
-/* Hiệu ứng hover */
-.list-group-item {
-    cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s;
 }
 .list-group-item:hover {
