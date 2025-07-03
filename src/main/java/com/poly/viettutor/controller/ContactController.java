@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
 import java.util.Date;
 
 @Controller
@@ -24,7 +26,15 @@ public class ContactController {
     }
 
     @PostMapping("/contact")
-    public String submitContact(@ModelAttribute("contactInfo") ContactInfo contactInfo, Model model) {
+    public String submitContact(
+            @Valid @ModelAttribute("contactInfo") ContactInfo contactInfo,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("content", "client/contact");
+            model.addAttribute("title", "Liên hệ");
+            return "client/layout/index";
+        }
         try {
             contactInfo.setCreatedAt(new Date());
             contactService.save(contactInfo);
