@@ -14,6 +14,9 @@ import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.UserService;
 import com.poly.viettutor.utils.FileUtils;
 
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/student")
 public class StudentController {
@@ -35,9 +38,18 @@ public class StudentController {
 
     @PostMapping("/profile/update")
     public String updateProfile(
-            @ModelAttribute("user") User updatedUser,
+            @Valid @ModelAttribute("user") User updatedUser,
+            BindingResult bindingResult,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", updatedUser);
+            model.addAttribute("content", "client/student/student-settings");
+            model.addAttribute("title", "Cài đặt tài khoản");
+            return "client/layout/index";
+        }
 
         User currentUser = userService.getCurrentUser();
 
@@ -81,19 +93,21 @@ public class StudentController {
             return "redirect:/student/student-settings";
         }
 
-        // So sánh mật khẩu hiện tại (đã mã hóa)
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu hiện tại không đúng!");
             return "redirect:/student/student-settings";
         }
 
-        // Kiểm tra xác nhận mật khẩu mới
+        if (newPassword.length() < 6) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu mới phải có ít nhất 6 ký tự!");
+            return "redirect:/student/student-settings";
+        }
+
         if (!newPassword.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu mới và xác nhận không khớp!");
             return "redirect:/student/student-settings";
         }
 
-        // Cập nhật mật khẩu mới (mã hóa)
         user.setPassword(passwordEncoder.encode(newPassword));
         userService.save(user);
 
