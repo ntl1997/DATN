@@ -18,7 +18,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,7 +52,6 @@ public class User {
     private String image;
 
     @Column(name = "PasswordHash", nullable = false)
-    @NotEmpty(message = "Mật khẩu không được để trống")
     private String password;
 
     @Column(name = "CreatedAt", nullable = false)
