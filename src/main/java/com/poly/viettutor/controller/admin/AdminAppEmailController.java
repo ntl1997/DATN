@@ -18,6 +18,7 @@ public class AdminAppEmailController {
     public String adminDashboard(Model model) {
         model.addAttribute("title", "Email");
         model.addAttribute("content", "admin/email/application-email");
+        model.addAttribute("styles", "admin/email/application-email");
         model.addAttribute("scripts", "admin/email/application-email");
         model.addAttribute("contacts", contactService.findAll());
         return "admin/layout/index";
