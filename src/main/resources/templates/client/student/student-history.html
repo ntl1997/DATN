@@ -28,18 +28,18 @@
                                 <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
                                     <div class="content">
                                         <div class="section-title">
-                                            <h4 class="rbt-title-style-3">Order History</h4>
+                                            <h4 class="rbt-title-style-3">Lịch sử đơn hàng</h4>
                                         </div>
 
                                         <div class="rbt-dashboard-table table-responsive mobile-table-750">
                                             <table class="rbt-table table table-borderless">
                                                 <thead>
                                                     <tr>
-                                                        <th>Order ID</th>
-                                                        <th>Course Name</th>
-                                                        <th>Date</th>
-                                                        <th>Price</th>
-                                                        <th>Status</th>
+                                                        <th>Mã Hoá Đơn</th>
+                                                        <th>Tên Khóa Học</th>
+                                                        <th>Ngày</th>
+                                                        <th>Giá</th>
+                                                        <th>Trạng Thái</th>
                                                     </tr>
                                                 </thead>
 
@@ -53,11 +53,7 @@
                                                         <span th:switch="${detail.order.status}">
                                                             <span th:case="'paid'" class="badge bg-success">Success</span>
                                                             <span th:case="'pending'" class="badge bg-primary">Processing</span>
-                                                            <span th:case="'onhold'" class="badge bg-warning text-dark">On Hold</span>
                                                             <span th:case="'canceled'" class="badge bg-danger">Canceled</span>
-                                                            <span th:case="*"
-                                                                  class="badge bg-secondary"
-                                                                  th:text="${detail.order.status}">Unknown</span>
                                                         </span>
                                                     </td>
                                                 </tr>
