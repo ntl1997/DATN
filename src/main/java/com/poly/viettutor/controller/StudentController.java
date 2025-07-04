@@ -14,8 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.OrderDetail;
 import com.poly.viettutor.model.User;
+import com.poly.viettutor.model.Wishlist;
 import com.poly.viettutor.service.OrderService;
 import com.poly.viettutor.service.UserService;
+import com.poly.viettutor.service.WishListService;
 import com.poly.viettutor.utils.FileUtils;
 
 import org.springframework.validation.BindingResult;
@@ -30,6 +32,9 @@ public class StudentController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private WishListService wishListService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -144,6 +149,17 @@ public class StudentController {
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("content", "client/student/student-history");
         model.addAttribute("title", "Lịch sử đơn hàng");
+        return "client/layout/index";
+    }
+
+    @GetMapping("/student-wishlist")
+    public String showStudentWishlist(Model model) {
+        User user = userService.getCurrentUser();
+        List<Wishlist> wishlist = wishListService.getWishlistByUser(user);
+        model.addAttribute("user", user);
+        model.addAttribute("wishlist", wishlist);
+        model.addAttribute("content", "client/student/student-wishlist");
+        model.addAttribute("title", "Danh sách yêu thích");
         return "client/layout/index";
     }
 
