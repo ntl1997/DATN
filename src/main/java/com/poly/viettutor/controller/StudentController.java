@@ -1,6 +1,7 @@
 package com.poly.viettutor.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.poly.viettutor.model.Order;
+import com.poly.viettutor.model.OrderDetail;
 import com.poly.viettutor.model.User;
+import com.poly.viettutor.service.OrderService;
 import com.poly.viettutor.service.UserService;
 import com.poly.viettutor.utils.FileUtils;
 
@@ -23,6 +27,9 @@ public class StudentController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -124,4 +131,19 @@ public class StudentController {
         model.addAttribute("title", "Cài đặt tài khoản");
         return "client/layout/index";
     }
+
+    @GetMapping("/student-order-history")
+    public String showStudentHistory(Model model) {
+        User user = userService.getCurrentUser();
+        List<Order> orderList = orderService.findByUser(user);
+        List<OrderDetail> orderDetails = orderList.stream()
+                .flatMap(order -> order.getOrderDetails().stream()
+                        .peek(detail -> detail.setOrder(order))) // đảm bảo order không bị lazy
+                .toList();
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("content", "client/student/student-history");
+        model.addAttribute("title", "Lịch sử đơn hàng");
+        return "client/layout/index";
+    }
+
 }
