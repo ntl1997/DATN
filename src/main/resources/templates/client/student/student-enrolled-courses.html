@@ -12,22 +12,17 @@
   <body>
     <div th:fragment="content">
       <div class="rbt-page-banner-wrapper">
-        <!-- Start Banner BG Image  -->
         <div class="rbt-banner-image"></div>
-        <!-- End Banner BG Image  -->
       </div>
-      <!-- Start Card Style -->
+
       <div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
-              <!-- Start Dashboard Top  -->
               <div th:replace="~{client/student/student-banner :: student-banner}"></div>
-              <!-- End Dashboard Top  -->
 
               <div class="row g-5">
                 <div class="col-lg-3">
-                  <!-- Dashboard Sidebar -->
                   <div th:replace="~{client/student/studentSidebar :: student-sidebar}"></div>
                 </div>
 
@@ -60,61 +55,18 @@
                       <div class="tab-content">
                         <div class="tab-pane fade active show" id="home-4" role="tabpanel" aria-labelledby="home-tab-4">
                           <div class="row g-5">
-                            <!-- Start Single Course  -->
-                            <div class="col-lg-4 col-md-6 col-12">
-                              <div class="rbt-card variation-01 rbt-hover">
-                                <div class="rbt-card-img">
-                                  <a href="course-details.html">
-                                    <img src="/assets/images/course/course-online-01.jpg" alt="Card image" />
-                                  </a>
-                                </div>
-                                <div class="rbt-card-body">
-                                  <div class="rbt-card-top">
-                                    <div class="rbt-review">
-                                      <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                      </div>
-                                      <span class="rating-count">(15 Đánh giá)</span>
-                                    </div>
-                                    <div class="rbt-bookmark-btn">
-                                      <a class="rbt-round-btn" title="Bookmark" href="#">
-                                        <i class="feather-bookmark"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <h4 class="rbt-card-title">
-                                    <a href="course-details.html">React cho cả Frontend và Backend</a>
-                                  </h4>
-                                  <ul class="rbt-meta">
-                                    <li>
-                                      <i class="feather-book"></i>
-                                      20 Bài học
-                                    </li>
-                                    <li>
-                                      <i class="feather-users"></i>
-                                      40 Học viên
-                                    </li>
-                                  </ul>
-                                  <div class="rbt-card-bottom">
-                                    <a class="rbt-btn btn-sm bg-primary-opacity w-100 text-center" href="#">
-                                      Tải xuống chứng chỉ
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
+                            <div th:if="${#lists.isEmpty(enrollments)}">
+                              <p>Bạn chưa đăng ký khóa học nào.</p>
                             </div>
-                            <!-- End Single Course  -->
 
-                            <!-- Start Single Course  -->
-                            <div class="col-lg-4 col-md-6 col-12">
+                            <div th:each="enrollment : ${enrollments}" class="col-lg-4 col-md-6 col-12">
                               <div class="rbt-card variation-01 rbt-hover">
                                 <div class="rbt-card-img">
-                                  <a href="course-details.html">
-                                    <img src="/assets/images/course/course-online-02.jpg" alt="Card image" />
+                                  <a th:href="@{/course-details/{id}(id=${enrollment.course.courseId})}">
+                                    <img
+                                      th:src="@{'/assets/images/course/' + ${enrollment.course.courseImage}}"
+                                      alt="Card image"
+                                    />
                                   </a>
                                 </div>
                                 <div class="rbt-card-body">
@@ -135,9 +87,16 @@
                                       </a>
                                     </div>
                                   </div>
+
                                   <h4 class="rbt-card-title">
-                                    <a href="course-details.html">PHP Cơ bản + Nâng cao</a>
+                                    <a
+                                      th:href="@{/course-details/{id}(id=${enrollment.course.courseId})}"
+                                      th:text="${enrollment.course.title}"
+                                    >
+                                      Tên khóa học
+                                    </a>
                                   </h4>
+
                                   <ul class="rbt-meta">
                                     <li>
                                       <i class="feather-book"></i>
@@ -145,58 +104,10 @@
                                     </li>
                                     <li>
                                       <i class="feather-users"></i>
-                                      30 học viên
+                                      25 Học viên
                                     </li>
                                   </ul>
-                                  <div class="rbt-card-bottom">
-                                    <a class="rbt-btn btn-sm bg-primary-opacity w-100 text-center" href="#">
-                                      Tải xuống chứng chỉ
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- End Single Course  -->
 
-                            <!-- Start Single Course  -->
-                            <div class="col-lg-4 col-md-6 col-12">
-                              <div class="rbt-card variation-01 rbt-hover">
-                                <div class="rbt-card-img">
-                                  <a href="course-details.html">
-                                    <img src="/assets/images/course/course-online-03.jpg" alt="Card image" />
-                                  </a>
-                                </div>
-                                <div class="rbt-card-body">
-                                  <div class="rbt-card-top">
-                                    <div class="rbt-review">
-                                      <div class="rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                      </div>
-                                      <span class="rating-count">(4 Đánh giá)</span>
-                                    </div>
-                                    <div class="rbt-bookmark-btn">
-                                      <a class="rbt-round-btn" title="Bookmark" href="#">
-                                        <i class="feather-bookmark"></i>
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <h4 class="rbt-card-title">
-                                    <a href="course-details.html">Angular từ Cơ bản đến Chuyên gia</a>
-                                  </h4>
-                                  <ul class="rbt-meta">
-                                    <li>
-                                      <i class="feather-book"></i>
-                                      14 Bài học
-                                    </li>
-                                    <li>
-                                      <i class="feather-users"></i>
-                                      26 Học viên
-                                    </li>
-                                  </ul>
                                   <div class="rbt-card-bottom">
                                     <a class="rbt-btn btn-sm bg-primary-opacity w-100 text-center" href="#">
                                       Tải xuống chứng chỉ
@@ -205,20 +116,22 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- End Single Course  -->
                           </div>
+                          <!-- row g-5 -->
                         </div>
                       </div>
-                      </div>
                     </div>
+                    <!-- content -->
                   </div>
+                  <!-- rbt-dashboard-content -->
                 </div>
+                <!-- col-lg-9 -->
               </div>
+              <!-- row g-5 -->
             </div>
           </div>
         </div>
       </div>
-      <!-- End Card Style -->
     </div>
   </body>
 </html>
