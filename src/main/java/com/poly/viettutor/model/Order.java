@@ -3,6 +3,7 @@ package com.poly.viettutor.model;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Orders")
@@ -23,6 +24,11 @@ public class Order {
 
     private String couponCode;
 
+    private String status;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetail> orderDetails;
 }
