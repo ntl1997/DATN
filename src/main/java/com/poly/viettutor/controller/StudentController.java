@@ -140,6 +140,7 @@ public class StudentController {
                 .flatMap(order -> order.getOrderDetails().stream()
                         .peek(detail -> detail.setOrder(order))) // đảm bảo order không bị lazy
                 .toList();
+        model.addAttribute("user", user);
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("content", "client/student/student-history");
         model.addAttribute("title", "Lịch sử đơn hàng");
