@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.viettutor.model.Certificate;
+import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CertificateService;
 import com.poly.viettutor.service.UserService;
@@ -55,12 +56,18 @@ public class StudentController {
     
     @GetMapping("/student-enrolled-courses")
     public String showEnrolledCourses(Model model) {
-        User user = userService.getCurrentUser();
-        model.addAttribute("user", user);
-        model.addAttribute("content", "client/student/student-enrolled-courses");
-        model.addAttribute("title", "Các khóa học đã đăng ký");
-        return "client/layout/index";
+    User user = userService.getCurrentUser();
+
+    // Lấy danh sách enrollments của user
+    List<Enrollment> enrollments = user.getEnrollments();
+
+    model.addAttribute("user", user);
+    model.addAttribute("enrollments", enrollments);  // Đẩy danh sách lên view
+    model.addAttribute("content", "client/student/student-enrolled-courses");
+    model.addAttribute("title", "Các khóa học đã đăng ký");
+    return "client/layout/index";
     }
+
 
     @GetMapping("/student-certificate")
     public String showCertificates(@RequestParam(value = "query", required = false) String query, Model model) {
