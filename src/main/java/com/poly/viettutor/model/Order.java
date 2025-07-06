@@ -29,6 +29,8 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+
     private List<OrderDetail> orderDetails;
 }
