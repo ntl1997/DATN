@@ -6,7 +6,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Certificates")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,9 +28,9 @@ public class Certificate {
     @Temporal(TemporalType.TIMESTAMP)
     private Date issuedAt;
 
-    private String description; // thêm mô tả
+    private String description;
 
-    // getter cho hiển thị
+    // Getter tùy chỉnh
     public String getTitle() {
         return course != null ? course.getTitle() : "Không rõ khóa học";
     }
