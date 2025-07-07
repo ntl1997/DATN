@@ -21,6 +21,7 @@ import com.poly.viettutor.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/student")
@@ -85,19 +86,36 @@ public class StudentController {
     model.addAttribute("title", "Chứng chỉ");
 
     return "client/layout/index";
-}
+    }
 
 
     // Hiển thị chi tiết chứng chỉ theo ID
     @GetMapping("/student-certificate/{id}")
-    public String showCertificateDetail(@PathVariable("id") Integer id, Model model) {
-        Certificate certificate = certificateService.getCertificateById(id);
+    public String showCertificateDetail(@PathVariable("id") Integer id, Model model, HttpServletResponse response) {
+    // Set header để ngừng cache
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 
+    // Lấy chứng chỉ từ service
+    Certificate certificate = certificateService.getCertificateById(id);
+
+    // Kiểm tra nếu chứng chỉ không tồn tại
+    if (certificate != null) {
         model.addAttribute("certificate", certificate);
         model.addAttribute("content", "client/student/student-certificate-detail");
         model.addAttribute("title", "Chi tiết chứng chỉ");
 
-        return "client/layout/index";
+        response.setStatus(HttpServletResponse.SC_OK); // Đảm bảo phản hồi OK
+    } else {
+        model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
+        model.addAttribute("content", "client/error");
+        model.addAttribute("title", "Lỗi");
+
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Phản hồi lỗi nếu không tìm thấy
+    }
+
+    return "client/layout/index";
     }
 
     @GetMapping("/student-profile")
