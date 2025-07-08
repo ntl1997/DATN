@@ -104,7 +104,6 @@ CREATE TABLE CourseModules (
     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
     ModuleTitle NVARCHAR(255),
     SortOrder INT,
-    moduleName NVARCHAR(255)
 );
 GO
 
@@ -332,10 +331,10 @@ INSERT INTO CourseCategories (CourseId, CategoryId) VALUES
 (1, 2), (2, 3);
 
 -- 8. CourseModules (phụ thuộc Courses)
-INSERT INTO CourseModules (CourseId, ModuleTitle, SortOrder, moduleName) VALUES 
-(1, N'Giới thiệu Python', 1, NULL),
-(1, N'Cấu trúc điều kiện và vòng lặp', 2, NULL),
-(2, N'Cơ bản HTML', 1, NULL);
+INSERT INTO CourseModules (CourseId, ModuleTitle, SortOrder) VALUES 
+(1, N'Giới thiệu Python', 1),
+(1, N'Cấu trúc điều kiện và vòng lặp', 2),
+(2, N'Cơ bản HTML', 1);
 
 -- 9. Lectures (phụ thuộc CourseModules)
 INSERT INTO Lectures (
