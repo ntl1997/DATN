@@ -56,6 +56,7 @@ public class CreateCourseDTO {
     @NotEmpty(message = "Chọn ít nhất một danh mục!")
     private List<Integer> categoryIds;
 
+    @NotEmpty(message = "Khóa học phải có ít nhất 1 chương!")
     private List<ModuleDTO> modules;
 
     private List<MaterialDTO> materials;
