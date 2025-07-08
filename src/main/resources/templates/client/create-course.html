@@ -12,9 +12,11 @@
                   th:object="${course}"
                   method="post"
                   enctype="multipart/form-data"
+                  onsubmit="localStorage.removeItem('modules')"
                 >
                   <div class="rbt-accordion-style rbt-accordion-01 rbt-accordion-06 accordion">
                     <div class="accordion" id="tutionaccordionExamplea1">
+                      <!-- Thông tin cơ bản khóa học -->
                       <div class="accordion-item card">
                         <h2 class="accordion-header card-header" id="accOne">
                           <button
@@ -304,6 +306,7 @@
                         </div>
                       </div>
 
+                      <!-- Các chương, bài học và tài liệu -->
                       <div class="accordion-item card">
                         <h2 class="accordion-header card-header" id="accThree">
                           <button
@@ -318,8 +321,8 @@
                           </button>
                         </h2>
                         <div id="accCollapseThree" class="accordion-collapse collapse" aria-labelledby="accThree">
-                          <div class="accordion-body card-body">
-                            <div class="accordion-item card mb--20">
+                          <div id="module-container" class="accordion-body card-body">
+                            <!-- <div class="accordion-item card mb--20">
                               <h2 class="accordion-header card-header rbt-course" id="accOne1">
                                 <button
                                   class="accordion-button collapsed"
@@ -329,7 +332,7 @@
                                   aria-expanded="false"
                                   aria-controls="accCollapseOne1"
                                 >
-                                  Lesson One
+                                  Module One
                                 </button>
                                 <span
                                   class="rbt-course-icon rbt-course-edit"
@@ -419,13 +422,14 @@
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div> -->
 
+                            <p th:errors="*{modules}" class="text-danger"></p>
                             <button
                               class="rbt-btn btn-md btn-gradient hover-icon-reverse"
                               type="button"
                               data-bs-toggle="modal"
-                              data-bs-target="#exampleModal"
+                              data-bs-target="#CreateModuleModel"
                             >
                               <span class="icon-reverse-wrapper">
                                 <span class="btn-text">Thêm chủ đề mới</span>
@@ -447,10 +451,55 @@
                             </button>
 
                             <input type="file" id="fileInput" style="display: none" />
+
+                            <hr class="mt--10 mb--20" />
+
+                            <div th:each="module, iStat : *{modules}" class="accordion-item card mb--20">
+                              <h2
+                                class="accordion-header card-header rbt-course"
+                                th:id="'moduleHeader' + ${iStat.index}"
+                              >
+                                <button
+                                  class="accordion-button collapsed"
+                                  type="button"
+                                  th:data-bs-target="'#moduleCollapse' + ${iStat.index}"
+                                  th:aria-controls="'moduleCollapse' + ${iStat.index}"
+                                  data-bs-toggle="collapse"
+                                  aria-expanded="false"
+                                >
+                                  <span th:text="*{modules[__${iStat.index}__].moduleTitle}"></span>
+                                </button>
+                                <span
+                                  class="rbt-course-icon rbt-course-edit"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#UpdateModuleModel"
+                                  th:onclick="editModule(this)"
+                                ></span>
+                                <span
+                                  class="rbt-course-icon rbt-course-del"
+                                  onclick="this.closest('.accordion-item').remove()"
+                                ></span>
+                              </h2>
+
+                              <div
+                                class="accordion-collapse collapse"
+                                th:id="'moduleCollapse' + ${iStat.index}"
+                                th:aria-labelledby="'moduleHeader' + ${iStat.index}"
+                              >
+                                <div class="accordion-body card-body">
+                                  <!-- Input ẩn để gửi moduleTitle về controller -->
+                                  <input type="hidden" th:field="*{modules[__${iStat.index}__].moduleTitle}" />
+
+                                  <!-- Sau này có thể thêm lectures -->
+                                  <p class="text-muted">Chưa có bài học nào.</p>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
 
+                      <!-- Chứng chỉ -->
                       <div class="accordion-item card">
                         <input type="hidden" th:field="*{hasCertificate}" id="hasCertificate" />
                         <h2 class="accordion-header card-header" id="accSeven">
@@ -631,13 +680,12 @@
           </div>
         </div>
 
-        <!-- Start Modal Area  -->
+        <!-- Start Create Module Modal -->
         <div
           class="rbt-default-modal modal fade"
-          id="exampleModal"
+          id="CreateModuleModel"
           tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
+          aria-labelledby="CreateModuleModelLabel"
         >
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -650,23 +698,14 @@
                 <div class="inner rbt-default-form">
                   <div class="row">
                     <div class="col-lg-12">
-                      <h5 class="modal-title mb--20" id="exampleModalLabel">Thêm chủ đề</h5>
+                      <h5 class="modal-title mb--20" id="CreateModuleModelLabel">Thêm chủ đề</h5>
                       <div class="course-field mb--20">
-                        <label for="modal-field-1">Tên chủ đề</label>
-                        <input id="modal-field-1" type="text" />
+                        <label for="create-module-title">Tên chủ đề</label>
+                        <input id="create-module-title" type="text" />
                         <small
                           ><i class="feather-info"></i> Tiêu đề chủ đề sẽ được hiển thị công khai ở những nơi cần thiết.
-                          Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.</small
-                        >
-                      </div>
-                      <div class="course-field mb--20">
-                        <label for="modal-field-2">Tóm tắt chủ đề</label>
-                        <textarea id="modal-field-2"></textarea>
-                        <small
-                          ><i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các
-                          hoạt động trong chủ đề. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
-                          (tooltip) cạnh tên chủ đề.</small
-                        >
+                          Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -674,6 +713,18 @@
               </div>
               <div class="top-circle-shape"></div>
               <div class="modal-footer pt--30">
+                <button
+                  class="rbt-btn btn-md btn-gradient hover-icon-reverse"
+                  type="button"
+                  onclick="addModule()"
+                  data-bs-dismiss="modal"
+                >
+                  <span class="icon-reverse-wrapper">
+                    <span class="btn-text">Thêm chủ đề mới</span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                  </span>
+                </button>
                 <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
                   Hủy
                 </button>
@@ -681,15 +732,14 @@
             </div>
           </div>
         </div>
-        <!-- End Modal Area  -->
+        <!-- End Create Module Modal -->
 
-        <!-- Start Topic Area  -->
+        <!-- Start Update Module Model -->
         <div
           class="rbt-default-modal modal fade"
-          id="UpdateTopic"
+          id="UpdateModuleModel"
           tabindex="-1"
-          aria-labelledby="UpdateTopicLabel"
-          aria-hidden="true"
+          aria-labelledby="UpdateModuleModelLabel"
         >
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -702,22 +752,13 @@
                 <div class="inner rbt-default-form">
                   <div class="row">
                     <div class="col-lg-12">
-                      <h5 class="modal-title mb--20" id="exampleModalLabel">Cập nhật chủ đề</h5>
+                      <h5 class="modal-title mb--20" id="UpdateModuleModelLabel">Cập nhật chủ đề</h5>
                       <div class="course-field mb--20">
-                        <label for="modal-field-1">Tên chủ đề</label>
-                        <input id="modal-field-1" type="text" />
+                        <label for="update-module-title">Tên chủ đề</label>
+                        <input id="update-module-title" type="text" />
                         <small
                           ><i class="feather-info"></i> Tiêu đề chủ đề sẽ được hiển thị công khai ở những nơi cần thiết.
                           Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.</small
-                        >
-                      </div>
-                      <div class="course-field mb--20">
-                        <label for="modal-field-2">Tóm tắt chủ đề</label>
-                        <textarea id="modal-field-2"></textarea>
-                        <small
-                          ><i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các
-                          hoạt động trong chủ đề. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
-                          (tooltip) cạnh tên chủ đề.</small
                         >
                       </div>
                     </div>
@@ -726,6 +767,18 @@
               </div>
               <div class="top-circle-shape"></div>
               <div class="modal-footer pt--30">
+                <button
+                  class="rbt-btn btn-md btn-gradient hover-icon-reverse"
+                  type="button"
+                  onclick="updateModule()"
+                  data-bs-dismiss="modal"
+                >
+                  <span class="icon-reverse-wrapper">
+                    <span class="btn-text">Cập nhật chủ đề</span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                  </span>
+                </button>
                 <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
                   Hủy
                 </button>
@@ -733,7 +786,7 @@
             </div>
           </div>
         </div>
-        <!-- End Topic Area  -->
+        <!-- End Update Module Model -->
 
         <!-- Lesson Modal -->
         <div
@@ -762,12 +815,13 @@
                         >
                       </div>
                       <div class="course-field mb--20">
-                        <label for="modal-field-2">Tóm tắt bài học</label><textarea id="modal-field-2"></textarea
-                        ><small
-                          ><i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các
-                          hoạt động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
-                          (tooltip) cạnh tên bài học.</small
-                        >
+                        <label for="modal-field-2">Tóm tắt bài học</label>
+                        <textarea id="modal-field-2" rows="5"></textarea
+                        ><small>
+                          <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
+                          động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
+                          (tooltip) cạnh tên bài học.
+                        </small>
                       </div>
 
                       <div class="course-field mb--20">
@@ -824,52 +878,7 @@
     </div>
 
     <th:block th:fragment="scripts">
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const regularPriceInput = document.getElementById("regularPrice");
-          const hiddenPriceInput = document.getElementById("hiddenPrice");
-
-          const paidTab = document.getElementById("paid-tab");
-          const freeTab = document.getElementById("free-tab");
-
-          // Khi người dùng nhập giá ở tab "Trả phí", cập nhật hidden input
-          regularPriceInput.addEventListener("input", function () {
-            hiddenPriceInput.value = this.value || 0;
-          });
-
-          // Khi nhấn vào tab "Trả phí"
-          paidTab.addEventListener("click", function () {
-            // Gán giá trị hiện tại của input regular vào hidden input
-            hiddenPriceInput.value = regularPriceInput.value || 0;
-          });
-
-          // Khi nhấn vào tab "Miễn phí"
-          freeTab.addEventListener("click", function () {
-            hiddenPriceInput.value = 0;
-          });
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-          const radioButtons = document.querySelectorAll('input[name="radio-group"]');
-          const hasCertInput = document.getElementById("hasCertificate");
-
-          radioButtons.forEach(function (radio) {
-            radio.addEventListener("change", function () {
-              if (this.id === "option1") {
-                hasCertInput.value = 0;
-              } else {
-                hasCertInput.value = 1;
-              }
-            });
-          });
-
-          // Khởi tạo nếu có sẵn một radio được chọn
-          const checkedRadio = document.querySelector('input[name="radio-group"]:checked');
-          if (checkedRadio) {
-            hasCertInput.value = checkedRadio.id !== "option1";
-          }
-        });
-      </script>
+      <script th:src="@{/assets/js/create-course.js}"></script>
     </th:block>
   </body>
 </html>
