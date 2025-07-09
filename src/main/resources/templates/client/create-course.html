@@ -323,28 +323,6 @@
                           <div class="accordion-body card-body">
                             <!-- Thông báo lỗi Validate -->
                             <p th:errors="*{modules}" class="text-danger"></p>
-                            <div th:each="module, iStat : *{modules}">
-                              <p class="text-danger" th:errors="*{modules[__${iStat.index}__].moduleTitle}"></p>
-                              <p class="text-danger" th:errors="*{modules[__${iStat.index}__].lectures}"></p>
-                              <div th:each="lecture, jStat : *{modules[__${iStat.index}__].lectures}">
-                                <p
-                                  class="text-danger"
-                                  th:errors="*{modules[__${iStat.index}__].lectures[__${jStat.index}__].lectureTitle}"
-                                ></p>
-                                <p
-                                  class="text-danger"
-                                  th:errors="*{modules[__${iStat.index}__].lectures[__${jStat.index}__].content}"
-                                ></p>
-                                <p
-                                  class="text-danger"
-                                  th:errors="*{modules[__${iStat.index}__].lectures[__${jStat.index}__].videoUrl}"
-                                ></p>
-                                <p
-                                  class="text-danger"
-                                  th:errors="*{modules[__${iStat.index}__].lectures[__${jStat.index}__].duration}"
-                                ></p>
-                              </div>
-                            </div>
 
                             <!-- Chèn thêm các chương và bài giảng mới bằng JS -->
                             <div id="module-container"></div>
