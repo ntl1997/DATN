@@ -11,6 +11,8 @@ import com.poly.viettutor.repository.CategoryRepository;
 import com.poly.viettutor.repository.CourseCategoryRepository;
 import com.poly.viettutor.repository.CourseModuleRepository;
 import com.poly.viettutor.repository.CourseRepository;
+import com.poly.viettutor.repository.LectureRepository;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +28,18 @@ public class CourseService {
     private final CourseCategoryRepository courseCategoryRepository;
     private final CategoryRepository categoryRepository;
     private final CourseModuleRepository courseModuleRepository;
+    private final LectureRepository lectureRepository;
 
     CourseService(CourseRepository courseRepository,
             CourseCategoryRepository courseCategoryRepository,
             CategoryRepository categoryRepository,
-            CourseModuleRepository courseModuleRepository) {
+            CourseModuleRepository courseModuleRepository,
+            LectureRepository lectureRepository) {
         this.courseRepository = courseRepository;
         this.courseCategoryRepository = courseCategoryRepository;
         this.categoryRepository = categoryRepository;
         this.courseModuleRepository = courseModuleRepository;
+        this.lectureRepository = lectureRepository;
     }
 
     public List<Course> findAll() {
@@ -77,13 +82,26 @@ public class CourseService {
         });
 
         // Lưu các chương của khóa học
-        AtomicInteger index = new AtomicInteger(1);
+        AtomicInteger moduleIndex = new AtomicInteger(1);
         courseDTO.getModules().forEach(moduleDTO -> {
             CourseModule module = new CourseModule();
             module.setModuleTitle(moduleDTO.getModuleTitle());
-            module.setSortOrder(index.getAndIncrement());
+            module.setSortOrder(moduleIndex.getAndIncrement());
             module.setCourse(savedCourse);
-            courseModuleRepository.save(module);
+            CourseModule savedModule = courseModuleRepository.save(module);
+
+            // Lưu các bài giảng của chương
+            AtomicInteger lectureIndex = new AtomicInteger(1);
+            moduleDTO.getLectures().forEach(lectureDTO -> {
+                Lecture lecture = new Lecture();
+                lecture.setLectureTitle(lectureDTO.getLectureTitle());
+                lecture.setContent(lectureDTO.getContent());
+                lecture.setVideoUrl(lectureDTO.getVideoUrl());
+                lecture.setDuration(lectureDTO.getDuration());
+                lecture.setSortOrder(lectureIndex.getAndIncrement());
+                lecture.setModule(savedModule);
+                lectureRepository.save(lecture);
+            });
         });
 
         return savedCourse;
