@@ -12,7 +12,6 @@
                   th:object="${course}"
                   method="post"
                   enctype="multipart/form-data"
-                  onsubmit="localStorage.removeItem('modules')"
                 >
                   <div class="rbt-accordion-style rbt-accordion-01 rbt-accordion-06 accordion">
                     <div class="accordion" id="tutionaccordionExamplea1">
@@ -322,109 +321,8 @@
                         </h2>
                         <div id="accCollapseThree" class="accordion-collapse collapse" aria-labelledby="accThree">
                           <div id="module-container" class="accordion-body card-body">
-                            <!-- <div class="accordion-item card mb--20">
-                              <h2 class="accordion-header card-header rbt-course" id="accOne1">
-                                <button
-                                  class="accordion-button collapsed"
-                                  type="button"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target="#accCollapseOne1"
-                                  aria-expanded="false"
-                                  aria-controls="accCollapseOne1"
-                                >
-                                  Module One
-                                </button>
-                                <span
-                                  class="rbt-course-icon rbt-course-edit"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#UpdateTopic"
-                                ></span
-                                ><span class="rbt-course-icon rbt-course-del"></span>
-                              </h2>
-                              <div id="accCollapseOne1" class="accordion-collapse collapse" aria-labelledby="accOne1">
-                                <div class="accordion-body card-body" id="dnd1">
-                                  <div class="d-flex justify-content-between rbt-course-wrape mb-4">
-                                    <div class="col-10 inner d-flex align-items-center gap-2">
-                                      <i class="feather-menu cursor-scroll"></i>
-                                      <h6 class="rbt-title mb-0">The Complete Histudy 2024: From Zero to Expert!</h6>
-                                    </div>
-                                    <div class="col-2 inner">
-                                      <ul class="rbt-list-style-1 rbt-course-list d-flex gap-2">
-                                        <li><i class="feather-trash"></i></li>
-                                        <li>
-                                          <i class="feather-edit" data-bs-toggle="modal" data-bs-target="#Quiz"></i>
-                                        </li>
-                                        <li><i class="feather-upload"></i></li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div class="d-flex justify-content-between rbt-course-wrape mb-4" role="button">
-                                    <div class="col-10 inner d-flex align-items-center gap-2">
-                                      <i class="feather-menu cursor-scroll"></i>
-                                      <h6 class="rbt-title mb-0">Difficult Things About Education.</h6>
-                                    </div>
-                                    <div class="col-2 inner">
-                                      <ul class="rbt-list-style-1 rbt-course-list d-flex gap-2">
-                                        <li><i class="feather-trash"></i></li>
-                                        <li>
-                                          <i class="feather-edit" data-bs-toggle="modal" data-bs-target="#Quiz"></i>
-                                        </li>
-                                        <li><i class="feather-upload"></i></li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div class="d-flex justify-content-between rbt-course-wrape mb-4" role="button">
-                                    <div class="col-10 inner d-flex align-items-center gap-2">
-                                      <i class="feather-menu cursor-scroll"></i>
-                                      <h6 class="rbt-title mb-0">Five Things You Should Do In Education.</h6>
-                                    </div>
-                                    <div class="col-2 inner">
-                                      <ul class="rbt-list-style-1 rbt-course-list d-flex gap-2">
-                                        <li><i class="feather-trash"></i></li>
-                                        <li>
-                                          <i class="feather-edit" data-bs-toggle="modal" data-bs-target="#Quiz"></i>
-                                        </li>
-                                        <li><i class="feather-upload"></i></li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                  <div class="d-flex justify-content-between rbt-course-wrape mb-4" role="button">
-                                    <div class="col-10 inner d-flex align-items-center gap-2">
-                                      <i class="feather-menu cursor-scroll"></i>
-                                      <h6 class="rbt-title mb-0">The Complete Histudy 2024: From Zero to Expert!</h6>
-                                    </div>
-                                    <div class="col-2 inner">
-                                      <ul class="rbt-list-style-1 rbt-course-list d-flex gap-2">
-                                        <li><i class="feather-trash"></i></li>
-                                        <li>
-                                          <i class="feather-edit" data-bs-toggle="modal" data-bs-target="#Quiz"></i>
-                                        </li>
-                                        <li><i class="feather-upload"></i></li>
-                                      </ul>
-                                    </div>
-                                  </div>
-
-                                  <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                    <div class="gap-3 d-flex flex-wrap">
-                                      <button
-                                        class="rbt-btn btn-border hover-icon-reverse rbt-sm-btn-2"
-                                        type="button"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#Lesson"
-                                      >
-                                        <span class="icon-reverse-wrapper"
-                                          ><span class="btn-text">Bài học</span
-                                          ><span class="btn-icon"><i class="feather-plus-square"></i></span
-                                          ><span class="btn-icon"><i class="feather-plus-square"></i></span
-                                        ></span>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div> -->
-
                             <p th:errors="*{modules}" class="text-danger"></p>
+
                             <button
                               class="rbt-btn btn-md btn-gradient hover-icon-reverse"
                               type="button"
@@ -453,48 +351,6 @@
                             <input type="file" id="fileInput" style="display: none" />
 
                             <hr class="mt--10 mb--20" />
-
-                            <div th:each="module, iStat : *{modules}" class="accordion-item card mb--20">
-                              <h2
-                                class="accordion-header card-header rbt-course"
-                                th:id="'moduleHeader' + ${iStat.index}"
-                              >
-                                <button
-                                  class="accordion-button collapsed"
-                                  type="button"
-                                  th:data-bs-target="'#moduleCollapse' + ${iStat.index}"
-                                  th:aria-controls="'moduleCollapse' + ${iStat.index}"
-                                  data-bs-toggle="collapse"
-                                  aria-expanded="false"
-                                >
-                                  <span th:text="*{modules[__${iStat.index}__].moduleTitle}"></span>
-                                </button>
-                                <span
-                                  class="rbt-course-icon rbt-course-edit"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#UpdateModuleModel"
-                                  th:onclick="editModule(this)"
-                                ></span>
-                                <span
-                                  class="rbt-course-icon rbt-course-del"
-                                  onclick="this.closest('.accordion-item').remove()"
-                                ></span>
-                              </h2>
-
-                              <div
-                                class="accordion-collapse collapse"
-                                th:id="'moduleCollapse' + ${iStat.index}"
-                                th:aria-labelledby="'moduleHeader' + ${iStat.index}"
-                              >
-                                <div class="accordion-body card-body">
-                                  <!-- Input ẩn để gửi moduleTitle về controller -->
-                                  <input type="hidden" th:field="*{modules[__${iStat.index}__].moduleTitle}" />
-
-                                  <!-- Sau này có thể thêm lectures -->
-                                  <p class="text-muted">Chưa có bài học nào.</p>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -788,14 +644,8 @@
         </div>
         <!-- End Update Module Model -->
 
-        <!-- Lesson Modal -->
-        <div
-          class="rbt-default-modal modal fade"
-          id="Lesson"
-          tabindex="-1"
-          aria-labelledby="LessonLabel"
-          aria-hidden="true"
-        >
+        <!-- Start Create Lesson Modal -->
+        <div class="rbt-default-modal modal fade" id="create-lesson" tabindex="-1" aria-labelledby="LessonLabel">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
@@ -809,14 +659,16 @@
                     <div class="col-lg-12">
                       <h5 class="modal-title mb--20" id="LessonLabel">Thêm bài học</h5>
                       <div class="course-field mb--20">
-                        <label for="modal-field-1">Tên bài học</label><input id="modal-field-1" type="text" /><small
-                          ><i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần
-                          thiết. Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.</small
-                        >
+                        <label for="create-lesson-title">Tên bài học</label>
+                        <input id="create-lesson-title" type="text" />
+                        <small>
+                          <i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần thiết.
+                          Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.
+                        </small>
                       </div>
                       <div class="course-field mb--20">
-                        <label for="modal-field-2">Tóm tắt bài học</label>
-                        <textarea id="modal-field-2" rows="5"></textarea
+                        <label for="create-lesson-content">Tóm tắt bài học</label>
+                        <textarea id="create-lesson-content" rows="5"></textarea
                         ><small>
                           <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
                           động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
@@ -827,27 +679,16 @@
                       <div class="course-field mb--20">
                         <h6>Đường link URL video</h6>
                         <div class="rbt-modern-select bg-transparent height-45 mb--10">
-                          <input id="videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
+                          <input id="create-videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
                         </div>
                       </div>
 
                       <div class="course-field mb--15">
                         <label>Thời lượng video</label>
                         <div class="row row--15">
-                          <div class="col-lg-4">
-                            <input type="number" placeholder="00" /><small class="d-block mt_dec--5"
-                              ><i class="feather-info"></i> Giờ.</small
-                            >
-                          </div>
-                          <div class="col-lg-4">
-                            <input type="number" placeholder="00" /><small class="d-block mt_dec--5"
-                              ><i class="feather-info"></i> Phút.</small
-                            >
-                          </div>
-                          <div class="col-lg-4">
-                            <input type="number" placeholder="00" /><small class="d-block mt_dec--5"
-                              ><i class="feather-info"></i> Giây.</small
-                            >
+                          <div class="col-lg-12">
+                            <input id="create-videoDuration" type="number" placeholder="00" />
+                            <small class="d-block mt_dec--5"><i class="feather-info"></i> Phút.</small>
                           </div>
                         </div>
                       </div>
@@ -861,13 +702,79 @@
                   Hủy
                 </button>
                 <div class="content">
-                  <button type="button" class="rbt-btn btn-md">Lưu bài học</button>
+                  <button type="button" class="rbt-btn btn-md" onclick="saveLesson()">Lưu bài học</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- Lesson Modal -->
+        <!-- End Create Lesson Modal -->
+
+        <!-- Start Update Lesson Modal -->
+        <div class="rbt-default-modal modal fade" id="update-lesson" tabindex="-1" aria-labelledby="LessonLabel">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                  <i class="feather-x"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="inner rbt-default-form">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h5 class="modal-title mb--20" id="LessonLabel">Thêm bài học</h5>
+                      <div class="course-field mb--20">
+                        <label for="update-lesson-title">Tên bài học</label>
+                        <input id="update-lesson-title" type="text" />
+                        <small>
+                          <i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần thiết.
+                          Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.
+                        </small>
+                      </div>
+                      <div class="course-field mb--20">
+                        <label for="update-lesson-content">Tóm tắt bài học</label>
+                        <textarea id="update-lesson-content" rows="5"></textarea
+                        ><small>
+                          <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
+                          động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
+                          (tooltip) cạnh tên bài học.
+                        </small>
+                      </div>
+
+                      <div class="course-field mb--20">
+                        <h6>Đường link URL video</h6>
+                        <div class="rbt-modern-select bg-transparent height-45 mb--10">
+                          <input id="update-videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
+                        </div>
+                      </div>
+
+                      <div class="course-field mb--15">
+                        <label>Thời lượng video</label>
+                        <div class="row row--15">
+                          <div class="col-lg-12">
+                            <input id="update-videoDuration" type="number" placeholder="00" />
+                            <small class="d-block mt_dec--5"><i class="feather-info"></i> Phút.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="top-circle-shape"></div>
+              <div class="modal-footer pt--30 justify-content-between">
+                <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                  Hủy
+                </button>
+                <div class="content">
+                  <button type="button" class="rbt-btn btn-md" onclick="updateLesson()">Lưu bài học</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Update Lesson Modal -->
 
         <div class="rbt-separator-mid">
           <div class="container">
