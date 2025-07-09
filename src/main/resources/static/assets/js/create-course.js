@@ -73,6 +73,7 @@ function addModule() {
   document.getElementById("create-module-title").value = "";
 
   // Tải lại giao diện
+  bootstrap.Modal.getInstance(document.getElementById("CreateModuleModel")).hide();
   loadModuleFromStorage(moduleTitle);
 }
 
@@ -86,7 +87,10 @@ function editModule(button) {
 // Lưu thay đổi module
 function updateModule() {
   const newTitle = document.getElementById("update-module-title").value.trim();
-  if (!newTitle || !currentEditingModuleButton) return;
+  if (!newTitle || !currentEditingModuleButton) {
+    alert("Vui lòng nhập tên chủ đề");
+    return;
+  }
 
   const button = currentEditingModuleButton.closest(".accordion-header").querySelector(".accordion-button");
   const oldTitle = button.textContent.trim();
@@ -101,6 +105,7 @@ function updateModule() {
     localStorage.setItem("modules", JSON.stringify(modules));
   }
 
+  bootstrap.Modal.getInstance(document.getElementById("UpdateModuleModel")).hide();
   currentEditingModuleButton = null;
 }
 
@@ -133,7 +138,7 @@ function saveLesson() {
   const videoUrl = document.getElementById("create-videoUrl").value.trim();
   const duration = document.getElementById("create-videoDuration").value.trim();
 
-  if (!title && !content && !videoUrl && !duration) {
+  if (!title || !content || !videoUrl || !duration) {
     alert("Vui lòng nhập đầy đủ các trường!");
     return;
   }
