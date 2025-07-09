@@ -352,7 +352,10 @@
                               </span>
                             </button>
 
-                            <input type="file" id="fileInput" style="display: none" />
+                            <!-- Số lượng file -->
+                            <span id="fileCountText" style="margin-left: 10px; font-style: italic; color: #666"></span>
+
+                            <input type="file" id="fileInput" name="attachments" style="display: none" multiple />
 
                             <hr class="mt--10 mb--20" />
                           </div>
@@ -531,6 +534,8 @@
                           <i class="feather-check"></i> Thông tin từ phần Dữ liệu bổ sung sẽ hiển thị trên trang chi
                           tiết khóa học.
                         </li>
+                        <li><i class="feather-check"></i> Dung lượng tối đã mỗi file là 10 mb.</li>
+                        <li><i class="feather-check"></i> Tổng dung lượng tối đa các file tải lên là 100 mb</li>
                       </ul>
                     </div>
                   </div>
@@ -780,6 +785,23 @@
 
     <th:block th:fragment="scripts">
       <script th:src="@{/assets/js/create-course.js}"></script>
+      <script>
+        const fileInput = document.getElementById("fileInput");
+        const fileCountText = document.getElementById("fileCountText");
+
+        fileInput.addEventListener("change", function () {
+          const count = fileInput.files.length;
+          console.log(document.getElementById("fileInput").form);
+          for (const file of this.files) {
+            console.log(file.name, file.size);
+          }
+          if (count > 0) {
+            fileCountText.textContent = `Đã đính kèm ${count} tệp`;
+          } else {
+            fileCountText.textContent = "";
+          }
+        });
+      </script>
     </th:block>
   </body>
 </html>
