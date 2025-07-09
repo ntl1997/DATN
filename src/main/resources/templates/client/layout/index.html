@@ -1,101 +1,110 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title th:text="${title} ?: 'Vietstudy LMS'">Vietstudy LMS</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title th:text="${title} ?: 'Vietstudy LMS'">Vietstudy LMS</title>
-  <meta name="robots" content="noindex, follow" />
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon-vtt.png}" />
 
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/images/favicon-vtt.png}" />
-
-  <!-- CSS
+    <!-- CSS
 	============================================ -->
-  <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/vendor/slick.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/vendor/slick-theme.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/sal.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/feather.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/fontawesome.min.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/euclid-circulara.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/odometer.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/animation.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/magnigy-popup.min.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/plyr.css}" />
-  <link rel="stylesheet" th:href="@{/assets/css/plugins/jodit.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/slick.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/vendor/slick-theme.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/sal.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/feather.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/fontawesome.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/euclid-circulara.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/swiper.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/odometer.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/animation.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/bootstrap-select.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery-ui.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/magnigy-popup.min.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/plyr.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jodit.min.css}" />
 
-  <link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/styles.css}" />
 
-  <!-- CSS tuỳ chỉnh của header -->
-  <th:block th:replace="~{client/layout/header :: header-styles}"></th:block>
+    <!-- CSS tuỳ chỉnh của header -->
+    <th:block th:replace="~{client/layout/header :: header-styles}"></th:block>
 
-  <!-- CSS tuỳ chỉnh từ file con nếu có -->
-  <th:block th:if="${styles}">
-    <th:block th:replace="~{${styles} :: styles}"></th:block>
-  </th:block>
-</head>
+    <!-- CSS tuỳ chỉnh từ file con nếu có -->
+    <th:block th:if="${styles}">
+      <th:block th:replace="~{${styles} :: styles}"></th:block>
+    </th:block>
+  </head>
 
-<body class="rbt-header-sticky">
-  <!-- Include Header -->
-  <div th:replace="~{client/layout/header :: header}"></div>
+  <body class="rbt-header-sticky">
+    <!-- Include Header -->
+    <div th:replace="~{client/layout/header :: header}"></div>
 
-  <!-- Nội dung động -->
-  <main th:replace="~{${content} :: content}"></main>
+    <!-- Nội dung động -->
+    <main th:replace="~{${content} :: content}"></main>
 
-  <!-- Include Footer -->
-  <div th:replace="~{client/layout/footer :: footer}"></div>
+    <!-- Include Footer -->
+    <div th:replace="~{client/layout/footer :: footer}"></div>
 
-  <!-- JS
+    <!-- JS
 ============================================ -->
-  <!-- Modernizer JS -->
-  <script th:src="@{/assets/js/vendor/modernizr.min.js}"></script>
-  <!-- jQuery JS -->
-  <script th:src="@{/assets/js/vendor/jquery.js}"></script>
-  <!-- Bootstrap JS -->
-  <script th:src="@{/assets/js/vendor/bootstrap.min.js}"></script>
-  <!-- sal.js -->
-  <script th:src="@{/assets/js/vendor/sal.js}"></script>
-  <!-- Dark Mode Switcher -->
-  <script th:src="@{/assets/js/vendor/js.cookie.js}"></script>
-  <script th:src="@{/assets/js/vendor/jquery.style.switcher.js}"></script>
-  <script th:src="@{/assets/js/vendor/swiper.js}"></script>
-  <script th:src="@{/assets/js/vendor/jquery-appear.js}"></script>
-  <script th:src="@{/assets/js/vendor/odometer.js}"></script>
-  <script th:src="@{/assets/js/vendor/backtotop.js}"></script>
-  <script th:src="@{/assets/js/vendor/isotop.js}"></script>
-  <script th:src="@{/assets/js/vendor/imageloaded.js}"></script>
+    <!-- Modernizer JS -->
+    <script th:src="@{/assets/js/vendor/modernizr.min.js}"></script>
+    <!-- jQuery JS -->
+    <script th:src="@{/assets/js/vendor/jquery.js}"></script>
+    <!-- Bootstrap JS -->
+    <script th:src="@{/assets/js/vendor/bootstrap.min.js}"></script>
+    <!-- sal.js -->
+    <script th:src="@{/assets/js/vendor/sal.js}"></script>
+    <!-- Dark Mode Switcher -->
+    <script th:src="@{/assets/js/vendor/js.cookie.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery.style.switcher.js}"></script>
+    <script th:src="@{/assets/js/vendor/swiper.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery-appear.js}"></script>
+    <script th:src="@{/assets/js/vendor/odometer.js}"></script>
+    <script th:src="@{/assets/js/vendor/backtotop.js}"></script>
+    <script th:src="@{/assets/js/vendor/isotop.js}"></script>
+    <script th:src="@{/assets/js/vendor/imageloaded.js}"></script>
 
-  <script th:src="@{/assets/js/vendor/wow.js}"></script>
-  <script th:src="@{/assets/js/vendor/waypoint.min.js}"></script>
-  <script th:src="@{/assets/js/vendor/easypie.js}"></script>
-  <script th:src="@{/assets/js/vendor/text-type.js}"></script>
-  <script th:src="@{/assets/js/vendor/jquery-one-page-nav.js}"></script>
-  <script th:src="@{/assets/js/vendor/bootstrap-select.min.js}"></script>
-  <script th:src="@{/assets/js/vendor/jquery-ui.js}"></script>
-  <script th:src="@{/assets/js/vendor/magnify-popup.min.js}"></script>
-  <script th:src="@{/assets/js/vendor/paralax-scroll.js}"></script>
-  <script th:src="@{/assets/js/vendor/paralax.min.js}"></script>
-  <script th:src="@{/assets/js/vendor/countdown.js}"></script>
-  <script th:src="@{/assets/js/vendor/plyr.js}"></script>
-  <script th:src="@{/assets/js/vendor/jodit.min.js}"></script>
-  <script th:src="@{/assets/js/vendor/Sortable.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/wow.js}"></script>
+    <script th:src="@{/assets/js/vendor/waypoint.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/easypie.js}"></script>
+    <script th:src="@{/assets/js/vendor/text-type.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery-one-page-nav.js}"></script>
+    <script th:src="@{/assets/js/vendor/bootstrap-select.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/jquery-ui.js}"></script>
+    <script th:src="@{/assets/js/vendor/magnify-popup.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/paralax-scroll.js}"></script>
+    <script th:src="@{/assets/js/vendor/paralax.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/countdown.js}"></script>
+    <script th:src="@{/assets/js/vendor/plyr.js}"></script>
+    <script th:src="@{/assets/js/vendor/jodit.min.js}"></script>
+    <script th:src="@{/assets/js/vendor/Sortable.min.js}"></script>
 
-  <!-- Main JS -->
-  <script th:src="@{/assets/js/main.js}"></script>
+    <!-- Main JS -->
+    <script th:src="@{/assets/js/main.js}"></script>
 
-  <!-- JS tuỳ chỉnh của header -->
-  <th:block th:replace="~{client/layout/header :: header-scripts}"></th:block>
+    <!-- JS tuỳ chỉnh của header -->
+    <th:block th:replace="~{client/layout/header :: header-scripts}"></th:block>
 
-  <!-- JS tuỳ chỉnh từ file con nếu có -->
-  <th:block th:if="${scripts}">
-    <th:block th:replace="~{${scripts} :: scripts}"></th:block>
-  </th:block>
-</body>
+    <!-- Xóa dữ liệu create-course khi chuyển sang trang khác -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const url = "/instructor/create-course";
+        if (window.location.pathname !== url) {
+          localStorage.removeItem("lecturesPerModule");
+          localStorage.removeItem("modules");
+        }
+      });
+    </script>
 
+    <!-- JS tuỳ chỉnh từ file con nếu có -->
+    <th:block th:if="${scripts}">
+      <th:block th:replace="~{${scripts} :: scripts}"></th:block>
+    </th:block>
+  </body>
 </html>
