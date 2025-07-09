@@ -59,7 +59,6 @@ public class CreateCourseController {
             courseService.saveCourseModules(courseDTO, savedCourse);
             courseService.saveCourseMaterials(savedCourse, materialFiles);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             redirectAttributes.addFlashAttribute("createError", e.getMessage());
             return "redirect:/student/dashboard";
         }
