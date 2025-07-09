@@ -2,11 +2,11 @@ package com.poly.viettutor.controller;
 
 import com.poly.viettutor.dto.CreateCourseDTO;
 import com.poly.viettutor.model.Category;
+import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CategoryService;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
-import com.poly.viettutor.utils.FileUtils;
 
 import jakarta.validation.Valid;
 
@@ -45,6 +45,7 @@ public class CreateCourseController {
     @PostMapping("/instructor/create-course")
     public String createCourse(@Valid @ModelAttribute("course") CreateCourseDTO courseDTO, BindingResult result,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
+            @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             System.out.println(result);
@@ -52,13 +53,13 @@ public class CreateCourseController {
         }
 
         try {
-            String fileName = null;
             User user = userService.getCurrentUser();
-            if (imageFile != null && !imageFile.isEmpty()) {
-                fileName = FileUtils.saveImage(imageFile, "uploads/course/");
-            }
-            courseService.create(user, courseDTO, fileName);
+            Course savedCourse = courseService.create(user, courseDTO, imageFile);
+            courseService.saveCourseCategories(courseDTO, savedCourse);
+            courseService.saveCourseModules(courseDTO, savedCourse);
+            courseService.saveCourseMaterials(savedCourse, materialFiles);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             redirectAttributes.addFlashAttribute("createError", e.getMessage());
             return "redirect:/student/dashboard";
         }
