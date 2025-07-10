@@ -17,6 +17,8 @@ public class CourseModule {
 
     private String moduleTitle;
 
+    private Integer sortOrder;
+
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Lecture> lectures;
 

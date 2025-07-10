@@ -1,5 +1,20 @@
 -- CƠ SỞ DỮ LIỆU HỢP NHẤT viettutor
 
+-- Drop the database 'viettutor'
+-- Connect to the 'master' database to run this snippet
+USE master
+GO
+-- Uncomment the ALTER DATABASE statement below to set the database to SINGLE_USER mode if the drop database command fails because the database is in use.
+-- ALTER DATABASE viettutor SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+-- Drop the database if it exists
+IF EXISTS (
+    SELECT [name]
+        FROM sys.databases
+        WHERE [name] = N'viettutor'
+)
+DROP DATABASE viettutor
+GO
+
 -- Create a new database called 'viettutor'
 -- Connect to the 'master' database to run this snippet
 USE master
@@ -54,12 +69,11 @@ GO
 CREATE TABLE Courses (
     CourseId BIGINT PRIMARY KEY IDENTITY,
     Title NVARCHAR(255),
-    Description NVARCHAR(MAX),
-    Curriculum NVARCHAR(MAX),
-    AuthorName NVARCHAR(100),
+    Description NVARCHAR(255),
+    Overview NVARCHAR(MAX),
     Price DECIMAL(18,2),
     Discount DECIMAL(5,2),
-    CourseImage NVARCHAR(MAX),
+    CourseImage NVARCHAR(255),
     Status NVARCHAR(20) CHECK (Status IN (N'Pending', N'Approved', N'Rejected')),
     CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CreatedAt DATETIME DEFAULT GETDATE(),
@@ -68,22 +82,20 @@ CREATE TABLE Courses (
     -- ✅ Các cột bổ sung
     HasCertificate BIT DEFAULT 0,
     Language NVARCHAR(50),
-    TargetAudience NVARCHAR(100),
-    PassPercentage INT,
-    bannerImage NVARCHAR(MAX),
-    demoVideoUrl NVARCHAR(MAX)
+    SkillLevel NVARCHAR(20),
+    demoVideoUrl NVARCHAR(1000)
 );
 GO
 
 
--- 5
--- COURSE OBJECTIVES
-CREATE TABLE CourseObjectives (
-    ObjectiveId BIGINT PRIMARY KEY IDENTITY,
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    ObjectiveText NVARCHAR(500)
-);
-GO
+-- -- 5
+-- -- COURSE OBJECTIVES
+-- CREATE TABLE CourseObjectives (
+--     ObjectiveId BIGINT PRIMARY KEY IDENTITY,
+--     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+--     ObjectiveText NVARCHAR(500)
+-- );
+-- GO
 
 -- 6
 -- COURSE MODULES
@@ -92,7 +104,6 @@ CREATE TABLE CourseModules (
     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
     ModuleTitle NVARCHAR(255),
     SortOrder INT,
-    moduleName NVARCHAR(255)
 );
 GO
 
@@ -307,23 +318,23 @@ INSERT INTO PaymentMethods (PaymentMethod) VALUES
 
 -- 6. Courses (phụ thuộc Users)
 INSERT INTO Courses (
-    Title, Description, Curriculum, AuthorName, Price, Discount, CourseImage, Status, CreatedBy,
-    CreatedAt, UpdatedAt, bannerImage, demoVideoUrl, HasCertificate, Language, TargetAudience, PassPercentage
+    Title, Description, Overview, Price, Discount, CourseImage, Status, CreatedBy, CreatedAt, 
+    UpdatedAt, demoVideoUrl, HasCertificate, Language, SkillLevel
 ) VALUES 
-(N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Nội dung chi tiết...', N'Nguyễn Văn A', 500000, 0, N'image.png', N'Approved', 1, GETDATE(), GETDATE(), NULL, N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản', 80),
-(N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Nội dung chi tiết...', N'Trần Thị B', 400000, 10, N'image.png', N'Pending', 2, GETDATE(), GETDATE(), NULL, N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp', 85),
-(N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Nội dung chi tiết...', N'Nguyễn Văn A', 500000, 0, N'https://short.com.vn/08Wa', N'Approved', 1, GETDATE(), GETDATE(), NULL, NULL, 0, N'Tiếng Việt', N'Phổ thông', 70),
-(N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Nội dung chi tiết...', N'Nguyễn Văn A', 500000, 0, N'https://s.pro.vn/epcy', N'Approved', 1, GETDATE(), GETDATE(), NULL, N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao', 90);
+(N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'image.png', N'Approved', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
+(N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 400000, 10, N'image.png', N'Pending', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
+(N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://short.com.vn/08Wa', N'Approved', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
+(N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Approved', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao');
 
 -- 7. CourseCategories (phụ thuộc Courses + Categories)
 INSERT INTO CourseCategories (CourseId, CategoryId) VALUES 
 (1, 2), (2, 3);
 
 -- 8. CourseModules (phụ thuộc Courses)
-INSERT INTO CourseModules (CourseId, ModuleTitle, SortOrder, moduleName) VALUES 
-(1, N'Giới thiệu Python', 1, NULL),
-(1, N'Cấu trúc điều kiện và vòng lặp', 2, NULL),
-(2, N'Cơ bản HTML', 1, NULL);
+INSERT INTO CourseModules (CourseId, ModuleTitle, SortOrder) VALUES 
+(1, N'Giới thiệu Python', 1),
+(1, N'Cấu trúc điều kiện và vòng lặp', 2),
+(2, N'Cơ bản HTML', 1);
 
 -- 9. Lectures (phụ thuộc CourseModules)
 INSERT INTO Lectures (
@@ -333,10 +344,10 @@ INSERT INTO Lectures (
 (2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://video.example.com/python2', 1, 18),
 (3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://video.example.com/html1', 1, 14);
 
--- 10. CourseObjectives (phụ thuộc Courses)
-INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 
-(1, N'Understand basic Java syntax'),
-(1, N'Build OOP Java applications');
+-- -- 10. CourseObjectives (phụ thuộc Courses)
+-- INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 
+-- (1, N'Understand basic Java syntax'),
+-- (1, N'Build OOP Java applications');
 
 
 -- 11. CourseMaterials (phụ thuộc Courses)
