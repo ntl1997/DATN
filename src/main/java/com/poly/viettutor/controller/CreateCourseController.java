@@ -48,7 +48,7 @@ public class CreateCourseController {
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
-            System.out.println(result);
+            result.getFieldErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
             return loadPage(model);
         }
 

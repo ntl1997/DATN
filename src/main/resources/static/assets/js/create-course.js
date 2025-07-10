@@ -23,6 +23,7 @@ let currentEditingLesson = { moduleIndex: null, lessonIndex: null, domElement: n
 document.addEventListener("DOMContentLoaded", function () {
   setupPriceTabHandlers();
   setupCertificateHandlers();
+  setupAttachmentsHandlers();
   renderModules();
 });
 
@@ -54,6 +55,20 @@ function setupCertificateHandlers() {
 
   const checked = document.querySelector('input[name="radio-group"]:checked');
   hasCertInput.value = checked && checked.id !== "option1" ? 1 : 0;
+}
+
+function setupAttachmentsHandlers() {
+  const fileInput = document.getElementById("fileInput");
+  const fileCountText = document.getElementById("fileCountText");
+
+  fileInput.addEventListener("change", function () {
+    const count = fileInput.files.length;
+    if (count > 0) {
+      fileCountText.textContent = `Đã đính kèm ${count} tệp`;
+    } else {
+      fileCountText.textContent = "";
+    }
+  });
 }
 
 // ======================= MODULE =========================
