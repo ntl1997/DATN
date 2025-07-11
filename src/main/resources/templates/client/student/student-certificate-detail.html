@@ -54,8 +54,17 @@
             <div class="card shadow-sm">
               <div class="card-body text-center">
                 <!-- Tiêu đề + ngày cấp -->
-                <h3 class="fw-bold mb-3" th:text="${certificate.course.title}">Tên chứng chỉ</h3>
-                <span th:text="${#dates.format(certificate.issuedAt, 'dd/MM/yyyy')}">dd/MM/yyyy</span>
+                <h3
+                  class="fw-bold mb-3"
+                  th:text="${certificate.course != null ? certificate.course.title : 'Tên chứng chỉ'}"
+                >
+                  Tên chứng chỉ
+                </h3>
+                <span
+                  th:text="${certificate.issuedAt != null ? #dates.format(certificate.issuedAt, 'dd/MM/yyyy') : 'dd/MM/yyyy'}"
+                >
+                  dd/MM/yyyy
+                </span>
 
                 <!-- Kiểm tra nếu không có chứng chỉ -->
                 <div th:if="${certificate == null}">
