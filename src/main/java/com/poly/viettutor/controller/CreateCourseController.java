@@ -9,6 +9,7 @@ import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Slf4j
 @Controller
 public class CreateCourseController {
 
@@ -48,7 +50,6 @@ public class CreateCourseController {
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
-            result.getFieldErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
             return loadPage(model);
         }
 
@@ -59,8 +60,8 @@ public class CreateCourseController {
             courseService.saveCourseModules(courseDTO, savedCourse);
             courseService.saveCourseMaterials(savedCourse, materialFiles);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("createError", e.getMessage());
-            return "redirect:/student/dashboard";
+            log.error("Create course failed", e);
+            return "redirect:/student/dashboard?createFailed=true";
         }
 
         return "redirect:/student/dashboard?createSuccess=true";
