@@ -101,21 +101,19 @@ public class StudentController {
     Certificate certificate = certificateService.getCertificateById(id);
 
     // Kiểm tra nếu chứng chỉ không tồn tại
-    if (certificate != null) {
-        model.addAttribute("certificate", certificate);
-        model.addAttribute("content", "client/student/student-certificate-detail");
-        model.addAttribute("title", "Chi tiết chứng chỉ");
+    if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
+    model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
+    model.addAttribute("content", "client/error");
+    model.addAttribute("title", "Lỗi");
 
-        response.setStatus(HttpServletResponse.SC_OK); // Đảm bảo phản hồi OK
-    } else {
-        model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
-        model.addAttribute("content", "client/error");
-        model.addAttribute("title", "Lỗi");
-
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND); // Phản hồi lỗi nếu không tìm thấy
+    return "client/layout/index"; // trả về luôn, không cần setStatus
     }
 
+    model.addAttribute("certificate", certificate);
+    model.addAttribute("content", "client/student/student-certificate-detail");
+    model.addAttribute("title", "Chi tiết chứng chỉ");
     return "client/layout/index";
+
     }
 
     @GetMapping("/student-profile")
