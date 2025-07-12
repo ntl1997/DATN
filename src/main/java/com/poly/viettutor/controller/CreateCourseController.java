@@ -1,6 +1,6 @@
 package com.poly.viettutor.controller;
 
-import com.poly.viettutor.dto.CreateCourseDTO;
+import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
@@ -40,12 +40,12 @@ public class CreateCourseController {
     }
 
     @GetMapping("/instructor/create-course")
-    public String showCreateCourse(@ModelAttribute("course") CreateCourseDTO courseDTO, Model model) {
+    public String showCreateCourse(@ModelAttribute("course") CourseDTO courseDTO, Model model) {
         return loadPage(model);
     }
 
     @PostMapping("/instructor/create-course")
-    public String createCourse(@Valid @ModelAttribute("course") CreateCourseDTO courseDTO, BindingResult result,
+    public String createCourse(@Valid @ModelAttribute("course") CourseDTO courseDTO, BindingResult result,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             RedirectAttributes redirectAttributes, Model model) {
