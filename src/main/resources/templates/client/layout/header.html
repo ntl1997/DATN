@@ -223,43 +223,20 @@
                       </div>
                     </li>
                   </ul>
-                </div>
-                <<<<<<< HEAD <!-- non login -->
-                  <div class="header-info" sec:authorize="isAnonymous()">
-                    <ul class="quick-access">
-                      <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
-                        <a th:href="@{/login}">
-                          <i class="feather-user"></i>
-                          Đăng nhập
-                        </a>
-                      </li>
-
-                      <li class="access-icon rbt-user-wrapper right-align-dropdown d-block d-xl-none">
-                        <a class="rbt-round-btn" th:href="@{/login}"><i class="feather-user"></i></a>
-                      </li>
-                    </ul>
-                    =======
-                  </div>
-                  <!-- Nội dung của thanh điều hướng chính sẽ được hiển thị ở đây. -->
-                  <div class="rbt-main-navigation d-none d-xl-block">
-                    <nav class="mainmenu-nav">
-                      <ul class="mainmenu">
-                        <li><a href="#">Khóa học</a></li>
-                        <li><a th:href="@{/bai-viet}">Bài viết</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                        <li><a href="#">Giới thiệu về chúng tôi</a></li>
-                      </ul>
-                    </nav>
-                  </div>
-
-                  <div class="header-right">
-                    <div class="rbt-btn-wrapper d-none d-xl-block">
-                      <a class="rbt-btn rbt-switch-btn btn-gradient btn-sm hover-transform-none" href="#">
-                        <span data-text="Tham gia ngay">Tham gia ngay</span>
+                </div> <!-- non login -->
+                <div class="header-info" sec:authorize="isAnonymous()">
+                  <ul class="quick-access">
+                    <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
+                      <a th:href="@{/login}">
+                        <i class="feather-user"></i>
+                        Đăng nhập
                       </a>
-                      >>>>>>> dev
-                    </div>
-                  </div>
+                    </li>
+                    <li class="access-icon rbt-user-wrapper right-align-dropdown d-block d-xl-none">
+                      <a class="rbt-round-btn" th:href="@{/login}"><i class="feather-user"></i></a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
