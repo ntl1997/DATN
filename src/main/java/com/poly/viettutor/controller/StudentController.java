@@ -163,4 +163,19 @@ public class StudentController {
         return "client/layout/index";
     }
 
+    @PostMapping("/wishlist/delete/{id}")
+    public String deleteWishlist(@PathVariable("id") Integer wishlistId, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
+        wishListService.deleteByIdAndUser(wishlistId, user);
+        redirectAttributes.addFlashAttribute("success", "Đã xóa khỏi danh sách yêu thích!");
+        return "redirect:/student/student-wishlist";
+    }
+
+    @PostMapping("/wishlist/add/{courseId}")
+    public String addWishlist(@PathVariable("courseId") Integer courseId, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
+        wishListService.addWishlist(user, courseId);
+        redirectAttributes.addFlashAttribute("success", "Đã thêm vào danh sách yêu thích!");
+        return "redirect:/course-details/" + courseId;
+    }
 }
