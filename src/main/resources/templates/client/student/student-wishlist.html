@@ -24,45 +24,55 @@
                                 <div th:replace="~{client/student/studentSidebar :: student-sidebar}"></div>
                             </div>
                             <div class="col-lg-9">
+                                <div class="section-title">
+                                    <h4 class="rbt-title-style-3">Danh sách yêu thích</h4>
+                                </div>
                                 <div th:if="${#lists.isEmpty(wishlist)}">
                                     <p>Bạn chưa có khóa học yêu thích nào.</p>
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-12" th:each="item : ${wishlist}">
-                                    <div class="rbt-card variation-01 rbt-hover">
-                                        <div class="rbt-card-img">
-                                            <a th:href="@{|/course-details/${item.course.courseId}|}">
-                                                <img th:src="@{${item.course.courseImage}}" alt="Card image">
-                                            </a>
-                                        </div>
-                                        <div class="rbt-card-body">
-                                            <div class="rbt-card-top">
-                                                <div class="rbt-review">
-                                                    <div class="rating">
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                        <i class="fas fa-star"></i>
-                                                    </div>
-                                                    <!-- Có thể hiển thị số review nếu muốn -->
-                                                </div>
-                                                <div class="rbt-bookmark-btn">
-                                                    <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
-                                                </div>
+                                <div class="row" th:if="${!#lists.isEmpty(wishlist)}">
+                                    <div class="col-lg-4 col-md-6 col-12 mb-4" th:each="item : ${wishlist}">
+                                        <div class="rbt-card variation-01 rbt-hover">
+                                            <div class="rbt-card-img">
+                                                <a th:href="@{|/course-details/${item.course.courseId}|}">
+                                                    <img th:src="@{${item.course.courseImage}}" alt="Card image">
+                                                </a>
                                             </div>
-                                            <h4 class="rbt-card-title">
-                                                <a th:href="@{|/detail/${item.course.courseId}|}" th:text="${item.course.title}"></a>
-                                            </h4>
-                                            <ul class="rbt-meta">
-                                                <li><i class="feather-book">20 Lessons</i> <!-- lessons --> </li>
-                                                <li><i class="feather-users">100 Students</i> <!-- students --> </li>
-                                            </ul>
-                                            <div class="rbt-card-bottom">
-                                                <div class="rbt-price">
-                                                    <span class="current-price" th:text="${#numbers.formatDecimal(item.course.price, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
-                                                    <span class="off-price" th:if="${item.course.discount > 0}" th:text="${#numbers.formatDecimal(item.course.price + item.course.discount, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
+                                            <div class="rbt-card-body">
+                                                <div class="rbt-card-top">
+                                                    <div class="rbt-review">
+                                                        <div class="rating">
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                            <i class="fas fa-star"></i>
+                                                        </div>
+                                                        <!-- <span th:text="'(' + ${item.course.reviews.size()} + ' Reviews)'"></span> -->
+                                                        <!-- Có thể hiển thị số review nếu muốn -->
+                                                    </div>
+                                                    <div class="rbt-delete-btn">
+                                                        <form th:action="@{|/student/wishlist/delete/${item.wishlistId}|}" method="post" style="display:inline;">
+                                                            <button type="submit" class="rbt-round-btn" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                                                <i class="feather-trash-2"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                                <a class="rbt-btn-link" th:href="@{|/detail/${item.course.courseId}|}">Xem chi tiết<i class="feather-arrow-right"></i></a>
+                                                <h4 class="rbt-card-title mt-2">
+                                                    <a th:href="@{|/detail/${item.course.courseId}|}" th:text="${item.course.title}"></a>
+                                                </h4>
+                                                <ul class="rbt-meta mb-2">
+                                                    <li><i class="feather-book"><!-- <span th:text="${item.course.modules.size()}"></span> --> 20 Lessons</i></li>
+                                                    <li><i class="feather-users"><!-- <span th:text="${item.course.enrollments.size()}"></span> --> 100 Students</i></li>
+                                                </ul>
+                                                <div class="rbt-card-bottom d-flex justify-content-between align-items-center">
+                                                    <div class="rbt-price">
+                                                        <span class="current-price" th:text="${#numbers.formatDecimal(item.course.price, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
+                                                        <span class="off-price" th:if="${item.course.discount > 0}" th:text="${#numbers.formatDecimal(item.course.price + item.course.discount, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
+                                                    </div>
+                                                    <a class="rbt-btn-link" th:href="@{|/detail/${item.course.courseId}|}">Xem chi tiết<i class="feather-arrow-right"></i></a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
