@@ -6,7 +6,7 @@ import com.poly.viettutor.model.CourseMaterial;
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Lecture;
 import com.poly.viettutor.model.User;
-import com.poly.viettutor.dto.CreateCourseDTO;
+import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.repository.*;
 import com.poly.viettutor.utils.FileUtils;
@@ -53,7 +53,7 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-    public Course create(User user, CreateCourseDTO courseDTO, MultipartFile imageFile) throws IOException {
+    public Course create(User user, CourseDTO courseDTO, MultipartFile imageFile) throws IOException {
         String fileName = null;
         if (imageFile != null && !imageFile.isEmpty()) {
             fileName = FileUtils.saveImage(imageFile, "uploads/course/");
@@ -78,7 +78,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public void saveCourseCategories(CreateCourseDTO courseDTO, Course savedCourse) {
+    public void saveCourseCategories(CourseDTO courseDTO, Course savedCourse) {
         courseDTO.getCategoryIds().forEach(id -> {
             Category category = categoryRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -90,7 +90,7 @@ public class CourseService {
         });
     }
 
-    public void saveCourseModules(CreateCourseDTO courseDTO, Course savedCourse) {
+    public void saveCourseModules(CourseDTO courseDTO, Course savedCourse) {
         // Lưu các chương của khóa học
         AtomicInteger moduleIndex = new AtomicInteger(1);
         courseDTO.getModules().forEach(moduleDTO -> {
