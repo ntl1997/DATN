@@ -11,9 +11,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.poly.viettutor.service.CustomUserDetailsService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+        private final CustomUserDetailsService customUserDetailsService;
+
+        public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+                this.customUserDetailsService = customUserDetailsService;
+        }
 
         @Bean
         public PasswordEncoder passwordEncoder() {
@@ -41,8 +49,28 @@ public class SecurityConfig {
                 return http.build();
         }
 
+        @Bean
+        @Order(2)
+        public SecurityFilterChain instructorFilterChain(HttpSecurity http) throws Exception {
+                http.csrf(csrf -> csrf.disable());
+                http.securityMatcher("/instructor/**");
+                http.authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/instructor/login", "/instructor/register").permitAll()
+                                .anyRequest().hasRole("INSTRUCTOR"));
+                http.formLogin(login -> login
+                                .loginPage("/instructor/login")
+                                .loginProcessingUrl("/instructor/login")
+                                .defaultSuccessUrl("/instructor/dashboard")
+                                .permitAll());
+                http.logout(logout -> logout
+                                .logoutUrl("/instructor/logout")
+                                .logoutSuccessUrl("/instructor/login?logout")
+                                .permitAll());
+                return http.build();
+        }
+
         @Bean // SecurityFilterChain cho USER
-        @Order(2) // Đặt thứ tự ưu tiên cho SecurityFilterChain
+        @Order(3) // Đặt thứ tự ưu tiên cho SecurityFilterChain
         public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
                 http.csrf(csrf -> csrf.disable()); // Tắt CSRF (Cross-Site Request Forgery)
                 http.authorizeHttpRequests(auth -> auth // Cấu hình phân quyền cho các request
