@@ -18,10 +18,13 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
 
 @Table(name = "Users")
 @Entity
@@ -36,30 +39,34 @@ public class User {
     private long id;
 
     @Column(name = "FullName", nullable = false)
-    @NotEmpty(message = "Họ tên không được để trống")
+    @NotBlank(message = "Họ tên không được để trống")
+    @Size(max = 100, message = "Họ tên tối đa 100 ký tự")
     private String fullname;
 
     @Column(name = "Email", nullable = false, unique = true)
-    @NotEmpty(message = "Email không được để trống")
+    @NotBlank(message = "Email không được để trống")
+    @Email(message = "Email không đúng định dạng")
     private String email;
 
     @Column(name = "Image")
     private String image;
 
     @Column(name = "PasswordHash", nullable = false)
-    @NotEmpty(message = "Mật khẩu không được để trống")
     private String password;
 
     @Column(name = "CreatedAt", nullable = false)
     private Date createdAt = new Date();
 
     @Column(name = "PhoneNumber")
+    @Size(max = 20, message = "Số điện thoại tối đa 20 ký tự")
     private String phoneNumber;
 
     @Column(name = "Occupation")
+    @Size(max = 100, message = "Nghề nghiệp tối đa 100 ký tự")
     private String occupation;
 
     @Column(name = "Biography")
+    @Size(max = 1000, message = "Tiểu sử tối đa 1000 ký tự")
     private String biography;
 
     @ManyToMany(fetch = FetchType.EAGER) // EAGER để nạp dữ liệu role ngay khi nạp user

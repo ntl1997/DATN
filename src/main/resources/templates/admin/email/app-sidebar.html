@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="app-sidebar">
+        <!-- Sidebar -->           
+        <div class="sidebar-sticky pt-3">
+            <button class="btn btn-primary w-100 mb-4">Compose</button>
+            <ul class="nav flex-column mb-4">
+                <li class="nav-item"><a class="nav-link active" href="#">Inbox</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Sent</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Draft</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Starred</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Spam</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Trash</a></li>
+            </ul>
+            <h6 class="sidebar-heading px-3 mt-4 mb-1 text-muted">Labels</h6>
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item"><a class="nav-link" href="#"><span class="badge bg-success me-2">&nbsp;</span>Product</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><span class="badge bg-primary me-2">&nbsp;</span>Work</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><span class="badge bg-warning me-2">&nbsp;</span>Misc</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><span class="badge bg-danger me-2">&nbsp;</span>Family</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><span class="badge bg-info me-2">&nbsp;</span>Design</a></li>
+            </ul>
+        </div> 
+    </div>
+</body>
+
+</html>
