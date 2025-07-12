@@ -954,7 +954,11 @@
                         >
                       </div>
                       <div class="rbt-bookmark-btn">
-                        <a class="rbt-round-btn" title="Bookmark" href="#"><i class="feather-bookmark"></i></a>
+                        <form th:action="@{|/student/wishlist/add/${course.courseId}|}" method="post" style="display:inline;">
+                          <button type="submit" class="rbt-round-btn" title="Thêm vào danh sách yêu thích" onclick="return confirm('Bạn có chắc muốn thêm?')">
+                              <i class="feather-bookmark"></i>
+                          </button>
+                        </form>
                       </div>
                     </div>
 
