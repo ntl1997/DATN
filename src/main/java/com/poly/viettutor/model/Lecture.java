@@ -20,7 +20,6 @@ public class Lecture {
 
     private String lectureTitle;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String content;
 
     @Column(length = 500)
