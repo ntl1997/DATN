@@ -380,7 +380,7 @@ INSERT INTO Wishlist (UserId, CourseId) VALUES (3, 1);
 
 -- 18. Reviews (phụ thuộc Users + Courses)
 INSERT INTO Reviews (UserId, CourseId, Rating, Comment) VALUES 
-(3, 1, 5, N'Excellent Java course!'),
+(2, 1, 5, N'Excellent Java course!'),
 (3, 2, 4, N'Great content, could use more exercises');
 
 -- 19. Certificates (phụ thuộc Users + Courses)
