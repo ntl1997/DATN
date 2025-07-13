@@ -91,29 +91,20 @@ public class StudentController {
 
     // Hiển thị chi tiết chứng chỉ theo ID
     @GetMapping("/student-certificate/{id}")
-    public String showCertificateDetail(@PathVariable("id") Integer id, Model model, HttpServletResponse response) {
-    // Set header để ngừng cache
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setDateHeader("Expires", 0);
-
-    // Lấy chứng chỉ từ service
+    public String showCertificateDetail(@PathVariable("id") Integer id, Model model) {
     Certificate certificate = certificateService.getCertificateById(id);
 
-    // Kiểm tra nếu chứng chỉ không tồn tại
     if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
-    model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
-    model.addAttribute("content", "client/error");
-    model.addAttribute("title", "Lỗi");
-
-    return "client/layout/index"; // trả về luôn, không cần setStatus
+        model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
+        model.addAttribute("content", "client/error");
+        model.addAttribute("title", "Lỗi");
+        return "client/layout/index";
     }
 
     model.addAttribute("certificate", certificate);
     model.addAttribute("content", "client/student/student-certificate-detail");
     model.addAttribute("title", "Chi tiết chứng chỉ");
     return "client/layout/index";
-
     }
 
     @GetMapping("/student-profile")
