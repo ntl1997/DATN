@@ -1,108 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <th:block th:fragment="certificate-styles">
-      <style>
-        .certificate-frame {
-          position: relative;
-          border-radius: 15px;
-          overflow: hidden;
-          max-width: 100%;
-          height: auto;
-        }
+    <meta charset="UTF-8" />
+    <title>Chứng chỉ khoá học</title>
+    <style>
+      .certificate-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 0;
+      }
 
-        .certificate-text {
-          color: #fff;
-          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
+      .certificate-frame {
+        position: relative;
+        width: 988px;
+        height: 768px;
+        min-height: 768px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        background-color: #000; /* fallback nếu ảnh không load */
+      }
 
-        .certificate-text h4 {
-          font-size: 30px;
-          font-family: "Georgia", serif;
-          position: absolute;
-          top: 25%; /* Điều chỉnh vị trí */
-          left: 50%;
-          transform: translateX(-50%);
-        }
+      .certificate-frame img {
+        width: 100%;
+        height: 100%; /* ✅ giúp giữ đúng khung cao */
+        display: block;
+        object-fit: cover;
+      }
 
-        .certificate-text h5 {
-          font-size: 22px;
-          margin-top: 10px;
-          position: absolute;
-          top: 40%; /* Điều chỉnh vị trí */
-          left: 50%;
-          transform: translateX(-50%);
-        }
+      .certificate-title {
+        position: absolute;
+        top: 155px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
+        font-weight: bold;
+        color: #ffffff;
+        font-family: "Georgia", serif;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        white-space: nowrap;
+      }
 
-        .certificate-text p {
-          font-size: 18px;
-          margin-top: 5px;
-          position: absolute;
-          bottom: 25%; /* Điều chỉnh vị trí */
-          left: 50%;
-          transform: translateX(-50%);
-        }
-      </style>
-    </th:block>
+      .certificate-name {
+        position: absolute;
+        top: 250px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 26px;
+        font-weight: bold;
+        color: #ffffff;
+        font-family: "Georgia", serif;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        white-space: nowrap;
+      }
+
+      .certificate-year {
+        position: absolute;
+        top: 310px;
+        left: 780px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+        font-family: "Georgia", serif;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        white-space: nowrap;
+      }
+    </style>
   </head>
 
   <body>
     <div th:fragment="content">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-10">
+          <div class="col-lg-12">
             <div class="card shadow-sm">
               <div class="card-body text-center">
-                <!-- Tiêu đề + ngày cấp -->
-                <h3
-                  class="fw-bold mb-3"
-                  th:text="${certificate.course != null ? certificate.course.title : 'Tên chứng chỉ'}"
-                >
-                  Tên chứng chỉ
-                </h3>
-                <span
-                  th:text="${certificate.issuedAt != null ? #dates.format(certificate.issuedAt, 'dd/MM/yyyy') : 'dd/MM/yyyy'}"
-                >
-                  dd/MM/yyyy
-                </span>
+                <div th:if="${certificate != null}">
+                  <!-- Mô tả ngắn -->
+                  <h3 class="fw-bold mb-2" th:text="${certificate.course.title}">Tên khoá học</h3>
+                  <span class="d-block mb-3" th:text="${#dates.format(certificate.issuedAt, 'dd/MM/yyyy')}">
+                    Ngày cấp
+                  </span>
 
-                <!-- Kiểm tra nếu không có chứng chỉ -->
-                <div th:if="${certificate == null}">
-                  <p class="text-danger">Không tìm thấy chứng chỉ.</p>
+                  <!-- Khung chứng chỉ -->
+                  <div class="certificate-wrapper">
+                    <div class="certificate-frame">
+                      <img src="/assets/images/others/background-certificate.png" alt="Certificate Background" />
+
+                      <div class="certificate-title" th:text="${certificate.course.title}">Tên chứng chỉ</div>
+
+                      <div class="certificate-name" th:text="${certificate.user.fullName}">Tên người đạt</div>
+
+                      <div class="certificate-year" th:text="${#dates.format(certificate.issuedAt, 'yyyy')}">
+                        Năm cấp
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Khung ảnh chứng chỉ -->
-                <div
-                  class="certificate-frame mt-4 border rounded shadow-sm position-relative"
-                  th:if="${certificate != null}"
-                >
-                  <img
-                    src="/assets/images/others/backround-certificate.png"
-                    alt="Certificate Background"
-                    class="img-fluid w-100"
-                  />
-                  <div
-                    class="certificate-text position-absolute top-50 start-50 translate-middle text-center w-75 text-white"
-                  >
-                    <h4
-                      class="fw-bold"
-                      th:text="${certificate.user != null ? certificate.user.fullName : 'Tên người đạt'}"
-                    >
-                      Tên người đạt
-                    </h4>
-                    <h5
-                      class="mt-2"
-                      th:text="${certificate.course != null ? certificate.course.title : 'Tên chứng chỉ'}"
-                    >
-                      Tên chứng chỉ
-                    </h5>
-                    <p
-                      class="mt-1"
-                      th:text="${certificate.issuedAt != null ? #dates.format(certificate.issuedAt, 'yyyy') : 'Năm cấp'}"
-                    >
-                      Năm cấp
-                    </p>
-                  </div>
+                <div th:unless="${certificate != null}">
+                  <p class="text-danger">Không tìm thấy chứng chỉ.</p>
                 </div>
 
                 <a th:href="@{/student/student-certificate}" class="btn btn-secondary mt-4 d-block">
