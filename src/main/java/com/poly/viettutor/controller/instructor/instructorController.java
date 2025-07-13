@@ -1,6 +1,7 @@
 package com.poly.viettutor.controller.instructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
@@ -54,9 +55,11 @@ public class instructorController {
         System.out.println("Course Count = " + courseCount);
         System.out.println("Student Count = " + studentCount);
         System.out.println("Total Revenue = " + totalRevenue);
-
+        Long instructorId = currentUser.getId();
+        List<Object[]> courseSummary = courseService.getCourseSummaryByInstructor(instructorId);
         model.addAttribute("title", "Trang giảng viên");
         model.addAttribute("courseCount", courseCount);
+        model.addAttribute("courseSummary", courseSummary);
         model.addAttribute("studentCount", studentCount);
         model.addAttribute("totalRevenue", totalRevenue);
         model.addAttribute("content", "client/instructor/instructor-dashboard");
