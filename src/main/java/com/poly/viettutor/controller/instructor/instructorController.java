@@ -37,7 +37,8 @@ public class instructorController {
     private final OrderService orderService;
 
     public instructorController(UserService userService, CourseService courseService,
-            EnrollmentService enrollmentService, OrderDetailService orderDetailService, ReviewService reviewService) {
+            EnrollmentService enrollmentService, OrderDetailService orderDetailService, ReviewService reviewService,
+            OrderService orderService) {
         this.userService = userService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
@@ -146,21 +147,17 @@ public class instructorController {
     @GetMapping("/instructor/order-history")
     public String instructorOrderHistory(Model model) {
         User currentUser = userService.getCurrentUser();
+        model.addAttribute("name", currentUser != null ? currentUser.getFullname() : "Unknown");
 
         if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-
-            List<Order> instructorOrderHistory = orderService
+            List<Order> orders = orderService
                     .findOrdersByInstructorCoursesPurchasedByOthers(currentUser.getId());
-            model.addAttribute("orders", instructorOrderHistory);
-        } else {
-            model.addAttribute("name", "Unknown");
-            model.addAttribute("orders", List.of());
+            model.addAttribute("orders", orders);
+            model.addAttribute("instructorId", currentUser.getId());
         }
 
         model.addAttribute("title", "Lịch sử đơn hàng");
         model.addAttribute("content", "client/instructor/instructor-order-history");
-
         return "client/layout/index";
     }
 
