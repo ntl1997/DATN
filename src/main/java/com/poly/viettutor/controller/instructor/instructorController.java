@@ -47,14 +47,6 @@ public class instructorController {
             model.addAttribute("name", "Unknown");
         }
 
-        if (currentUser != null) {
-            System.out.println("Instructor ID: " + currentUser.getId());
-        } else {
-            System.out.println("Instructor is null");
-        }
-        System.out.println("Course Count = " + courseCount);
-        System.out.println("Student Count = " + studentCount);
-        System.out.println("Total Revenue = " + totalRevenue);
         Long instructorId = currentUser.getId();
         List<Object[]> courseSummary = courseService.getCourseSummaryByInstructor(instructorId);
         model.addAttribute("title", "Trang giảng viên");
