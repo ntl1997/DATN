@@ -23,6 +23,9 @@ import com.poly.viettutor.utils.FileUtils;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 @Controller
 @RequestMapping("/student")
 public class StudentController {
@@ -176,6 +179,16 @@ public class StudentController {
         User user = userService.getCurrentUser();
         wishListService.addWishlist(user, courseId);
         redirectAttributes.addFlashAttribute("success", "Đã thêm vào danh sách yêu thích!");
-        return "redirect:/course-details/" + courseId;
+        return "redirect:" + getReferer();
+    }
+
+    // Lấy URL trang trước đó
+    private String getReferer() {
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs != null) {
+            String referer = attrs.getRequest().getHeader("Referer");
+            return referer != null ? referer : "/";
+        }
+        return "/";
     }
 }
