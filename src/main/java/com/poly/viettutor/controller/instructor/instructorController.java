@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.Review;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
@@ -145,13 +146,21 @@ public class instructorController {
     @GetMapping("/instructor/order-history")
     public String instructorOrderHistory(Model model) {
         User currentUser = userService.getCurrentUser();
+
         if (currentUser != null) {
             model.addAttribute("name", currentUser.getFullname());
+
+            List<Order> instructorOrderHistory = orderService
+                    .findOrdersByInstructorCoursesPurchasedByOthers(currentUser.getId());
+            model.addAttribute("orders", instructorOrderHistory);
         } else {
             model.addAttribute("name", "Unknown");
+            model.addAttribute("orders", List.of());
         }
+
         model.addAttribute("title", "Lịch sử đơn hàng");
         model.addAttribute("content", "client/instructor/instructor-order-history");
+
         return "client/layout/index";
     }
 
