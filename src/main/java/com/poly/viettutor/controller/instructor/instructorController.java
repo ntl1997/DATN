@@ -19,6 +19,7 @@ import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.EnrollmentService;
 import com.poly.viettutor.service.OrderDetailService;
+import com.poly.viettutor.service.OrderService;
 import com.poly.viettutor.service.ReviewService;
 import com.poly.viettutor.service.UserService;
 
@@ -32,6 +33,7 @@ public class instructorController {
     private final EnrollmentService enrollmentService;
     private final OrderDetailService orderDetailService;
     private final ReviewService reviewService;
+    private final OrderService orderService;
 
     public instructorController(UserService userService, CourseService courseService,
             EnrollmentService enrollmentService, OrderDetailService orderDetailService, ReviewService reviewService) {
@@ -40,6 +42,7 @@ public class instructorController {
         this.enrollmentService = enrollmentService;
         this.orderDetailService = orderDetailService;
         this.reviewService = reviewService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/instructor/dashboard")
