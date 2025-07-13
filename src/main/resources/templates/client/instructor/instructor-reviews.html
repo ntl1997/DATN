@@ -161,7 +161,7 @@
                                                     <a href="#" class="tab-button" id="given-tab" data-bs-toggle="tab"
                                                         data-bs-target="#given" role="tab" aria-controls="given"
                                                         aria-selected="false">
-                                                        <span class="title">Đã cho đi</span>
+                                                        <span class="title">Đã bình luận</span>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -251,11 +251,17 @@
                                                                             <i class="feather-edit"></i> Edit
                                                                         </a>
 
-                                                                        <a class="rbt-btn-link left-icon"
-                                                                            th:href="@{'/review/delete/' + ${review.reviewId}}"
-                                                                            onclick="return confirm('Are you sure you want to delete this review?');">
-                                                                            <i class="feather-trash-2"></i> Delete
-                                                                        </a>
+                                                                        <form
+                                                                            th:action="@{'/review/delete/' + ${review.reviewId}}"
+                                                                            method="post" style="display:inline;"
+                                                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa review này?');">
+                                                                            <button type="submit"
+                                                                                class="rbt-btn-link left-icon btn btn-link"
+                                                                                style="text-decoration: none;">
+                                                                                <i class="feather-trash-2"></i> Delete
+                                                                            </button>
+                                                                        </form>
+
                                                                     </div>
 
                                                                     <div th:id="'editForm__' + ${review.reviewId}"
@@ -280,7 +286,10 @@
                                                                                     required></textarea>
                                                                             </div>
                                                                             <button type="submit"
-                                                                                class="btn btn-primary btn-sm">Save</button>
+                                                                                class="btn btn-primary btn-sm"
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn lưu thay đổi không?');">
+                                                                                Save
+                                                                            </button>
                                                                             <button type="button"
                                                                                 class="btn btn-secondary btn-sm"
                                                                                 th:onclick="'document.getElementById(\'editForm__' + ${review.reviewId} + '\').style.display = \'none\';'">
