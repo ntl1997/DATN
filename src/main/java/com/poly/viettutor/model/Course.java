@@ -63,4 +63,10 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseCategory> courseCategories;
 
+    @Transient
+    private int reviewCount;
+
+    @Transient
+    private int rating;
+
 }
