@@ -32,4 +32,12 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    public void deleteReviewById(Long id) {
+        if (reviewRepository.existsById(id)) {
+            reviewRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Không tìm thấy review với ID: " + id);
+        }
+    }
+
 }
