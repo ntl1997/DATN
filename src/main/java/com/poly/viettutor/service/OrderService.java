@@ -84,9 +84,12 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-
     public List<Order> findByUser(User user) {
         return orderRepository.findByUser(user);
+    }
+
+    public List<Order> findOrdersByInstructorCoursesPurchasedByOthers(Long instructorId) {
+        return orderRepository.findOrdersOfCoursesCreatedByInstructorButPurchasedByOthers(instructorId);
     }
 
 }
