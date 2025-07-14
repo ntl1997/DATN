@@ -3,70 +3,76 @@
   <head>
     <meta charset="UTF-8" />
     <title>Chứng chỉ khoá học</title>
-    <style>
-      .certificate-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 30px 0;
-      }
 
-      .certificate-frame {
-        position: relative;
-        width: 988px;
-        height: 768px;
-        min-height: 768px;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        background-color: #000; /* fallback nếu ảnh không load */
-      }
+    <!-- ✅ Fragment chứa CSS sẽ được nhúng vào layout/index.html -->
+    <th:block th:fragment="styles">
+      <style>
+        .certificate-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 30px 0;
+        }
 
-      .certificate-frame img {
-        width: 100%;
-        height: 100%; /* ✅ giúp giữ đúng khung cao */
-        display: block;
-        object-fit: cover;
-      }
+        .certificate-frame {
+          position: relative;
+          width: 988px;
+          height: 768px;
+          border-radius: 15px;
+          overflow: hidden;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+          background-color: #000;
+        }
 
-      .certificate-title {
-        position: absolute;
-        top: 155px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 22px;
-        font-weight: bold;
-        color: #ffffff;
-        font-family: "Georgia", serif;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        white-space: nowrap;
-      }
+        .certificate-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
 
-      .certificate-name {
-        position: absolute;
-        top: 250px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 26px;
-        font-weight: bold;
-        color: #ffffff;
-        font-family: "Georgia", serif;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        white-space: nowrap;
-      }
+        .certificate-title {
+          position: absolute;
+          top: 165px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 28px;
+          font-weight: bold;
+          color: #ffffff;
+          font-family: "Georgia", serif;
+          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+          white-space: nowrap;
+          z-index: 1;
+        }
 
-      .certificate-year {
-        position: absolute;
-        top: 310px;
-        left: 780px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #ffffff;
-        font-family: "Georgia", serif;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-        white-space: nowrap;
-      }
-    </style>
+        .certificate-name {
+          position: absolute;
+          top: 255px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 26px;
+          font-weight: bold;
+          color: #ffffff;
+          font-family: "Georgia", serif;
+          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+          white-space: nowrap;
+          z-index: 1;
+        }
+
+        .certificate-year {
+          position: absolute;
+          top: 342px;
+          left: 807px;
+          font-size: 20px;
+          font-weight: bold;
+          color: #ffffff;
+          font-family: "Georgia", serif;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+          white-space: nowrap;
+          z-index: 1;
+        }
+      </style>
+    </th:block>
   </head>
 
   <body>
@@ -77,24 +83,15 @@
             <div class="card shadow-sm">
               <div class="card-body text-center">
                 <div th:if="${certificate != null}">
-                  <!-- Mô tả ngắn -->
-                  <h3 class="fw-bold mb-2" th:text="${certificate.course.title}">Tên khoá học</h3>
-                  <span class="d-block mb-3" th:text="${#dates.format(certificate.issuedAt, 'dd/MM/yyyy')}">
-                    Ngày cấp
-                  </span>
-
                   <!-- Khung chứng chỉ -->
                   <div class="certificate-wrapper">
                     <div class="certificate-frame">
                       <img src="/assets/images/others/background-certificate.png" alt="Certificate Background" />
 
+                      <!-- Nội dung đè trên ảnh -->
                       <div class="certificate-title" th:text="${certificate.course.title}">Tên chứng chỉ</div>
-
                       <div class="certificate-name" th:text="${certificate.user.fullname}">Tên người đạt</div>
-
-                      <div class="certificate-year" th:text="${#dates.format(certificate.issuedAt, 'yyyy')}">
-                        Năm cấp
-                      </div>
+                      <div class="certificate-year" th:text="${#dates.format(certificate.issuedAt, 'yyyy')}">2025</div>
                     </div>
                   </div>
                 </div>
