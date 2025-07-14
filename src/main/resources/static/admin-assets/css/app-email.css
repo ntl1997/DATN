@@ -1,0 +1,33 @@
+.sidebar {
+    border-right: 1px solid #eee;
+    background: #fff;
+}
+.sidebar .nav-link.active {
+    color: #1976d2;
+    font-weight: 600;
+    background: #f0f7ff;
+    border-radius: 6px;
+}
+.list-group-item {
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.list-group-item:hover {
+    background: #e3f2fd;
+    box-shadow: 0 2px 8px rgba(80,80,120,0.06);
+}
+
+/* Email chưa đọc */
+.list-group-item.unread {
+    background: #f0f7ff;
+    font-weight: 600;
+    border-left: 4px solid #1976d2;
+}
+
+/* Email đã đọc */
+.list-group-item.read {
+    background: #fff;
+    font-weight: 400;
+    border-left: 4px solid transparent;
+    color: #7a7f9a;
+}

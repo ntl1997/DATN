@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div th:fragment="content">
+      <main class="rbt-main-wrapper">
+        <div class="rbt-create-course-area bg-color-white rbt-section-gap">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col-lg-8">
+                <form
+                  th:action="@{/instructor/create-course}"
+                  th:object="${course}"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <div class="rbt-accordion-style rbt-accordion-01 rbt-accordion-06 accordion">
+                    <div class="accordion" id="tutionaccordionExamplea1">
+                      <!-- Thông tin cơ bản khóa học -->
+                      <div class="accordion-item card">
+                        <h2 class="accordion-header card-header" id="accOne">
+                          <button
+                            class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accCollapseOne"
+                            aria-expanded="true"
+                            aria-controls="accCollapseOne"
+                          >
+                            Thông tin khóa học
+                          </button>
+                        </h2>
+                        <div
+                          id="accCollapseOne"
+                          class="accordion-collapse collapse show"
+                          aria-labelledby="accOne"
+                          data-bs-parent="#tutionaccordionExamplea1"
+                        >
+                          <div class="accordion-body card-body">
+                            <!-- Start Course Field Wrapper  -->
+                            <div class="rbt-course-field-wrapper rbt-default-form">
+                              <div class="course-field mb--15">
+                                <label for="field-1" th:unless="${#fields.hasErrors('title')}"
+                                  >Tiêu đề khóa học *
+                                </label>
+                                <label for="field-1" th:errors="*{title}" class="text-danger"></label>
+                                <input
+                                  th:field="*{title}"
+                                  id="field-1"
+                                  type="text"
+                                  placeholder="Tiêu đề của khóa học"
+                                />
+                                <small class="d-block mt_dec--5">
+                                  <i class="feather-info"></i> Tiêu đề nên để 30 ký tự.
+                                </small>
+                              </div>
+
+                              <div class="course-field mb--15">
+                                <label for="field-2" th:unless="${#fields.hasErrors('description')}"
+                                  >Mô tả khóa học *
+                                </label>
+                                <label for="field-2" th:errors="*{description}" class="text-danger"></label>
+                                <input
+                                  th:field="*{description}"
+                                  id="field-2"
+                                  type="text"
+                                  placeholder="Mô tả ngắn gọn khóa học"
+                                />
+                                <small class="d-block mt_dec--5">
+                                  <i class="feather-info"></i> Mô tả khóa học nên viết ngắn gọn.
+                                </small>
+                              </div>
+
+                              <div class="course-field mb--15">
+                                <label for="videoUrl" th:unless="${#fields.hasErrors('demoVideoUrl')}">
+                                  Video giới thiệu khóa học *
+                                </label>
+                                <label for="videoUrl" th:errors="*{demoVideoUrl}" class="text-danger"></label>
+                                <input
+                                  th:field="*{demoVideoUrl}"
+                                  id="videoUrl"
+                                  type="text"
+                                  placeholder="Thêm video url của bạn vào đây."
+                                />
+                                <small class="d-block mt_dec--5">
+                                  <i class="feather-info"></i> Ví dụ:
+                                  <a href="https://www.youtube.com/watch?v=yourvideoid"
+                                    >https://www.youtube.com/watch?v=yourvideoid</a
+                                  >
+                                </small>
+                              </div>
+
+                              <hr class="mt--10 mb--20" />
+
+                              <div class="course-field mb--15">
+                                <label for="overview" th:unless="${#fields.hasErrors('overview')}">
+                                  Nội dung chi tiết *
+                                </label>
+                                <label for="overview" th:errors="*{overview}" class="text-danger"></label>
+                                <textarea
+                                  th:field="*{overview}"
+                                  id="overview"
+                                  rows="10"
+                                  placeholder="Mô tả chi tiết nội dung khóa học"
+                                ></textarea>
+                                <!-- <br /> -->
+                                <small class="d-block mt_dec--5">
+                                  <i class="feather-info"></i> Cho phép HTML hoặc văn bản thuần túy. Trường này được sử
+                                  dụng để tìm kiếm, vì vậy hãy mô tả rõ ràng!
+                                </small>
+                              </div>
+
+                              <hr class="mt--10 mb--20" />
+
+                              <div class="course-field mb--20">
+                                <label for="field-4" th:unless="${#fields.hasErrors('skillLevel')}">Trình độ *</label>
+                                <label for="field-4" th:errors="*{skillLevel}" class="text-danger"></label>
+                                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                                  <select th:field="*{skillLevel}" class="w-100" data-live-search="true" id="field-4">
+                                    <option th:value="__NULL__">Chọn trình độ khóa học</option>
+                                    <option th:value="Beginner">Cơ bản</option>
+                                    <option th:value="Intermediate">Trung cấp</option>
+                                    <option th:value="Advanced">Nâng cao</option>
+                                    <option th:value="Expert">Chuyên nghiệp</option>
+                                  </select>
+                                </div>
+                                <small class="d-block mt_dec--5"
+                                  ><i class="feather-info"></i> Trình độ khóa học.
+                                </small>
+                              </div>
+
+                              <div class="course-field mb--15">
+                                <label for="language" th:unless="${#fields.hasErrors('language')}">Ngôn ngữ *</label>
+                                <label for="language" th:errors="*{language}" class="text-danger"></label>
+                                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                                  <select th:field="*{language}" class="w-100" data-live-search="true" id="language">
+                                    <option th:value="__NULL__">Chọn ngôn ngữ khóa học</option>
+                                    <option th:value="English">English</option>
+                                    <option th:value="Vietnamese">Tiếng Việt</option>
+                                    <option th:value="Chinese">中文</option>
+                                    <option th:value="Japanese">日本語</option>
+                                    <option th:value="French">Français</option>
+                                  </select>
+                                </div>
+                                <small class="d-block mt_dec--5">
+                                  <i class="feather-info"></i> Ngôn ngữ nội dụng khóa học.
+                                </small>
+                              </div>
+
+                              <div class="course-field mb--15">
+                                <label for="category" th:unless="${#fields.hasErrors('categoryIds')}">Danh mục *</label>
+                                <label for="category" th:errors="*{categoryIds}" class="text-danger">
+                                  Chọn ít nhất 1 danh mục!
+                                </label>
+                                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                                  <select
+                                    th:field="*{categoryIds}"
+                                    id="category"
+                                    class="w-100"
+                                    data-live-search="true"
+                                    title="Chọn ít nhất 1 danh mục"
+                                    multiple
+                                    data-size="7"
+                                    data-actions-box="true"
+                                    data-selected-text-format="count > 2"
+                                  >
+                                    <option
+                                      th:each="category : ${categories}"
+                                      th:text="${category.name}"
+                                      th:value="${category.categoryId}"
+                                    >
+                                      Tên danh mục
+                                    </option>
+                                  </select>
+                                </div>
+                                <small class="d-block mt_dec--5">
+                                  <i class="feather-info"></i> Các danh mục khóa học.
+                                </small>
+                              </div>
+
+                              <hr class="mt--10 mb--20" />
+
+                              <div class="course-field mb--15 edu-bg-gray">
+                                <h6>Giá khóa học</h6>
+                                <input type="hidden" th:field="*{price}" id="hiddenPrice" />
+                                <div class="rbt-course-settings-content">
+                                  <div class="row">
+                                    <div class="col-lg-4">
+                                      <div class="advance-tab-button advance-tab-button-1">
+                                        <ul class="rbt-default-tab-button nav nav-tabs" id="coursePrice" role="tablist">
+                                          <li class="nav-item w-100" role="presentation">
+                                            <a
+                                              href="#"
+                                              class="active"
+                                              id="paid-tab"
+                                              data-bs-toggle="tab"
+                                              data-bs-target="#paid"
+                                              role="tab"
+                                              aria-controls="paid"
+                                              aria-selected="true"
+                                            >
+                                              <span>Trả phí</span>
+                                            </a>
+                                          </li>
+                                          <li class="nav-item w-100" role="presentation">
+                                            <a
+                                              href="#"
+                                              id="free-tab"
+                                              data-bs-toggle="tab"
+                                              data-bs-target="#free"
+                                              role="tab"
+                                              aria-controls="free"
+                                              aria-selected="false"
+                                            >
+                                              <span>Miễn phí</span>
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                      <div class="tab-content">
+                                        <div
+                                          class="tab-pane fade advance-tab-content-1 active show"
+                                          id="paid"
+                                          role="tabpanel"
+                                          aria-labelledby="paid-tab"
+                                        >
+                                          <div class="course-field mb--15">
+                                            <label for="regularPrice" th:unless="${#fields.hasErrors('price')}">
+                                              Giá (VND)
+                                            </label>
+                                            <label for="regularPrice" th:errors="*{price}" class="text-danger"></label>
+                                            <input id="regularPrice" type="number" placeholder="Giá khóa học (VND)" />
+                                            <small class="d-block mt_dec--5"
+                                              ><i class="feather-info"></i> Giá đã bao gồm phí tác giả bạn sẽ nhận được.
+                                            </small>
+                                          </div>
+                                          <div class="course-field mb--15">
+                                            <label for="discountedPrice">Giảm giá (%)</label>
+                                            <input
+                                              th:field="*{discount}"
+                                              id="discountedPrice"
+                                              type="number"
+                                              placeholder="Giảm giá, VD: 78"
+                                            />
+                                            <small class="d-block mt_dec--5">
+                                              <i class="feather-info"></i> Giá đã bao gồm phí tác giả bạn sẽ nhận được.
+                                            </small>
+                                          </div>
+                                        </div>
+
+                                        <div
+                                          class="tab-pane fade advance-tab-content-1"
+                                          id="free"
+                                          role="tabpanel"
+                                          aria-labelledby="free-tab"
+                                        >
+                                          <div class="course-field">
+                                            <p class="b3">Khóa học này miễn phí cho tất cả mọi người.</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <hr class="mt--10 mb--20" />
+
+                              <div class="course-field mb--20">
+                                <h6>Ảnh khóa học</h6>
+                                <div class="rbt-create-course-thumbnail upload-area">
+                                  <div class="upload-area">
+                                    <div class="brows-file-wrapper" data-black-overlay="9">
+                                      <!-- actual upload which is hidden -->
+                                      <input
+                                        name="createinputfile"
+                                        id="createinputfile"
+                                        type="file"
+                                        class="inputfile"
+                                      />
+                                      <img
+                                        id="createfileImage"
+                                        th:src="@{/assets/images/others/thumbnail-placeholder.svg}"
+                                        alt="file image"
+                                      />
+                                      <!-- our custom upload button -->
+                                      <label class="d-flex" for="createinputfile" title="No File Choosen">
+                                        <i class="feather-upload"></i>
+                                        <span class="text-center">Chọn tệp</span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <small
+                                  ><i class="feather-info"></i> <b>Size:</b> 700x430 pixels, <b>File Support:</b> JPG,
+                                  JPEG, PNG, GIF, WEBP</small
+                                >
+                              </div>
+                            </div>
+                            <!-- End Course Field Wrapper  -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Các chương, bài học và tài liệu -->
+                      <div class="accordion-item card">
+                        <h2 class="accordion-header card-header" id="accThree">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accCollapseThree"
+                            aria-expanded="false"
+                            aria-controls="accCollapseThree"
+                          >
+                            Xây dựng khóa học
+                          </button>
+                        </h2>
+                        <div id="accCollapseThree" class="accordion-collapse collapse" aria-labelledby="accThree">
+                          <div class="accordion-body card-body">
+                            <!-- Thông báo lỗi Validate -->
+                            <p th:errors="*{modules}" class="text-danger"></p>
+
+                            <!-- Chèn thêm các chương và bài giảng mới bằng JS -->
+                            <div id="module-container"></div>
+
+                            <button
+                              class="rbt-btn btn-md btn-gradient hover-icon-reverse"
+                              type="button"
+                              data-bs-toggle="modal"
+                              data-bs-target="#CreateModuleModel"
+                            >
+                              <span class="icon-reverse-wrapper">
+                                <span class="btn-text">Thêm chủ đề mới</span>
+                                <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                                <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                              </span>
+                            </button>
+
+                            <button
+                              type="button"
+                              class="rbt-btn btn-md btn-border hover-icon-reverse"
+                              onclick="document.getElementById('fileInput').click()"
+                            >
+                              <span class="icon-reverse-wrapper">
+                                <span class="btn-text">Tải lên tệp đính kèm</span>
+                                <span class="btn-icon"><i class="feather-paperclip"></i></span>
+                                <span class="btn-icon"><i class="feather-paperclip"></i></span>
+                              </span>
+                            </button>
+
+                            <!-- Số lượng file -->
+                            <span id="fileCountText" style="margin-left: 10px; font-style: italic; color: #666"></span>
+
+                            <input type="file" id="fileInput" name="attachments" style="display: none" multiple />
+
+                            <hr class="mt--10 mb--20" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Chứng chỉ -->
+                      <div class="accordion-item card">
+                        <input type="hidden" th:field="*{hasCertificate}" id="hasCertificate" />
+                        <h2 class="accordion-header card-header" id="accSeven">
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#accCollapseEight"
+                            aria-expanded="false"
+                            aria-controls="accCollapseEight"
+                          >
+                            Mẫu chứng chỉ
+                          </button>
+                        </h2>
+                        <div
+                          id="accCollapseEight"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="accSeven"
+                          data-bs-parent="#tutionaccordionExamplea1"
+                        >
+                          <div class="accordion-body card-body">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <div class="tab-content">
+                                  <div
+                                    class="tab-pane fade advance-tab-content-1 active show"
+                                    id="landscape"
+                                    role="tabpanel"
+                                    aria-labelledby="landscape-tab"
+                                  >
+                                    <div class="row g-5 mt--10">
+                                      <!-- Start Single Certificate  -->
+                                      <div class="col-lg-4">
+                                        <div class="certificate-inner rbt-image-checkbox">
+                                          <input type="radio" id="option1" name="radio-group" value="option1" checked />
+                                          <label for="option1"
+                                            ><img
+                                              th:src="@{/assets/images/icons/certificate-none.svg}"
+                                              alt="Certificate Image"
+                                          /></label>
+                                        </div>
+                                      </div>
+                                      <!-- End Single Certificate  -->
+
+                                      <!-- Start Single Certificate  -->
+                                      <div class="col-lg-4">
+                                        <div class="certificate-inner rbt-image-checkbox">
+                                          <input type="radio" id="option2" name="radio-group" value="option2" />
+                                          <label for="option2"
+                                            ><img
+                                              th:src="@{/assets/images/others/preview-01.png}"
+                                              alt="Certificate Image"
+                                          /></label>
+                                        </div>
+                                      </div>
+                                      <!-- End Single Certificate  -->
+
+                                      <!-- Start Single Certificate  -->
+                                      <div class="col-lg-4">
+                                        <div class="certificate-inner rbt-image-checkbox">
+                                          <input type="radio" id="option3" name="radio-group" value="option3" />
+                                          <label for="option3"
+                                            ><img
+                                              th:src="@{/assets/images/others/preview-02.png}"
+                                              alt="Certificate Image"
+                                          /></label>
+                                        </div>
+                                      </div>
+                                      <!-- End Single Certificate  -->
+
+                                      <!-- Start Single Certificate  -->
+                                      <div class="col-lg-4">
+                                        <div class="certificate-inner rbt-image-checkbox">
+                                          <input type="radio" id="option4" name="radio-group" value="option4" />
+                                          <label for="option4"
+                                            ><img
+                                              th:src="@{/assets/images/others/preview-03.png}"
+                                              alt="Certificate Image"
+                                          /></label>
+                                        </div>
+                                      </div>
+                                      <!-- End Single Certificate  -->
+
+                                      <!-- Start Single Certificate  -->
+                                      <div class="col-lg-4">
+                                        <div class="certificate-inner rbt-image-checkbox">
+                                          <input type="radio" id="option5" name="radio-group" value="option5" />
+                                          <label for="option5"
+                                            ><img
+                                              th:src="@{/assets/images/others/preview-04.png}"
+                                              alt="Certificate Image"
+                                          /></label>
+                                        </div>
+                                      </div>
+                                      <!-- End Single Certificate  -->
+
+                                      <!-- Start Single Certificate  -->
+                                      <div class="col-lg-4">
+                                        <div class="certificate-inner rbt-image-checkbox">
+                                          <input type="radio" id="option6" name="radio-group" value="option6" />
+                                          <label for="option6"
+                                            ><img
+                                              th:src="@{/assets/images/others/preview-05.png}"
+                                              alt="Certificate Image"
+                                          /></label>
+                                        </div>
+                                      </div>
+                                      <!-- End Single Certificate  -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt--10 row g-5">
+                    <div class="col-lg-4">
+                      <a
+                        class="rbt-btn hover-icon-reverse bg-primary-opacity w-100 text-center"
+                        href="course-details.html"
+                      >
+                        <span class="icon-reverse-wrapper">
+                          <span class="btn-text">Xem trước</span>
+                          <span class="btn-icon"><i class="feather-eye"></i></span>
+                          <span class="btn-icon"><i class="feather-eye"></i></span>
+                        </span>
+                      </a>
+                    </div>
+                    <div class="col-lg-8">
+                      <button type="submit" class="rbt-btn btn-gradient hover-icon-reverse w-100 text-center" href="#">
+                        <span class="icon-reverse-wrapper">
+                          <span class="btn-text">Tạo khóa học</span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="rbt-create-course-sidebar course-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                  <div class="inner">
+                    <div class="section-title mb--30">
+                      <h4 class="title">Mẹo Tải Lên Khóa Học</h4>
+                    </div>
+                    <div class="rbt-course-upload-tips">
+                      <ul class="rbt-list-style-1">
+                        <li><i class="feather-check"></i> Đặt giá cho khóa học hoặc để miễn phí.</li>
+                        <li><i class="feather-check"></i> Kích thước chuẩn cho ảnh đại diện khóa học là 700x430.</li>
+                        <li><i class="feather-check"></i> Phần video điều khiển video tổng quan về khóa học.</li>
+                        <li>
+                          <i class="feather-check"></i> Trình tạo khóa học là nơi bạn tạo và sắp xếp nội dung khóa học.
+                        </li>
+                        <li>
+                          <i class="feather-check"></i> Thêm các chủ đề trong phần Trình tạo khóa học để tạo bài học,
+                          bài kiểm tra và bài tập.
+                        </li>
+                        <li>
+                          <i class="feather-check"></i> Yêu cầu tiên quyết là các khóa học cơ bản cần hoàn thành trước
+                          khi học khóa này.
+                        </li>
+                        <li>
+                          <i class="feather-check"></i> Thông tin từ phần Dữ liệu bổ sung sẽ hiển thị trên trang chi
+                          tiết khóa học.
+                        </li>
+                        <li><i class="feather-check"></i> Dung lượng tối đã mỗi file là 10 mb.</li>
+                        <li><i class="feather-check"></i> Tổng dung lượng tối đa các file tải lên là 100 mb</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Start Create Module Modal -->
+        <div
+          class="rbt-default-modal modal fade"
+          id="CreateModuleModel"
+          tabindex="-1"
+          aria-labelledby="CreateModuleModelLabel"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                  <i class="feather-x"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="inner rbt-default-form">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h5 class="modal-title mb--20" id="CreateModuleModelLabel">Thêm chủ đề</h5>
+                      <div class="course-field mb--20">
+                        <label for="create-module-title">Tên chủ đề</label>
+                        <input id="create-module-title" type="text" />
+                        <small
+                          ><i class="feather-info"></i> Tiêu đề chủ đề sẽ được hiển thị công khai ở những nơi cần thiết.
+                          Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="top-circle-shape"></div>
+              <div class="modal-footer pt--30">
+                <button class="rbt-btn btn-md btn-gradient hover-icon-reverse" type="button" onclick="addModule()">
+                  <span class="icon-reverse-wrapper">
+                    <span class="btn-text">Thêm chủ đề mới</span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                  </span>
+                </button>
+                <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                  Hủy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Create Module Modal -->
+
+        <!-- Start Update Module Model -->
+        <div
+          class="rbt-default-modal modal fade"
+          id="UpdateModuleModel"
+          tabindex="-1"
+          aria-labelledby="UpdateModuleModelLabel"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                  <i class="feather-x"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="inner rbt-default-form">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h5 class="modal-title mb--20" id="UpdateModuleModelLabel">Cập nhật chủ đề</h5>
+                      <div class="course-field mb--20">
+                        <label for="update-module-title">Tên chủ đề</label>
+                        <input id="update-module-title" type="text" />
+                        <small
+                          ><i class="feather-info"></i> Tiêu đề chủ đề sẽ được hiển thị công khai ở những nơi cần thiết.
+                          Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.</small
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="top-circle-shape"></div>
+              <div class="modal-footer pt--30">
+                <button class="rbt-btn btn-md btn-gradient hover-icon-reverse" type="button" onclick="updateModule()">
+                  <span class="icon-reverse-wrapper">
+                    <span class="btn-text">Cập nhật chủ đề</span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                    <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                  </span>
+                </button>
+                <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                  Hủy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Update Module Model -->
+
+        <!-- Start Create Lesson Modal -->
+        <div class="rbt-default-modal modal fade" id="create-lesson" tabindex="-1" aria-labelledby="LessonLabel">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                  <i class="feather-x"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="inner rbt-default-form">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h5 class="modal-title mb--20" id="LessonLabel">Thêm bài học</h5>
+                      <div class="course-field mb--20">
+                        <label for="create-lesson-title">Tên bài học</label>
+                        <input id="create-lesson-title" type="text" />
+                        <small>
+                          <i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần thiết.
+                          Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.
+                        </small>
+                      </div>
+                      <div class="course-field mb--20">
+                        <label for="create-lesson-content">Tóm tắt bài học</label>
+                        <textarea id="create-lesson-content" rows="5"></textarea
+                        ><small>
+                          <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
+                          động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
+                          (tooltip) cạnh tên bài học.
+                        </small>
+                      </div>
+
+                      <div class="course-field mb--20">
+                        <h6>Đường link URL video</h6>
+                        <div class="rbt-modern-select bg-transparent height-45 mb--10">
+                          <input id="create-videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
+                        </div>
+                      </div>
+
+                      <div class="course-field mb--15">
+                        <label>Thời lượng video</label>
+                        <div class="row row--15">
+                          <div class="col-lg-12">
+                            <input id="create-videoDuration" type="number" placeholder="00" />
+                            <small class="d-block mt_dec--5"><i class="feather-info"></i> Phút.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="top-circle-shape"></div>
+              <div class="modal-footer pt--30 justify-content-between">
+                <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                  Hủy
+                </button>
+                <div class="content">
+                  <button type="button" class="rbt-btn btn-md" onclick="saveLesson()">Lưu bài học</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Create Lesson Modal -->
+
+        <!-- Start Update Lesson Modal -->
+        <div class="rbt-default-modal modal fade" id="update-lesson" tabindex="-1" aria-labelledby="LessonLabel">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                  <i class="feather-x"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="inner rbt-default-form">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h5 class="modal-title mb--20" id="LessonLabel">Thêm bài học</h5>
+                      <div class="course-field mb--20">
+                        <label for="update-lesson-title">Tên bài học</label>
+                        <input id="update-lesson-title" type="text" />
+                        <small>
+                          <i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần thiết.
+                          Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.
+                        </small>
+                      </div>
+                      <div class="course-field mb--20">
+                        <label for="update-lesson-content">Tóm tắt bài học</label>
+                        <textarea id="update-lesson-content" rows="5"></textarea
+                        ><small>
+                          <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
+                          động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
+                          (tooltip) cạnh tên bài học.
+                        </small>
+                      </div>
+
+                      <div class="course-field mb--20">
+                        <h6>Đường link URL video</h6>
+                        <div class="rbt-modern-select bg-transparent height-45 mb--10">
+                          <input id="update-videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
+                        </div>
+                      </div>
+
+                      <div class="course-field mb--15">
+                        <label>Thời lượng video</label>
+                        <div class="row row--15">
+                          <div class="col-lg-12">
+                            <input id="update-videoDuration" type="number" placeholder="00" />
+                            <small class="d-block mt_dec--5"><i class="feather-info"></i> Phút.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="top-circle-shape"></div>
+              <div class="modal-footer pt--30 justify-content-between">
+                <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                  Hủy
+                </button>
+                <div class="content">
+                  <button type="button" class="rbt-btn btn-md" onclick="updateLesson()">Lưu bài học</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Update Lesson Modal -->
+
+        <div class="rbt-separator-mid">
+          <div class="container">
+            <hr class="rbt-separator m-0" />
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <th:block th:fragment="scripts">
+      <script th:src="@{/assets/js/create-course.js}"></script>
+    </th:block>
+  </body>
+</html>

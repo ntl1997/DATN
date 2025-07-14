@@ -15,13 +15,24 @@ import com.poly.viettutor.model.Certificate;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CertificateService;
+import com.poly.viettutor.model.Order;
+import com.poly.viettutor.model.OrderDetail;
+import com.poly.viettutor.model.User;
+import com.poly.viettutor.model.Wishlist;
+import com.poly.viettutor.service.OrderService;
 import com.poly.viettutor.service.UserService;
+import com.poly.viettutor.service.WishListService;
 import com.poly.viettutor.utils.FileUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Controller
 @RequestMapping("/student")
@@ -29,6 +40,12 @@ public class StudentController {
 
     @Autowired
     private UserService UserService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private WishListService wishListService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -123,9 +140,18 @@ public class StudentController {
 
     @PostMapping("/profile/update")
     public String updateProfile(
-            @ModelAttribute("user") User updatedUser,
+            @Valid @ModelAttribute("user") User updatedUser,
+            BindingResult bindingResult,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", updatedUser);
+            model.addAttribute("content", "client/student/student-settings");
+            model.addAttribute("title", "Cài đặt tài khoản");
+            return "client/layout/index";
+        }
 
         User currentUser = userService.getCurrentUser();
 
@@ -169,19 +195,21 @@ public class StudentController {
             return "redirect:/student/student-settings";
         }
 
-        // So sánh mật khẩu hiện tại (đã mã hóa)
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu hiện tại không đúng!");
             return "redirect:/student/student-settings";
         }
 
-        // Kiểm tra xác nhận mật khẩu mới
+        if (newPassword.length() < 6) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu mới phải có ít nhất 6 ký tự!");
+            return "redirect:/student/student-settings";
+        }
+
         if (!newPassword.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("error", "Mật khẩu mới và xác nhận không khớp!");
             return "redirect:/student/student-settings";
         }
 
-        // Cập nhật mật khẩu mới (mã hóa)
         user.setPassword(passwordEncoder.encode(newPassword));
         userService.save(user);
 
@@ -197,5 +225,57 @@ public class StudentController {
         model.addAttribute("scripts", "client/student/student-settings");
         model.addAttribute("title", "Cài đặt tài khoản");
         return "client/layout/index";
+    }
+
+    @GetMapping("/student-order-history")
+    public String showStudentHistory(Model model) {
+        User user = userService.getCurrentUser();
+        List<Order> orderList = orderService.findByUser(user);
+        List<OrderDetail> orderDetails = orderList.stream()
+                .flatMap(order -> order.getOrderDetails().stream()
+                        .peek(detail -> detail.setOrder(order))) // đảm bảo order không bị lazy
+                .toList();
+        model.addAttribute("user", user);
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("content", "client/student/student-history");
+        model.addAttribute("title", "Lịch sử đơn hàng");
+        return "client/layout/index";
+    }
+
+    @GetMapping("/student-wishlist")
+    public String showStudentWishlist(Model model) {
+        User user = userService.getCurrentUser();
+        List<Wishlist> wishlist = wishListService.getWishlistByUser(user);
+        model.addAttribute("user", user);
+        model.addAttribute("wishlist", wishlist);
+        model.addAttribute("content", "client/student/student-wishlist");
+        model.addAttribute("title", "Danh sách yêu thích");
+        return "client/layout/index";
+    }
+
+    @PostMapping("/wishlist/delete/{id}")
+    public String deleteWishlist(@PathVariable("id") Integer wishlistId, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
+        wishListService.deleteByIdAndUser(wishlistId, user);
+        redirectAttributes.addFlashAttribute("success", "Đã xóa khỏi danh sách yêu thích!");
+        return "redirect:/student/student-wishlist";
+    }
+
+    @PostMapping("/wishlist/add/{courseId}")
+    public String addWishlist(@PathVariable("courseId") Integer courseId, RedirectAttributes redirectAttributes) {
+        User user = userService.getCurrentUser();
+        wishListService.addWishlist(user, courseId);
+        redirectAttributes.addFlashAttribute("success", "Đã thêm vào danh sách yêu thích!");
+        return "redirect:" + getReferer();
+    }
+
+    // Lấy URL trang trước đó
+    private String getReferer() {
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs != null) {
+            String referer = attrs.getRequest().getHeader("Referer");
+            return referer != null ? referer : "/";
+        }
+        return "/";
     }
 }
