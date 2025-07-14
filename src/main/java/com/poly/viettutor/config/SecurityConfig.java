@@ -17,12 +17,6 @@ import com.poly.viettutor.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-        private final CustomUserDetailsService customUserDetailsService;
-
-        public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
-                this.customUserDetailsService = customUserDetailsService;
-        }
-
         @Bean
         public PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder(); // mã hóa mật khẩu Bcrypt
