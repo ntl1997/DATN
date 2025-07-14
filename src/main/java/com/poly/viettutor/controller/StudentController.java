@@ -104,8 +104,13 @@ public class StudentController {
     model.addAttribute("certificate", certificate);
     model.addAttribute("content", "client/student/student-certificate-detail");
     model.addAttribute("title", "Chi tiết chứng chỉ");
+
+    // ✅ Nhúng style fragment từ file chứng chỉ
+    model.addAttribute("styles", "client/student/student-certificate-detail");
+
     return "client/layout/index";
     }
+
 
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {
