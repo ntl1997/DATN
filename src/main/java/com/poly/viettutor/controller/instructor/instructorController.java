@@ -1,6 +1,8 @@
 package com.poly.viettutor.controller.instructor;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,11 +11,13 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.Review;
 import com.poly.viettutor.model.User;
@@ -164,11 +168,45 @@ public class instructorController {
     @GetMapping("/instructor/courses")
     public String instructorCourses(Model model) {
         User currentUser = userService.getCurrentUser();
+
         if (currentUser != null) {
             model.addAttribute("name", currentUser.getFullname());
+
+            List<Course> approvedCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                    "approved");
+            List<Course> pendingCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                    "pending");
+
+            // Tính review count và rating cho approvedCourses
+            for (Course course : approvedCourses) {
+                List<Review> reviews = course.getReviews();
+                int reviewCount = reviews.size();
+                double avgRating = reviewCount > 0
+                        ? reviews.stream().mapToInt(Review::getRating).average().orElse(0)
+                        : 0;
+                course.setReviewCount(reviewCount);
+                course.setRating((int) avgRating);
+            }
+
+            // Tính review count và rating cho pendingCourses
+            for (Course course : pendingCourses) {
+                List<Review> reviews = course.getReviews();
+                int reviewCount = reviews.size();
+                double avgRating = reviewCount > 0
+                        ? reviews.stream().mapToInt(Review::getRating).average().orElse(0)
+                        : 0;
+                course.setReviewCount(reviewCount);
+                course.setRating((int) avgRating);
+            }
+
+            model.addAttribute("approvedCourses", approvedCourses);
+            model.addAttribute("pendingCourses", pendingCourses);
         } else {
             model.addAttribute("name", "Unknown");
+            model.addAttribute("approvedCourses", Collections.emptyList());
+            model.addAttribute("pendingCourses", Collections.emptyList());
         }
+
         model.addAttribute("title", "My Courses");
         model.addAttribute("content", "client/instructor/instructor-course");
         return "client/layout/index";
@@ -218,13 +256,36 @@ public class instructorController {
     @GetMapping("/instructor/settings")
     public String instructorSettings(Model model) {
         User currentUser = userService.getCurrentUser();
+
         if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
+            model.addAttribute("user", currentUser);
         } else {
-            model.addAttribute("name", "Unknown");
+            model.addAttribute("message", "Bạn cần đăng nhập để chỉnh sửa thông tin.");
         }
-        model.addAttribute("title", "Settings");
+
+        model.addAttribute("title", "Cài đặt");
         model.addAttribute("content", "client/instructor/instructor-settings");
         return "client/layout/index";
     }
+
+    @PostMapping("/instructor/settings")
+    public String updateInstructorSettings(@ModelAttribute("user") User updatedUser,
+            RedirectAttributes redirectAttributes) {
+        User currentUser = userService.getCurrentUser();
+
+        if (currentUser != null) {
+            currentUser.setFullname(updatedUser.getFullname());
+            currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
+            currentUser.setOccupation(updatedUser.getOccupation());
+            currentUser.setBiography(updatedUser.getBiography());
+
+            userService.save(currentUser);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật thông tin thành công!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Bạn cần đăng nhập để cập nhật thông tin.");
+        }
+
+        return "redirect:/instructor/settings";
+    }
+
 }
