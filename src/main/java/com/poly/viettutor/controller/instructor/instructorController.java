@@ -59,15 +59,10 @@ public class instructorController {
         long studentCount = 0L;
         BigDecimal totalRevenue = BigDecimal.ZERO;
 
-        if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-            courseCount = courseService.countCoursesByUser(currentUser);
-            studentCount = enrollmentService.countStudentsByInstructor(currentUser);
-            totalRevenue = orderDetailService.getTotalRevenueByInstructor(currentUser.getId());
-        } else {
-            model.addAttribute("name", "Unknown");
-        }
-
+        courseCount = courseService.countCoursesByUser(currentUser);
+        studentCount = enrollmentService.countStudentsByInstructor(currentUser);
+        totalRevenue = orderDetailService.getTotalRevenueByInstructor(currentUser.getId());
+        model.addAttribute("user", currentUser);
         Long instructorId = currentUser.getId();
         List<Object[]> courseSummary = courseService.getCourseSummaryByInstructor(instructorId);
         model.addAttribute("title", "Trang giảng viên");
@@ -80,40 +75,16 @@ public class instructorController {
         return "client/layout/index";
     }
 
-    @GetMapping("/instructor/profile")
-    public String instructorProfile(Model model) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            model.addAttribute("user", currentUser);
-
-            String roleName = currentUser.getRoles().stream()
-                    .findFirst()
-                    .map(r -> r.getRoleName())
-                    .orElse("No Role");
-
-            model.addAttribute("role", roleName);
-
-            model.addAttribute("title", "Hồ sơ giảng viên");
-            model.addAttribute("content", "client/instructor/instructor-profile");
-        } else {
-            model.addAttribute("error", "User not found");
-        }
-        return "client/layout/index";
-    }
-
     @GetMapping("/instructor/reviews")
     public String instructorReviews(Model model, HttpServletRequest request) {
         User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-            List<Review> reviews = reviewService.getReviewsByInstructor(currentUser.getId());
-            List<Review> reviewsGive = reviewService.getReviewsWrittenByInstructor(currentUser.getId());
-            model.addAttribute("reviews", reviews);
-            model.addAttribute("reviewsGive", reviewsGive);
-        } else {
-            model.addAttribute("name", "Unknown");
-            model.addAttribute("reviews", List.of());
-        }
+        model.addAttribute("user", currentUser);
+        List<Review> reviews = reviewService.getReviewsByInstructor(currentUser.getId());
+        List<Review> reviewsGive = reviewService.getReviewsWrittenByInstructor(currentUser.getId());
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("reviewsGive", reviewsGive);
+
+        model.addAttribute("reviews", List.of());
         model.addAttribute("title", "Đánh giá");
         model.addAttribute("content", "client/instructor/instructor-reviews");
         return "client/layout/index";
@@ -146,23 +117,6 @@ public class instructorController {
             redirectAttributes.addFlashAttribute("error", "Không thể xóa review: " + e.getMessage());
         }
         return "redirect:/instructor/reviews";
-    }
-
-    @GetMapping("/instructor/order-history")
-    public String instructorOrderHistory(Model model) {
-        User currentUser = userService.getCurrentUser();
-        model.addAttribute("name", currentUser != null ? currentUser.getFullname() : "Unknown");
-
-        if (currentUser != null) {
-            List<Order> orders = orderService
-                    .findOrdersByInstructorCoursesPurchasedByOthers(currentUser.getId());
-            model.addAttribute("orders", orders);
-            model.addAttribute("instructorId", currentUser.getId());
-        }
-
-        model.addAttribute("title", "Lịch sử đơn hàng");
-        model.addAttribute("content", "client/instructor/instructor-order-history");
-        return "client/layout/index";
     }
 
     @GetMapping("/instructor/courses")
@@ -198,7 +152,7 @@ public class instructorController {
                 course.setReviewCount(reviewCount);
                 course.setRating((int) avgRating);
             }
-
+            model.addAttribute("user", currentUser);
             model.addAttribute("approvedCourses", approvedCourses);
             model.addAttribute("pendingCourses", pendingCourses);
         } else {
@@ -215,51 +169,12 @@ public class instructorController {
     @GetMapping("/instructor/announcements")
     public String instructorAnnouncements(Model model) {
         User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-        } else {
-            model.addAttribute("name", "Unknown");
-        }
 
+        model.addAttribute("user", currentUser);
         model.addAttribute("title", "Announcements");
         model.addAttribute("content", "client/instructor/instructor-announcements");
 
         return "client/layout/index";
-    }
-
-    @GetMapping("/instructor/settings")
-    public String instructorSettings(Model model) {
-        User currentUser = userService.getCurrentUser();
-
-        if (currentUser != null) {
-            model.addAttribute("user", currentUser);
-        } else {
-            model.addAttribute("message", "Bạn cần đăng nhập để chỉnh sửa thông tin.");
-        }
-
-        model.addAttribute("title", "Cài đặt");
-        model.addAttribute("content", "client/instructor/instructor-settings");
-        return "client/layout/index";
-    }
-
-    @PostMapping("/instructor/settings")
-    public String updateInstructorSettings(@ModelAttribute("user") User updatedUser,
-            RedirectAttributes redirectAttributes) {
-        User currentUser = userService.getCurrentUser();
-
-        if (currentUser != null) {
-            currentUser.setFullname(updatedUser.getFullname());
-            currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
-            currentUser.setOccupation(updatedUser.getOccupation());
-            currentUser.setBiography(updatedUser.getBiography());
-
-            userService.save(currentUser);
-            redirectAttributes.addFlashAttribute("success", "Cập nhật thông tin thành công!");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Bạn cần đăng nhập để cập nhật thông tin.");
-        }
-
-        return "redirect:/instructor/settings";
     }
 
 }
