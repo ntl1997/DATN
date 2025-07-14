@@ -90,7 +90,7 @@
 
                       <div class="certificate-title" th:text="${certificate.course.title}">Tên chứng chỉ</div>
 
-                      <div class="certificate-name" th:text="${certificate.user.fullName}">Tên người đạt</div>
+                      <div class="certificate-name" th:text="${certificate.user.fullname}">Tên người đạt</div>
 
                       <div class="certificate-year" th:text="${#dates.format(certificate.issuedAt, 'yyyy')}">
                         Năm cấp
