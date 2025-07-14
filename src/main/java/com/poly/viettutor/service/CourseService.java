@@ -153,4 +153,16 @@ public class CourseService {
                 .mapToInt(Lecture::getDuration)
                 .sum();
     }
+
+    public long countCoursesByUser(User user) {
+        return courseRepository.countCoursesByUserId(user.getId());
+    }
+
+    public List<Object[]> getCourseSummaryByInstructor(Long instructorId) {
+        return courseRepository.findCourseSummaryByInstructorNative(instructorId);
+    }
+
+    public List<Course> findCoursesByInstructorIdAndStatus(Long instructorId, String status) {
+        return courseRepository.findByCreatedByIdAndStatus(instructorId, status);
+    }
 }
