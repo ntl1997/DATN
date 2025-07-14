@@ -120,7 +120,7 @@
                 </div>
 
                 <!-- is login -->
-                <div class="header-info" sec:authorize="isAuthenticated()">
+                <div class="header-info" sec:authorize="isAuthenticated() and hasRole('ROLE_STUDENT')">
                   <ul class="quick-access">
                     <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
                       <a href="#">
@@ -223,7 +223,109 @@
                       </div>
                     </li>
                   </ul>
-                </div> <!-- non login -->
+                </div>
+
+                <!-- is login Instructor-->
+                <div class="header-info" sec:authorize="isAuthenticated() and hasRole('ROLE_INSTRUCTOR')">
+                  <ul class="quick-access">
+                    <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
+                      <a href="#">
+                        <i class="feather-user"></i>
+                        <span sec:authentication="name"></span>
+                      </a>
+                      <div class="rbt-user-menu-list-wrapper">
+                        <div class="inner">
+                          <div class="rbt-admin-profile">
+                            <div class="admin-thumbnail">
+                              <img th:src="@{/assets/images/team/avatar.jpg}" alt="User Images" />
+                            </div>
+                            <div class="admin-info">
+                              <span sec:authentication="name" class="name">RainbowIT</span>
+                              <a class="rbt-btn-link color-primary" href="profile.html">Xem hồ sơ</a>
+                            </div>
+                          </div>
+                          <ul class="user-list-wrapper">
+                            <li>
+                              <a th:href="@{/instructor/dashboard}">
+                                <i class="feather-home"></i>
+                                <span>Bảng điều khiển</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="instructor-enrolled-courses.html">
+                                <i class="feather-shopping-bag"></i>
+                                <span>Khoá học của tôi</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="instructor-my-quiz-attempts.html">
+                                <i class="feather-list"></i>
+                                <span>Danh sách chứng chỉ</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="instructor-order-history.html">
+                                <i class="feather-clock"></i>
+                                <span>Lịch sử đơn hàng</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a th:href="@{/logout}">
+                                <i class="feather-log-out"></i>
+                                <span>Đăng xuất</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+
+                    <li class="access-icon rbt-user-wrapper right-align-dropdown d-block d-xl-none">
+                      <a class="rbt-round-btn" href="#"><i class="feather-user"></i></a>
+                      <div class="rbt-user-menu-list-wrapper">
+                        <div class="inner">
+                          <div class="rbt-admin-profile">
+                            <div class="admin-thumbnail">
+                              <img th:src="@{/assets/images/team/avatar.jpg}" alt="User Images" />
+                            </div>
+                            <div class="admin-info">
+                              <span class="name">RainbowIT</span>
+                              <a class="rbt-btn-link color-primary" href="profile.html">Xem hồ sơ</a>
+                            </div>
+                          </div>
+                          <ul class="user-list-wrapper">
+                            <li>
+                              <a th:href="@{/instructor/dashboard}">
+                                <i class="feather-home"></i>
+                                <span>Bảng điều khiển</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a href="instructor-enrolled-courses.html">
+                                <i class="feather-shopping-bag"></i>
+                                <span>Khoá học của tôi</span>
+                              </a>
+
+
+                              <!-- non login -->
+                              <div class="header-info" sec:authorize="isAnonymous()">
+                                <ul class="quick-access">
+                                  <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
+                                    <a th:href="@{/login}">
+                                      <i class="feather-user"></i>
+                                      Đăng nhập
+                                    </a>
+                                  </li>
+                                  <li class="access-icon rbt-user-wrapper right-align-dropdown d-block d-xl-none">
+                                    <a class="rbt-round-btn" th:href="@{/login}"><i class="feather-user"></i></a>
+                                  </li>
+                                </ul>
+                              </div>
+                        </div>
+                      </div>
+                </div>
+
+                <!-- non login -->
                 <div class="header-info" sec:authorize="isAnonymous()">
                   <ul class="quick-access">
                     <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
