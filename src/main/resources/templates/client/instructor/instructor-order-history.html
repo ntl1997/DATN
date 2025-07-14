@@ -184,7 +184,9 @@
                                                         <td>
                                                             <span
                                                                 th:class="'rbt-badge-5 ' + (${order.status} == 'paid' ? 'bg-color-success-opacity color-success' : 'bg-color-danger-opacity color-danger')"
-                                                                th:text="${order.status == 'paid' ? 'Thành công' : 'Thất bại'}"></span>
+                                                                th:text="${order.status == 'paid' ? 'Thành công' : 'Thất bại'}"
+                                                                style="font-size: 15px;">
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                 </tbody>
