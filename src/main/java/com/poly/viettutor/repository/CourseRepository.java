@@ -28,4 +28,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "WHERE c.CreatedBy = :instructorId " +
             "GROUP BY c.CourseId, c.Title", nativeQuery = true)
     List<Object[]> findCourseSummaryByInstructorNative(@Param("instructorId") Long instructorId);
+
+    List<Course> findByCreatedByIdAndStatus(Long instructorId, String status);
 }
