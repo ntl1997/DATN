@@ -49,28 +49,8 @@ public class SecurityConfig {
                 return http.build();
         }
 
-        @Bean
-        @Order(2)
-        public SecurityFilterChain instructorFilterChain(HttpSecurity http) throws Exception {
-                http.csrf(csrf -> csrf.disable());
-                http.securityMatcher("/instructor/**");
-                http.authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/instructor/login", "/instructor/register").permitAll()
-                                .anyRequest().hasRole("INSTRUCTOR"));
-                http.formLogin(login -> login
-                                .loginPage("/instructor/login")
-                                .loginProcessingUrl("/instructor/login")
-                                .defaultSuccessUrl("/instructor/dashboard")
-                                .permitAll());
-                http.logout(logout -> logout
-                                .logoutUrl("/instructor/logout")
-                                .logoutSuccessUrl("/instructor/login?logout")
-                                .permitAll());
-                return http.build();
-        }
-
         @Bean // SecurityFilterChain cho USER
-        @Order(3) // Đặt thứ tự ưu tiên cho SecurityFilterChain
+        @Order(2) // Đặt thứ tự ưu tiên cho SecurityFilterChain
         public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
                 http.csrf(csrf -> csrf.disable()); // Tắt CSRF (Cross-Site Request Forgery)
                 http.authorizeHttpRequests(auth -> auth // Cấu hình phân quyền cho các request

@@ -44,20 +44,27 @@
                                                 </thead>
 
                                                 <tbody>
-                                                <tr th:each="detail : ${orderDetails}">
-                                                    <td th:text="'#' + ${detail.order.orderId}"></td>
-                                                    <td th:text="${detail.course.title}"></td>
-                                                    <td th:text="${#dates.format(detail.order.createdAt, 'MMMM dd, yyyy')}"></td>
-                                                    <td th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
-                                                    <td>
-                                                        <span th:switch="${detail.order.status}">
-                                                            <span th:case="'paid'" class="badge bg-success">Success</span>
-                                                            <span th:case="'pending'" class="badge bg-primary">Processing</span>
-                                                            <span th:case="'canceled'" class="badge bg-danger">Canceled</span>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                                    <tr th:each="detail : ${orderDetails}">
+                                                        <td th:text="'#' + ${detail.order.orderId}"></td>
+                                                        <td th:text="${detail.course.title}"></td>
+                                                        <td
+                                                            th:text="${#dates.format(detail.order.createdAt, 'MMMM dd, yyyy')}">
+                                                        </td>
+                                                        <td
+                                                            th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                                        </td>
+                                                        <td>
+                                                            <span th:switch="${detail.order.status}">
+                                                                <span th:case="'paid'"
+                                                                    class="badge bg-success">Success</span>
+                                                                <span th:case="'pending'"
+                                                                    class="badge bg-primary">Processing</span>
+                                                                <span th:case="'canceled'"
+                                                                    class="badge bg-danger">Canceled</span>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>

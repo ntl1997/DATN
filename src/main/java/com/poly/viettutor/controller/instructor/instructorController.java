@@ -227,32 +227,6 @@ public class instructorController {
         return "client/layout/index";
     }
 
-    @GetMapping("/instructor/quiz-attempts")
-    public String instructorQuizAttempts(Model model) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-        } else {
-            model.addAttribute("name", "Unknown");
-        }
-        model.addAttribute("title", "Quiz Attempts");
-        model.addAttribute("content", "client/instructor/instructor-quiz-attempts");
-        return "client/layout/index";
-    }
-
-    @GetMapping("/instructor/assignments")
-    public String instructorAssignments(Model model) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-        } else {
-            model.addAttribute("name", "Unknown");
-        }
-        model.addAttribute("title", "Assignments");
-        model.addAttribute("content", "client/instructor/instructor-assignments");
-        return "client/layout/index";
-    }
-
     @GetMapping("/instructor/settings")
     public String instructorSettings(Model model) {
         User currentUser = userService.getCurrentUser();

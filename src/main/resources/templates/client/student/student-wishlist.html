@@ -52,26 +52,37 @@
                                                         <!-- Có thể hiển thị số review nếu muốn -->
                                                     </div>
                                                     <div class="rbt-delete-btn">
-                                                        <form th:action="@{|/student/wishlist/delete/${item.wishlistId}|}" method="post" style="display:inline;">
-                                                            <button type="submit" class="rbt-round-btn" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa?')">
+                                                        <form
+                                                            th:action="@{|/student/wishlist/delete/${item.wishlistId}|}"
+                                                            method="post" style="display:inline;">
+                                                            <button type="submit" class="rbt-round-btn" title="Xóa"
+                                                                onclick="return confirm('Bạn có chắc muốn xóa?')">
                                                                 <i class="feather-trash-2"></i>
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </div>
                                                 <h4 class="rbt-card-title mt-2">
-                                                    <a th:href="@{|/detail/${item.course.courseId}|}" th:text="${item.course.title}"></a>
+                                                    <a th:href="@{|/detail/${item.course.courseId}|}"
+                                                        th:text="${item.course.title}"></a>
                                                 </h4>
                                                 <ul class="rbt-meta mb-2">
-                                                    <li><i class="feather-book"><!-- <span th:text="${item.course.modules.size()}"></span> --> 20 Lessons</i></li>
-                                                    <li><i class="feather-users"><!-- <span th:text="${item.course.enrollments.size()}"></span> --> 100 Students</i></li>
+                                                    <li><i class="feather-book"><!-- <span th:text="${item.course.modules.size()}"></span> -->
+                                                            20 Lessons</i></li>
+                                                    <li><i class="feather-users"><!-- <span th:text="${item.course.enrollments.size()}"></span> -->
+                                                            100 Students</i></li>
                                                 </ul>
-                                                <div class="rbt-card-bottom d-flex justify-content-between align-items-center">
+                                                <div
+                                                    class="rbt-card-bottom d-flex justify-content-between align-items-center">
                                                     <div class="rbt-price">
-                                                        <span class="current-price" th:text="${#numbers.formatDecimal(item.course.price, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
-                                                        <span class="off-price" th:if="${item.course.discount > 0}" th:text="${#numbers.formatDecimal(item.course.price + item.course.discount, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
+                                                        <span class="current-price"
+                                                            th:text="${#numbers.formatDecimal(item.course.price, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
+                                                        <span class="off-price" th:if="${item.course.discount > 0}"
+                                                            th:text="${#numbers.formatDecimal(item.course.price + item.course.discount, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
                                                     </div>
-                                                    <a class="rbt-btn-link" th:href="@{|/detail/${item.course.courseId}|}">Xem chi tiết<i class="feather-arrow-right"></i></a>
+                                                    <a class="rbt-btn-link"
+                                                        th:href="@{|/detail/${item.course.courseId}|}">Xem chi tiết<i
+                                                            class="feather-arrow-right"></i></a>
                                                 </div>
                                             </div>
                                         </div>
