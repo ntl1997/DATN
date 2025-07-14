@@ -19,7 +19,7 @@ public class CourseDetailController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/course-details/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
         Optional<Course> existingItemOptional = courseService.findById(id);
         if (existingItemOptional.isPresent()) {
