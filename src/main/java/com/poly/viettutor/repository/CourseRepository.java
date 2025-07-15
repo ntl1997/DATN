@@ -1,7 +1,6 @@
 package com.poly.viettutor.repository;
 
 import com.poly.viettutor.model.Course;
-import com.poly.viettutor.model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
