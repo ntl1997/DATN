@@ -60,10 +60,10 @@ public class CreateCourseController {
             courseService.saveCourseMaterials(savedCourse, materialFiles);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("createError", e.getMessage());
-            return "redirect:/student/dashboard";
+            return "redirect:/instructor/dashboard";
         }
 
-        return "redirect:/student/dashboard?createSuccess=true";
+        return "redirect:/instructor/dashboard?createSuccess=true";
     }
 
     private String loadPage(Model model) {
