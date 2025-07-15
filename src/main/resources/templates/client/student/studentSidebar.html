@@ -57,6 +57,31 @@
                 </ul>
               </nav>
 
+              <div class="section-title mt--40 mb--20" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                <h6 class="rbt-title-style-2">Giảng viên</h6>
+              </div>
+
+              <!-- Menu cho Giảng viên -->
+              <nav class="mainmenu-nav" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                  <!-- Ẩn mục này chỉ hiển thị với giảng viên (ROLE_INSTRUCTOR) -->
+                  <li>
+                    <a th:href="@{/instructor/courses}">
+                      <i class="feather-monitor"></i><span>Khóa học của tôi</span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a th:href="@{/instructor/announcements}">
+                      <i class="feather-volume-2"></i><span>Thông báo</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a th:href="@{/instructor/reviews}"><i class="feather-star"></i><span>Đánh giá</span></a>
+                  </li>
+                </ul>
+              </nav>
+
               <div class="section-title mt--40 mb--20">
                 <h6 class="rbt-title-style-2">Người dùng</h6>
               </div>

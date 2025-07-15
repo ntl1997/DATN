@@ -1,5 +1,6 @@
 package com.poly.viettutor.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,10 @@ public class OrderDetailService {
 
     public void deleteById(int id) {
         orderDetailRepository.deleteById(id);
+    }
+
+    public BigDecimal getTotalRevenueByInstructor(Long instructorId) {
+        return orderDetailRepository.getTotalRevenueByInstructor(instructorId);
     }
 
 }

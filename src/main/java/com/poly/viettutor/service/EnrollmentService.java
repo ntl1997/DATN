@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.poly.viettutor.model.Enrollment;
+import com.poly.viettutor.model.User;
 import com.poly.viettutor.repository.EnrollmentRepository;
 
 @Service
@@ -31,6 +32,10 @@ public class EnrollmentService {
 
     public void deleteById(int id) {
         enrollmentRepository.deleteById(id);
+    }
+
+    public long countStudentsByInstructor(User instructor) {
+        return enrollmentRepository.countStudentsByInstructor(instructor);
     }
 
 }
