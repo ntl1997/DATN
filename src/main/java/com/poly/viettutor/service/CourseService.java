@@ -3,6 +3,8 @@ package com.poly.viettutor.service;
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Lecture;
 import com.poly.viettutor.repository.CourseRepository;
+import com.poly.viettutor.repository.CourseSpecification;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,5 +54,17 @@ public class CourseService {
                 .flatMap(module -> module.getLectures().stream())
                 .mapToInt(Lecture::getDuration)
                 .sum();
+    }
+
+    public Page<Course> searchCourses(
+            String keyword,
+            List<String> categories,
+            List<Integer> ratings,
+            String instructor,
+            String priceType,
+            Pageable pageable) {
+        return courseRepository.findAll(
+                CourseSpecification.filterCourses(keyword, categories, ratings, instructor, priceType),
+                pageable);
     }
 }
