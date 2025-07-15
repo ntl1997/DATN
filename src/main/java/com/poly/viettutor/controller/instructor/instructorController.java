@@ -1,24 +1,19 @@
 package com.poly.viettutor.controller.instructor;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.viettutor.model.Course;
-import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.Review;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
@@ -38,17 +33,14 @@ public class instructorController {
     private final EnrollmentService enrollmentService;
     private final OrderDetailService orderDetailService;
     private final ReviewService reviewService;
-    private final OrderService orderService;
 
     public instructorController(UserService userService, CourseService courseService,
-            EnrollmentService enrollmentService, OrderDetailService orderDetailService, ReviewService reviewService,
-            OrderService orderService) {
+            EnrollmentService enrollmentService, OrderDetailService orderDetailService, ReviewService reviewService) {
         this.userService = userService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
         this.orderDetailService = orderDetailService;
         this.reviewService = reviewService;
-        this.orderService = orderService;
     }
 
     @GetMapping("/instructor/dashboard")
