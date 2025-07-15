@@ -32,16 +32,32 @@ public class CourseController {
     @GetMapping("/courses")
     public String listCoursesPage(
             Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "9") int size) {
-        Page<Course> courses = courseService.findAll(PageRequest.of(page, size));
-        List<Category> categories = categoryService.findAll();
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "9") int size,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) List<String> categories,
+            @RequestParam(required = false) List<Integer> ratings,
+            @RequestParam(required = false) List<String> instructor,
+            @RequestParam(required = false) String priceType) {
+        Page<Course> courses = courseService.searchCourses(
+                keyword, categories, ratings,
+                (instructor != null && !instructor.isEmpty()) ? instructor.get(0) : null,
+                priceType, PageRequest.of(page - 1, size));
+        List<Category> categoryList = categoryService.findAll();
         List<User> instructors = userService.getAllInstructors();
         model.addAttribute("instructors", instructors);
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryList);
         model.addAttribute("courses", courses);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", courses.getTotalPages());
         model.addAttribute("title", "Danh sách khóa học");
         model.addAttribute("content", "client/courses");
+        // Truyền lại các filter để giữ trạng thái trên giao diện
+        model.addAttribute("selectedCategories", categories);
+        model.addAttribute("selectedRatings", ratings);
+        model.addAttribute("selectedInstructor", instructor);
+        model.addAttribute("selectedPriceType", priceType);
+        model.addAttribute("keyword", keyword);
         return "client/layout/index";
     }
 
