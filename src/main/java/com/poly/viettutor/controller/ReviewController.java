@@ -59,7 +59,7 @@ public class ReviewController {
         } else {
             redirectAttributes.addFlashAttribute("error", "Cập nhập không thành công");
         }
-        return "redirect:/instructor/reviews";
+        return "redirect:/reviews";
     }
 
     @PostMapping("/review/delete/{id}")
@@ -70,7 +70,7 @@ public class ReviewController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Không thể xóa review: " + e.getMessage());
         }
-        return "redirect:/instructor/reviews";
+        return "redirect:/reviews";
     }
 
 }
