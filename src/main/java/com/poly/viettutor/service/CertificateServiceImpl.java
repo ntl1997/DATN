@@ -2,7 +2,6 @@ package com.poly.viettutor.service;
 
 import com.poly.viettutor.model.Certificate;
 import com.poly.viettutor.repository.CertificateRepository;
-import com.poly.viettutor.service.CertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,8 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<Certificate> searchCertificatesByUserAndTitle(Long userId, String keyword) {
-        return certificateRepository.searchCertificatesWithCourseByUserAndTitle(userId, keyword); // ✅ fetch course with keyword
+        return certificateRepository.searchCertificatesWithCourseByUserAndTitle(userId, keyword); // ✅ fetch course with
+                                                                                                  // keyword
     }
 
     @Override
