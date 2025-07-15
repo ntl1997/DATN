@@ -3,13 +3,11 @@
   <body>
     <div th:fragment="content">
       <a class="close_side_menu" href="javascript:void(0);"></a>
-
       <div class="rbt-page-banner-wrapper">
         <!-- Start Banner BG Image  -->
         <div class="rbt-banner-image"></div>
         <!-- End Banner BG Image  -->
       </div>
-
       <!-- Start Card Style -->
       <div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
         <div class="container">
@@ -40,7 +38,6 @@
                       <div class="section-title">
                         <h4 class="rbt-title-style-3">Đánh giá</h4>
                       </div>
-
                       <div class="advance-tab-button mb--30">
                         <ul
                           class="nav nav-tabs tab-button-style-2 justify-content-start"
@@ -59,6 +56,20 @@
                               aria-selected="true"
                             >
                               <span class="title">Được nhận</span>
+                            </a>
+                          </li>
+                          <li role="presentation">
+                            <a
+                              href="#"
+                              class="tab-button"
+                              id="given-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#given"
+                              role="tab"
+                              aria-controls="given"
+                              aria-selected="false"
+                            >
+                              <span class="title">Đã bình luận</span>
                             </a>
                           </li>
                         </ul>
@@ -88,7 +99,7 @@
                                     <span class="b3">
                                       Course:
                                       <a
-                                        th:href="@{/course-details/{id}(id=${review.course.courseId})}"
+                                        th:href="@{/course/{id}(id=${review.course.courseId})}"
                                         th:text="${review.course.title}"
                                         >Course Title</a
                                       >
@@ -112,6 +123,119 @@
                             </table>
                           </div>
                         </div>
+
+                        <div class="tab-pane fade" id="given" role="tabpanel" aria-labelledby="given-tab">
+                          <div class="rbt-dashboard-table table-responsive mobile-table-750">
+                            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                            <table class="rbt-table table table-borderless">
+                              <thead>
+                                <tr>
+                                  <th>Tên khóa học</th>
+                                  <th>Nhận xét</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr th:each="review : ${reviewsGive}">
+                                  <th>
+                                    <a
+                                      th:href="@{/course/{id}(id=${review.course.courseId})}"
+                                      th:text="${review.course.title}"
+                                      >Course Title</a
+                                    >
+                                  </th>
+                                  <td>
+                                    <div class="rbt-review">
+                                      <div class="rating">
+                                        <i
+                                          th:each="star : ${#numbers.sequence(1, 5)}"
+                                          th:classappend="${star <= review.rating} ? 'fas fa-star' : 'far fa-star'"
+                                        ></i>
+                                      </div>
+                                      <span
+                                        class="rating-count"
+                                        th:text="'(' + ${review.course.reviews.size()} + ' Reviews)'"
+                                      ></span>
+                                    </div>
+                                    <p class="b3" th:text="${review.comment}">Comment</p>
+                                  </td>
+                                  <td>
+                                    <div class="rbt-button-group">
+                                      <a
+                                        href="#"
+                                        class="rbt-btn-link left-icon"
+                                        th:onclick="'document.getElementById(\'editForm__' + ${review.reviewId} + '\').style.display = \'block\'; return false;'"
+                                      >
+                                        <i class="feather-edit"></i> Edit
+                                      </a>
+
+                                      <form
+                                        th:action="@{'/review/delete/' + ${review.reviewId}}"
+                                        method="post"
+                                        style="display: inline"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa review này?');"
+                                      >
+                                        <button
+                                          type="submit"
+                                          class="rbt-btn-link left-icon btn btn-link"
+                                          style="text-decoration: none"
+                                        >
+                                          <i class="feather-trash-2"></i> Delete
+                                        </button>
+                                      </form>
+                                    </div>
+
+                                    <div
+                                      th:id="'editForm__' + ${review.reviewId}"
+                                      style="display: none; margin-top: 10px"
+                                    >
+                                      <form th:action="@{/review/update}" method="post">
+                                        <input type="hidden" name="reviewId" th:value="${review.reviewId}" />
+                                        <div class="mb-2">
+                                          <label for="rating">Rating (1-5)</label>
+                                          <input
+                                            type="number"
+                                            class="form-control"
+                                            name="rating"
+                                            min="1"
+                                            max="5"
+                                            th:value="${review.rating}"
+                                            required
+                                          />
+                                        </div>
+                                        <div class="mb-2">
+                                          <label for="comment">Comment</label>
+                                          <textarea
+                                            class="form-control"
+                                            name="comment"
+                                            rows="2"
+                                            th:text="${review.comment}"
+                                            required
+                                          ></textarea>
+                                        </div>
+                                        <button
+                                          type="submit"
+                                          class="btn btn-primary btn-sm"
+                                          onclick="return confirm('Bạn có chắc chắn muốn lưu thay đổi không?');"
+                                        >
+                                          Save
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-secondary btn-sm"
+                                          th:onclick="'document.getElementById(\'editForm__' + ${review.reviewId} + '\').style.display = \'none\';'"
+                                        >
+                                          Cancel
+                                        </button>
+                                      </form>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -122,7 +246,6 @@
         </div>
       </div>
       <!-- End Card Style -->
-
       <div class="rbt-separator-mid">
         <div class="container">
           <hr class="rbt-separator m-0" />
