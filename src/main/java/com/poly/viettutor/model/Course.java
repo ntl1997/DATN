@@ -54,6 +54,9 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments;
 
+    @OneToMany(mappedBy = "course")
+    private List<CourseCategory> courseCategories;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
