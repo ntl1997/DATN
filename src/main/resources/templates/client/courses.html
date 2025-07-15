@@ -116,196 +116,331 @@
             <div class="col-lg-3 order-2 order-lg-1">
               <aside class="rbt-sidebar-widget-wrapper">
                 <!-- Start Widget Area  -->
-                <div class="rbt-single-widget rbt-widget-search">
-                  <div class="inner">
-                    <form action="#" class="rbt-search-style-1">
-                      <input type="text" placeholder="Tìm kiếm khóa học" />
-                      <button class="search-btn">
-                        <i class="feather-search"></i>
-                      </button>
-                    </form>
-                  </div>
-                </div>
-                <!-- End Widget Area  -->
-
-                <!-- Start Widget Area  -->
-                <div
-                  class="rbt-single-widget rbt-widget-categories has-show-more"
-                >
-                  <div class="inner">
-                    <h4 class="rbt-widget-title">Danh mục</h4>
-                    <ul
-                      class="rbt-sidebar-list-wrapper categories-list-check has-show-more-inner-content"
+                <form action="/courses" method="get">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      margin: 22px 0 10px 0;
+                    "
+                  >
+                    <a
+                      href="/courses"
+                      class="btn btn-clear-filter"
+                      style="
+                        background: linear-gradient(
+                          90deg,
+                          #e3f0ff 0%,
+                          #f5f5f5 100%
+                        );
+                        color: #1976d2;
+                        border: 1.5px solid #b3d1ff;
+                        padding: 7px 28px;
+                        border-radius: 22px;
+                        font-weight: 700;
+                        font-size: 1.05rem;
+                        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+                        letter-spacing: 0.3px;
+                        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                      "
+                      onmouseover="this.style.background='linear-gradient(90deg, #dbeafe 0%, #e0e7ef 100%)';this.style.color='#0d47a1'"
+                      onmouseout="this.style.background='linear-gradient(90deg, #e3f0ff 0%, #f5f5f5 100%)';this.style.color='#1976d2'"
                     >
-                      <li
-                        class="rbt-check-group"
-                        th:each="category, iterStat : ${categories}"
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M18 6L6 18"
+                          stroke="#1976d2"
+                          stroke-width="2.2"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M6 6L18 18"
+                          stroke="#1976d2"
+                          stroke-width="2.2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      <span style="padding-left: 2px">Xóa tùy chọn</span>
+                    </a>
+                  </div>
+                  <div class="rbt-single-widget rbt-widget-search mb-4">
+                    <div class="inner">
+                      <div
+                        class="rbt-search-style-1"
+                        style="
+                          background: #fff;
+                          border-radius: 16px;
+                          box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+                          padding: 0;
+                          display: flex;
+                          align-items: center;
+                          overflow: hidden;
+                          margin-bottom: 0;
+                        "
                       >
                         <input
-                          th:id="'cat-list-' + ${iterStat.index}"
-                          type="checkbox"
-                          th:name="'cat-list-' + ${iterStat.index}"
+                          type="text"
+                          name="keyword"
+                          th:value="${keyword}"
+                          placeholder="Tìm kiếm"
+                          style="
+                            flex: 1;
+                            border: none;
+                            padding: 16px 20px;
+                            font-size: 1.1rem;
+                            outline: none;
+                            background: transparent;
+                          "
                         />
-                        <label
-                          th:for="'cat-list-' + ${iterStat.index}"
-                          th:text="${category.name}"
-                          >Art &amp; Humanities
-                          <span
-                            class="rbt-btn-link"
-                            th:text="${#lists.size(category.courseCategories)}"
-                            >15</span
-                          ></label
+                        <button
+                          type="submit"
+                          class="btn"
+                          style="
+                            background: #1976d2;
+                            color: #fff;
+                            border: none;
+                            padding: 0 28px;
+                            font-size: 1.05rem;
+                            font-weight: 700;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            height: 48px;
+                            border-radius: 0 12px 12px 0;
+                            box-shadow: none;
+                          "
                         >
-                      </li>
-                    </ul>
+                          <i
+                            class="feather-search"
+                            style="font-size: 1.1rem"
+                          ></i>
+                          <span style="font-weight: 700">Tìm kiếm</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div class="rbt-show-more-btn">Hiển thị thêm</div>
-                </div>
-                <!-- End Widget Area  -->
+                  <!-- End Widget Area  -->
 
-                <!-- Start Widget Area  -->
-                <div class="rbt-single-widget rbt-widget-rating">
-                  <div class="inner">
-                    <h4 class="rbt-widget-title">Đánh giá</h4>
-                    <ul class="rbt-sidebar-list-wrapper rating-list-check">
-                      <li class="rbt-check-group">
-                        <input id="cat-radio-1" type="radio" name="rbt-radio" />
-                        <label for="cat-radio-1">
-                          <span class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                          </span>
-                          <span class="rbt-lable count">5</span>
-                        </label>
-                      </li>
-                      <li class="rbt-check-group">
-                        <input id="cat-radio-2" type="radio" name="rbt-radio" />
-                        <label for="cat-radio-2">
-                          <span class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                          </span>
-                          <span class="rbt-lable count">4</span>
-                        </label>
-                      </li>
-                      <li class="rbt-check-group">
-                        <input id="cat-radio-3" type="radio" name="rbt-radio" />
-                        <label for="cat-radio-3">
-                          <span class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                          </span>
-                          <span class="rbt-lable count">3</span>
-                        </label>
-                      </li>
-                      <li class="rbt-check-group">
-                        <input id="cat-radio-4" type="radio" name="rbt-radio" />
-                        <label for="cat-radio-4">
-                          <span class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                          </span>
-                          <span class="rbt-lable count">2</span>
-                        </label>
-                      </li>
-
-                      <li class="rbt-check-group">
-                        <input id="cat-radio-5" type="radio" name="rbt-radio" />
-                        <label for="cat-radio-5">
-                          <span class="rating">
-                            <i class="fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                            <i class="off fas fa-star"></i>
-                          </span>
-                          <span class="rbt-lable count">1</span>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- End Widget Area  -->
-
-                <!-- Start Widget Area  -->
-                <div class="rbt-single-widget rbt-widget-instructor">
-                  <div class="inner">
-                    <h4 class="rbt-widget-title">Giảng viên</h4>
-                    <ul class="rbt-sidebar-list-wrapper instructor-list-check">
-                      <li
-                        class="rbt-check-group"
-                        th:each="instructor, iterStat : ${instructors}"
+                  <!-- Start Widget Area  -->
+                  <div
+                    class="rbt-single-widget rbt-widget-categories has-show-more"
+                  >
+                    <div class="inner">
+                      <h4 class="rbt-widget-title">Danh mục</h4>
+                      <ul
+                        class="rbt-sidebar-list-wrapper categories-list-check has-show-more-inner-content"
                       >
-                        <input
-                          id="ins-list-1"
-                          type="checkbox"
-                          name="ins-list-1"
-                        />
-                        <label for="ins-list-1" th:text="${instructor.fullname}"
-                          >Slaughter
-                          <span
-                            class="rbt-lable count"
-                            th:text="${#lists.size(instructor.courses)}"
-                            >15</span
-                          ></label
+                        <li
+                          class="rbt-check-group"
+                          th:each="category, iterStat : ${categories}"
                         >
-                      </li>
-                    </ul>
+                          <input
+                            th:id="'cat-list-' + ${iterStat.index}"
+                            type="checkbox"
+                            name="categories"
+                            th:value="${category.name}"
+                            th:checked="${selectedCategories != null} ? ${selectedCategories.contains(category.name)} : false"
+                          />
+                          <label
+                            th:for="'cat-list-' + ${iterStat.index}"
+                            th:text="${category.name}"
+                            >Art &amp; Humanities
+                            <span
+                              class="rbt-btn-link"
+                              th:text="${#lists.size(category.courseCategories)}"
+                              >15</span
+                            ></label
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="rbt-show-more-btn">Hiển thị thêm</div>
                   </div>
-                </div>
-                <!-- End Widget Area  -->
+                  <!-- End Widget Area  -->
 
-                <!-- Start Widget Area  -->
-                <div class="rbt-single-widget rbt-widget-prices">
-                  <div class="inner">
-                    <h4 class="rbt-widget-title">Giá</h4>
-                    <ul class="rbt-sidebar-list-wrapper prices-list-check">
-                      <li class="rbt-check-group">
-                        <input
-                          id="prices-list-1"
-                          type="checkbox"
-                          name="prices-list-1"
-                        />
-                        <label for="prices-list-1"
-                          >All <span class="rbt-lable count">15</span></label
-                        >
-                      </li>
-                      <li class="rbt-check-group">
-                        <input
-                          id="prices-list-2"
-                          type="checkbox"
-                          name="prices-list-2"
-                        />
-                        <label for="prices-list-2"
-                          >Free <span class="rbt-lable count">0</span></label
-                        >
-                      </li>
-                      <li class="rbt-check-group">
-                        <input
-                          id="prices-list-3"
-                          type="checkbox"
-                          name="prices-list-3"
-                        />
-                        <label for="prices-list-3"
-                          >Paid <span class="rbt-lable count">10</span></label
-                        >
-                      </li>
-                    </ul>
+                  <!-- Start Widget Area  -->
+                  <div class="rbt-single-widget rbt-widget-rating">
+                    <div class="inner">
+                      <h4 class="rbt-widget-title">Đánh giá</h4>
+                      <ul class="rbt-sidebar-list-wrapper rating-list-check">
+                        <li class="rbt-check-group">
+                          <input
+                            id="cat-radio-1"
+                            type="radio"
+                            name="ratings"
+                            value="5"
+                            th:checked="${selectedRatings != null} ? ${selectedRatings.contains(5)} : false"
+                          />
+                          <label for="cat-radio-1">
+                            <span class="rating">
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                            </span>
+                            <span class="rbt-lable count">5</span>
+                          </label>
+                        </li>
+                        <li class="rbt-check-group">
+                          <input
+                            id="cat-radio-2"
+                            type="radio"
+                            name="ratings"
+                            value="4"
+                            th:checked="${selectedRatings != null} ? ${selectedRatings.contains(4)} : false"
+                          />
+                          <label for="cat-radio-2">
+                            <span class="rating">
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                            </span>
+                            <span class="rbt-lable count">4</span>
+                          </label>
+                        </li>
+                        <li class="rbt-check-group">
+                          <input
+                            id="cat-radio-3"
+                            type="radio"
+                            name="ratings"
+                            value="3"
+                            th:checked="${selectedRatings != null} ? ${selectedRatings.contains(3)} : false"
+                          />
+                          <label for="cat-radio-3">
+                            <span class="rating">
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                            </span>
+                            <span class="rbt-lable count">3</span>
+                          </label>
+                        </li>
+                        <li class="rbt-check-group">
+                          <input
+                            id="cat-radio-4"
+                            type="radio"
+                            name="ratings"
+                            value="2"
+                            th:checked="${selectedRatings != null} ? ${selectedRatings.contains(2)} : false"
+                          />
+                          <label for="cat-radio-4">
+                            <span class="rating">
+                              <i class="fas fa-star"></i>
+                              <i class="fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                            </span>
+                            <span class="rbt-lable count">2</span>
+                          </label>
+                        </li>
+
+                        <li class="rbt-check-group">
+                          <input
+                            id="cat-radio-5"
+                            type="radio"
+                            name="ratings"
+                            value="1"
+                            th:checked="${selectedRatings != null} ? ${selectedRatings.contains(1)} : false"
+                          />
+                          <label for="cat-radio-5">
+                            <span class="rating">
+                              <i class="fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                              <i class="off fas fa-star"></i>
+                            </span>
+                            <span class="rbt-lable count">1</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <!-- End Widget Area  -->
+                  <!-- End Widget Area  -->
+
+                  <!-- Start Widget Area  -->
+                  <div class="rbt-single-widget rbt-widget-instructor">
+                    <div class="inner">
+                      <h4 class="rbt-widget-title">Giảng viên</h4>
+                      <ul
+                        class="rbt-sidebar-list-wrapper instructor-list-check"
+                      >
+                        <li
+                          class="rbt-check-group"
+                          th:each="instructor, iterStat : ${instructors}"
+                        >
+                          <input
+                            th:id="'ins-list-' + ${iterStat.index}"
+                            type="checkbox"
+                            name="instructor"
+                            th:value="${instructor.fullname}"
+                            th:checked="${selectedInstructor != null} ? ${selectedInstructor.contains(instructor.fullname)} : false"
+                          />
+                          <label
+                            th:for="'ins-list-' + ${iterStat.index}"
+                            th:text="${instructor.fullname}"
+                            >Slaughter
+                            <span
+                              class="rbt-lable count"
+                              th:text="${#lists.size(instructor.courses)}"
+                              >15</span
+                            ></label
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- End Widget Area  -->
+
+                  <!-- Start Widget Area  -->
+                  <div class="rbt-single-widget rbt-widget-prices">
+                    <div class="inner">
+                      <h4 class="rbt-widget-title">Giá</h4>
+                      <ul class="rbt-sidebar-list-wrapper prices-list-check">
+                        <li class="rbt-check-group">
+                          <input
+                            id="prices-list-2"
+                            type="radio"
+                            name="priceType"
+                            value="free"
+                            th:checked="${selectedPriceType == 'free'}"
+                          />
+                          <label for="prices-list-2"
+                            >Free <span class="rbt-lable count">0</span></label
+                          >
+                        </li>
+                        <li class="rbt-check-group">
+                          <input
+                            id="prices-list-3"
+                            type="radio"
+                            name="priceType"
+                            value="paid"
+                            th:checked="${selectedPriceType == 'paid'}"
+                          />
+                          <label for="prices-list-3"
+                            >Paid <span class="rbt-lable count">10</span></label
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- End Widget Area  -->
+                </form>
               </aside>
             </div>
             <div class="col-lg-9 order-1 order-lg-2">
@@ -452,18 +587,49 @@
                 <div class="col-lg-12 mt--60">
                   <nav>
                     <ul class="rbt-pagination">
-                      <li>
-                        <a href="#" aria-label="Previous"
-                          ><i class="feather-chevron-left"></i
-                        ></a>
+                      <li th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a
+                          th:if="${currentPage > 1}"
+                          th:href="@{/courses(page=${currentPage - 1})}"
+                          aria-label="Previous"
+                        >
+                          <i class="feather-chevron-left"></i>
+                        </a>
+                        <span
+                          th:if="${currentPage == 1}"
+                          aria-label="Previous"
+                          style="pointer-events: none; color: #ccc"
+                        >
+                          <i class="feather-chevron-left"></i>
+                        </span>
                       </li>
-                      <li><a href="#">1</a></li>
-                      <li class="active"><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li>
-                        <a href="#" aria-label="Next"
-                          ><i class="feather-chevron-right"></i
-                        ></a>
+                      <li
+                        th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'"
+                      >
+                        <a
+                          th:href="@{/courses(page=${pageNum})}"
+                          th:text="${pageNum}"
+                          >1</a
+                        >
+                      </li>
+                      <li
+                        th:classappend="${currentPage == totalPages} ? 'disabled'"
+                      >
+                        <a
+                          th:if="${currentPage < totalPages}"
+                          th:href="@{/courses(page=${currentPage + 1})}"
+                          aria-label="Next"
+                        >
+                          <i class="feather-chevron-right"></i>
+                        </a>
+                        <span
+                          th:if="${currentPage == totalPages}"
+                          aria-label="Next"
+                          style="pointer-events: none; color: #ccc"
+                        >
+                          <i class="feather-chevron-right"></i>
+                        </span>
                       </li>
                     </ul>
                   </nav>
