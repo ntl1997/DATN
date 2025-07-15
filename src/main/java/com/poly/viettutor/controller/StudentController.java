@@ -17,7 +17,6 @@ import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CertificateService;
 import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.OrderDetail;
-import com.poly.viettutor.model.User;
 import com.poly.viettutor.model.Wishlist;
 import com.poly.viettutor.service.OrderService;
 import com.poly.viettutor.service.UserService;
@@ -27,7 +26,6 @@ import com.poly.viettutor.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 
@@ -37,9 +35,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
-
-    @Autowired
-    private UserService UserService;
 
     @Autowired
     private OrderService orderService;
@@ -60,74 +55,70 @@ public class StudentController {
 
     @GetMapping("/student-dashboard")
     public String showDashboard(Model model) {
-    User user = userService.getCurrentUser();
-    int enrolledCourseCount = user.getEnrollments() != null ? user.getEnrollments().size() : 0;
+        User user = userService.getCurrentUser();
+        int enrolledCourseCount = user.getEnrollments() != null ? user.getEnrollments().size() : 0;
 
-    model.addAttribute("user", user);
-    model.addAttribute("enrolledCourseCount", enrolledCourseCount);
-    model.addAttribute("content", "client/student/student-dashboard");
-    model.addAttribute("title", "Bảng Điều Khiển");
+        model.addAttribute("user", user);
+        model.addAttribute("enrolledCourseCount", enrolledCourseCount);
+        model.addAttribute("content", "client/student/student-dashboard");
+        model.addAttribute("title", "Bảng Điều Khiển");
 
-    return "client/layout/index";
+        return "client/layout/index";
     }
 
-    
     @GetMapping("/student-enrolled-courses")
     public String showEnrolledCourses(Model model) {
-    User user = userService.getCurrentUser();
+        User user = userService.getCurrentUser();
 
-    // Lấy danh sách enrollments của user
-    List<Enrollment> enrollments = user.getEnrollments();
+        // Lấy danh sách enrollments của user
+        List<Enrollment> enrollments = user.getEnrollments();
 
-    model.addAttribute("user", user);
-    model.addAttribute("enrollments", enrollments);  // Đẩy danh sách lên view
-    model.addAttribute("content", "client/student/student-enrolled-courses");
-    model.addAttribute("title", "Các khóa học đã đăng ký");
-    return "client/layout/index";
+        model.addAttribute("user", user);
+        model.addAttribute("enrollments", enrollments); // Đẩy danh sách lên view
+        model.addAttribute("content", "client/student/student-enrolled-courses");
+        model.addAttribute("title", "Các khóa học đã đăng ký");
+        return "client/layout/index";
     }
-
 
     @GetMapping("/student-certificate")
     public String showCertificates(@RequestParam(value = "query", required = false) String query, Model model) {
-    User user = userService.getCurrentUser();
+        User user = userService.getCurrentUser();
 
-    List<Certificate> certificates = (query != null && !query.isBlank())
-            ? certificateService.searchCertificatesByUserAndTitle(user.getId(), query)
-            : certificateService.getCertificatesByUserId(user.getId());
+        List<Certificate> certificates = (query != null && !query.isBlank())
+                ? certificateService.searchCertificatesByUserAndTitle(user.getId(), query)
+                : certificateService.getCertificatesByUserId(user.getId());
 
-    logger.info("Found {} certificates for user ID: {}", certificates.size(), user.getId()); // 👈 log size
+        logger.info("Found {} certificates for user ID: {}", certificates.size(), user.getId()); // 👈 log size
 
-    model.addAttribute("certificates", certificates);
-    model.addAttribute("user", user);
-    model.addAttribute("content", "client/student/student-certificate");
-    model.addAttribute("title", "Chứng chỉ");
+        model.addAttribute("certificates", certificates);
+        model.addAttribute("user", user);
+        model.addAttribute("content", "client/student/student-certificate");
+        model.addAttribute("title", "Chứng chỉ");
 
-    return "client/layout/index";
+        return "client/layout/index";
     }
-
 
     // Hiển thị chi tiết chứng chỉ theo ID
     @GetMapping("/student-certificate/{id}")
     public String showCertificateDetail(@PathVariable("id") Integer id, Model model) {
-    Certificate certificate = certificateService.getCertificateById(id);
+        Certificate certificate = certificateService.getCertificateById(id);
 
-    if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
-        model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
-        model.addAttribute("content", "client/error");
-        model.addAttribute("title", "Lỗi");
+        if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
+            model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
+            model.addAttribute("content", "client/error");
+            model.addAttribute("title", "Lỗi");
+            return "client/layout/index";
+        }
+
+        model.addAttribute("certificate", certificate);
+        model.addAttribute("content", "client/student/student-certificate-detail");
+        model.addAttribute("title", "Chi tiết chứng chỉ");
+
+        // ✅ Nhúng style fragment từ file chứng chỉ
+        model.addAttribute("styles", "client/student/student-certificate-detail");
+
         return "client/layout/index";
     }
-
-    model.addAttribute("certificate", certificate);
-    model.addAttribute("content", "client/student/student-certificate-detail");
-    model.addAttribute("title", "Chi tiết chứng chỉ");
-
-    // ✅ Nhúng style fragment từ file chứng chỉ
-    model.addAttribute("styles", "client/student/student-certificate-detail");
-
-    return "client/layout/index";
-    }
-
 
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {
