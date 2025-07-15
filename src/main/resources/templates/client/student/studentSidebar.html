@@ -13,9 +13,14 @@
               <nav class="mainmenu-nav">
                 <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                   <li>
-                    <a th:href="@{/student/student-dashboard}">
-                      <i class="feather-home"></i>
-                      <span>Bảng điều khiển</span>
+                    <a
+                      th:href="@{/student/student-dashboard}"
+                      sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                    >
+                      <i class="feather-home"></i><span>Bảng điều khiển</span>
+                    </a>
+                    <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                      <i class="feather-home"></i><span>Bảng điều khiển</span>
                     </a>
                   </li>
                   <li>
