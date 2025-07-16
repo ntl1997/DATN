@@ -60,11 +60,13 @@ public class CreateCourseController {
             courseService.saveCourseModules(courseDTO, savedCourse);
             courseService.saveCourseMaterials(savedCourse, materialFiles);
         } catch (Exception e) {
+
             log.error("Create course failed", e);
-            return "redirect:/student/dashboard?createFailed=true";
+            return "redirect:/instructor/dashboard?createFailed=true";
+
         }
 
-        return "redirect:/student/dashboard?createSuccess=true";
+        return "redirect:/instructor/dashboard?createSuccess=true";
     }
 
     private String loadPage(Model model) {

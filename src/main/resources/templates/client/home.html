@@ -22,12 +22,8 @@
                     <a class="rbt-btn btn-gradient hover-icon-reverse" href="#">
                       <span class="icon-reverse-wrapper">
                         <span class="btn-text">Xem khóa học</span>
-                        <span class="btn-icon"
-                          ><i class="feather-arrow-right"></i
-                        ></span>
-                        <span class="btn-icon"
-                          ><i class="feather-arrow-right"></i
-                        ></span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                       </span>
                     </a>
                   </div>
@@ -36,9 +32,7 @@
             </div>
             <div class="col-lg-4">
               <div class="content">
-                <div
-                  class="banner-card pb--60 swiper rbt-dot-bottom-center banner-swiper-active"
-                >
+                <div class="banner-card pb--60 swiper rbt-dot-bottom-center banner-swiper-active">
                   <div class="swiper-wrapper">
                     <!-- Start Single Card  -->
                     <div class="swiper-slide" th:each="course : ${courses}">
@@ -53,11 +47,8 @@
                             justify-content: center;
                           "
                         >
-                          <a href="course-details.html">
-                            <img
-                              th:src="@{${course.courseImage}}"
-                              alt="Card image"
-                            />
+                          <a th:href="@{'/course-details/' + ${course.courseId}}">
+                            <img th:src="@{${course.courseImage}}" alt="Card image" />
                             <div class="rbt-badge-3 bg-white">
                               <span>-40%</span>
                               <span>Off</span>
@@ -69,30 +60,18 @@
                             <li>
                               <i class="feather-book"></i>
 
-                              <span
-                                th:text="${#lists.size(course.modules) + ' Bài học'}"
-                              ></span>
+                              <span th:text="${#lists.size(course.modules) + ' Bài học'}"></span>
                             </li>
                             <li>
                               <i class="feather-users"></i>
-                              <span
-                                th:text="${#lists.size(course.enrollments) + ' Học viên'}"
-                              ></span>
+                              <span th:text="${#lists.size(course.enrollments) + ' Học viên'}"></span>
                             </li>
                           </ul>
                           <h4 class="rbt-card-title">
-                            <a
-                              href="course-details.html"
-                              th:text="${course.title}"
-                              >React</a
-                            >
+                            <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}">React</a>
                           </h4>
-                          <p
-                            class="rbt-card-text"
-                            th:text="${course.description}"
-                          >
-                            Đây là một thực tế lâu đời rằng người đọc sẽ bị phân
-                            tâm.
+                          <p class="rbt-card-text" th:text="${course.description}">
+                            Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
                           </p>
                           <div class="rbt-review">
                             <div class="rating">
@@ -103,26 +82,18 @@
                               <i class="fas fa-star"></i>
                             </div>
 
-                            <span
-                              class="rating-count"
-                              th:text="${#lists.size(course.reviews) +' Bình luận'}"
-                            >
+                            <span class="rating-count" th:text="${#lists.size(course.reviews) +' Bình luận'}">
                               (15 Đánh giá)</span
                             >
                           </div>
                           <div class="rbt-card-bottom">
                             <div class="rbt-price" style="font-size: 0.45em">
-                              <span
-                                class="current-price"
-                                th:text="${course.price - (course.price * course.discount)}"
-                              >
+                              <span class="current-price" th:text="${course.price - (course.price * course.discount)}">
                                 1.600.000₫
                               </span>
-                              <span class="off-price" th:text="${course.price}"
-                                >2.000.000₫</span
-                              >
+                              <span class="off-price" th:text="${course.price}">2.000.000₫</span>
                             </div>
-                            <a class="rbt-btn-link" href="course-details.html">
+                            <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}">
                               Xem thêm
                               <i class="feather-arrow-right"></i>
                             </a>
@@ -152,10 +123,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-12">
               <div class="read-more-btn text-start text-md-end">
-                <a
-                  class="rbt-btn rbt-switch-btn bg-primary-opacity btn-sm"
-                  href="archive.html"
-                >
+                <a class="rbt-btn rbt-switch-btn bg-primary-opacity btn-sm" href="archive.html">
                   <span data-text="Xem tất cả">Xem tất cả</span>
                 </a>
               </div>
@@ -163,14 +131,8 @@
           </div>
           <div class="row g-5">
             <!-- Start Category Box Layout  -->
-            <div
-              class="col-lg-3 col-md-6 col-sm-6 col-12"
-              th:each="cat : ${categories}"
-            >
-              <a
-                class="rbt-cat-box rbt-cat-box-1 list-style"
-                href="course-filter-one-toggle.html"
-              >
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12" th:each="cat : ${categories}">
+              <a class="rbt-cat-box rbt-cat-box-1 list-style" href="course-filter-one-toggle.html">
                 <div class="inner">
                   <div class="thumbnail">
                     <img th:src="@{${cat.imageUrl}}" alt="Category Image" />
@@ -178,10 +140,7 @@
                   <div class="content">
                     <h5 class="title" th:text="${cat.name}">Category name</h5>
                     <div class="read-more-btn">
-                      <span
-                        class="rbt-btn-link"
-                        th:text="${#lists.size(cat.courseCategories)} + ' khóa học'"
-                      >
+                      <span class="rbt-btn-link" th:text="${#lists.size(cat.courseCategories)} + ' khóa học'">
                         15 khóa học
                         <i class="feather-arrow-right"></i>
                       </span>
@@ -213,18 +172,11 @@
             <div class="col-lg-7 col-md-12 col-12 text-start text-sm-end">
               <form action="#" class="newsletter-form-1 me-0">
                 <input type="email" placeholder="Nhập email của bạn" />
-                <button
-                  type="submit"
-                  class="rbt-btn btn-md btn-gradient hover-icon-reverse"
-                >
+                <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse">
                   <span class="icon-reverse-wrapper">
                     <span class="btn-text">Đăng ký</span>
-                    <span class="btn-icon"
-                      ><i class="feather-arrow-right"></i
-                    ></span>
-                    <span class="btn-icon"
-                      ><i class="feather-arrow-right"></i
-                    ></span>
+                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                   </span>
                 </button>
               </form>
@@ -248,13 +200,8 @@
             </div>
             <div class="col-lg-6 col-md-6 col-12">
               <div class="load-more-btn text-start text-md-end">
-                <a
-                  class="rbt-btn rbt-switch-btn bg-primary-opacity"
-                  href="course.html"
-                >
-                  <span data-text="Xem tất cả khóa học"
-                    >Xem tất cả khóa học</span
-                  >
+                <a class="rbt-btn rbt-switch-btn bg-primary-opacity" href="course.html">
+                  <span data-text="Xem tất cả khóa học">Xem tất cả khóa học</span>
                 </a>
               </div>
             </div>
@@ -272,15 +219,9 @@
               <div class="rbt-card variation-01 rbt-hover">
                 <div
                   class="rbt-card-img"
-                  style="
-                    height: 300px;
-                    overflow: hidden;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  "
+                  style="height: 300px; overflow: hidden; display: flex; align-items: center; justify-content: center"
                 >
-                  <a href="course-details.html">
+                  <a th:href="@{'/course-details/' + ${course.courseId}}">
                     <img th:src="@{${course.courseImage}}" alt="Card image" />
                     <div class="rbt-badge-3 bg-white">
                       <span>-40%</span>
@@ -299,24 +240,30 @@
                         <i class="fas fa-star"></i>
                       </div>
 
-                      <span
-                        class="rating-count"
-                        th:text="${#lists.size(course.reviews) +' Bình luận'}"
-                      >
+                      <span class="rating-count" th:text="${#lists.size(course.reviews) +' Bình luận'}">
                         (15 Đánh giá)</span
                       >
                     </div>
                     <div class="rbt-bookmark-btn">
-                      <form th:action="@{|/student/wishlist/add/${course.courseId}|}" method="post" style="display:inline;">
-                          <button type="submit" class="rbt-round-btn" title="Thêm vào danh sách yêu thích" onclick="return confirm('Bạn có chắc muốn thêm?')">
-                              <i class="feather-bookmark"></i>
-                          </button>
-                        </form>
+                      <form
+                        th:action="@{|/student/wishlist/add/${course.courseId}|}"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <button
+                          type="submit"
+                          class="rbt-round-btn"
+                          title="Thêm vào danh sách yêu thích"
+                          onclick="return confirm('Bạn có chắc muốn thêm?')"
+                        >
+                          <i class="feather-bookmark"></i>
+                        </button>
+                      </form>
                     </div>
                   </div>
 
                   <h4 class="rbt-card-title">
-                    <a href="course-details.html" th:text="${course.title}"
+                    <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}"
                       >React Front To Back</a
                     >
                   </h4>
@@ -324,15 +271,11 @@
                   <ul class="rbt-meta">
                     <li>
                       <i class="feather-book"></i>
-                      <span
-                        th:text="${#lists.size(course.modules) + ' Khóa học'}"
-                      ></span>
+                      <span th:text="${#lists.size(course.modules) + ' Khóa học'}"></span>
                     </li>
                     <li>
                       <i class="feather-users"></i>
-                      <span
-                        th:text="${#lists.size(course.enrollments) + ' Học viên'}"
-                      ></span>
+                      <span th:text="${#lists.size(course.enrollments) + ' Học viên'}"></span>
                     </li>
                   </ul>
 
@@ -342,28 +285,19 @@
                   <div class="rbt-author-meta mb--10">
                     <div class="rbt-author-info">
                       Bởi
-                      <a
-                        href="profile.html"
-                        th:text="${course.createdBy.fullname}"
-                        >Angela</a
-                      >
+                      <a href="profile.html" th:text="${course.createdBy.fullname}">Angela</a>
                       Trong
                       <a href="#">Nhóm phát triển</a>
                     </div>
                   </div>
                   <div class="rbt-card-bottom">
                     <div class="rbt-price" style="font-size: 0.85em">
-                      <span class="current-price" th:text="${course.price}"
-                        >1.600.000₫</span
-                      >
-                      <span
-                        class="off-price"
-                        th:text="${course.price - (course.price * course.discount)}"
-                      >
+                      <span class="current-price" th:text="${course.price}">1.600.000₫</span>
+                      <span class="off-price" th:text="${course.price - (course.price * course.discount)}">
                         2.000.000₫
                       </span>
                     </div>
-                    <a class="rbt-btn-link" href="course-details.html">
+                    <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}">
                       Xem thêm
                       <i class="feather-arrow-right"></i>
                     </a>
@@ -383,9 +317,7 @@
           <div class="row">
             <div class="col-lg-12 mb--60">
               <div class="section-title text-center">
-                <span class="subtitle bg-primary-opacity"
-                  >GIÁO DỤC CHO MỌI NGƯỜI</span
-                >
+                <span class="subtitle bg-primary-opacity">GIÁO DỤC CHO MỌI NGƯỜI</span>
                 <h2 class="title">
                   Phản hồi của
                   <span class="color-primary">học viên</span>
@@ -400,10 +332,7 @@
                 <div class="inner">
                   <div class="clint-info-wrapper">
                     <div class="thumb">
-                      <img
-                        th:src="@{/assets/images/testimonial/client-01.png}"
-                        alt="Clint Images"
-                      />
+                      <img th:src="@{/assets/images/testimonial/client-01.png}" alt="Clint Images" />
                     </div>
                     <div class="client-info">
                       <h5 class="title">Martha Maldonado</h5>
@@ -415,8 +344,8 @@
                   </div>
                   <div class="description">
                     <p class="subtitle-3">
-                      Sau khi ra mắt, tôi rất hài lòng với chất lượng khóa học
-                      tại đây. Nội dung dễ hiểu, giảng viên nhiệt tình hỗ trợ.
+                      Sau khi ra mắt, tôi rất hài lòng với chất lượng khóa học tại đây. Nội dung dễ hiểu, giảng viên
+                      nhiệt tình hỗ trợ.
                     </p>
                     <div class="rating mt--20">
                       <a href="#"><i class="fa fa-star"></i></a>
@@ -437,10 +366,7 @@
                 <div class="inner">
                   <div class="clint-info-wrapper">
                     <div class="thumb">
-                      <img
-                        th:src="@{/assets/images/testimonial/client-02.png}"
-                        alt="Clint Images"
-                      />
+                      <img th:src="@{/assets/images/testimonial/client-02.png}" alt="Clint Images" />
                     </div>
                     <div class="client-info">
                       <h5 class="title">Michael D. Lovelady</h5>
@@ -452,8 +378,8 @@
                   </div>
                   <div class="description">
                     <p class="subtitle-3">
-                      Hệ thống học tập rất tiện lợi, tôi có thể học mọi lúc mọi
-                      nơi. Rất phù hợp với người bận rộn như tôi.
+                      Hệ thống học tập rất tiện lợi, tôi có thể học mọi lúc mọi nơi. Rất phù hợp với người bận rộn như
+                      tôi.
                     </p>
                     <div class="rating mt--20">
                       <a href="#"><i class="fa fa-star"></i></a>
@@ -474,10 +400,7 @@
                 <div class="inner">
                   <div class="clint-info-wrapper">
                     <div class="thumb">
-                      <img
-                        th:src="@{/assets/images/testimonial/client-03.png}"
-                        alt="Clint Images"
-                      />
+                      <img th:src="@{/assets/images/testimonial/client-03.png}" alt="Clint Images" />
                     </div>
                     <div class="client-info">
                       <h5 class="title">Valerie J. Creasman</h5>
@@ -489,8 +412,8 @@
                   </div>
                   <div class="description">
                     <p class="subtitle-3">
-                      Tôi đã nâng cao kỹ năng chuyên môn nhờ các khóa học tại
-                      đây. Nội dung cập nhật, thực tế và hữu ích cho công việc.
+                      Tôi đã nâng cao kỹ năng chuyên môn nhờ các khóa học tại đây. Nội dung cập nhật, thực tế và hữu ích
+                      cho công việc.
                     </p>
                     <div class="rating mt--20">
                       <a href="#"><i class="fa fa-star"></i></a>
@@ -523,10 +446,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-12">
               <div class="load-more-btn text-start text-md-end">
-                <a
-                  class="rbt-btn rbt-switch-btn bg-primary-opacity"
-                  href="blog.html"
-                >
+                <a class="rbt-btn rbt-switch-btn bg-primary-opacity" href="blog.html">
                   <span data-text="Xem tất cả tin tức">Xem tất cả tin tức</span>
                 </a>
               </div>
@@ -535,19 +455,16 @@
           <!-- Start Card Area -->
           <div class="row g-5">
             <!-- Start Single Card  -->
-            <div
-              class="col-lg-4 col-md-6 col-sm-12 col-12"
-              th:each="blog : ${blogPosts}"
-            >
+            <div class="col-lg-4 col-md-6 col-sm-12 col-12" th:each="blog : ${blogPosts}">
               <div class="rbt-card variation-02 rbt-hover">
                 <div class="rbt-card-img">
-                  <a href="course-details.html">
+                  <a th:href="@{'/bai-viet/' + ${blog.postId} + '?title=' + ${blog.title}}">
                     <img th:src="@{${blog.imageBlog}}" alt="Card image" />
                   </a>
                 </div>
                 <div class="rbt-card-body">
                   <h5 class="rbt-card-title">
-                    <a th:text="${blog.title}" href="course-details.html"
+                    <a th:text="${blog.title}" th:href="@{'/bai-viet/' + ${blog.postId} + '?title=' + ${blog.title}}"
                       >LMS có phải là xu hướng hiện nay?</a
                     >
                   </h5>
@@ -555,20 +472,16 @@
                     Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
                   </p>
                   <div class="rbt-card-bottom">
-                    <a class="transparent-button" href="course-details.html">
+                    <a
+                      class="transparent-button"
+                      th:href="@{'/bai-viet/' + ${blog.postId} + '?title=' + ${blog.title}}"
+                    >
                       Tìm hiểu thêm
                       <i>
-                        <svg
-                          width="17"
-                          height="12"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="17" height="12" xmlns="http://www.w3.org/2000/svg">
                           <g stroke="#27374D" fill="none" fill-rule="evenodd">
                             <path d="M10.614 0l5.629 5.629-5.63 5.629" />
-                            <path
-                              stroke-linecap="square"
-                              d="M.663 5.572h14.594"
-                            />
+                            <path stroke-linecap="square" d="M.663 5.572h14.594" />
                           </g>
                         </svg>
                       </i>
@@ -603,10 +516,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 col-6">
               <div class="instagram-grid">
                 <a href="#">
-                  <img
-                    th:src="@{/assets/images/instagram/instagram-01.jpg}"
-                    alt="instagram"
-                  />
+                  <img th:src="@{/assets/images/instagram/instagram-01.jpg}" alt="instagram" />
                   <span class="user-info">
                     <span class="icon"><i class="icon-instagram"></i></span>
                     <span class="user-name">@Histudy</span>
@@ -617,10 +527,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 col-6">
               <div class="instagram-grid">
                 <a href="#">
-                  <img
-                    th:src="@{/assets/images/instagram/instagram-02.jpg}"
-                    alt="instagram"
-                  />
+                  <img th:src="@{/assets/images/instagram/instagram-02.jpg}" alt="instagram" />
                   <span class="user-info">
                     <span class="icon"><i class="icon-instagram"></i></span>
                     <span class="user-name">@Histudy</span>
@@ -631,10 +538,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 col-6">
               <div class="instagram-grid">
                 <a href="#">
-                  <img
-                    th:src="@{/assets/images/instagram/instagram-03.jpg}"
-                    alt="instagram"
-                  />
+                  <img th:src="@{/assets/images/instagram/instagram-03.jpg}" alt="instagram" />
                   <span class="user-info">
                     <span class="icon"><i class="icon-instagram"></i></span>
                     <span class="user-name">@Histudy</span>
@@ -645,10 +549,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 col-6">
               <div class="instagram-grid">
                 <a href="#">
-                  <img
-                    th:src="@{/assets/images/instagram/instagram-04.jpg}"
-                    alt="instagram"
-                  />
+                  <img th:src="@{/assets/images/instagram/instagram-04.jpg}" alt="instagram" />
                   <span class="user-info">
                     <span class="icon"><i class="icon-instagram"></i></span>
                     <span class="user-name">@Histudy</span>
@@ -659,10 +560,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 col-6">
               <div class="instagram-grid">
                 <a href="#">
-                  <img
-                    th:src="@{/assets/images/instagram/instagram-05.jpg}"
-                    alt="instagram"
-                  />
+                  <img th:src="@{/assets/images/instagram/instagram-05.jpg}" alt="instagram" />
                   <span class="user-info">
                     <span class="icon"><i class="icon-instagram"></i></span>
                     <span class="user-name">@Histudy</span>
@@ -673,10 +571,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6 col-6">
               <div class="instagram-grid">
                 <a href="#">
-                  <img
-                    th:src="@{/assets/images/instagram/instagram-06.jpg}"
-                    alt="instagram"
-                  />
+                  <img th:src="@{/assets/images/instagram/instagram-06.jpg}" alt="instagram" />
                   <span class="user-info">
                     <span class="icon"><i class="icon-instagram"></i></span>
                     <span class="user-name">@Histudy</span>
