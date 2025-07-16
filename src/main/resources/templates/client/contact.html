@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="content">
+        <div class="rbt-conatct-area bg-gradient-11 rbt-section-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title text-center mb--60">
+                        <span class="subtitle bg-secondary-opacity">Liên Hệ</span>
+                        <h2 class="title">Bạn có thắc mắc cần tư vấn? <br> Hãy liên hệ với chúng tôi!</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 sal-animate" data-sal="slide-up" data-sal-delay="150" data-sal-duration="800">
+                    <div class="rbt-address">
+                        <div class="icon">
+                            <i class="feather-headphones"></i>
+                        </div>
+                        <div class="inner">
+                            <h4 class="title">Số điện thoại</h4>
+                            <p><a href="tel:+444555666777">+444 555 666 777</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 sal-animate" data-sal="slide-up" data-sal-delay="200" data-sal-duration="800">
+                    <div class="rbt-address">
+                        <div class="icon">
+                            <i class="feather-mail"></i>
+                        </div>
+                        <div class="inner">
+                            <h4 class="title">Email</h4>
+                            <p><a href="mailto:admin@gmail.com">admin@gmail.com</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 sal-animate" data-sal="slide-up" data-sal-delay="250" data-sal-duration="800">
+                    <div class="rbt-address">
+                        <div class="icon">
+                            <i class="feather-map-pin"></i>
+                        </div>
+                        <div class="inner">
+                            <h4 class="title">Địa chỉ</h4>
+                            <p>271 P Lê Thánh Tông, Má Chai, <br> Ngô Quyền, Hải Phòng 180000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="rbt-contact-address">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-6">
+                        <div class="thumbnail">
+                            <img class="w-100 radius-6" src="assets/images/about/contact.jpg" alt="Contact Images">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                            <div class="section-title text-start">
+                                <span class="subtitle bg-primary-opacity">HỌC Ở MỌI NƠI</span>
+                            </div>
+                            <h3 class="title">Bạn Cần Tư Vấn? Hãy Liên Hệ Với Chúng Tôi</h3>
+                            
+                            
+                            <form id="contact-form" method="POST" th:action="@{/contact}" th:object="${contactInfo}" class="rainbow-dynamic-form max-width-auto">
+                                <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                                <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                                <div class="form-group">
+                                    <input th:field="*{name}" type="text" required>
+                                    <label>Họ Tên</label>
+                                    <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input th:field="*{email}" type="email" required>
+                                    <label>Email</label>
+                                    <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input th:field="*{phoneNumber}" type="text" required>
+                                    <label>Số điện thoại</label>
+                                    <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger" th:errors="*{phoneNumber}"></div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea th:field="*{message}" required></textarea>
+                                    <label>Lời nhắn</label>
+                                    <span class="focus-border"></span>
+                                    <div th:if="${#fields.hasErrors('message')}" class="text-danger" th:errors="*{message}"></div>
+                                </div>
+                                <div class="form-submit-group">
+                                    <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                        <span class="icon-reverse-wrapper">
+                                            <span class="btn-text">GỬI NGAY</span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rbt-google-map bg-color-white rbt-section-gapTop">
+            <iframe class="w-100" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.411192128187!2d106.7067695!3d20.8656097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314a7bf67d69c9c7%3A0x4341c6cef1813f18!2zVHLGsOG7nW5nIENhbyDEg25nIEZQVCBQb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1719744644000!5m2!1svi!2s" height="600" style="border:0"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

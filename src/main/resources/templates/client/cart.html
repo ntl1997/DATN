@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="content">
+      <!-- Start breadcrumb Area -->
+      <div
+        class="rbt-breadcrumb-default ptb--100 ptb_md--50 ptb_sm--30 bg-gradient-1"
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="breadcrumb-inner text-center">
+                <h2 class="title">Giỏ hàng</h2>
+                <ul class="page-list">
+                  <li class="rbt-breadcrumb-item">
+                    <a th:href="@{/home}">Trang chủ</a>
+                  </li>
+                  <li>
+                    <div class="icon-right">
+                      <i class="feather-chevron-right"></i>
+                    </div>
+                  </li>
+                  <li class="rbt-breadcrumb-item active">Giỏ hàng</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Breadcrumb Area -->
+
+      <div class="rbt-cart-area bg-color-white rbt-section-gap">
+        <div class="cart_area">
+          <div class="container">
+            <div
+              class="alert alert-danger"
+              role="alert"
+              th:if="${param.checkoutError}"
+            >
+              Thanh toán thất bại! Có lỗi xảy ra khi thanh toán.
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <form action="#">
+                  <!-- Cart Table -->
+                  <div class="cart-table table-responsive mb--60">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th class="pro-thumbnail">Ảnh</th>
+                          <th class="pro-title">Sản phẩm</th>
+                          <th class="pro-price">Đơn giá</th>
+                          <th class="pro-subtotal">Tổng</th>
+                          <th class="pro-remove">Xóa</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </form>
+
+                <div class="row g-5">
+                  <div class="col-lg-6 col-12">
+                    <!-- Discount Coupon -->
+                    <div class="discount-coupon edu-bg-shade">
+                      <div class="section-title text-start">
+                        <h4 class="title mb--30">Mã giảm giá</h4>
+                        <h6 th:if="${param.notFound}" class="text-danger">
+                          mã giảm giá không tồn tại
+                        </h6>
+                      </div>
+                      <form th:action="@{/cart}" method="post">
+                        <div class="row">
+                          <div class="col-md-6 col-12 mb--25">
+                            <input
+                              type="text"
+                              name="couponCode"
+                              placeholder="Mã giảm giá"
+                            />
+                          </div>
+                          <div class="col-md-6 col-12 mb--25">
+                            <button
+                              class="rbt-btn btn-gradient hover-icon-reverse btn-sm"
+                            >
+                              <span class="icon-reverse-wrapper">
+                                <span class="btn-text">Xác nhận</span>
+                                <span class="btn-icon"
+                                  ><i class="feather-arrow-right"></i
+                                ></span>
+                                <span class="btn-icon"
+                                  ><i class="feather-arrow-right"></i
+                                ></span>
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <!-- Cart Summary -->
+
+                  <div class="col-lg-5 offset-lg-1 col-12">
+                    <div class="cart-summary">
+                      <div class="cart-summary-wrap">
+                        <div class="section-title text-start">
+                          <h4 class="title mb--30">Giỏ hàng</h4>
+                        </div>
+                        <p>Tổng: <span id="cart-total">0</span></p>
+                        <p>Giảm giá: <span id="cart-discount">0</span></p>
+                        <h2>Thành tiền: <span id="cart-payment">0</span></h2>
+                      </div>
+
+                      <form
+                        id="checkout-form"
+                        method="post"
+                        th:action="@{/vnpay-checkout}"
+                      >
+                        <input
+                          type="hidden"
+                          name="totalAmount"
+                          id="order-payment"
+                        />
+                        <input
+                          type="hidden"
+                          name="couponCode"
+                          id="order-coupon"
+                        />
+                        <div class="cart-submit-btn-group">
+                          <div class="single-button w-50">
+                            <button
+                              class="rbt-btn btn-gradient rbt-switch-btn rbt-switch-y w-100"
+                            >
+                              <span data-text="Checkout">Thanh toán</span>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rbt-separator-mid">
+        <div class="container">
+          <hr class="rbt-separator m-0" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom JS -->
+    <th:block th:fragment="scripts">
+      <script th:inline="javascript">
+        const code = /*[[${coupon != null ? coupon.couponCode : ""}]]*/ "";
+        const discount = /*[[${coupon != null ? coupon.discountPercent : 0}]]*/ 0;
+
+        function getCart() {
+          return JSON.parse(localStorage.getItem("cart")) || [];
+        }
+
+        function saveCart(cart) {
+          localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        function removeCart(cart) {
+          localStorage.removeItem("cart");
+          renderCart();
+        }
+
+        function renderCart() {
+          const cart = getCart();
+          const tbody = document.querySelector(".cart-table tbody");
+          const summary = document.querySelector(".cart-summary-wrap");
+          tbody.innerHTML = "";
+
+          let total = 0;
+          cart.forEach((item, index) => {
+            total += item.price;
+            tbody.innerHTML += `
+          <tr data-index="${index}">
+            <td class="pro-thumbnail"><img src="${item.image}" alt="${
+              item.name
+            }" /></td>
+            <td class="pro-title">${item.name}</td>
+            <td class="pro-price">${item.price.toFixed(0)} đ</td>
+            <td class="pro-subtotal">${item.price.toFixed(0)} đ</td>
+            <td class="pro-remove"><a href="#" class="remove-item"><i class="feather-x"></i></a></td>
+          </tr>
+        `;
+          });
+
+          let discountAmount = total * (discount / 100);
+          let payment = total - discountAmount;
+
+          summary.querySelector("#cart-total").innerText = `${total} đ`;
+          summary.querySelector(
+            "#cart-discount"
+          ).innerText = `${discountAmount} đ`;
+          summary.querySelector("#cart-payment").innerText = `${payment} đ`;
+        }
+
+        // Xóa sản phẩm khỏi giỏ hàng
+        document.addEventListener("click", function (e) {
+          if (e.target.closest(".remove-item")) {
+            e.preventDefault();
+            const row = e.target.closest("tr");
+            const index = row.getAttribute("data-index");
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCart();
+          }
+        });
+
+        // Nút thanh toán
+        document.addEventListener("DOMContentLoaded", () => {
+          renderCart();
+
+          document
+            .querySelector(".cart-submit-btn-group button")
+            .addEventListener("click", function (e) {
+              e.preventDefault();
+              const form = document.getElementById("checkout-form");
+              const cart = getCart();
+              let total = 0;
+
+              cart.forEach((item) => {
+                total += item.price;
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "courseIds";
+                input.value = item.id;
+                form.appendChild(input);
+              });
+
+              let discountAmount = total * (discount / 100);
+              let payment = total - discountAmount;
+
+              // Gán thành tiền, mã giảm giá vào form và gửi form
+              document.getElementById("order-payment").value = payment;
+              document.getElementById("order-coupon").value = code;
+              form.submit();
+              removeCart();
+            });
+        });
+      </script>
+    </th:block>
+  </body>
+</html>

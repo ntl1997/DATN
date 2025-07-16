@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="rbt-header-sticky">
+    <div th:fragment="content">
+
+        <div class="rbt-overlay-page-wrapper">
+            <div class="breadcrumb-image-container breadcrumb-style-max-width">
+                <div class="breadcrumb-image-wrapper">
+                    <div class="breadcrumb-dark">
+                        <img th:src="@{/assets/images/bg/bg-image-10.jpg}" alt="Education Images">
+                    </div>
+                </div>
+                <div class="breadcrumb-content-top text-center">
+                    <ul class="meta-list justify-content-center mb--10">
+                        <li class="list-item">
+                            <div class="author-thumbnail">
+                                <img th:src="@{${creatorImage}}" alt="Ảnh người dùng" />
+                            </div>
+                            <div class="author-info">
+                                <a href="#"><strong th:text="${creatorName}"></strong></a>
+                            </div>
+                        </li>
+                        <li class="list-item">
+                            <i class="feather-clock"></i>
+                            <span th:text="${#dates.format(blogPost.createdAt, 'dd MMM yyyy')}"></span>
+                        </li>
+                    </ul>
+                    <h1 class="title" th:text="${blogPost.title}"></h1>
+                </div>
+            </div>
+
+            <div class="rbt-blog-details-area rbt-section-gapBottom breadcrumb-style-max-width">
+                <div class="blog-content-wrapper rbt-article-content-wrapper">
+                    <div class="content">
+                        <div class="post-thumbnail mb--30 position-relative wp-block-image alignwide">
+                            <figure>
+                                <img th:src="@{${blogPost.imageBlog}}" alt="Blog Images">
+                                <figcaption th:text="${blogPost.title}"></figcaption>
+                            </figure>
+                        </div>
+                        <div class="blog-post-content" th:utext="${blogPost.content}">
+                        </div>
+                    </div>
+                </div>
+                <div class="related-post pt--60">
+                    <div class="section-title text-start mb--40">
+                        <span class="subtitle bg-primary-opacity">Related Post</span>
+                        <h4 class="title">Similar Post</h4>
+                    </div>
+
+                    <!-- Start Single Card  -->
+                    <!-- <div class="rbt-card card-list variation-02 rbt-hover mt--30">
+                        <div class="rbt-card-img">
+                            <a href="blog-details.html">
+                                <img src="assets/images/blog/blog-card-02.jpg" alt="Card image"> </a>
+                        </div>
+                        <div class="rbt-card-body">
+                            <h5 class="rbt-card-title"><a href="blog-details.html">Why Is Education So Famous?</a>
+                            </h5>
+                            <div class="rbt-card-bottom">
+                                <a class="transparent-button" href="blog-details.html">Read
+                                    Article<i><svg width="17" height="12" xmlns="http://www.w3.org/2000/svg">
+                                            <g stroke="#27374D" fill="none" fill-rule="evenodd">
+                                                <path d="M10.614 0l5.629 5.629-5.63 5.629" />
+                                                <path stroke-linecap="square" d="M.663 5.572h14.594" />
+                                            </g>
+                                        </svg></i></a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- End Single Card  -->
+
+                    <div th:each="post : ${any3Posts}" class="rbt-card card-list variation-02 rbt-hover mt--30">
+                        <div class="rbt-card-img">
+                            <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
+                                <img th:src="@{${post.imageBlog}}" alt="Card image" />
+                            </a>
+                        </div>
+                        <div class="rbt-card-body">
+                            <h5 class="rbt-card-title">
+                                <a th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}"
+                                    th:text="${post.title}">Title</a>
+                            </h5>
+                            <div class="rbt-card-bottom">
+                                <a class="transparent-button"
+                                    th:href="@{'/bai-viet/' + ${post.postId} + '?title=' + ${post.title}}">
+                                    Read Article
+                                    <i><svg width="17" height="12" xmlns="http://www.w3.org/2000/svg">
+                                            <g stroke="#27374D" fill="none" fill-rule="evenodd">
+                                                <path d="M10.614 0l5.629 5.629-5.63 5.629" />
+                                                <path stroke-linecap="square" d="M.663 5.572h14.594" />
+                                            </g>
+                                        </svg></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

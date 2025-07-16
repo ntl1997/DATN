@@ -53,11 +53,8 @@
                             justify-content: center;
                           "
                         >
-                          <a href="course-details.html">
-                            <img
-                              th:src="@{${course.courseImage}}"
-                              alt="Card image"
-                            />
+                          <a th:href="@{'/course-details/' + ${course.courseId}}">
+                            <img th:src="@{${course.courseImage}}" alt="Card image" />
                             <div class="rbt-badge-3 bg-white">
                               <span>-40%</span>
                               <span>Off</span>
@@ -69,23 +66,15 @@
                             <li>
                               <i class="feather-book"></i>
 
-                              <span
-                                th:text="${#lists.size(course.modules) + ' Bài học'}"
-                              ></span>
+                              <span th:text="${#lists.size(course.modules) + ' Bài học'}"></span>
                             </li>
                             <li>
                               <i class="feather-users"></i>
-                              <span
-                                th:text="${#lists.size(course.enrollments) + ' Học viên'}"
-                              ></span>
+                              <span th:text="${#lists.size(course.enrollments) + ' Học viên'}"></span>
                             </li>
                           </ul>
                           <h4 class="rbt-card-title">
-                            <a
-                              href="course-details.html"
-                              th:text="${course.title}"
-                              >React</a
-                            >
+                            <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}">React</a>
                           </h4>
                           <p
                             class="rbt-card-text"
@@ -103,10 +92,7 @@
                               <i class="fas fa-star"></i>
                             </div>
 
-                            <span
-                              class="rating-count"
-                              th:text="${#lists.size(course.reviews) +' Bình luận'}"
-                            >
+                            <span class="rating-count" th:text="${#lists.size(course.reviews) +' Bình luận'}">
                               (15 Đánh giá)</span
                             >
                           </div>
@@ -122,7 +108,7 @@
                                 >2.000.000₫</span
                               >
                             </div>
-                            <a class="rbt-btn-link" href="course-details.html">
+                            <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}">
                               Xem thêm
                               <i class="feather-arrow-right"></i>
                             </a>
@@ -280,7 +266,7 @@
                     justify-content: center;
                   "
                 >
-                  <a href="course-details.html">
+                  <a th:href="@{'/course-details/' + ${course.courseId}}">
                     <img th:src="@{${course.courseImage}}" alt="Card image" />
                     <div class="rbt-badge-3 bg-white">
                       <span>-40%</span>
@@ -299,22 +285,30 @@
                         <i class="fas fa-star"></i>
                       </div>
 
-                      <span
-                        class="rating-count"
-                        th:text="${#lists.size(course.reviews) +' Bình luận'}"
-                      >
+                      <span class="rating-count" th:text="${#lists.size(course.reviews) +' Bình luận'}">
                         (15 Đánh giá)</span
                       >
                     </div>
                     <div class="rbt-bookmark-btn">
-                      <a class="rbt-round-btn" title="Bookmark" href="#"
-                        ><i class="feather-bookmark"></i
-                      ></a>
+                      <form
+                        th:action="@{|/student/wishlist/add/${course.courseId}|}"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <button
+                          type="submit"
+                          class="rbt-round-btn"
+                          title="Thêm vào danh sách yêu thích"
+                          onclick="return confirm('Bạn có chắc muốn thêm?')"
+                        >
+                          <i class="feather-bookmark"></i>
+                        </button>
+                      </form>
                     </div>
                   </div>
 
                   <h4 class="rbt-card-title">
-                    <a href="course-details.html" th:text="${course.title}"
+                    <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}"
                       >React Front To Back</a
                     >
                   </h4>
@@ -322,15 +316,11 @@
                   <ul class="rbt-meta">
                     <li>
                       <i class="feather-book"></i>
-                      <span
-                        th:text="${#lists.size(course.modules) + ' Khóa học'}"
-                      ></span>
+                      <span th:text="${#lists.size(course.modules) + ' Khóa học'}"></span>
                     </li>
                     <li>
                       <i class="feather-users"></i>
-                      <span
-                        th:text="${#lists.size(course.enrollments) + ' Học viên'}"
-                      ></span>
+                      <span th:text="${#lists.size(course.enrollments) + ' Học viên'}"></span>
                     </li>
                   </ul>
 
@@ -340,9 +330,7 @@
                   <div class="rbt-author-meta mb--10">
                     <div class="rbt-author-info">
                       Bởi
-                      <a href="profile.html" th:text="${course.authorName}"
-                        >Angela</a
-                      >
+                      <a href="profile.html" th:text="${course.createdBy.fullname}">Angela</a>
                       Trong
                       <a href="#">Nhóm phát triển</a>
                     </div>
@@ -359,7 +347,7 @@
                         2.000.000₫
                       </span>
                     </div>
-                    <a class="rbt-btn-link" href="course-details.html">
+                    <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}">
                       Xem thêm
                       <i class="feather-arrow-right"></i>
                     </a>
@@ -537,13 +525,13 @@
             >
               <div class="rbt-card variation-02 rbt-hover">
                 <div class="rbt-card-img">
-                  <a href="course-details.html">
+                  <a th:href="@{'/bai-viet/' + ${blog.postId} + '?title=' + ${blog.title}}">
                     <img th:src="@{${blog.imageBlog}}" alt="Card image" />
                   </a>
                 </div>
                 <div class="rbt-card-body">
                   <h5 class="rbt-card-title">
-                    <a th:text="${blog.title}" href="course-details.html"
+                    <a th:text="${blog.title}" th:href="@{'/bai-viet/' + ${blog.postId} + '?title=' + ${blog.title}}"
                       >LMS có phải là xu hướng hiện nay?</a
                     >
                   </h5>
@@ -551,7 +539,10 @@
                     Đây là một thực tế lâu đời rằng người đọc sẽ bị phân tâm.
                   </p>
                   <div class="rbt-card-bottom">
-                    <a class="transparent-button" href="course-details.html">
+                    <a
+                      class="transparent-button"
+                      th:href="@{'/bai-viet/' + ${blog.postId} + '?title=' + ${blog.title}}"
+                    >
                       Tìm hiểu thêm
                       <i>
                         <svg

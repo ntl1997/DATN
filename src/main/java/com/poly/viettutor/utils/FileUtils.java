@@ -40,4 +40,40 @@ public final class FileUtils {
         }
     }
 
+    public static String saveFile(MultipartFile file, String folderPath) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isBlank()) {
+            throw new IllegalArgumentException("Tên file không hợp lệ.");
+        }
+
+        // Chỉ định đường dẫn lưu tệp và tạo thư mục nếu chưa tồn tại
+        Path projectDir = Paths.get(System.getProperty("user.dir"));
+        Path uploadPath = projectDir.resolve(folderPath);
+        Files.createDirectories(uploadPath);
+
+        // Tách tên và phần mở rộng
+        String baseName = originalFilename;
+        String extension = "";
+        int dotIndex = originalFilename.lastIndexOf(".");
+        if (dotIndex != -1) {
+            baseName = originalFilename.substring(0, dotIndex);
+            extension = originalFilename.substring(dotIndex); // bao gồm dấu chấm
+        }
+
+        // Nếu file đã tồn tại, thêm (1), (2),...
+        String safeFileName = baseName + extension;
+        Path filePath = uploadPath.resolve(safeFileName);
+        int counter = 1;
+        while (Files.exists(filePath)) {
+            safeFileName = baseName + "(" + counter + ")" + extension;
+            filePath = uploadPath.resolve(safeFileName);
+            counter++;
+        }
+
+        // Lưu file
+        file.transferTo(filePath.toFile());
+
+        return safeFileName;
+    }
+
 }
