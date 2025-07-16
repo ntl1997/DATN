@@ -5,6 +5,12 @@ import com.poly.viettutor.model.CourseCategory;
 import com.poly.viettutor.model.CourseMaterial;
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Lecture;
+import com.poly.viettutor.repository.CourseRepository;
+import com.poly.viettutor.repository.CourseSpecification;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
@@ -12,6 +18,7 @@ import com.poly.viettutor.repository.*;
 import com.poly.viettutor.utils.FileUtils;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -143,6 +150,12 @@ public class CourseService {
         return courseRepository.findTop6PopularCourses(PageRequest.of(0, 6));
     }
 
+    // Lấy dữ liệu Course phân trang
+    public Page<Course> findAll(Pageable pageable) {
+        return courseRepository.findAll(pageable);
+    }
+
+    // Tính tổng thời gian của tất cả các bài giảng trong khóa học
     public int totalDuration(Course course) {
         if (course.getModules() == null) {
             return 0;
@@ -154,6 +167,17 @@ public class CourseService {
                 .sum();
     }
 
+    public Page<Course> searchCourses(
+            String keyword,
+            List<String> categories,
+            List<Integer> ratings,
+            String instructor,
+            String priceType,
+            Pageable pageable) {
+        return courseRepository.findAll(
+                CourseSpecification.filterCourses(keyword, categories, ratings, instructor, priceType),
+                pageable);
+    }
     public long countCoursesByUser(User user) {
         return courseRepository.countCoursesByUserId(user.getId());
     }
@@ -165,4 +189,5 @@ public class CourseService {
     public List<Course> findCoursesByInstructorIdAndStatus(Long instructorId, String status) {
         return courseRepository.findByCreatedByIdAndStatus(instructorId, status);
     }
+  
 }
