@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateCourseDTO {
+public class CourseDTO {
 
     @NotBlank(message = "Tiêu đề không được để trống!")
     private String title;

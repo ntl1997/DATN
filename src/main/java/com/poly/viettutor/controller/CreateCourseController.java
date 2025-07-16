@@ -1,6 +1,6 @@
 package com.poly.viettutor.controller;
 
-import com.poly.viettutor.dto.CreateCourseDTO;
+import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
@@ -9,6 +9,7 @@ import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Slf4j
 @Controller
 public class CreateCourseController {
 
@@ -38,17 +40,16 @@ public class CreateCourseController {
     }
 
     @GetMapping("/instructor/create-course")
-    public String showCreateCourse(@ModelAttribute("course") CreateCourseDTO courseDTO, Model model) {
+    public String showCreateCourse(@ModelAttribute("course") CourseDTO courseDTO, Model model) {
         return loadPage(model);
     }
 
     @PostMapping("/instructor/create-course")
-    public String createCourse(@Valid @ModelAttribute("course") CreateCourseDTO courseDTO, BindingResult result,
+    public String createCourse(@Valid @ModelAttribute("course") CourseDTO courseDTO, BindingResult result,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
-            result.getFieldErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
             return loadPage(model);
         }
 
@@ -59,8 +60,8 @@ public class CreateCourseController {
             courseService.saveCourseModules(courseDTO, savedCourse);
             courseService.saveCourseMaterials(savedCourse, materialFiles);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("createError", e.getMessage());
-            return "redirect:/student/dashboard";
+            log.error("Create course failed", e);
+            return "redirect:/student/dashboard?createFailed=true";
         }
 
         return "redirect:/student/dashboard?createSuccess=true";

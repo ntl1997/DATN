@@ -50,7 +50,6 @@ public final class FileUtils {
         Path projectDir = Paths.get(System.getProperty("user.dir"));
         Path uploadPath = projectDir.resolve(folderPath);
         Files.createDirectories(uploadPath);
-        System.out.println(1);
 
         // Tách tên và phần mở rộng
         String baseName = originalFilename;
@@ -60,7 +59,6 @@ public final class FileUtils {
             baseName = originalFilename.substring(0, dotIndex);
             extension = originalFilename.substring(dotIndex); // bao gồm dấu chấm
         }
-        System.out.println(2);
 
         // Nếu file đã tồn tại, thêm (1), (2),...
         String safeFileName = baseName + extension;
@@ -71,11 +69,9 @@ public final class FileUtils {
             filePath = uploadPath.resolve(safeFileName);
             counter++;
         }
-        System.out.println(3);
 
         // Lưu file
         file.transferTo(filePath.toFile());
-        System.out.println(4);
 
         return safeFileName;
     }
