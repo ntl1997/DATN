@@ -533,7 +533,9 @@
                         </div>
                         <div class="rbt-author-info">
                           Tạo bởi
-                          <a href="profile.html" th:text="${course.authorName}"
+                          <a
+                            href="profile.html"
+                            th:text="${course.createdBy.fullname}"
                             >Angela</a
                           >
                           Trong
