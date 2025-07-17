@@ -178,6 +178,7 @@ public class CourseService {
                 CourseSpecification.filterCourses(keyword, categories, ratings, instructor, priceType),
                 pageable);
     }
+
     public long countCoursesByUser(User user) {
         return courseRepository.countCoursesByUserId(user.getId());
     }
@@ -189,5 +190,5 @@ public class CourseService {
     public List<Course> findCoursesByInstructorIdAndStatus(Long instructorId, String status) {
         return courseRepository.findByCreatedByIdAndStatus(instructorId, status);
     }
-  
+
 }
