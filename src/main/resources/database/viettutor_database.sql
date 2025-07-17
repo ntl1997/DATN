@@ -308,9 +308,9 @@ INSERT INTO UserRoles (RoleId, UserId) VALUES
 
 -- 4. Categories (độc lập)
 INSERT INTO Categories (Name, ParentId, ImageUrl, Level) VALUES 
-(N'Programming', NULL, N'/category/programming.jpg', 1),
-(N'Web Development', 1, N'/category/web-development.jpg', 2),
-(N'Data Science', 1, N'/category/data-science.jpg', 2);
+(N'Programming', NULL, N'https://bitly.li/vYIB', 1),
+(N'Web Development', 1, N'https://bitly.li/AwvR', 2),
+(N'Data Science', 1, N'https://bitly.li/vYIB', 2);
 
 -- 5. PaymentMethods (độc lập)
 INSERT INTO PaymentMethods (PaymentMethod) VALUES 
