@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="content">
+      <!-- Start Banner Area -->
+      <div class="rbt-banner-area rbt-banner-8 variation-02">
+        <div class="container">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-10 offset-lg-1">
+              <div class="content">
+                <div class="inner text-center">
+                  <div class="rbt-new-badge rbt-new-badge-one">
+                    <span class="rbt-new-badge-icon">🏆</span> Người dẫn đầu trong lĩnh vực học trực tuyến
+                  </div>
+
+                  <h1 class="title">
+                    <span class="header-caption">
+                      <span class="cd-headline clip is-full-width">
+                        <span class="cd-words-wrapper">
+                          <b class="is-visible theme-gradient">Sứ mệnh</b>
+                          <b class="is-hidden theme-gradient">Tầm nhìn</b>
+                          <b class="is-hidden theme-gradient">Kế hoạch</b>
+                        </span>
+                      </span>
+                    </span>
+                  </h1>
+                  <p class="description has-medium-font-size mt--20">
+                    Bắt đầu và học React.js từ đầu! Tìm hiểu Reactjs, Hooks, Redux, Routing trong React, Animation,
+                    Next.js và còn nhiều hơn nữa!
+                  </p>
+                  <div class="slider-btn rbt-button-group justify-content-center">
+                    <a class="rbt-btn btn-gradient hover-icon-reverse" th:href="@{/login}">
+                      <span class="icon-reverse-wrapper">
+                        <span class="btn-text">Đăng nhập để bắt đầu</span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                      </span>
+                    </a>
+                    <a class="rbt-btn hover-icon-reverse btn-white" th:href="@{/contact}">
+                      <span class="icon-reverse-wrapper">
+                        <span class="btn-text">Liên hệ với chúng tôi</span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Banner Area -->
+
+      <!-- Start Video Area  -->
+      <div class="rbt-video-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="video-popup-wrapper">
+                <img class="w-100 rbt-radius" th:src="@{/assets/images/bg/bg-image-12.jpg}" alt="Video Images" />
+                <a
+                  class="rbt-btn rounded-player-2 popup-video position-to-top with-animation btn-theme-color"
+                  href="https://www.youtube.com/watch?v=nA1Aqp0sPQo"
+                >
+                  <span class="play-icon"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Video Area  -->
+
+      <div class="rbt-about-area about-style-1 bg-color-white rbt-section-gap">
+        <div class="container">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+              <div class="content">
+                <img th:src="@{/assets/images/about/about-06.png}" alt="About Images" />
+              </div>
+            </div>
+            <div class="col-lg-6" data-sal="slide-up" data-sal-duration="700">
+              <div class="inner pl--50 pl_sm--5">
+                <div class="content text-start">
+                  <span class="rbt-badge-6 bg-primary-opacity">Giới thiệu về Viettutor</span>
+                  <h3 class="title">
+                    Chào mừng đến với Viettutor – nơi bạn phát triển kỹ năng với các khóa học trực tuyến chất lượng
+                    nhất.
+                  </h3>
+                  <p class="description mt--30">
+                    <strong>Nền tảng giáo dục Viettutor</strong> nơi bạn có thể học mọi lúc, mọi nơi.
+                  </p>
+                  <p class="description">
+                    Chúng tôi mang đến trải nghiệm học tập chất lượng, nội dung hấp dẫn và đội ngũ giảng viên uy tín.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Service Area -->
+      <div class="rbt-service-area bg-color-white rbt-section-gap">
+        <div class="container">
+          <div class="row mb--60">
+            <div class="col-lg-12">
+              <div class="section-title text-center">
+                <h2 class="title">Tại sao nên học với chúng tôi?</h2>
+                <p class="description mt--30">
+                  <strong>Nền tảng giáo dục Viettutor</strong> cung cấp chương trình học phong phú, chất lượng và dễ
+                  tiếp cận.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Start Card Area -->
+          <div class="row row--15 mt_dec--30">
+            <!-- Start Service Grid  -->
+            <div class="col-lg-4 col-xl-3 col-xxl-3 col-md-6 col-sm-6 col-12 mt--30">
+              <div class="service-card service-card-6">
+                <div class="inner">
+                  <div class="icon">
+                    <img th:src="@{/assets/images/icons/001-bulb.png}" alt="icons Images" />
+                  </div>
+                  <div class="content">
+                    <h6 class="title"><a href="#">Bạn Nộp Hồ Sơ</a></h6>
+                    <p class="description">Học tiếng Anh – Nếu bạn đang tìm đoạn văn mẫu, đây là nơi dành cho bạn.</p>
+                  </div>
+                  <span class="number-text">1</span>
+                </div>
+              </div>
+            </div>
+            <!-- End Service Grid  -->
+
+            <!-- Start Service Grid  -->
+            <div class="col-lg-4 col-xl-3 col-xxl-3 col-md-6 col-sm-6 col-12 mt--30">
+              <div class="service-card service-card-6">
+                <div class="inner">
+                  <div class="icon">
+                    <img th:src="@{/assets/images/icons/002-hat.png}" alt="Shape Images" />
+                  </div>
+                  <div class="content">
+                    <h6 class="title"><a href="#">Chúng tôi Kết Nối</a></h6>
+                    <p class="description">Học Javascript – Nếu bạn đang tìm đoạn văn mẫu, đây là nơi dành cho bạn.</p>
+                  </div>
+                  <span class="number-text">2</span>
+                </div>
+              </div>
+            </div>
+            <!-- End Service Grid  -->
+
+            <!-- Start Service Grid  -->
+            <div class="col-lg-4 col-xl-3 col-xxl-3 col-md-6 col-sm-6 col-12 mt--30">
+              <div class="service-card service-card-6">
+                <div class="inner">
+                  <div class="icon">
+                    <img th:src="@{/assets/images/icons/003-id-card.png}" alt="Shape Images" />
+                  </div>
+                  <div class="content">
+                    <h6 class="title"><a href="#">Bạn Sẵn Sàng</a></h6>
+                    <p class="description">Học Angular – Nếu bạn đang tìm đoạn văn mẫu, đây là nơi dành cho bạn.</p>
+                  </div>
+                  <span class="number-text">3</span>
+                </div>
+              </div>
+            </div>
+            <!-- End Service Grid  -->
+
+            <!-- Start Service Grid  -->
+            <div class="col-lg-4 col-xl-3 col-xxl-3 col-md-6 col-sm-6 col-12 mt--30">
+              <div class="service-card service-card-6">
+                <div class="inner">
+                  <div class="icon">
+                    <img th:src="@{/assets/images/icons/004-pass.png}" alt="Shape Images" />
+                  </div>
+                  <div class="content">
+                    <h6 class="title"><a href="#">Hoàn Thành</a></h6>
+                    <p class="description">Học Php – Nếu bạn đang tìm đoạn văn mẫu, đây là nơi dành cho bạn.</p>
+                  </div>
+                  <span class="number-text">4</span>
+                </div>
+              </div>
+            </div>
+            <!-- End Service Grid  -->
+          </div>
+          <!-- End Card Area -->
+        </div>
+      </div>
+      <!-- End Service Area -->
+
+      <div class="rbt-separator-mid">
+        <div class="container">
+          <hr class="rbt-separator m-0" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
