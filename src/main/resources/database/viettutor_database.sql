@@ -50,7 +50,8 @@ CREATE TABLE Users (
     CreatedAt DATETIME DEFAULT GETDATE(),
     PhoneNumber NVARCHAR(20),
     Occupation NVARCHAR(100),
-    Biography NVARCHAR(MAX)
+    Biography NVARCHAR(MAX),
+    Status BIT DEFAULT 1,
 );
 GO
 
