@@ -340,9 +340,9 @@ INSERT INTO CourseModules (CourseId, ModuleTitle, SortOrder) VALUES
 INSERT INTO Lectures (
     ModuleId, LectureTitle, Content, VideoUrl, SortOrder, duration
 ) VALUES 
-(1, N'Giới thiệu ngôn ngữ Python', N'Nội dung bài giảng 1', N'https://video.example.com/python1', 1, 30),
-(2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://video.example.com/python2', 1, 18),
-(3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://video.example.com/html1', 1, 14);
+(1, N'Giới thiệu ngôn ngữ Python', N'Nội dung bài giảng 1', N'https://www.youtube.com/embed/K7ZKTjmZeWw', 1, 30),
+(2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://www.youtube.com/embed/W0kMn7dYNGo', 1, 18),
+(3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://www.youtube.com/embed/PN9EUufNkWA', 1, 14);
 
 -- -- 10. CourseObjectives (phụ thuộc Courses)
 -- INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 
