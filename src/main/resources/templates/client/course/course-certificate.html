@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <th:block th:fragment="course-certificate">
+      <div class="accordion-item card">
+        <input type="hidden" th:field="*{hasCertificate}" id="hasCertificate" />
+        <h2 class="accordion-header card-header" id="accSeven">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#accCollapseEight"
+            aria-expanded="false"
+            aria-controls="accCollapseEight"
+          >
+            Mẫu chứng chỉ
+          </button>
+        </h2>
+        <div
+          id="accCollapseEight"
+          class="accordion-collapse collapse"
+          aria-labelledby="accSeven"
+          data-bs-parent="#tutionaccordionExamplea1"
+        >
+          <div class="accordion-body card-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="tab-content">
+                  <div
+                    class="tab-pane fade advance-tab-content-1 active show"
+                    id="landscape"
+                    role="tabpanel"
+                    aria-labelledby="landscape-tab"
+                  >
+                    <div class="row g-5 mt--10">
+                      <!-- Start Single Certificate  -->
+                      <div class="col-lg-4">
+                        <div class="certificate-inner rbt-image-checkbox">
+                          <input type="radio" id="option1" name="radio-group" value="option1" checked />
+                          <label for="option1"
+                            ><img th:src="@{/assets/images/icons/certificate-none.svg}" alt="Certificate Image"
+                          /></label>
+                        </div>
+                      </div>
+                      <!-- End Single Certificate  -->
+
+                      <!-- Start Single Certificate  -->
+                      <div class="col-lg-4">
+                        <div class="certificate-inner rbt-image-checkbox">
+                          <input type="radio" id="option2" name="radio-group" value="option2" />
+                          <label for="option2"
+                            ><img th:src="@{/assets/images/others/preview-01.png}" alt="Certificate Image"
+                          /></label>
+                        </div>
+                      </div>
+                      <!-- End Single Certificate  -->
+
+                      <!-- Start Single Certificate  -->
+                      <div class="col-lg-4">
+                        <div class="certificate-inner rbt-image-checkbox">
+                          <input type="radio" id="option3" name="radio-group" value="option3" />
+                          <label for="option3"
+                            ><img th:src="@{/assets/images/others/preview-02.png}" alt="Certificate Image"
+                          /></label>
+                        </div>
+                      </div>
+                      <!-- End Single Certificate  -->
+
+                      <!-- Start Single Certificate  -->
+                      <div class="col-lg-4">
+                        <div class="certificate-inner rbt-image-checkbox">
+                          <input type="radio" id="option4" name="radio-group" value="option4" />
+                          <label for="option4"
+                            ><img th:src="@{/assets/images/others/preview-03.png}" alt="Certificate Image"
+                          /></label>
+                        </div>
+                      </div>
+                      <!-- End Single Certificate  -->
+
+                      <!-- Start Single Certificate  -->
+                      <div class="col-lg-4">
+                        <div class="certificate-inner rbt-image-checkbox">
+                          <input type="radio" id="option5" name="radio-group" value="option5" />
+                          <label for="option5"
+                            ><img th:src="@{/assets/images/others/preview-04.png}" alt="Certificate Image"
+                          /></label>
+                        </div>
+                      </div>
+                      <!-- End Single Certificate  -->
+
+                      <!-- Start Single Certificate  -->
+                      <div class="col-lg-4">
+                        <div class="certificate-inner rbt-image-checkbox">
+                          <input type="radio" id="option6" name="radio-group" value="option6" />
+                          <label for="option6"
+                            ><img th:src="@{/assets/images/others/preview-05.png}" alt="Certificate Image"
+                          /></label>
+                        </div>
+                      </div>
+                      <!-- End Single Certificate  -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </th:block>
+  </body>
+</html>

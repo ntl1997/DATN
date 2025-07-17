@@ -200,11 +200,21 @@ function renderModule(title) {
         <div class="accordion-body card-body">
           <input type="hidden" name="modules[${id}].moduleTitle" value="${title}" />
           <div class="lesson-container" data-module-index="${id}"></div>
-          <div class="d-flex flex-wrap justify-content-between">
-            <button class="rbt-btn btn-border rbt-sm-btn-2" type="button" data-bs-toggle="modal" data-bs-target="#create-lesson" onclick="prepareAddLesson(${id})">
-              <span class="btn-text">Bài học</span>
-              <span class="btn-icon"><i class="feather-plus-square"></i></span>
-            </button>
+          <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div class="gap-3 d-flex flex-wrap">
+              <button class="rbt-btn btn-border rbt-sm-btn-2" type="button" data-bs-toggle="modal" data-bs-target="#create-lesson" onclick="prepareAddLesson(${id})">
+                <span class="btn-text">Bài học</span>
+                <span class="btn-icon"><i class="feather-plus-square"></i></span>
+              </button>
+              <button class="rbt-btn btn-border rbt-sm-btn-2" type="button" data-bs-toggle="modal" data-bs-target="#create-quiz" onclick="prepareAddLesson(${id})">
+                <span class="btn-text">Quiz</span>
+                <span class="btn-icon"><i class="feather-plus-square"></i></span>
+              </button>
+              <button class="rbt-btn btn-border rbt-sm-btn-2" type="button" data-bs-toggle="modal" data-bs-target="#create-assignment" onclick="prepareAddLesson(${id})">
+                <span class="btn-text">Assignment</span>
+                <span class="btn-icon"><i class="feather-plus-square"></i></span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

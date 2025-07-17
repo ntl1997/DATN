@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="lesson-model">
+      <!-- Start Create Lesson Modal -->
+      <div class="rbt-default-modal modal fade" id="create-lesson" tabindex="-1" aria-labelledby="LessonLabel">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                <i class="feather-x"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="inner rbt-default-form">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="modal-title mb--20" id="LessonLabel">Thêm bài học</h5>
+                    <div class="course-field mb--20">
+                      <label for="create-lesson-title">Tên bài học</label>
+                      <input id="create-lesson-title" type="text" />
+                      <small>
+                        <i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần thiết.
+                        Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.
+                      </small>
+                    </div>
+                    <div class="course-field mb--20">
+                      <label for="create-lesson-content">Tóm tắt bài học</label>
+                      <textarea id="create-lesson-content" rows="5"></textarea
+                      ><small>
+                        <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
+                        động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
+                        (tooltip) cạnh tên bài học.
+                      </small>
+                    </div>
+
+                    <div class="course-field mb--20">
+                      <h6>Đường link URL video</h6>
+                      <div class="rbt-modern-select bg-transparent height-45 mb--10">
+                        <input id="create-videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
+                      </div>
+                    </div>
+
+                    <div class="course-field mb--15">
+                      <label>Thời lượng video</label>
+                      <div class="row row--15">
+                        <div class="col-lg-12">
+                          <input id="create-videoDuration" type="number" placeholder="00" />
+                          <small class="d-block mt_dec--5"><i class="feather-info"></i> Phút.</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="top-circle-shape"></div>
+            <div class="modal-footer pt--30 justify-content-between">
+              <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                Hủy
+              </button>
+              <div class="content">
+                <button type="button" class="rbt-btn btn-md" onclick="saveLesson()">Lưu bài học</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Create Lesson Modal -->
+
+      <!-- Start Update Lesson Modal -->
+      <div class="rbt-default-modal modal fade" id="update-lesson" tabindex="-1" aria-labelledby="LessonLabel">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                <i class="feather-x"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="inner rbt-default-form">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="modal-title mb--20" id="LessonLabel">Thêm bài học</h5>
+                    <div class="course-field mb--20">
+                      <label for="update-lesson-title">Tên bài học</label>
+                      <input id="update-lesson-title" type="text" />
+                      <small>
+                        <i class="feather-info"></i> Tiêu đề bài học sẽ được hiển thị công khai ở những nơi cần thiết.
+                        Mỗi bài học có thể bao gồm một hoặc nhiều bài giảng, bài kiểm tra và bài tập.
+                      </small>
+                    </div>
+                    <div class="course-field mb--20">
+                      <label for="update-lesson-content">Tóm tắt bài học</label>
+                      <textarea id="update-lesson-content" rows="5"></textarea
+                      ><small>
+                        <i class="feather-info"></i> Thêm một đoạn tóm tắt ngắn để giúp học viên chuẩn bị cho các hoạt
+                        động trong bài học. Văn bản này sẽ được hiển thị trên trang khóa học, bên cạnh chú giải
+                        (tooltip) cạnh tên bài học.
+                      </small>
+                    </div>
+
+                    <div class="course-field mb--20">
+                      <h6>Đường link URL video</h6>
+                      <div class="rbt-modern-select bg-transparent height-45 mb--10">
+                        <input id="update-videoUrl" type="text" placeholder="Thêm đường link url của bạn vào đây." />
+                      </div>
+                    </div>
+
+                    <div class="course-field mb--15">
+                      <label>Thời lượng video</label>
+                      <div class="row row--15">
+                        <div class="col-lg-12">
+                          <input id="update-videoDuration" type="number" placeholder="00" />
+                          <small class="d-block mt_dec--5"><i class="feather-info"></i> Phút.</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="top-circle-shape"></div>
+            <div class="modal-footer pt--30 justify-content-between">
+              <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                Hủy
+              </button>
+              <div class="content">
+                <button type="button" class="rbt-btn btn-md" onclick="updateLesson()">Lưu bài học</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Update Lesson Modal -->
+    </div>
+  </body>
+</html>

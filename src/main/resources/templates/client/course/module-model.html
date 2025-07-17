@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="module-model">
+      <!-- Start Create Module Modal -->
+      <div
+        class="rbt-default-modal modal fade"
+        id="CreateModuleModel"
+        tabindex="-1"
+        aria-labelledby="CreateModuleModelLabel"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                <i class="feather-x"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="inner rbt-default-form">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="modal-title mb--20" id="CreateModuleModelLabel">Thêm chủ đề</h5>
+                    <div class="course-field mb--20">
+                      <label for="create-module-title">Tên chủ đề</label>
+                      <input id="create-module-title" type="text" />
+                      <small
+                        ><i class="feather-info"></i> Tiêu đề chủ đề sẽ được hiển thị công khai ở những nơi cần thiết.
+                        Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="top-circle-shape"></div>
+            <div class="modal-footer pt--30">
+              <button class="rbt-btn btn-md btn-gradient hover-icon-reverse" type="button" onclick="addModule()">
+                <span class="icon-reverse-wrapper">
+                  <span class="btn-text">Thêm chủ đề mới</span>
+                  <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                  <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                </span>
+              </button>
+              <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Create Module Modal -->
+
+      <!-- Start Update Module Model -->
+      <div
+        class="rbt-default-modal modal fade"
+        id="UpdateModuleModel"
+        tabindex="-1"
+        aria-labelledby="UpdateModuleModelLabel"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                <i class="feather-x"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="inner rbt-default-form">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="modal-title mb--20" id="UpdateModuleModelLabel">Cập nhật chủ đề</h5>
+                    <div class="course-field mb--20">
+                      <label for="update-module-title">Tên chủ đề</label>
+                      <input id="update-module-title" type="text" />
+                      <small
+                        ><i class="feather-info"></i> Tiêu đề chủ đề sẽ được hiển thị công khai ở những nơi cần thiết.
+                        Mỗi chủ đề có thể bao gồm một hoặc nhiều bài học, bài kiểm tra và bài tập.</small
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="top-circle-shape"></div>
+            <div class="modal-footer pt--30">
+              <button class="rbt-btn btn-md btn-gradient hover-icon-reverse" type="button" onclick="updateModule()">
+                <span class="icon-reverse-wrapper">
+                  <span class="btn-text">Cập nhật chủ đề</span>
+                  <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                  <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                </span>
+              </button>
+              <button type="button" class="rbt-btn btn-border btn-md radius-round-10" data-bs-dismiss="modal">
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Update Module Model -->
+    </div>
+  </body>
+</html>
