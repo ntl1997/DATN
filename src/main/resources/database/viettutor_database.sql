@@ -309,9 +309,9 @@ INSERT INTO UserRoles (RoleId, UserId) VALUES
 
 -- 4. Categories (độc lập)
 INSERT INTO Categories (Name, ParentId, ImageUrl, Level) VALUES 
-(N'Programming', NULL, N'/category/programming.jpg', 1),
-(N'Web Development', 1, N'/category/web-development.jpg', 2),
-(N'Data Science', 1, N'/category/data-science.jpg', 2);
+(N'Programming', NULL, N'https://bitly.li/vYIB', 1),
+(N'Web Development', 1, N'https://bitly.li/AwvR', 2),
+(N'Data Science', 1, N'https://bitly.li/vYIB', 2);
 
 -- 5. PaymentMethods (độc lập)
 INSERT INTO PaymentMethods (PaymentMethod) VALUES 
@@ -341,9 +341,9 @@ INSERT INTO CourseModules (CourseId, ModuleTitle, SortOrder) VALUES
 INSERT INTO Lectures (
     ModuleId, LectureTitle, Content, VideoUrl, SortOrder, duration
 ) VALUES 
-(1, N'Giới thiệu ngôn ngữ Python', N'Nội dung bài giảng 1', N'https://video.example.com/python1', 1, 30),
-(2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://video.example.com/python2', 1, 18),
-(3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://video.example.com/html1', 1, 14);
+(1, N'Giới thiệu ngôn ngữ Python', N'Nội dung bài giảng 1', N'https://www.youtube.com/embed/K7ZKTjmZeWw', 1, 30),
+(2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://www.youtube.com/embed/W0kMn7dYNGo', 1, 18),
+(3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://www.youtube.com/embed/PN9EUufNkWA', 1, 14);
 
 -- -- 10. CourseObjectives (phụ thuộc Courses)
 -- INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 

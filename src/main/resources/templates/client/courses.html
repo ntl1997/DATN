@@ -497,7 +497,9 @@
                       </div>
 
                       <h4 class="rbt-card-title">
-                        <a href="course-details.html" th:text="${course.title}"
+                        <a
+                          th:href="@{'/course-details/' + ${course.courseId}}"
+                          th:text="${course.title}"
                           >React Front To Back</a
                         >
                       </h4>
