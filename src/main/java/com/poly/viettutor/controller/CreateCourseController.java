@@ -1,21 +1,19 @@
 package com.poly.viettutor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
-import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CategoryService;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
 
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,20 +43,17 @@ public class CreateCourseController {
     }
 
     @PostMapping("/instructor/create-course")
-    public String createCourse(@Valid @ModelAttribute("course") CourseDTO courseDTO, BindingResult result,
+    public String createCourse(@RequestParam("courseJson") String courseJson,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             RedirectAttributes redirectAttributes, Model model) {
-        if (result.hasErrors()) {
-            return loadPage(model);
-        }
-
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
+            log.info(courseJson);
+
             User user = userService.getCurrentUser();
-            Course savedCourse = courseService.create(user, courseDTO, imageFile);
-            courseService.saveCourseCategories(courseDTO, savedCourse);
-            courseService.saveCourseModules(courseDTO, savedCourse);
-            courseService.saveCourseMaterials(savedCourse, materialFiles);
+            courseService.create(user, courseDTO, imageFile, materialFiles);
         } catch (Exception e) {
 
             log.error("Create course failed", e);
