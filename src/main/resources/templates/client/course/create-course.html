@@ -41,6 +41,8 @@
                       </a>
                     </div>
                     <div class="col-lg-8">
+                      <!-- Dữ liệu course, file image, file attachments gửi về backend dưới dạng JSON -->
+                      <input type="hidden" name="courseJson" id="courseJson" />
                       <button type="submit" class="rbt-btn btn-gradient hover-icon-reverse w-100 text-center" href="#">
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">Tạo khóa học</span>
@@ -107,7 +109,10 @@
     </div>
 
     <th:block th:fragment="scripts">
-      <script th:src="@{/assets/js/create-course.js}"></script>
+      <script th:src="@{/assets/js/course.js}"></script>
+      <script th:src="@{/assets/js/module.js}"></script>
+      <script th:src="@{/assets/js/lesson.js}"></script>
+      <script th:src="@{/assets/js/quiz.js}"></script>
     </th:block>
   </body>
 </html>
