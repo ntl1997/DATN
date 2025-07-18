@@ -30,11 +30,6 @@ function appendLessonToDOM(moduleIdx, lessonIdx) {
   const container = document.querySelector(`.lesson-container[data-module-index="${moduleIdx}"]`);
   const html = `
     <div class="lesson-item d-flex justify-content-between rbt-course-wrape mb-4">
-      ${Object.entries(lesson)
-        .map(
-          ([k, v]) => `<input type="hidden" name="modules[${moduleIdx}].lectures[${lessonIdx}].${k}" value="${v}" />`
-        )
-        .join("\n")}
       <div class="col-10 inner d-flex align-items-center gap-2">
         <i class="feather-menu cursor-scroll"></i>
         <h6 class="rbt-title mb-0">${lesson.lectureTitle}</h6>
