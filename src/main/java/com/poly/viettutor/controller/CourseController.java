@@ -144,7 +144,7 @@ public class CourseController {
             if (result.hasErrors()) {
                 model.addAttribute("org.springframework.validation.BindingResult.course", result);
                 model.addAttribute("course", courseDTO);
-                return loadPage(model, "Chỉnh sửa khóa học", "client/course/edit-course");
+                return loadPage(model, "Chỉnh sửa khóa học", "client/course/course-edit");
             }
 
             User user = userService.getCurrentUser();
