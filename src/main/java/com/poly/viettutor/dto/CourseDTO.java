@@ -2,7 +2,6 @@ package com.poly.viettutor.dto;
 
 import java.util.List;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -58,8 +57,6 @@ public class CourseDTO {
     private List<Integer> categoryIds;
 
     @NotEmpty(message = "Khóa học phải có ít nhất 1 chương!")
-    private List<@Valid ModuleDTO> modules;
-
-    private List<@Valid QuizDTO> quizzes;
+    private List<ModuleDTO> modules;
 
 }
