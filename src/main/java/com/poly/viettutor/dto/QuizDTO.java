@@ -2,7 +2,6 @@ package com.poly.viettutor.dto;
 
 import java.util.List;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,6 +19,9 @@ public class QuizDTO {
     @NotNull(message = "Thời gian làm bài không được để trống!")
     private Integer timeLimit;
 
-    private List<@Valid QuestionDTO> questions;
+    @NotNull(message = "Tổng điểm không được để trống!")
+    private Double totalScore;
+
+    private List<QuestionDTO> questions;
 
 }
