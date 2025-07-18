@@ -142,6 +142,20 @@
                 <small class="d-block mt_dec--5"> <i class="feather-info"></i> Các danh mục khóa học. </small>
               </div>
 
+              <div class="course-field mb--15">
+                <label for="hasCertificate" th:unless="${#fields.hasErrors('hasCertificate')}">Cấp chứng chỉ *</label>
+                <label for="hasCertificate" th:errors="*{hasCertificate}" class="text-danger">
+                  Hãy chọn có hoặc không cấp chứng chỉ!
+                </label>
+                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                  <select th:field="*{hasCertificate}" id="hasCertificate" class="w-100" data-live-search="true">
+                    <option th:value="true">Có cấp chứng chỉ</option>
+                    <option th:value="false">Không cấp chứng chỉ</option>
+                  </select>
+                </div>
+                <small class="d-block mt_dec--5"> <i class="feather-info"></i> Có/không cấp chứng chỉ. </small>
+              </div>
+
               <hr class="mt--10 mb--20" />
 
               <div class="course-field mb--15 edu-bg-gray">
