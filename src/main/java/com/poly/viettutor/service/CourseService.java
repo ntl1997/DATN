@@ -5,14 +5,19 @@ import com.poly.viettutor.model.CourseCategory;
 import com.poly.viettutor.model.CourseMaterial;
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Lecture;
+import com.poly.viettutor.model.Option;
+import com.poly.viettutor.model.Question;
+import com.poly.viettutor.model.Quiz;
 import com.poly.viettutor.repository.CourseRepository;
 import com.poly.viettutor.repository.CourseSpecification;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.dto.CourseDTO;
+import com.poly.viettutor.dto.ModuleDTO;
+import com.poly.viettutor.dto.QuestionDTO;
+import com.poly.viettutor.dto.QuizDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.repository.*;
 import com.poly.viettutor.utils.FileUtils;
@@ -37,19 +42,28 @@ public class CourseService {
     private final CourseModuleRepository courseModuleRepository;
     private final LectureRepository lectureRepository;
     private final CourseMaterialRepository courseMaterialRepository;
+    private final QuizRepository quizRepository;
+    private final QuestionRepository questionRepository;
+    private final OptionRepository optionRepository;
 
     CourseService(CourseRepository courseRepository,
             CourseCategoryRepository courseCategoryRepository,
             CategoryRepository categoryRepository,
             CourseModuleRepository courseModuleRepository,
             LectureRepository lectureRepository,
-            CourseMaterialRepository courseMaterialRepository) {
+            CourseMaterialRepository courseMaterialRepository,
+            QuizRepository quizRepository,
+            QuestionRepository questionRepository,
+            OptionRepository optionRepository) {
         this.courseRepository = courseRepository;
         this.courseCategoryRepository = courseCategoryRepository;
         this.categoryRepository = categoryRepository;
         this.courseModuleRepository = courseModuleRepository;
         this.lectureRepository = lectureRepository;
         this.courseMaterialRepository = courseMaterialRepository;
+        this.quizRepository = quizRepository;
+        this.questionRepository = questionRepository;
+        this.optionRepository = optionRepository;
     }
 
     public List<Course> findAll() {
@@ -60,7 +74,8 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-    public Course create(User user, CourseDTO courseDTO, MultipartFile imageFile) throws IOException {
+    public Course create(User user, CourseDTO courseDTO, MultipartFile imageFile, MultipartFile[] materialFiles)
+            throws IOException {
         String fileName = null;
         if (imageFile != null && !imageFile.isEmpty()) {
             fileName = FileUtils.saveImage(imageFile, "uploads/course/");
@@ -82,7 +97,11 @@ public class CourseService {
                 .createdAt(new Date())
                 .createdBy(user)
                 .build();
-        return courseRepository.save(course);
+        Course savedCourse = courseRepository.save(course);
+        saveCourseCategories(courseDTO, savedCourse);
+        saveCourseModules(courseDTO, savedCourse);
+        saveCourseMaterials(savedCourse, materialFiles);
+        return savedCourse;
     }
 
     public void saveCourseCategories(CourseDTO courseDTO, Course savedCourse) {
@@ -107,20 +126,8 @@ public class CourseService {
                     .course(savedCourse)
                     .build();
             CourseModule savedModule = courseModuleRepository.save(module);
-
-            // Lưu các bài giảng của chương
-            AtomicInteger lectureIndex = new AtomicInteger(1);
-            moduleDTO.getLectures().forEach(lectureDTO -> {
-                Lecture lecture = Lecture.builder()
-                        .lectureTitle(lectureDTO.getLectureTitle())
-                        .content(lectureDTO.getContent())
-                        .videoUrl(lectureDTO.getVideoUrl())
-                        .duration(lectureDTO.getDuration())
-                        .sortOrder(lectureIndex.getAndIncrement())
-                        .module(savedModule)
-                        .build();
-                lectureRepository.save(lecture);
-            });
+            saveLectures(moduleDTO, savedModule);
+            saveQuizzes(moduleDTO, savedModule);
         });
     }
 
@@ -140,6 +147,57 @@ public class CourseService {
                 }
             }
         }
+    }
+
+    public void saveLectures(ModuleDTO moduleDTO, CourseModule savedModule) {
+        AtomicInteger lectureIndex = new AtomicInteger(1);
+        moduleDTO.getLectures().forEach(lectureDTO -> {
+            Lecture lecture = Lecture.builder()
+                    .lectureTitle(lectureDTO.getLectureTitle())
+                    .content(lectureDTO.getContent())
+                    .videoUrl(lectureDTO.getVideoUrl())
+                    .duration(lectureDTO.getDuration())
+                    .sortOrder(lectureIndex.getAndIncrement())
+                    .module(savedModule)
+                    .build();
+            lectureRepository.save(lecture);
+        });
+    }
+
+    public void saveQuizzes(ModuleDTO moduleDTO, CourseModule savedModule) {
+        moduleDTO.getQuizzes().forEach(quizDTO -> {
+            Quiz quiz = Quiz.builder()
+                    .courseModule(savedModule)
+                    .title(quizDTO.getTitle())
+                    .totalScore(quizDTO.getTotalScore().intValue())
+                    .timeLimit(quizDTO.getTimeLimit())
+                    .build();
+            Quiz savedQuiz = quizRepository.save(quiz);
+            saveQuestions(quizDTO, savedQuiz);
+        });
+    }
+
+    public void saveQuestions(QuizDTO quizDTO, Quiz savedQuiz) {
+        quizDTO.getQuestions().forEach(questionDTO -> {
+            Question question = Question.builder()
+                    .quiz(savedQuiz)
+                    .questionText(questionDTO.getQuestionText())
+                    .score(questionDTO.getScore().intValue())
+                    .build();
+            Question savedQuestion = questionRepository.save(question);
+            saveOptions(questionDTO, savedQuestion);
+        });
+    }
+
+    public void saveOptions(QuestionDTO questionDTO, Question savedQuestion) {
+        questionDTO.getOptions().forEach(optionDTO -> {
+            Option option = Option.builder()
+                    .question(savedQuestion)
+                    .optionText(optionDTO.getOptionText())
+                    .isCorrect(optionDTO.getIsCorrect())
+                    .build();
+            optionRepository.save(option);
+        });
     }
 
     public void deleteById(Integer id) {
