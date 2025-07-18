@@ -65,7 +65,6 @@ function renderModule(title) {
       </h2>
       <div id="moduleCollapse${id}" class="accordion-collapse collapse">
         <div class="accordion-body card-body">
-          <input type="hidden" name="modules[${id}].moduleTitle" value="${title}" />
           <div class="lesson-container" data-module-index="${id}"></div>
           <div class="d-flex flex-wrap justify-content-between align-items-center">
             <div class="gap-3 d-flex flex-wrap">
