@@ -30,20 +30,6 @@ function setupPriceTabHandlers() {
   });
 }
 
-function setupCertificateHandlers() {
-  const radioButtons = document.querySelectorAll('input[name="radio-group"]');
-  const hasCertInput = document.getElementById("hasCertificate");
-
-  radioButtons.forEach((radio) => {
-    radio.addEventListener("change", () => {
-      hasCertInput.value = radio.id === "option1" ? 0 : 1;
-    });
-  });
-
-  const checked = document.querySelector('input[name="radio-group"]:checked');
-  hasCertInput.value = checked && checked.id !== "option1" ? 1 : 0;
-}
-
 function setupAttachmentsHandlers() {
   const fileInput = document.getElementById("fileInput");
   const fileCountText = document.getElementById("fileCountText");
@@ -57,7 +43,6 @@ function setupAttachmentsHandlers() {
 // ========== INIT ==========
 document.addEventListener("DOMContentLoaded", () => {
   setupPriceTabHandlers();
-  setupCertificateHandlers();
   setupAttachmentsHandlers();
   renderModules();
 
@@ -81,8 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
 // ========== FORM SUBMIT ==========
 document.getElementById("create-course-form").addEventListener("submit", (e) => {
   e.preventDefault();
-  const courseId = courseData.courseId || null;
   const form = e.target;
+
+  // ✅ Kiểm tra xem courseData có tồn tại không (chỉ dùng ở trang edit)
+  const courseId = typeof courseData !== "undefined" ? courseData.courseId : null;
+
   const course = {
     courseId: courseId,
     title: document.getElementById("course-title").value,
