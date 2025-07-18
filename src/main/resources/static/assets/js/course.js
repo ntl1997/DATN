@@ -81,9 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // ========== FORM SUBMIT ==========
 document.getElementById("create-course-form").addEventListener("submit", (e) => {
   e.preventDefault();
-
+  const courseId = courseData.courseId || null;
   const form = e.target;
   const course = {
+    courseId: courseId,
     title: document.getElementById("course-title").value,
     description: document.getElementById("course-description").value,
     demoVideoUrl: document.getElementById("videoUrl").value,
