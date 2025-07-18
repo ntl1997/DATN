@@ -6,9 +6,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
@@ -16,16 +27,23 @@ import com.poly.viettutor.service.CategoryService;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class CourseController {
+
     private final CourseService courseService;
     private final CategoryService categoryService;
     private final UserService userService;
+    private final Validator validator;
 
-    public CourseController(CourseService courseService, CategoryService categoryService, UserService userService) {
+    public CourseController(CourseService courseService, CategoryService categoryService, UserService userService,
+            Validator validator) {
         this.courseService = courseService;
         this.categoryService = categoryService;
         this.userService = userService;
+        this.validator = validator;
     }
 
     // Hàm phân trang
@@ -58,6 +76,94 @@ public class CourseController {
         model.addAttribute("selectedInstructor", instructor);
         model.addAttribute("selectedPriceType", priceType);
         model.addAttribute("keyword", keyword);
+        return "client/layout/index";
+    }
+
+    @GetMapping("/instructor/create-course")
+    public String showCreateCourse(@ModelAttribute("course") CourseDTO courseDTO, Model model) {
+        return loadPage(model, "Tạo khóa học", "client/course/create-course");
+    }
+
+    @PostMapping("/instructor/create-course")
+    public String createCourse(@RequestParam("courseJson") String courseJson,
+            @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
+            @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
+            RedirectAttributes redirectAttributes, Model model) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
+
+            DataBinder binder = new DataBinder(courseDTO);
+            binder.setValidator(validator);
+            binder.validate();
+            BindingResult result = binder.getBindingResult();
+
+            if (result.hasErrors()) {
+                model.addAttribute("org.springframework.validation.BindingResult.course", result);
+                model.addAttribute("course", courseDTO);
+                return loadPage(model, "Tạo khóa học", "client/course/create-course");
+            }
+
+            User user = userService.getCurrentUser();
+            courseService.create(user, courseDTO, imageFile, materialFiles);
+        } catch (Exception e) {
+            log.error("Create course failed", e);
+            return "redirect:/instructor/dashboard?createFailed=true";
+        }
+
+        return "redirect:/instructor/dashboard?createSuccess=true";
+    }
+
+    @GetMapping("/instructor/edit-course/{id}")
+    public String showEditCourse(@PathVariable Integer id, Model model) {
+        Course course = courseService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học"));
+        CourseDTO courseDTO = new CourseDTO().toDTO(course);
+        model.addAttribute("course", courseDTO);
+        return loadPage(model, "Chỉnh sửa khóa học", "client/course/course-edit");
+    }
+
+    @PutMapping("/instructor/update-course")
+    public String updateCourse(
+            @RequestParam("courseJson") String courseJson,
+            @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
+            @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
+
+            // Validate đầu vào
+            DataBinder binder = new DataBinder(courseDTO);
+            binder.setValidator(validator);
+            binder.validate();
+            BindingResult result = binder.getBindingResult();
+
+            if (result.hasErrors()) {
+                model.addAttribute("org.springframework.validation.BindingResult.course", result);
+                model.addAttribute("course", courseDTO);
+                return loadPage(model, "Chỉnh sửa khóa học", "client/course/edit-course");
+            }
+
+            User user = userService.getCurrentUser();
+            courseService.updateCourse(user, courseDTO, imageFile, materialFiles);
+
+        } catch (Exception e) {
+            log.error("Update course failed", e);
+            return "redirect:/instructor/dashboard?updateFailed=true";
+        }
+
+        return "redirect:/instructor/dashboard?updateSuccess=true";
+    }
+
+    private String loadPage(Model model, String title, String viewPath) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("title", title);
+        model.addAttribute("content", viewPath);
+        model.addAttribute("scripts", viewPath);
+        model.addAttribute("categories", categories);
         return "client/layout/index";
     }
 
