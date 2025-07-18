@@ -147,7 +147,7 @@ function editQuestion(index) {
 
   document.getElementById("question-text").value = q.questionText;
   document.getElementById("options-container").innerHTML = "";
-  q.options.forEach((ans) => addOptionField(ans.questionText, ans.isCorrect));
+  q.options.forEach((opt) => addOptionField(opt.optionText, opt.isCorrect));
   showTab("question-options");
 }
 
@@ -220,6 +220,7 @@ function saveQuiz() {
 
 function editQuiz(moduleIdx, quizIdx) {
   const quiz = quizzesPerModule[moduleIdx][quizIdx];
+  currentModuleIndex = moduleIdx;
   editingQuizInfo = { moduleIndex: moduleIdx, quizIndex: quizIdx };
   quizDraft = JSON.parse(JSON.stringify(quiz));
 
