@@ -28,8 +28,8 @@ public class CourseDTO {
     @NotBlank(message = "Nội dung chi tiết không được để trống!")
     private String overview;
 
-    @NotNull(message = "Giá tiền không được để trống!")
-    @PositiveOrZero(message = "Giá tiền phải lớn hơn hoặc btrống!")
+    // @NotNull(message = "Giá tiền không được để trống!")
+    @PositiveOrZero(message = "Giá tiền phải lớn hơn hoặc trống!")
     private Double price;
 
     @Builder.Default
