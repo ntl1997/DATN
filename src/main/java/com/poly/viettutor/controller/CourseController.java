@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poly.viettutor.dto.CourseDTO;
@@ -88,7 +87,7 @@ public class CourseController {
     public String createCourse(@RequestParam("courseJson") String courseJson,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
-            RedirectAttributes redirectAttributes, Model model) {
+            Model model) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
@@ -128,14 +127,12 @@ public class CourseController {
             @RequestParam("courseJson") String courseJson,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
-            RedirectAttributes redirectAttributes,
             Model model) {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
             CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
 
-            // Validate đầu vào
             DataBinder binder = new DataBinder(courseDTO);
             binder.setValidator(validator);
             binder.validate();
@@ -149,7 +146,6 @@ public class CourseController {
 
             User user = userService.getCurrentUser();
             courseService.updateCourse(user, courseDTO, imageFile, materialFiles);
-
         } catch (Exception e) {
             log.error("Update course failed", e);
             return "redirect:/instructor/dashboard?updateFailed=true";
