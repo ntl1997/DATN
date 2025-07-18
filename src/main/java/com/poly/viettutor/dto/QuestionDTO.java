@@ -2,8 +2,8 @@ package com.poly.viettutor.dto;
 
 import java.util.List;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +16,12 @@ public class QuestionDTO {
     @NotBlank(message = "Câu hỏi không được để trống!")
     private String questionText;
 
-    @NotBlank(message = "Loại câu hỏi không được để trống!")
-    private String questionType;
+    @NotNull(message = "Điểm không được để trống!")
+    private Double score;
 
-    private List<@Valid OptionDTO> options;
+    @NotNull(message = "Chọn đáp án đúng!")
+    private Integer correctOption;
+
+    private List<OptionDTO> options;
 
 }
