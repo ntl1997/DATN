@@ -3,6 +3,7 @@ package com.poly.viettutor.model;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +33,7 @@ public class Quiz {
 
     @ManyToOne
     @JoinColumn(name = "moduleId")
-    private CourseModule courseModule;
+    private CourseModule module;
 
     private String title;
 
@@ -44,7 +45,7 @@ public class Quiz {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions;
 
 }
