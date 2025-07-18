@@ -8,8 +8,6 @@ import com.poly.viettutor.model.Lecture;
 import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
-import com.poly.viettutor.repository.CourseRepository;
-import com.poly.viettutor.repository.CourseSpecification;
 
 import org.springframework.data.domain.Page;
 
@@ -25,13 +23,18 @@ import com.poly.viettutor.utils.FileUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -167,7 +170,7 @@ public class CourseService {
     public void saveQuizzes(ModuleDTO moduleDTO, CourseModule savedModule) {
         moduleDTO.getQuizzes().forEach(quizDTO -> {
             Quiz quiz = Quiz.builder()
-                    .courseModule(savedModule)
+                    .module(savedModule)
                     .title(quizDTO.getTitle())
                     .totalScore(quizDTO.getTotalScore().intValue())
                     .timeLimit(quizDTO.getTimeLimit())
@@ -198,6 +201,91 @@ public class CourseService {
                     .build();
             optionRepository.save(option);
         });
+    }
+
+    @Transactional
+    public Course updateCourse(User user, CourseDTO courseDTO, MultipartFile imageFile, MultipartFile[] materialFiles)
+            throws IOException {
+
+        Course course = courseRepository.findById(courseDTO.getCourseId())
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Cập nhật thông tin cơ bản
+        course.setTitle(courseDTO.getTitle());
+        course.setDescription(courseDTO.getDescription());
+        course.setOverview(courseDTO.getOverview());
+        course.setPrice(courseDTO.getPrice());
+        course.setDiscount(courseDTO.getDiscount());
+        course.setDemoVideoUrl(courseDTO.getDemoVideoUrl());
+        course.setSkillLevel(courseDTO.getSkillLevel());
+        course.setLanguage(courseDTO.getLanguage());
+        course.setHasCertificate(courseDTO.getHasCertificate());
+        course.setUpdatedAt(new Date());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = FileUtils.saveImage(imageFile, "uploads/course/");
+            course.setCourseImage(fileName);
+        }
+
+        courseRepository.save(course);
+
+        // Cập nhật categories (xóa cũ → thêm lại)
+        courseCategoryRepository.deleteByCourse(course);
+        saveCourseCategories(courseDTO, course);
+
+        // Cập nhật modules, lectures, quizzes
+        updateCourseModules(courseDTO, course);
+
+        // Cập nhật tài liệu đính kèm (xóa cũ → thêm mới)
+        courseMaterialRepository.deleteByCourse(course);
+        saveCourseMaterials(course, materialFiles);
+
+        return course;
+    }
+
+    public void updateCourseModules(CourseDTO courseDTO, Course course) {
+        List<CourseModule> existingModules = courseModuleRepository.findByCourse(course);
+        Map<Integer, CourseModule> moduleMap = existingModules.stream()
+                .filter(m -> m.getModuleId() != null)
+                .collect(Collectors.toMap(CourseModule::getModuleId, m -> m));
+
+        // Xóa modules không còn tồn tại
+        Set<Integer> updatedIds = courseDTO.getModules().stream()
+                .map(ModuleDTO::getModuleId).filter(Objects::nonNull).collect(Collectors.toSet());
+        existingModules.stream()
+                .filter(m -> !updatedIds.contains(m.getModuleId()))
+                .forEach(m -> courseModuleRepository.delete(m));
+
+        AtomicInteger moduleIndex = new AtomicInteger(1);
+        for (ModuleDTO moduleDTO : courseDTO.getModules()) {
+            CourseModule module;
+
+            if (moduleDTO.getModuleId() != null && moduleMap.containsKey(moduleDTO.getModuleId())) {
+                // Cập nhật module cũ
+                module = moduleMap.get(moduleDTO.getModuleId());
+                module.setModuleTitle(moduleDTO.getModuleTitle());
+                module.setSortOrder(moduleIndex.getAndIncrement());
+                courseModuleRepository.save(module);
+
+                // Xoá bài học & quiz cũ
+                lectureRepository.deleteByModule(module);
+                quizRepository.deleteByModule(module);
+
+            } else {
+                // Tạo mới module
+                module = CourseModule.builder()
+                        .moduleTitle(moduleDTO.getModuleTitle())
+                        .course(course)
+                        .sortOrder(moduleIndex.getAndIncrement())
+                        .build();
+                module = courseModuleRepository.save(module);
+            }
+
+            // Thêm lectures mới
+            saveLectures(moduleDTO, module);
+            // Thêm quizzes mới
+            saveQuizzes(moduleDTO, module);
+        }
     }
 
     public void deleteById(Integer id) {
