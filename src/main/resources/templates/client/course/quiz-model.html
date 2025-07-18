@@ -19,12 +19,12 @@
                     <form class="tabs-1" id="quiz-form">
                       <div id="quiz-info">
                         <div class="course-field mb--20">
-                          <label for="modal-field-1">Tiêu đề Quiz</label>
-                          <input id="modal-field-1" type="text" placeholder="tiêu đề" />
+                          <label for="quiz-title">Tiêu đề Quiz</label>
+                          <input id="quiz-title" type="text" placeholder="tiêu đề" />
                         </div>
                         <div class="course-field mb--20">
-                          <label for="modal-field-2">Giới hạn thời gian</label>
-                          <input id="modal-field-2" type="number" placeholder="phút" />
+                          <label for="quiz-time-limit">Giới hạn thời gian</label>
+                          <input id="quiz-time-limit" type="number" placeholder="phút" />
                         </div>
                         <div class="modal-footer pt--30 justify-content-between">
                           <button
@@ -92,21 +92,21 @@
                           </div>
                         </div>
                       </div>
-                      <div id="question-answers" class="d-none">
+                      <div id="question-options" class="d-none">
                         <div class="course-field mb--20">
-                          <label for="question-title">Câu hỏi</label>
+                          <label for="question-text">Câu hỏi</label>
                           <input
                             type="text"
                             class="form-control"
-                            id="question-title"
+                            id="question-text"
                             placeholder="Ví dụ: đâu là đáp án đúng"
                           />
                         </div>
 
-                        <div id="answers-container" class="mb--20"></div>
+                        <div id="options-container" class="mb--20"></div>
 
                         <div class="course-field mb--20">
-                          <button id="add-answer" class="rbt-btn btn-sm btn-border" type="button">Thêm tùy chọn</button>
+                          <button id="add-option" class="rbt-btn btn-sm btn-border" type="button">Thêm tùy chọn</button>
                         </div>
 
                         <div class="modal-footer pt--30 justify-content-between">
