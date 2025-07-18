@@ -60,6 +60,6 @@ public class CourseDTO {
     @NotEmpty(message = "Khóa học phải có ít nhất 1 chương!")
     private List<@Valid ModuleDTO> modules;
 
-    private List<MaterialDTO> materials;
+    private List<@Valid QuizDTO> quizzes;
 
 }
