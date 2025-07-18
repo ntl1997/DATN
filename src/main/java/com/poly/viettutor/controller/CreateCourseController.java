@@ -14,6 +14,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +31,16 @@ public class CreateCourseController {
     private final CategoryService categoryService;
     private final CourseService courseService;
     private final UserService userService;
+    private final Validator validator;
 
     CreateCourseController(CategoryService categoryService,
             CourseService courseService,
-            UserService userService) {
+            UserService userService,
+            Validator validator) {
         this.categoryService = categoryService;
         this.courseService = courseService;
         this.userService = userService;
+        this.validator = validator;
     }
 
     @GetMapping("/instructor/create-course")
@@ -50,15 +56,23 @@ public class CreateCourseController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
-            log.info(courseJson);
+
+            DataBinder binder = new DataBinder(courseDTO);
+            binder.setValidator(validator);
+            binder.validate();
+            BindingResult result = binder.getBindingResult();
+
+            if (result.hasErrors()) {
+                model.addAttribute("org.springframework.validation.BindingResult.course", result);
+                model.addAttribute("course", courseDTO);
+                return loadPage(model);
+            }
 
             User user = userService.getCurrentUser();
             courseService.create(user, courseDTO, imageFile, materialFiles);
         } catch (Exception e) {
-
             log.error("Create course failed", e);
             return "redirect:/instructor/dashboard?createFailed=true";
-
         }
 
         return "redirect:/instructor/dashboard?createSuccess=true";
