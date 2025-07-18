@@ -72,8 +72,8 @@ public class CreateCourseController {
     private String loadPage(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("title", "Tạo khóa học");
-        model.addAttribute("content", "client/create-course");
-        model.addAttribute("scripts", "client/create-course");
+        model.addAttribute("content", "client/course/create-course");
+        model.addAttribute("scripts", "client/course/create-course");
         model.addAttribute("categories", categories);
         return "client/layout/index";
     }
