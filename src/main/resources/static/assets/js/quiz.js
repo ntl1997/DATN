@@ -162,12 +162,6 @@ function appendQuizToDOM(moduleIdx, quizIdx) {
   const container = document.querySelector(`.lesson-container[data-module-index="${moduleIdx}"]`);
   const html = `
     <div class="lesson-item d-flex justify-content-between rbt-course-wrape mb-4">
-      <input type="hidden" name="modules[${moduleIdx}].quizzes[${quizIdx}].title" value="${quiz.title}" />
-      <input type="hidden" name="modules[${moduleIdx}].quizzes[${quizIdx}].timeLimit" value="${quiz.timeLimit}" />
-      <input type="hidden" name="modules[${moduleIdx}].quizzes[${quizIdx}].totalScore" value="${quiz.totalScore}" />
-      <input type="hidden" name="modules[${moduleIdx}].quizzes[${quizIdx}].questions" value='${JSON.stringify(
-    quiz.questions
-  )}' />
       <div class="col-10 inner d-flex align-items-center gap-2">
         <i class="feather-menu text-success"></i>
         <h6 class="rbt-title mb-0 text-success">Quiz: ${quiz.title}</h6>
