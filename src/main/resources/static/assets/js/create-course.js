@@ -249,3 +249,335 @@ function appendLessonToDOM(moduleIdx, lessonIdx) {
   `;
   container.insertAdjacentHTML("beforeend", html);
 }
+
+// ======================= QUIZ HANDLERS =========================
+let quizDraft = { title: "", duration: 0, questions: [] };
+let currentQuestionIndex = null;
+
+// =============== QUIZ ===============
+function saveQuizToStorage() {
+  const allQuizzes = JSON.parse(localStorage.getItem("allQuizzes") || "[]");
+  allQuizzes.push(quizDraft);
+  localStorage.setItem("allQuizzes", JSON.stringify(allQuizzes));
+
+  // Reset lại draft
+  quizDraft = { title: "", duration: 0, questions: [] };
+  localStorage.removeItem("quizQuestions");
+}
+
+// =============== UI – RESET FORM ===============
+function resetQuestionForm(questionId = Date.now()) {
+  correctAnswerIndex = null;
+  currentQuestionIndex = null;
+
+  document.getElementById("question-title").value = "";
+  document.getElementById("answers-container").innerHTML = "";
+  addAnswerField("", false, questionId); // ít nhất 1 dòng
+}
+
+// =============== UI – THÊM 1 DÒNG ĐÁP ÁN ===============
+function addAnswerField(text = "", isCorrect = false) {
+  const container = document.getElementById("answers-container");
+  const index = container.children.length;
+
+  const div = document.createElement("div");
+  div.className = "answer-item d-flex align-items-center gap-2 mb--10";
+
+  // Nút chọn đáp án đúng
+  const markBtn = document.createElement("button");
+  markBtn.type = "button";
+  markBtn.className = "btn btn-outline-success mark-correct";
+  markBtn.title = "Chọn làm đáp án đúng";
+  markBtn.innerHTML = "✔";
+
+  // Input text đáp án
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "form-control";
+  input.placeholder = `Tùy chọn ${index + 1}`;
+  input.value = text;
+
+  // Nút xóa
+  const removeBtn = document.createElement("button");
+  removeBtn.className = "btn btn-outline-danger remove-answer";
+  removeBtn.type = "button";
+  removeBtn.innerHTML = `<i class="feather-x"></i>`;
+
+  // Append tất cả vào dòng
+  div.appendChild(input);
+  div.appendChild(markBtn);
+  div.appendChild(removeBtn);
+  container.appendChild(div);
+
+  // Nếu là đáp án đúng thì đánh dấu
+  if (isCorrect) {
+    markCorrectAnswer(div);
+  }
+
+  // Gắn sự kiện
+  markBtn.addEventListener("click", () => {
+    markCorrectAnswer(div);
+  });
+
+  removeBtn.addEventListener("click", () => {
+    const index = Array.from(container.children).indexOf(div);
+    if (index === correctAnswerIndex) correctAnswerIndex = null;
+    div.remove();
+  });
+}
+
+function markCorrectAnswer(selectedDiv) {
+  const items = document.querySelectorAll("#answers-container .answer-item");
+
+  items.forEach((item, idx) => {
+    const markBtn = item.querySelector(".mark-correct");
+    if (item === selectedDiv) {
+      markBtn.classList.add("btn-success");
+      markBtn.classList.remove("btn-outline-success");
+      correctAnswerIndex = idx;
+    } else {
+      markBtn.classList.remove("btn-success");
+      markBtn.classList.add("btn-outline-success");
+    }
+  });
+}
+
+// =============== LƯU CÂU HỎI ===============
+function saveQuestion() {
+  const title = document.getElementById("question-title").value.trim();
+  const answersEls = document.querySelectorAll("#answers-container .answer-item");
+
+  const answers = [];
+  let correctIndex = -1;
+
+  answersEls.forEach((el, idx) => {
+    const text = el.querySelector("input[type=text]").value.trim();
+    if (text) answers.push(text);
+    if (el.querySelector(".mark-correct").classList.contains("btn-success")) {
+      correctIndex = idx;
+    }
+  });
+
+  if (!title || answers.length < 2 || correctIndex === -1) {
+    return alert("Hãy nhập câu hỏi, ít nhất 2 đáp án và chọn đáp án đúng.");
+  }
+
+  const question = {
+    title,
+    correctAnswer: correctIndex,
+    answers: answers,
+  };
+
+  if (currentQuestionIndex !== null) {
+    quizDraft.questions[currentQuestionIndex] = question;
+  } else {
+    quizDraft.questions.push(question);
+  }
+
+  resetQuestionForm(Date.now());
+  renderQuestionList();
+  showTab("question-list");
+}
+
+// =============== SỬA CÂU HỎI ===============
+function editQuestion(index) {
+  const question = quizDraft.questions[index];
+  currentQuestionIndex = index;
+  correctAnswerIndex = question.correctAnswer;
+
+  document.getElementById("question-title").value = question.title;
+  document.getElementById("answers-container").innerHTML = "";
+
+  question.answers.forEach((text, i) => {
+    addAnswerField(text, i === question.correctAnswer, index);
+  });
+
+  showTab("question-answers");
+}
+
+// =============== HIỂN THỊ DANH SÁCH CÂU HỎI ===============
+function renderQuestionList() {
+  const container = document.getElementById("question-items");
+  container.innerHTML = "";
+
+  quizDraft.questions.forEach((q, index) => {
+    const div = document.createElement("div");
+    div.className = "d-flex justify-content-between rbt-course-wrape mb-4";
+    div.innerHTML = `
+      <div class="inner d-flex align-items-center gap-2">
+        <h6 class="rbt-title mb-0">${q.title}</h6>
+      </div>
+      <div class="inner">
+        <ul class="rbt-list-style-1 rbt-course-list d-flex gap-3 align-items-center">
+          <li><span>Chọn 1 đáp án đúng</span></li>
+          
+          <li>
+            <button
+              type="button"
+              class="btn quiz-modal__edit-btn dropdown-toggle me-2"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="feather-edit"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item edit-item" onclick="editQuestion(${index})">
+                  <i class="feather-edit-2"></i> Edit
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item delete-item" onclick="deleteQuestion(${index})">
+                  <i class="feather-trash"></i> Delete
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// =============== XÓA CÂU HỎI ===============
+function deleteQuestion(index) {
+  quizDraft.questions.splice(index, 1);
+  renderQuestionList();
+}
+
+// =============== LƯU QUIZ ===============
+function saveQuiz() {
+  const title = document.getElementById("modal-field-1").value.trim();
+  const duration = parseInt(document.getElementById("modal-field-2").value.trim(), 10);
+
+  if (!title || isNaN(duration) || quizDraft.questions.length === 0) {
+    return alert("Vui lòng nhập tiêu đề, thời lượng và ít nhất 1 câu hỏi.");
+  }
+
+  quizDraft.title = title;
+  quizDraft.duration = duration;
+
+  saveQuizToStorage();
+  document.getElementById("quiz-form").reset();
+  document.getElementById("question-items").innerHTML = "";
+  alert("✅ Quiz đã được lưu!");
+  bootstrap.Modal.getInstance(document.getElementById("create-quiz")).hide();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("add-answer").addEventListener("click", () => {
+    addAnswerField("", false, Date.now());
+  });
+
+  document.getElementById("save-question").addEventListener("click", saveQuestion);
+  document.getElementById("cancel-question").addEventListener("click", () => showTab("question-list"));
+
+  document.getElementById("next-btn-2").addEventListener("click", () => {
+    showTab("question-list");
+    renderQuestionList();
+  });
+
+  document.querySelector("#question-list #prev-btn").addEventListener("click", () => {
+    showTab("quiz-info");
+  });
+
+  document.querySelector("#question-list .btn-1").addEventListener("click", () => {
+    resetQuestionForm(Date.now());
+    showTab("question-answers");
+  });
+
+  document.getElementById("save-quiz").addEventListener("click", saveQuiz);
+
+  document.getElementById("create-quiz").addEventListener("show.bs.modal", () => {
+    showTab("quiz-info");
+  });
+});
+
+function showTab(tabName) {
+  const tabs = ["quiz-info", "question-list", "question-answers"];
+  tabs.forEach((name) => {
+    document.getElementById(name).classList.add("d-none");
+  });
+  document.getElementById(tabName).classList.remove("d-none");
+}
+
+// ======================= FORM DATA CHECKER =========================
+document.getElementById("create-course-form").addEventListener("submit", function (e) {
+  e.preventDefault(); // Ngăn form gửi về backend
+
+  const formData = new FormData(this);
+  const data = {};
+
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+
+  console.log("Dữ liệu form:", data);
+});
+
+document.getElementById("create-course-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const course = {};
+
+  // ====== 1. DỮ LIỆU KHÓA HỌC CHUNG ======
+  course.title = document.getElementById("course-title").value;
+  course.description = document.getElementById("course-description").value;
+  course.demoVideoUrl = document.getElementById("videoUrl").value;
+  course.overview = document.getElementById("overview").value;
+  course.skillLevel = document.getElementById("skillLevel").value;
+  course.language = document.getElementById("language").value;
+  course.categoryIds = Array.from(document.getElementById("category").selectedOptions).map((o) => +o.value);
+  course.price = +document.getElementById("hiddenPrice").value || 0;
+  course.discount = +document.getElementById("discountedPrice").value || 0;
+  course.hasCertificate = +document.getElementById("hasCertificate").value || 0;
+
+  // ====== 2. MODULES & LECTURES ======
+  course.modules = modules.map((moduleTitle, moduleIdx) => {
+    const lectures = (lecturesPerModule[moduleIdx] || []).map((lecture) => ({
+      lectureTitle: lecture.lectureTitle,
+      content: lecture.content,
+      videoUrl: lecture.videoUrl,
+      duration: +lecture.duration || 0,
+    }));
+    return { moduleTitle, lectures };
+  });
+
+  // ====== 3. QUIZZES ======
+  const allQuizzes = JSON.parse(localStorage.getItem("allQuizzes") || "[]");
+  course.quizzes = allQuizzes.map((q) => ({
+    title: q.title,
+    duration: q.duration,
+    questions: q.questions.map((ques) => ({
+      title: ques.title,
+      correctAnswer: ques.correctAnswer,
+      options: ques.answers.map((opt, i) => ({
+        content: opt,
+        isCorrect: i === ques.correctAnswer,
+      })),
+    })),
+  }));
+
+  // ✅ Hiển thị ra console để kiểm tra
+  console.log("====== DỮ LIỆU KHÓA HỌC GỬI VỀ ======");
+  console.log(course);
+  console.log("======================================");
+  // ✅ Nếu muốn xem đẹp hơn
+  console.log(JSON.stringify(course, null, 2));
+
+  // // GỬI VỀ BACKEND
+  // fetch("/instructor/create-course", {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify(course),
+  // })
+  //   .then((res) => res.json())
+  //   .then((result) => {
+  //     alert("Khóa học đã được tạo thành công!");
+  //     console.log(result);
+  //   })
+  //   .catch((err) => {
+  //     console.error("❌ Lỗi khi gửi JSON:", err);
+  //   });
+});
