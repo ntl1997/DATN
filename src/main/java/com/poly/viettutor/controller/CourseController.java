@@ -99,6 +99,7 @@ public class CourseController {
             binder.validate();
             BindingResult result = binder.getBindingResult();
 
+            // Validate DTO
             if (result.hasErrors()) {
                 model.addAttribute("org.springframework.validation.BindingResult.course", result);
                 model.addAttribute("course", courseDTO);
@@ -123,6 +124,7 @@ public class CourseController {
         boolean isAdmin = userService.hasRole(user, "ADMIN");
         boolean isOwner = user.getId() == course.getCreatedBy().getId();
 
+        // CHẶN nếu không phải chủ sở hữu hoặc admin
         if (!isOwner && !isAdmin) {
             request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
             return "forward:/error";
@@ -150,11 +152,13 @@ public class CourseController {
             boolean isAdmin = userService.hasRole(user, "ADMIN");
             boolean isOwner = user.getId() == course.getCreatedBy().getId();
 
+            // CHẶN nếu không phải chủ sở hữu hoặc admin
             if (!isOwner && !isAdmin) {
                 request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
                 return "forward:/error";
             }
 
+            // Validate DTO
             DataBinder binder = new DataBinder(courseDTO);
             binder.setValidator(validator);
             binder.validate();
