@@ -135,7 +135,7 @@ public class CourseController {
 
     @PutMapping("/instructor/update-course")
     public String updateCourse(
-            @RequestParam("courseJson") String courseJson,
+            @RequestParam("courseJson") String courseJson, HttpServletRequest request,
             @RequestParam(name = "createinputfile", required = false) MultipartFile imageFile,
             @RequestParam(name = "attachments", required = false) MultipartFile[] materialFiles,
             Model model) {
@@ -143,6 +143,17 @@ public class CourseController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
+
+            Course course = courseService.findById(courseDTO.getCourseId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học!"));
+            User user = userService.getCurrentUser();
+            boolean isAdmin = userService.hasRole(user, "ADMIN");
+            boolean isOwner = user.getId() == course.getCreatedBy().getId();
+
+            if (!isOwner && !isAdmin) {
+                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+                return "forward:/error";
+            }
 
             DataBinder binder = new DataBinder(courseDTO);
             binder.setValidator(validator);
@@ -155,7 +166,6 @@ public class CourseController {
                 return loadPage(model, "Chỉnh sửa khóa học", "client/course/course-edit");
             }
 
-            User user = userService.getCurrentUser();
             courseService.updateCourse(user, courseDTO, imageFile, materialFiles);
         } catch (Exception e) {
             log.error("Update course failed", e);
