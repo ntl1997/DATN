@@ -1,6 +1,7 @@
 package com.poly.viettutor.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -80,6 +81,36 @@ public class CourseController {
         return "client/layout/index";
     }
 
+    @GetMapping("/course-details/{id}")
+    public String getById(@PathVariable("id") int id, HttpServletRequest request, Model model) {
+        Optional<Course> existingItemOptional = courseService.findById(id);
+
+        // Xử lý khi không tìm thấy khóa học, chuyển hướng hoặc báo lỗi
+        if (existingItemOptional.isEmpty()) {
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
+            return "forward:/error";
+        }
+
+        Course course = existingItemOptional.get();
+        User user = userService.getCurrentUser();
+
+        // CHẶN nếu không phải chủ sở hữu hoặc admin khi course chưa được duyệt
+        if (course.getStatus().equalsIgnoreCase("pending")) {
+            if (!isOwnerOrADmin(user, course)) {
+                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+                return "forward:/error";
+            }
+        }
+
+        model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
+        int totalDuration = courseService.totalDuration(course);
+        model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
+        model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
+        model.addAttribute("content", "client/course-detail"); // nội dung trang (phần content)
+        model.addAttribute("scripts", "client/course-detail");
+        return "client/layout/index";
+    }
+
     @GetMapping("/instructor/create-course")
     public String showCreateCourse(@ModelAttribute("course") CourseDTO courseDTO, Model model) {
         return loadPage(model, "Tạo khóa học", "client/course/create-course");
@@ -94,12 +125,12 @@ public class CourseController {
             ObjectMapper mapper = new ObjectMapper();
             CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
 
+            // Validate DTO
             DataBinder binder = new DataBinder(courseDTO);
             binder.setValidator(validator);
             binder.validate();
             BindingResult result = binder.getBindingResult();
 
-            // Validate DTO
             if (result.hasErrors()) {
                 model.addAttribute("org.springframework.validation.BindingResult.course", result);
                 model.addAttribute("course", courseDTO);
@@ -118,14 +149,19 @@ public class CourseController {
 
     @GetMapping("/instructor/edit-course/{id}")
     public String showEditCourse(@PathVariable Integer id, HttpServletRequest request, Model model) {
-        Course course = courseService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học!"));
+        Optional<Course> existingItemOptional = courseService.findById(id);
+
+        // Xử lý khi không tìm thấy khóa học
+        if (existingItemOptional.isEmpty()) {
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
+            return "forward:/error";
+        }
+
+        Course course = existingItemOptional.get();
         User user = userService.getCurrentUser();
-        boolean isAdmin = userService.hasRole(user, "ADMIN");
-        boolean isOwner = user.getId() == course.getCreatedBy().getId();
 
         // CHẶN nếu không phải chủ sở hữu hoặc admin
-        if (!isOwner && !isAdmin) {
+        if (!isOwnerOrADmin(user, course)) {
             request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
             return "forward:/error";
         }
@@ -145,15 +181,19 @@ public class CourseController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             CourseDTO courseDTO = mapper.readValue(courseJson, CourseDTO.class);
+            Optional<Course> existingItemOptional = courseService.findById(courseDTO.getCourseId());
 
-            Course course = courseService.findById(courseDTO.getCourseId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học!"));
+            // Xử lý khi không tìm thấy khóa học
+            if (existingItemOptional.isEmpty()) {
+                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
+                return "forward:/error";
+            }
+
+            Course course = existingItemOptional.get();
             User user = userService.getCurrentUser();
-            boolean isAdmin = userService.hasRole(user, "ADMIN");
-            boolean isOwner = user.getId() == course.getCreatedBy().getId();
 
             // CHẶN nếu không phải chủ sở hữu hoặc admin
-            if (!isOwner && !isAdmin) {
+            if (!isOwnerOrADmin(user, course)) {
                 request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
                 return "forward:/error";
             }
@@ -177,6 +217,12 @@ public class CourseController {
         }
 
         return "redirect:/instructor/dashboard?updateSuccess=true";
+    }
+
+    private boolean isOwnerOrADmin(User user, Course course) {
+        boolean isAdmin = userService.hasRole(user, "ADMIN");
+        boolean isOwner = user.getId() == course.getCreatedBy().getId();
+        return isOwner || isAdmin;
     }
 
     private String loadPage(Model model, String title, String viewPath) {
