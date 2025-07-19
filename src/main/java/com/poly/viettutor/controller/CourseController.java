@@ -26,6 +26,8 @@ import com.poly.viettutor.service.CategoryService;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -114,9 +116,18 @@ public class CourseController {
     }
 
     @GetMapping("/instructor/edit-course/{id}")
-    public String showEditCourse(@PathVariable Integer id, Model model) {
+    public String showEditCourse(@PathVariable Integer id, HttpServletRequest request, Model model) {
         Course course = courseService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học"));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy khóa học!"));
+        User user = userService.getCurrentUser();
+        boolean isAdmin = userService.hasRole(user, "ADMIN");
+        boolean isOwner = user.getId() == course.getCreatedBy().getId();
+
+        if (!isOwner && !isAdmin) {
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+            return "forward:/error";
+        }
+
         CourseDTO courseDTO = new CourseDTO().toDTO(course);
         model.addAttribute("course", courseDTO);
         return loadPage(model, "Chỉnh sửa khóa học", "client/course/course-edit");
