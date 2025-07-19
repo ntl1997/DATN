@@ -1,0 +1,39 @@
+<configuration>
+
+    <conversionRule conversionWord="shortCause"
+        converterClass="com.poly.viettutor.logging.ShortCauseFirstThrowableProxyConverter" />
+
+    <!-- Console appender: vẫn log đầy đủ stacktrace -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n%ex</pattern>
+        </encoder>
+    </appender>
+
+    <!-- File appender: log ngắn gọn + có 'Caused by' -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/app.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n%shortCause</pattern>
+        </encoder>
+
+        <!-- Filter: chỉ ghi từ INFO trở lên -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- Ghi log chung cho toàn bộ hệ thống -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+    <!-- Ghi riêng chi tiết hơn cho package của bạn -->
+    <logger name="com.poly.viettutor" level="DEBUG" />
+
+    <!-- Tắt log của thymeleaf -->
+    <logger name="org.thymeleaf" level="OFF" />
+
+</configuration>
