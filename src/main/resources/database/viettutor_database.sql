@@ -329,7 +329,7 @@ CREATE TABLE Questions
     -- Mã định danh câu hỏi
     QuizId BIGINT FOREIGN KEY REFERENCES Quizzes(QuizId),
     -- Gắn câu hỏi với một quiz
-    QuestionText NVARCHAR(255),
+    QuestionText NVARCHAR(MAX),
     -- Nội dung câu hỏi
     Score INT DEFAULT 1
     -- Điểm cho câu hỏi này (mặc định 1 điểm)
@@ -341,7 +341,7 @@ CREATE TABLE Options
     OptionId BIGINT PRIMARY KEY IDENTITY,
     -- Mã định danh đáp án
     QuestionId BIGINT FOREIGN KEY REFERENCES Questions(QuestionId),-- Gắn đáp án với câu hỏi
-    OptionText NVARCHAR(255),
+    OptionText NVARCHAR(MAX),
     -- Nội dung đáp án
     IsCorrect BIT
     -- Đáp án này có đúng không (1 = đúng, 0 = sai)
