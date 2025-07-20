@@ -111,21 +111,6 @@
           "quizzesPerModule",
           JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.quizzes])))
         );
-        // Có thể gán thêm thông tin khóa học cơ bản vào DOM nếu muốn
-        document.getElementById("course-title").value = courseData.title;
-        document.getElementById("course-description").value = courseData.description;
-        document.getElementById("overview").value = courseData.overview;
-        document.getElementById("videoUrl").value = courseData.demoVideoUrl;
-        document.getElementById("skillLevel").value = courseData.skillLevel;
-        document.getElementById("language").value = courseData.language;
-        document.getElementById("discountedPrice").value = courseData.discount;
-        document.getElementById("hiddenPrice").value = courseData.price;
-        document.getElementById("hasCertificate").value = courseData.hasCertificate ? 1 : 0;
-        const categorySelect = document.getElementById("category");
-        courseData.categoryIds.forEach((id) => {
-          const option = [...categorySelect.options].find((o) => +o.value === id);
-          if (option) option.selected = true;
-        });
 
         // === THÊM VÀO SAU CÙNG ===
         modules = Storage.get("modules", []);
