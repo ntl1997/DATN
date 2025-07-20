@@ -180,16 +180,27 @@ function appendQuizToDOM(moduleIdx, quizIdx) {
 function saveQuiz() {
   const title = document.getElementById("quiz-title").value.trim();
   const timeLimit = parseInt(document.getElementById("quiz-time-limit").value.trim(), 10);
+  const totalScoreInput = parseInt(document.getElementById("quiz-total-score").value.trim(), 10);
 
-  if (!title || isNaN(timeLimit) || quizDraft.questions.length === 0) {
-    return alert("Vui lòng nhập tiêu đề, thời lượng và ít nhất 1 câu hỏi.");
+  if (
+    !title ||
+    isNaN(timeLimit) ||
+    isNaN(totalScoreInput) ||
+    totalScoreInput <= 0 ||
+    quizDraft.questions.length === 0
+  ) {
+    return alert("Vui lòng nhập tiêu đề, thời lượng, tổng điểm hợp lệ và ít nhất 1 câu hỏi.");
   }
 
   quizDraft.title = title;
   quizDraft.timeLimit = timeLimit;
-  quizDraft.totalScore = 100; // Mặc định
+  quizDraft.totalScore = totalScoreInput;
 
-  if (!quizzesPerModule[currentModuleIndex]) quizzesPerModule[currentModuleIndex] = [];
+  updateAllQuestionScores();
+
+  if (!quizzesPerModule[currentModuleIndex]) {
+    quizzesPerModule[currentModuleIndex] = [];
+  }
 
   if (editingQuizInfo) {
     const { moduleIndex, quizIndex } = editingQuizInfo;
@@ -219,6 +230,7 @@ function editQuiz(moduleIdx, quizIdx) {
   quizDraft = JSON.parse(JSON.stringify(quiz));
 
   document.getElementById("quiz-title").value = quiz.title;
+  document.getElementById("quiz-total-score").value = quiz.totalScore;
   document.getElementById("quiz-time-limit").value = quiz.timeLimit;
 
   renderQuestionList();
@@ -237,3 +249,12 @@ function showTab(tabName) {
   });
   document.getElementById(tabName).classList.remove("d-none");
 }
+
+document.getElementById("quiz-total-score").addEventListener("input", (e) => {
+  const newTotal = parseInt(e.target.value.trim(), 10);
+  if (!isNaN(newTotal) && newTotal > 0) {
+    quizDraft.totalScore = newTotal;
+    updateAllQuestionScores();
+    renderQuestionList();
+  }
+});
