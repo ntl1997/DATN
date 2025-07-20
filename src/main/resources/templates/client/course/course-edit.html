@@ -102,15 +102,25 @@
       <script th:inline="javascript">
         /*<![CDATA[*/
         const courseData = /*[[${course}]]*/ {};
-        localStorage.setItem("modules", JSON.stringify(courseData.modules.map((m) => m.moduleTitle)));
-        localStorage.setItem(
-          "lecturesPerModule",
-          JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.lectures])))
-        );
-        localStorage.setItem(
-          "quizzesPerModule",
-          JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.quizzes])))
-        );
+
+        // Chỉ gán dữ liệu nếu localStorage chưa có (tức là lần đầu load)
+        if (!localStorage.getItem("modules")) {
+          localStorage.setItem("modules", JSON.stringify(courseData.modules.map((m) => m.moduleTitle)));
+        }
+
+        if (!localStorage.getItem("lecturesPerModule")) {
+          localStorage.setItem(
+            "lecturesPerModule",
+            JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.lectures])))
+          );
+        }
+
+        if (!localStorage.getItem("quizzesPerModule")) {
+          localStorage.setItem(
+            "quizzesPerModule",
+            JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.quizzes])))
+          );
+        }
 
         // === THÊM VÀO SAU CÙNG ===
         modules = Storage.get("modules", []);
