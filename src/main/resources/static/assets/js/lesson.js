@@ -10,15 +10,15 @@ function prepareAddLesson(index) {
 }
 
 function saveLesson() {
-  const title = document.getElementById("create-lesson-title").value.trim();
+  const lectureTitle = document.getElementById("create-lesson-title").value.trim();
   const content = document.getElementById("create-lesson-content").value.trim();
   const videoUrl = document.getElementById("create-videoUrl").value.trim();
   const duration = document.getElementById("create-videoDuration").value.trim();
-  if (!title || !content || !videoUrl || !duration) return alert("Vui lòng nhập đầy đủ các trường!");
+  if (!lectureTitle || !content || !videoUrl || !duration) return alert("Vui lòng nhập đầy đủ các trường!");
 
   if (!lecturesPerModule[currentModuleIndex]) lecturesPerModule[currentModuleIndex] = [];
   const lessonIndex = lecturesPerModule[currentModuleIndex].length;
-  lecturesPerModule[currentModuleIndex].push({ lectureTitle: title, content, videoUrl, duration });
+  lecturesPerModule[currentModuleIndex].push({ lectureTitle, content, videoUrl, duration: +duration || 0 });
   Storage.set("lecturesPerModule", lecturesPerModule);
 
   appendLessonToDOM(currentModuleIndex, lessonIndex);
