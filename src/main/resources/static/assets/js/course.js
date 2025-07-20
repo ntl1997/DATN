@@ -91,7 +91,20 @@ document.getElementById("create-course-form").addEventListener("submit", (e) => 
         videoUrl,
         duration: +duration || 0,
       })),
-      quizzes: quizzesPerModule[idx] || [],
+      quizzes: (quizzesPerModule[idx] || []).map(({ title, timeLimit, totalScore, questions }) => ({
+        title,
+        timeLimit: +timeLimit || 0,
+        totalScore: +totalScore || 0,
+        questions: questions.map(({ questionText, correctOption, score, options }) => ({
+          questionText,
+          correctOption,
+          score: +score || 0,
+          options: options.map((o) => ({
+            optionText: o.optionText,
+            isCorrect: !!o.isCorrect,
+          })),
+        })),
+      })),
     })),
   };
 
