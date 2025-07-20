@@ -55,10 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderQuestionList();
   });
   document.querySelector("#question-list #prev-btn").addEventListener("click", () => showTab("quiz-info"));
-  document.querySelector("#question-list .btn-1").addEventListener("click", () => {
-    resetQuestionForm();
-    showTab("question-options");
-  });
   document.getElementById("save-quiz").addEventListener("click", saveQuiz);
   document.getElementById("create-quiz").addEventListener("show.bs.modal", () => showTab("quiz-info"));
 });
