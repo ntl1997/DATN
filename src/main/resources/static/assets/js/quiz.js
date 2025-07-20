@@ -177,6 +177,38 @@ function appendQuizToDOM(moduleIdx, quizIdx) {
   container.insertAdjacentHTML("beforeend", html);
 }
 
+function createEmptyQuiz(index) {
+  const newQuiz = {
+    title: "quiz chưa có tiêu đề",
+    timeLimit: 10,
+    totalScore: 100,
+    questions: [
+      {
+        questionText: "câu hỏi chưa có tiêu đề",
+        correctOption: 0,
+        score: 0,
+        options: [
+          { optionText: "Tùy chọn 1", isCorrect: true },
+          { optionText: "Tùy chọn 2", isCorrect: false },
+        ],
+      },
+    ],
+  };
+
+  if (!quizzesPerModule[index]) {
+    quizzesPerModule[index] = [];
+  }
+
+  quizzesPerModule[index].push(newQuiz);
+  Storage.set("quizzesPerModule", quizzesPerModule);
+
+  // Render lại danh sách quiz cho module hiện tại
+  const container = document.querySelector(`.lesson-container[data-module-index="${index}"]`);
+  container.innerHTML = "";
+  (lecturesPerModule[index] || []).forEach((_, idx) => appendLessonToDOM(index, idx));
+  (quizzesPerModule[index] || []).forEach((_, idx) => appendQuizToDOM(index, idx));
+}
+
 function saveQuiz() {
   const title = document.getElementById("quiz-title").value.trim();
   const timeLimit = parseInt(document.getElementById("quiz-time-limit").value.trim(), 10);
@@ -234,7 +266,7 @@ function editQuiz(moduleIdx, quizIdx) {
   document.getElementById("quiz-time-limit").value = quiz.timeLimit;
 
   renderQuestionList();
-  showTab("question-list");
+  showTab("quiz-info");
 }
 
 function deleteQuiz(moduleIdx, quizIdx, el) {
@@ -257,4 +289,21 @@ document.getElementById("quiz-total-score").addEventListener("input", (e) => {
     updateAllQuestionScores();
     renderQuestionList();
   }
+});
+
+document.getElementById("add-question").addEventListener("click", () => {
+  const newQuestion = {
+    questionText: "câu hỏi chưa có tiêu đề",
+    correctOption: 0,
+    score: 0,
+    options: [
+      { optionText: "Tùy chọn 1", isCorrect: true },
+      { optionText: "Tùy chọn 2", isCorrect: false },
+    ],
+  };
+
+  quizDraft.questions.push(newQuestion);
+  updateAllQuestionScores();
+  Storage.set("quizzesPerModule", quizzesPerModule); // cập nhật lại localStorage
+  renderQuestionList();
 });
