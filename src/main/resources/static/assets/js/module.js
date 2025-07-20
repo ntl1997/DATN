@@ -72,7 +72,7 @@ function renderModule(title) {
                 <span class="btn-text">Bài học</span>
                 <span class="btn-icon"><i class="feather-plus-square"></i></span>
               </button>
-              <button class="rbt-btn btn-border rbt-sm-btn-2" type="button" data-bs-toggle="modal" data-bs-target="#create-quiz" onclick="prepareAddLesson(${id})">
+              <button class="rbt-btn btn-border rbt-sm-btn-2" type="button" onclick="createEmptyQuiz(${id})">
                 <span class="btn-text">Quiz</span>
                 <span class="btn-icon"><i class="feather-plus-square"></i></span>
               </button>
