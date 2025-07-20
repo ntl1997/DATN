@@ -1,5 +1,6 @@
 package com.poly.viettutor.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class Option {
     @JoinColumn(name = "questionId")
     private Question question;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String optionText;
 
     private Boolean isCorrect;
