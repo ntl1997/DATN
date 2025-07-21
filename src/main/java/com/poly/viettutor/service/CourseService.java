@@ -174,6 +174,7 @@ public class CourseService {
                     .title(quizDTO.getTitle())
                     .totalScore(quizDTO.getTotalScore().intValue())
                     .timeLimit(quizDTO.getTimeLimit())
+                    .quizType(quizDTO.getQuizType())
                     .build();
             Quiz savedQuiz = quizRepository.save(quiz);
             saveQuestions(quizDTO, savedQuiz);
