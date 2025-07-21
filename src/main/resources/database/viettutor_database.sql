@@ -319,6 +319,8 @@ CREATE TABLE Quizzes
     -- Tổng điểm tối đa đạt được
     TimeLimit INT,
     -- Giới hạn thời gian làm bài (phút)
+    QuizType NVARCHAR(20) DEFAULT 'regular',
+    -- Kiểu Quiz (thông thường, assignment)
     CreatedAt DATETIME DEFAULT GETDATE()
     -- Ngày tạo quiz
 );
