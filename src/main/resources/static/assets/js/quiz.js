@@ -20,11 +20,14 @@ function addOptionField(text = "", isCorrect = false) {
   const div = document.createElement("div");
   div.className = "option-item d-flex align-items-center gap-2 mb--10";
 
-  const input = document.createElement("input");
-  input.type = "text";
-  input.className = "form-control";
+  const input = document.createElement("textarea");
+  input.className = "form-control auto-resize";
+  input.style.cssText = "overflow-y: hidden; min-height: 50px";
   input.placeholder = `Tùy chọn ${index + 1}`;
   input.value = text;
+
+  autoResizeTextarea(input);
+  input.addEventListener("input", () => autoResizeTextarea(input));
 
   const markBtn = document.createElement("button");
   markBtn.type = "button";
@@ -79,7 +82,7 @@ function saveQuestion() {
   let correctIndex = -1;
 
   optionsEls.forEach((el, idx) => {
-    const text = el.querySelector("input[type=text]").value.trim();
+    const text = el.querySelector("textarea.auto-resize").value.trim();
     const isCorrect = el.querySelector(".mark-correct").classList.contains("btn-success");
     if (text) options.push({ optionText: text, isCorrect });
     if (isCorrect) correctIndex = idx;
