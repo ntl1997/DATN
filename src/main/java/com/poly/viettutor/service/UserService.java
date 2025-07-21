@@ -1,9 +1,13 @@
 package com.poly.viettutor.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -128,4 +132,23 @@ public class UserService {
         save(user);
     }
 
+    public List<Object[]> getTop5Instructors() {
+        return userRepository.findTop5InstructorsWithMostStudents();
+    }
+
+    public List<Map<String, Object>> getTop5Ints() {
+        List<Object[]> rows = userRepository.findTop5InstructorsWithMostStudents();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Object[] row : rows) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("ten", row[0]);
+            map.put("avatar", row[1]);
+            map.put("sdt", row[2]);
+            map.put("stcount", row[3]);
+            result.add(map);
+        }
+
+        return result;
+    }
 }
