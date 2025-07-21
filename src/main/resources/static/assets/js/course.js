@@ -97,10 +97,11 @@ document.getElementById("create-course-form").addEventListener("submit", (e) => 
         videoUrl,
         duration: +duration || 0,
       })),
-      quizzes: (quizzesPerModule[idx] || []).map(({ title, timeLimit, totalScore, questions }) => ({
+      quizzes: (quizzesPerModule[idx] || []).map(({ title, timeLimit, totalScore, quizType, questions }) => ({
         title,
         timeLimit: +timeLimit || 0,
         totalScore: +totalScore || 0,
+        quizType: quizType || "regular",
         questions: questions.map(({ questionText, correctOption, score, options }) => ({
           questionText,
           correctOption,
