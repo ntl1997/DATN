@@ -42,6 +42,9 @@ public class Quiz {
     private Integer timeLimit; // Thời gian làm bài (phút)
 
     @Builder.Default
+    private String quizType = "regular";
+
+    @Builder.Default
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
