@@ -62,9 +62,9 @@
     <th:block th:fragment="scripts">
         <script>
             // Simple Datatable
-            let table1 = document.querySelector("#table1");
             let dataTable = new simpleDatatables.DataTable(table1, {
-                perPage: 5
+                perPage: 5,
+                perPageSelect: false // Tắt dropdown chọn số entries
             });
         </script>
     </th:block>
