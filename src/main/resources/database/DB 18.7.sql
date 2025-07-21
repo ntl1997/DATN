@@ -17,8 +17,8 @@ GO
 
 -- Create a new database called 'viettutor'
 -- Connect to the 'master' database to run this snippet
-USE master
-GO
+--USE master
+--GO
 -- Create the new database if it does not exist already
 IF NOT EXISTS (
     SELECT [name]
