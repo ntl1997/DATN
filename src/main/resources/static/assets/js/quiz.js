@@ -1,6 +1,6 @@
 // ======================= quiz.js =======================
 
-let quizDraft = { title: "", timeLimit: 0, totalScore: 100, questions: [] };
+let quizDraft = { title: "", timeLimit: 0, totalScore: 100, quizType: "", questions: [] };
 let currentQuestionIndex = null;
 let correctOptionIndex = null;
 let editingQuizInfo = null;
@@ -163,11 +163,13 @@ function deleteQuestion(index) {
 function appendQuizToDOM(moduleIdx, quizIdx) {
   const quiz = quizzesPerModule[moduleIdx][quizIdx];
   const container = document.querySelector(`.lesson-container[data-module-index="${moduleIdx}"]`);
+  const label = quiz.quizType === "assignment" ? "Assignment" : "Quiz";
+  const color = quiz.quizType === "assignment" ? "text-danger" : "text-success";
   const html = `
     <div class="lesson-item d-flex justify-content-between rbt-course-wrape mb-4">
       <div class="col-10 inner d-flex align-items-center gap-2">
-        <i class="feather-menu text-success"></i>
-        <h6 class="rbt-title mb-0 text-success">Quiz: ${quiz.title}</h6>
+        <i class="feather-menu ${color}"></i>
+        <h6 class="rbt-title mb-0 ${color}">${label}: ${quiz.title}</h6>
       </div>
       <div class="col-2 inner">
         <ul class="rbt-list-style-1 rbt-course-list d-flex gap-2">
@@ -180,11 +182,12 @@ function appendQuizToDOM(moduleIdx, quizIdx) {
   container.insertAdjacentHTML("beforeend", html);
 }
 
-function createEmptyQuiz(index) {
+function createEmptyQuiz(index, type = "regular") {
   const newQuiz = {
-    title: "quiz chưa có tiêu đề",
+    title: type === "assignment" ? "assignment chưa có tiêu đề" : "quiz chưa có tiêu đề",
     timeLimit: 10,
     totalScore: 100,
+    quizType: type,
     questions: [
       {
         questionText: "câu hỏi chưa có tiêu đề",
@@ -307,6 +310,11 @@ document.getElementById("add-question").addEventListener("click", () => {
 
   quizDraft.questions.push(newQuestion);
   updateAllQuestionScores();
-  Storage.set("quizzesPerModule", quizzesPerModule); // cập nhật lại localStorage
   renderQuestionList();
+
+  if (editingQuizInfo) {
+    const { moduleIndex, quizIndex } = editingQuizInfo;
+    quizzesPerModule[moduleIndex][quizIndex] = { ...quizDraft };
+    Storage.set("quizzesPerModule", quizzesPerModule);
+  }
 });
