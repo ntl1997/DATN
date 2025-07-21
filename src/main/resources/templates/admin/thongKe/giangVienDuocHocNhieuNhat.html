@@ -7,14 +7,14 @@
             <div class="page-title">
                 <div class="row">
                     <div class="col-12 col-md-6 order-md-1 order-last">
-                        <h3>Danh sách các khóa học được học
+                        <h3>Danh sách các giảng viên được học
                             nhiều nhất</h3>
                     </div>
                     <div class="col-12 col-md-6 order-md-2 order-first">
                         <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Tổng quan</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Danh sách các khóa học được học
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách các giảng viên được học
                                     nhiều nhất</li>
                             </ol>
                         </nav>
@@ -28,21 +28,25 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên khóa học</th>
-                                    <th>Số học viên tham gia</th>
-                                    <th>Tỉ lệ hoàn thành (%)</th>
-                                    <th>Giảng viên phụ trách</th>
+                                    <th>Họ và tên</th>
+                                    <th>Avatar</th>
+                                    <th>SĐT</th>
+                                    <th>Số lượng học sinh</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="course, stat : ${topCourses}">
+                                <tr th:each="instructor, stat : ${topInstructors}">
                                     <td th:text="${stat.index + 1}">1</td>
-                                    <td th:text="${course['courseTitle']}">Tên khóa học</td>
-                                    <td th:text="${course['studentCount']}">0</td>
-                                    <td th:text="${course['completionRate']}">0%</td>
-                                    <td th:text="${course['instructorName']}">Tên giảng viên</td>
+                                    <td th:text="${instructor['ten']}">Tên giảng viên</td>
+                                    <td>
+                                        <img th:src="@{${instructor['avatar']}}" alt="Avatar"
+                                            style="width: 50px; height: 50px; border-radius: 50%;" />
+                                    </td>
+                                    <td th:text="${instructor['sdt']}">SĐT</td>
+                                    <td th:text="${instructor[stcount]}">Số lượng học sinh</td>
                                 </tr>
                             </tbody>
+
                         </table>
                     </div>
                 </div>
