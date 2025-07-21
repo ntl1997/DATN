@@ -30,4 +30,17 @@ public interface CourseRepository extends JpaRepository<Course, Integer>, JpaSpe
     List<Object[]> findCourseSummaryByInstructorNative(@Param("instructorId") Long instructorId);
 
     List<Course> findByCreatedByIdAndStatus(Long instructorId, String status);
+
+    @Query(value = "SELECT TOP 5 " +
+            "c.Title AS courseTitle, " +
+            "COUNT(e.UserId) AS studentCount, " +
+            "0 AS completionRate, " +
+            "u.FullName AS instructorName " +
+            "FROM Courses c " +
+            "LEFT JOIN Enrollments e ON c.CourseId = e.CourseId " +
+            "LEFT JOIN Users u ON c.CreatedBy = u.UserId " +
+            "GROUP BY c.CourseId, c.Title, u.FullName " +
+            "ORDER BY COUNT(e.UserId) DESC", nativeQuery = true)
+    List<Object[]> findTop5CourseStatistics();
+
 }
