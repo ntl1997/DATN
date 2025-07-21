@@ -24,6 +24,8 @@ public class QuizDTO {
     @NotNull(message = "Tổng điểm không được để trống!")
     private Double totalScore;
 
+    private String quizType;
+
     private List<QuestionDTO> questions;
 
 }
