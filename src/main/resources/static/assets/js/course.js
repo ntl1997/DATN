@@ -40,6 +40,11 @@ function setupAttachmentsHandlers() {
   });
 }
 
+function autoResizeTextarea(textarea) {
+  textarea.style.height = "auto";
+  textarea.style.height = textarea.scrollHeight + "px";
+}
+
 // ========== INIT ==========
 document.addEventListener("DOMContentLoaded", () => {
   setupPriceTabHandlers();
@@ -57,6 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#question-list #prev-btn").addEventListener("click", () => showTab("quiz-info"));
   document.getElementById("save-quiz").addEventListener("click", saveQuiz);
   document.getElementById("create-quiz").addEventListener("show.bs.modal", () => showTab("quiz-info"));
+});
+
+document.querySelectorAll("textarea.auto-resize").forEach((textarea) => {
+  textarea.addEventListener("input", () => autoResizeTextarea(textarea));
+  autoResizeTextarea(textarea); // Gọi lần đầu khi load (nếu có nội dung)
 });
 
 // ========== FORM SUBMIT ==========
