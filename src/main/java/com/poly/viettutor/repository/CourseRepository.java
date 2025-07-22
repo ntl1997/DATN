@@ -15,7 +15,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Integer>, JpaSpecificationExecutor<Course> {
     // Lấy 6 khóa học phổ biến nhất (ví dụ: theo số lượng đăng ký hoặc tiêu chí nào
     // đó)
-    @Query("SELECT c FROM Course c ORDER BY c.price DESC") // Thay c.price bằng trường phổ biến nếu có
+    @Query("SELECT c FROM Course c WHERE c.status = 'Publish' ORDER BY c.price DESC")
     List<Course> findTop6PopularCourses(Pageable pageable);
 
     @Query("SELECT COUNT(c) FROM Course c WHERE c.createdBy.id = :userId")
