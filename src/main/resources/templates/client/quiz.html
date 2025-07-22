@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body class="rbt-header-sticky">
+    <div th:fragment="content">
+      <div class="rbt-lesson-area bg-color-white">
+        <div class="rbt-lesson-content-wrapper">
+          <div class="rbt-lesson-rightsidebar overflow-hidden">
+            <div class="lesson-top-bar">
+              <div class="lesson-top-left">
+                <div class="rbt-lesson-toggle"></div>
+                <h5>Title Quiz</h5>
+              </div>
+            </div>
+            <div class="inner">
+              <div class="content">
+                <div class="quize-top-meta">
+                  <div class="quize-top-left">
+                    <span>Câu hỏi số: <strong>1/10</strong></span
+                    ><span>Số lần làm bài cho phép: <strong>1/3</strong></span>
+                  </div>
+                </div>
+                <hr />
+                <div
+                  class="rbt-dashboard-table table-responsive mobile-table-750 mt--30 overflow-hidden"
+                >
+                  <form
+                    th:action="@{/quiz/submit}"
+                    id="quiz-form"
+                    method="post"
+                    class="quiz-form-wrapper"
+                  >
+                    <input
+                      type="hidden"
+                      name="quizId"
+                      th:value="${quiz.quizId}"
+                    />
+                    <div
+                      th:each="question, iterStat : ${quiz.questions}"
+                      class="mb--80"
+                      th:id="'question-' + ${iterStat.index + 1}"
+                    >
+                      <div class="rbt-single-quiz">
+                        <h4>
+                          <span th:text="${iterStat.index + 1} + '.'"></span>
+                          <span th:text="${question.questionText}"></span>
+                        </h4>
+                        <div class="row g-3">
+                          <div
+                            class="col-lg-6"
+                            th:each="op, opStat : ${question.options}"
+                          >
+                            <p class="rbt-checkbox-wrapper mb--5">
+                              <input
+                                type="checkbox"
+                                th:id="'rbt-checkbox-' + ${iterStat.index + 1} + '-' + ${opStat.index + 1}"
+                                th:name="'question-' + ${iterStat.index + 1} + '-option'"
+                                th:value="${op.optionId}"
+                              />
+                              <label
+                                th:for="'rbt-checkbox-' + ${iterStat.index + 1} + '-' + ${opStat.index + 1}"
+                                th:text="${op.optionText}"
+                                >Option One</label
+                              >
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="submit-btn mt--20">
+                      <a
+                        class="rbt-btn btn-gradient hover-icon-reverse"
+                        href="lesson-quiz-result.html"
+                        ><span class="icon-reverse-wrapper"
+                          ><span class="btn-text">Submit Quiz</span
+                          ><span class="btn-icon"
+                            ><i class="feather-arrow-right"></i></span
+                          ><span class="btn-icon"
+                            ><i class="feather-arrow-right"></i></span></span
+                      ></a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="bg-color-extra2 ptb--15 overflow-hidden">
+                <div class="rbt-button-group">
+                  <a
+                    class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"
+                    href="#"
+                  >
+                    <span class="btn-icon"
+                      ><i class="feather-arrow-left"></i
+                    ></span>
+                    <span class="btn-text">Previous</span>
+                  </a>
+
+                  <a class="rbt-btn icon-hover btn-md" href="#">
+                    <span class="btn-text">Next</span>
+                    <span class="btn-icon"
+                      ><i class="feather-arrow-right"></i
+                    ></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rbt-progress-parent">
+        <svg
+          class="rbt-back-circle svg-inner"
+          width="100%"
+          height="100%"
+          viewBox="-1 -1 102 102"
+        >
+          <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+      </div>
+    </div>
+  </body>
+
+  <!-- Mirrored from rainbowit.net/html/histudy/all-questions.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Jun 2025 15:46:20 GMT -->
+</html>
