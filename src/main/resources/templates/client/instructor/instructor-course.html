@@ -125,17 +125,23 @@
                                   <div class="rbt-card-top">
                                     <div class="rbt-review">
                                       <div class="rating">
-                                        <!-- Hiển thị sao vàng theo số nguyên -->
-                                        <i
-                                          class="fas fa-star"
-                                          th:each="star : ${#numbers.sequence(1, T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
 
-                                        <!-- Nếu muốn có sao rỗng cho đủ 5 -->
-                                        <i
-                                          class="far fa-star"
-                                          th:each="star : ${#numbers.sequence(1, 5 - T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
                                       </div>
                                       <!-- Số lượng đánh giá -->
                                       <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
@@ -219,10 +225,23 @@
                                   <div class="rbt-card-top">
                                     <div class="rbt-review">
                                       <div class="rating">
-                                        <i
-                                          class="far fa-star"
-                                          th:each="star : ${#numbers.sequence(1, 5 - T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
+
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
                                       </div>
                                       <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
                                         (0 Reviews)
@@ -297,10 +316,23 @@
                                   <div class="rbt-card-top">
                                     <div class="rbt-review">
                                       <div class="rating">
-                                        <i
-                                          class="far fa-star"
-                                          th:each="star : ${#numbers.sequence(1, 5 - T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
+
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
                                       </div>
                                       <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
                                         (0 Reviews)
@@ -375,10 +407,23 @@
                                   <div class="rbt-card-top">
                                     <div class="rbt-review">
                                       <div class="rating">
-                                        <i
-                                          class="far fa-star"
-                                          th:each="star : ${#numbers.sequence(1, 5 - T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
+
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
                                       </div>
                                       <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
                                         (0 Reviews)
