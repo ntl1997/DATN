@@ -61,8 +61,6 @@ public class instructorController {
         User currentUser = userService.getCurrentUser();
 
         if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-
             List<Course> publishCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
                     "publish");
             List<Course> pendingCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
@@ -99,9 +97,10 @@ public class instructorController {
             model.addAttribute("draftCourses", draftCourses);
             model.addAttribute("hiddenCourses", hiddenCourses);
         } else {
-            model.addAttribute("name", "Unknown");
             model.addAttribute("publishCourses", Collections.emptyList());
             model.addAttribute("pendingCourses", Collections.emptyList());
+            model.addAttribute("draftCourses", Collections.emptyList());
+            model.addAttribute("hiddenCourses", Collections.emptyList());
         }
 
         model.addAttribute("title", "My Courses");
