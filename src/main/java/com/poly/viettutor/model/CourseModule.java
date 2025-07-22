@@ -25,4 +25,7 @@ public class CourseModule {
     @ManyToOne
     @JoinColumn(name = "courseId")
     private Course course;
+
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Quiz> quizzes;
 }
