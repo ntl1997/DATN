@@ -47,6 +47,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()); // Tắt CSRF (Cross-Site Request Forgery)
         http.authorizeHttpRequests(auth -> auth // Cấu hình phân quyền cho các request
                 .requestMatchers("/cart").authenticated() // yêu cầu đăng nhập
+                .requestMatchers("/enroll-course/**").authenticated() // yêu cầu đăng nhập
                 .requestMatchers("/student/**").authenticated() // yêu cầu đăng nhập
                 .requestMatchers("/instructor/**").hasAnyRole("INSTRUCTOR", "ADMIN")
                 // INSTRUCTOR hoặc ADMIN mới được truy cập
