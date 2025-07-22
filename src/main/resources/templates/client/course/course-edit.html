@@ -37,10 +37,22 @@
                         </span>
                       </a>
                     </div>
-                    <div class="col-lg-6" th:unless="${course.status == 'draft'}">
+                    <div class="col-lg-6" th:if="${course.status == 'pending'}">
                       <a class="rbt-btn bg-secondary w-100 text-center">
-                        <span class="btn-text">Bạn đã gửi yêu cầu phê duyệt</span>
-                        <span class="btn-icon"><i class="feather-send"></i></span>
+                        <span class="btn-text">Đang chờ phê duyệt</span>
+                        <span class="btn-icon"><i class="feather-clock"></i></span>
+                      </a>
+                    </div>
+                    <div class="col-lg-6" th:if="${course.status == 'publish'}">
+                      <a class="rbt-btn bg-success w-100 text-center">
+                        <span class="btn-text">Đã phê duyệt</span>
+                        <span class="btn-icon"><i class="feather-check-circle"></i></span>
+                      </a>
+                    </div>
+                    <div class="col-lg-6" th:if="${course.status == 'hidden'}">
+                      <a class="rbt-btn bg-danger w-100 text-center">
+                        <span class="btn-text">Đang bị ẩn</span>
+                        <span class="btn-icon"><i class="feather-eye-off"></i></span>
                       </a>
                     </div>
                     <div class="col-lg-6">
