@@ -41,7 +41,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean // SecurityFilterChain cho USER
     @Order(2) // Đặt thứ tự ưu tiên cho SecurityFilterChain
     public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
@@ -49,7 +48,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth // Cấu hình phân quyền cho các request
                 .requestMatchers("/cart").authenticated() // yêu cầu đăng nhập
                 .requestMatchers("/student/**").authenticated() // yêu cầu đăng nhập
-                .requestMatchers("/instructor/**").hasRole("INSTRUCTOR") // INSTRUCTOR mới được truy cập
+                .requestMatchers("/instructor/**").hasAnyRole("INSTRUCTOR", "ADMIN")
+                // INSTRUCTOR hoặc ADMIN mới được truy cập
                 .anyRequest().permitAll()); // Tất cả các request khác đều được phép truy cập
         http.formLogin(login -> login
                 .loginPage("/login")
@@ -61,7 +61,6 @@ public class SecurityConfig {
                 .permitAll());
         return http.build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
