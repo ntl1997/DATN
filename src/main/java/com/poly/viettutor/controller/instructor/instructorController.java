@@ -63,13 +63,17 @@ public class instructorController {
         if (currentUser != null) {
             model.addAttribute("name", currentUser.getFullname());
 
-            List<Course> approvedCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
-                    "approved");
+            List<Course> publishCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                    "publish");
             List<Course> pendingCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
                     "pending");
+            List<Course> draftCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                    "draft");
+            List<Course> hiddenCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                    "hidden");
 
-            // Tính review count và rating cho approvedCourses
-            for (Course course : approvedCourses) {
+            // Tính review count và rating cho publishCourses
+            for (Course course : publishCourses) {
                 List<Review> reviews = course.getReviews();
                 int reviewCount = reviews.size();
                 double avgRating = reviewCount > 0
@@ -79,8 +83,8 @@ public class instructorController {
                 course.setRating((int) avgRating);
             }
 
-            // Tính review count và rating cho pendingCourses
-            for (Course course : pendingCourses) {
+            // Tính review count và rating cho hiddenCourses
+            for (Course course : hiddenCourses) {
                 List<Review> reviews = course.getReviews();
                 int reviewCount = reviews.size();
                 double avgRating = reviewCount > 0
@@ -90,11 +94,13 @@ public class instructorController {
                 course.setRating((int) avgRating);
             }
             model.addAttribute("user", currentUser);
-            model.addAttribute("approvedCourses", approvedCourses);
+            model.addAttribute("publishCourses", publishCourses);
             model.addAttribute("pendingCourses", pendingCourses);
+            model.addAttribute("draftCourses", draftCourses);
+            model.addAttribute("hiddenCourses", hiddenCourses);
         } else {
             model.addAttribute("name", "Unknown");
-            model.addAttribute("approvedCourses", Collections.emptyList());
+            model.addAttribute("publishCourses", Collections.emptyList());
             model.addAttribute("pendingCourses", Collections.emptyList());
         }
 
