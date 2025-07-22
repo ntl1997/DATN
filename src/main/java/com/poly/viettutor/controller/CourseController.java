@@ -25,6 +25,7 @@ import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CategoryService;
 import com.poly.viettutor.service.CourseService;
+import com.poly.viettutor.service.EnrollmentService;
 import com.poly.viettutor.service.UserService;
 
 import jakarta.servlet.RequestDispatcher;
@@ -35,17 +36,19 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CourseController {
 
+    private final EnrollmentService enrollmentService;
     private final CourseService courseService;
     private final CategoryService categoryService;
     private final UserService userService;
     private final Validator validator;
 
     public CourseController(CourseService courseService, CategoryService categoryService, UserService userService,
-            Validator validator) {
+            Validator validator, EnrollmentService enrollmentService) {
         this.courseService = courseService;
         this.categoryService = categoryService;
         this.userService = userService;
         this.validator = validator;
+        this.enrollmentService = enrollmentService;
     }
 
     // Hàm phân trang
@@ -102,13 +105,41 @@ public class CourseController {
             }
         }
 
-        model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
         int totalDuration = courseService.totalDuration(course);
+        boolean isEnrolled = enrollmentService.isEnrolled(user, course);
+
+        model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
         model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
+        model.addAttribute("isEnrolled", isEnrolled); // Kiểm tra đã tham gia khóa học chưa
         model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
         model.addAttribute("content", "client/course-detail"); // nội dung trang (phần content)
         model.addAttribute("scripts", "client/course-detail");
         return "client/layout/index";
+    }
+
+    @GetMapping("/enroll-course/{id}")
+    public String getMethodName(@PathVariable("id") int id, HttpServletRequest request, Model model) {
+        Optional<Course> existingItemOptional = courseService.findById(id);
+
+        // Xử lý khi không tìm thấy khóa học, chuyển hướng hoặc báo lỗi
+        if (existingItemOptional.isEmpty()) {
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
+            return "forward:/error";
+        }
+
+        Course course = existingItemOptional.get();
+        User user = userService.getCurrentUser();
+
+        // CHẶN nếu không phải chủ sở hữu hoặc admin khi course chưa được duyệt
+        if (!course.getStatus().equalsIgnoreCase("publish")) {
+            if (!isOwnerOrADmin(user, course)) {
+                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+                return "forward:/error";
+            }
+        }
+
+        enrollmentService.enrollCourse(user, course);
+        return "redirect:/course-details/" + id;
     }
 
     @GetMapping("/instructor/create-course")
