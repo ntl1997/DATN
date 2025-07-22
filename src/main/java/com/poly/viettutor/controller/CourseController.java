@@ -95,7 +95,7 @@ public class CourseController {
         User user = userService.getCurrentUser();
 
         // CHẶN nếu không phải chủ sở hữu hoặc admin khi course chưa được duyệt
-        if (course.getStatus().equalsIgnoreCase("pending")) {
+        if (!course.getStatus().equalsIgnoreCase("publish")) {
             if (!isOwnerOrADmin(user, course)) {
                 request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
                 return "forward:/error";
@@ -169,6 +169,29 @@ public class CourseController {
         CourseDTO courseDTO = new CourseDTO().toDTO(course);
         model.addAttribute("course", courseDTO);
         return loadPage(model, "Chỉnh sửa khóa học", "client/course/course-edit");
+    }
+
+    @GetMapping("/instructor/request-approve-course/{id}")
+    public String requestApproveCourse(@PathVariable Integer id, HttpServletRequest request, Model model) {
+        Optional<Course> existingItemOptional = courseService.findById(id);
+
+        // Xử lý khi không tìm thấy khóa học
+        if (existingItemOptional.isEmpty()) {
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
+            return "forward:/error";
+        }
+
+        Course course = existingItemOptional.get();
+        User user = userService.getCurrentUser();
+
+        // CHẶN nếu không phải chủ sở hữu hoặc admin
+        if (!isOwnerOrADmin(user, course)) {
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+            return "forward:/error";
+        }
+
+        courseService.updateStatus(course, "pending");
+        return "redirect:/instructor/courses";
     }
 
     @PutMapping("/instructor/update-course")
