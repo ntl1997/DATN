@@ -207,4 +207,22 @@ public class CourseService {
         return result;
     }
 
+    public Map<String, Object> getTop5CoursesChartData() {
+        List<Object[]> rawData = courseRepository.findTop5CoursesByStudentCount();
+
+        List<String> courseTitles = new ArrayList<>();
+        List<Long> studentCounts = new ArrayList<>();
+
+        for (Object[] row : rawData) {
+            courseTitles.add((String) row[0]);
+            studentCounts.add(((Number) row[1]).longValue());
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("labels", courseTitles);
+        result.put("data", studentCounts);
+
+        return result;
+    }
+
 }

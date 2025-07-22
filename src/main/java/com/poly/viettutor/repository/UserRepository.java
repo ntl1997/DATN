@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT u FROM User u JOIN u.roles r WHERE r.roleName IN :roleNames")
     List<User> findByRolesIn(@Param("roleNames") List<String> roleNames);
 
-    @Query(value = "SELECT u.fullName AS teacherName, " +
+    @Query(value = "SELECT TOP 5 u.fullName AS teacherName, " +
             "u.image AS teacherImage, " +
             "u.phoneNumber AS teacherPhone, " +
             "COUNT(e.userId) AS studentCount " +
@@ -39,4 +39,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "GROUP BY u.userId, u.fullName, u.image, u.phoneNumber " +
             "ORDER BY studentCount DESC", nativeQuery = true)
     List<Object[]> findTop5InstructorsWithMostStudents();
+
 }

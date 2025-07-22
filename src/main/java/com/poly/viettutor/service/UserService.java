@@ -132,10 +132,6 @@ public class UserService {
         save(user);
     }
 
-    public List<Object[]> getTop5Instructors() {
-        return userRepository.findTop5InstructorsWithMostStudents();
-    }
-
     public List<Map<String, Object>> getTop5Ints() {
         List<Object[]> rows = userRepository.findTop5InstructorsWithMostStudents();
         List<Map<String, Object>> result = new ArrayList<>();
@@ -149,6 +145,26 @@ public class UserService {
             result.add(map);
         }
 
+        return result;
+    }
+
+    public Map<String, Object> getTop5InstructorsForChart() {
+        List<Object[]> rawResults = userRepository.findTop5InstructorsWithMostStudents();
+
+        List<String> names = new ArrayList<>();
+        List<Long> studentCounts = new ArrayList<>();
+
+        for (Object[] row : rawResults) {
+            // row[0] = fullName (String)
+            // row[3] = studentCount (Number)
+            names.add((String) row[0]);
+            studentCounts.add(((Number) row[3]).longValue());
+        }
+
+        // Trả về Map chứa 2 mảng để đưa lên Thymeleaf
+        Map<String, Object> result = new HashMap<>();
+        result.put("labels", names);
+        result.put("data", studentCounts);
         return result;
     }
 }

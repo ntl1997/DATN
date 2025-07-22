@@ -46,6 +46,15 @@
                         </table>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Top 5 khóa học theo số lượng học sinh</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="bar2" width="710" height="355"
+                            style="display: block; box-sizing: border-box; height: 355px; width: 710px;"></canvas>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
@@ -57,6 +66,14 @@
                 perPageSelect: false // Tắt dropdown chọn số entries
             });
         </script>
+        <script th:inline="javascript">
+            let courseLabels = /*[[${courseLabels}]]*/[];
+            let courseData = /*[[${courseData}]]*/[];
+            // console.log("courseLabels:", courseLabels);
+            // console.log("courseData:", courseData);
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/admin-assets/js/pages/ui-chartjs.js"></script>
     </th:block>
 </body>
 

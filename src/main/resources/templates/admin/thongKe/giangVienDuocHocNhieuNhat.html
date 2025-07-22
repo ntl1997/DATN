@@ -50,6 +50,15 @@
                         </table>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Top 5 giảng viên theo số lượng học sinh</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="bar" width="710" height="355"
+                            style="display: block; box-sizing: border-box; height: 355px; width: 710px;"></canvas>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
@@ -61,6 +70,14 @@
                 perPageSelect: false // Tắt dropdown chọn số entries
             });
         </script>
+        <script th:inline="javascript">
+            let teacherLabels = /*[[${teacherNames}]]*/[];
+            let studentData = /*[[${studentCounts}]]*/[];
+            // console.log('teacherLabels:', teacherLabels);
+            // console.log('studentData:', studentData);
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/admin-assets/js/pages/ui-chartjs.js"></script>
     </th:block>
 </body>
 

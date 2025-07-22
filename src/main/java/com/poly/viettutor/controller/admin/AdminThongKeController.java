@@ -23,6 +23,10 @@ public class AdminThongKeController {
 
     @GetMapping("/admin/KhoaHocDuocHocNhieuNhat")
     public String showKhoaHoc(Model model) {
+        Map<String, Object> chartData = courseService.getTop5CoursesChartData();
+
+        model.addAttribute("courseLabels", chartData.get("labels"));
+        model.addAttribute("courseData", chartData.get("data"));
         model.addAttribute("title", "Danh sách khóa học được học nhiều nhất");
         model.addAttribute("content", "admin/thongKe/khoaHocNhieuNhat");
         model.addAttribute("scripts", "admin/thongKe/khoaHocNhieuNhat");
@@ -34,6 +38,10 @@ public class AdminThongKeController {
 
     @GetMapping("/admin/Top5GiangVien")
     public String showGiangVien(Model model) {
+        Map<String, Object> chartData = userService.getTop5InstructorsForChart();
+
+        model.addAttribute("teacherNames", chartData.get("labels"));
+        model.addAttribute("studentCounts", chartData.get("data"));
         model.addAttribute("title", "Danh sách giảng viên được học nhiều nhất");
         model.addAttribute("content", "admin/thongKe/giangVienDuocHocNhieuNhat");
         model.addAttribute("scripts", "admin/thongKe/giangVienDuocHocNhieuNhat");
