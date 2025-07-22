@@ -379,79 +379,79 @@ CREATE TABLE QuizAnswers
     -- Đáp án đó có đúng không (1 = đúng)
 );
 
--- 28. Assignments
-CREATE TABLE Assignments
-(
-    AssignmentId BIGINT PRIMARY KEY IDENTITY,
-    -- Mã định danh bài đánh giá cuối khóa
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId) UNIQUE,-- Mỗi khóa học chỉ có 1 assignment
-    Title NVARCHAR(255),
-    -- Tiêu đề assignment (VD: "Đánh giá cuối khóa Python")
-    TotalScore INT,
-    -- Tổng điểm toàn bài
-    TimeLimit INT,
-    -- Giới hạn thời gian (phút)
-    CreatedAt DATETIME DEFAULT GETDATE()
-    -- Ngày tạo bài kiểm tra
-);
+-- -- 28. Assignments
+-- CREATE TABLE Assignments
+-- (
+--     AssignmentId BIGINT PRIMARY KEY IDENTITY,
+--     -- Mã định danh bài đánh giá cuối khóa
+--     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId) UNIQUE,-- Mỗi khóa học chỉ có 1 assignment
+--     Title NVARCHAR(255),
+--     -- Tiêu đề assignment (VD: "Đánh giá cuối khóa Python")
+--     TotalScore INT,
+--     -- Tổng điểm toàn bài
+--     TimeLimit INT,
+--     -- Giới hạn thời gian (phút)
+--     CreatedAt DATETIME DEFAULT GETDATE()
+--     -- Ngày tạo bài kiểm tra
+-- );
 
--- 29. AssignmentQuestions
-CREATE TABLE AssignmentQuestions
-(
-    QuestionId BIGINT PRIMARY KEY IDENTITY,
-    -- Mã định danh câu hỏi
-    AssignmentId BIGINT FOREIGN KEY REFERENCES Assignments(AssignmentId),
-    -- Gắn với assignment
-    QuestionText NVARCHAR(MAX),
-    -- Nội dung câu hỏi
-    Score INT DEFAULT 1
-    -- Điểm cho câu hỏi
-);
+-- -- 29. AssignmentQuestions
+-- CREATE TABLE AssignmentQuestions
+-- (
+--     QuestionId BIGINT PRIMARY KEY IDENTITY,
+--     -- Mã định danh câu hỏi
+--     AssignmentId BIGINT FOREIGN KEY REFERENCES Assignments(AssignmentId),
+--     -- Gắn với assignment
+--     QuestionText NVARCHAR(MAX),
+--     -- Nội dung câu hỏi
+--     Score INT DEFAULT 1
+--     -- Điểm cho câu hỏi
+-- );
 
--- 30. AssignmentOptions
-CREATE TABLE AssignmentOptions
-(
-    OptionId BIGINT PRIMARY KEY IDENTITY,
-    -- Mã định danh đáp án
-    QuestionId BIGINT FOREIGN KEY REFERENCES AssignmentQuestions(QuestionId),
-    -- Gắn đáp án với câu hỏi
-    OptionText NVARCHAR(MAX),
-    -- Nội dung đáp án
-    IsCorrect BIT
-    -- Có phải đáp án đúng không (1 = đúng)
-);
+-- -- 30. AssignmentOptions
+-- CREATE TABLE AssignmentOptions
+-- (
+--     OptionId BIGINT PRIMARY KEY IDENTITY,
+--     -- Mã định danh đáp án
+--     QuestionId BIGINT FOREIGN KEY REFERENCES AssignmentQuestions(QuestionId),
+--     -- Gắn đáp án với câu hỏi
+--     OptionText NVARCHAR(MAX),
+--     -- Nội dung đáp án
+--     IsCorrect BIT
+--     -- Có phải đáp án đúng không (1 = đúng)
+-- );
 
--- 31. AssignmentSubmissions
-CREATE TABLE AssignmentSubmissions
-(
-    SubmissionId BIGINT PRIMARY KEY IDENTITY,
-    -- Mã định danh lần nộp bài assignment
-    AssignmentId BIGINT FOREIGN KEY REFERENCES Assignments(AssignmentId),
-    -- Bài kiểm tra nào
-    UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
-    -- Học sinh nào nộp
-    SubmittedAt DATETIME DEFAULT GETDATE(),
-    -- Thời điểm nộp
-    Score INT,
-    -- Tổng điểm đạt được
-    Passed BIT DEFAULT 0
-    -- Có vượt qua không (1 = pass, 0 = fail)
-);
+-- -- 31. AssignmentSubmissions
+-- CREATE TABLE AssignmentSubmissions
+-- (
+--     SubmissionId BIGINT PRIMARY KEY IDENTITY,
+--     -- Mã định danh lần nộp bài assignment
+--     AssignmentId BIGINT FOREIGN KEY REFERENCES Assignments(AssignmentId),
+--     -- Bài kiểm tra nào
+--     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+--     -- Học sinh nào nộp
+--     SubmittedAt DATETIME DEFAULT GETDATE(),
+--     -- Thời điểm nộp
+--     Score INT,
+--     -- Tổng điểm đạt được
+--     Passed BIT DEFAULT 0
+--     -- Có vượt qua không (1 = pass, 0 = fail)
+-- );
 
--- 32. AssignmentAnswers (tùy chọn)
-CREATE TABLE AssignmentAnswers
-(
-    AnswerId BIGINT PRIMARY KEY IDENTITY,
-    -- Mã định danh câu trả lời
-    SubmissionId BIGINT FOREIGN KEY REFERENCES AssignmentSubmissions(SubmissionId),
-    -- Gắn với lần nộp
-    QuestionId BIGINT,
-    -- Câu hỏi nào
-    SelectedOptionId BIGINT,
-    -- Đáp án học sinh chọn
-    IsCorrect BIT
-    -- Có đúng không (1 = đúng)
-);
+-- -- 32. AssignmentAnswers (tùy chọn)
+-- CREATE TABLE AssignmentAnswers
+-- (
+--     AnswerId BIGINT PRIMARY KEY IDENTITY,
+--     -- Mã định danh câu trả lời
+--     SubmissionId BIGINT FOREIGN KEY REFERENCES AssignmentSubmissions(SubmissionId),
+--     -- Gắn với lần nộp
+--     QuestionId BIGINT,
+--     -- Câu hỏi nào
+--     SelectedOptionId BIGINT,
+--     -- Đáp án học sinh chọn
+--     IsCorrect BIT
+--     -- Có đúng không (1 = đúng)
+-- );
 
 
 -- DỮ LIỆU MẪU CHO viettutor
@@ -654,36 +654,36 @@ VALUES
     (2, N'Class', 0),
     (2, N'Pointer', 1);
 
--- 27. Assignment cuối khóa Python
-INSERT INTO Assignments
-    (CourseId, Title, TotalScore, TimeLimit)
-VALUES
-    (1, N'Bài kiểm tra cuối khóa: Python', 10, 20);
+-- -- 27. Assignment cuối khóa Python
+-- INSERT INTO Assignments
+--     (CourseId, Title, TotalScore, TimeLimit)
+-- VALUES
+--     (1, N'Bài kiểm tra cuối khóa: Python', 10, 20);
 
--- 28. Câu hỏi 1
-INSERT INTO AssignmentQuestions
-    (AssignmentId, QuestionText, Score)
-VALUES
-    (1, N'Phát biểu nào đúng về biến trong Python?', 1);
+-- -- 28. Câu hỏi 1
+-- INSERT INTO AssignmentQuestions
+--     (AssignmentId, QuestionText, Score)
+-- VALUES
+--     (1, N'Phát biểu nào đúng về biến trong Python?', 1);
 
--- 29 Đáp án cho câu 1
-INSERT INTO AssignmentOptions
-    (QuestionId, OptionText, IsCorrect)
-VALUES
-    (1, N'Phải khai báo kiểu dữ liệu trước', 0),
-    (1, N'Không cần khai báo kiểu dữ liệu', 1),
-    (1, N'Phải khởi tạo trong hàm main()', 0);
+-- -- 29 Đáp án cho câu 1
+-- INSERT INTO AssignmentOptions
+--     (QuestionId, OptionText, IsCorrect)
+-- VALUES
+--     (1, N'Phải khai báo kiểu dữ liệu trước', 0),
+--     (1, N'Không cần khai báo kiểu dữ liệu', 1),
+--     (1, N'Phải khởi tạo trong hàm main()', 0);
 
--- 30. Câu hỏi 2
-INSERT INTO AssignmentQuestions
-    (AssignmentId, QuestionText, Score)
-VALUES
-    (1, N'Python được phát triển bởi ai?', 1);
+-- -- 30. Câu hỏi 2
+-- INSERT INTO AssignmentQuestions
+--     (AssignmentId, QuestionText, Score)
+-- VALUES
+--     (1, N'Python được phát triển bởi ai?', 1);
 
--- 31 Đáp án cho câu 2
-INSERT INTO AssignmentOptions
-    (QuestionId, OptionText, IsCorrect)
-VALUES
-    (2, N'Dennis Ritchie', 0),
-    (2, N'Guido van Rossum', 1),
-    (2, N'James Gosling', 0);
+-- -- 31 Đáp án cho câu 2
+-- INSERT INTO AssignmentOptions
+--     (QuestionId, OptionText, IsCorrect)
+-- VALUES
+--     (2, N'Dennis Ritchie', 0),
+--     (2, N'Guido van Rossum', 1),
+--     (2, N'James Gosling', 0);
