@@ -92,7 +92,7 @@ public class CourseService {
                 .discount(courseDTO.getDiscount())
                 .courseImage(fileName)
                 .demoVideoUrl(courseDTO.getDemoVideoUrl())
-                .status("pending")
+                .status("draft")
                 .skillLevel(courseDTO.getSkillLevel())
                 .hasCertificate(courseDTO.getHasCertificate())
                 .language(courseDTO.getLanguage())
@@ -287,6 +287,11 @@ public class CourseService {
             // Thêm quizzes mới
             saveQuizzes(moduleDTO, module);
         }
+    }
+
+    public void updateStatus(Course course, String status) {
+        course.setStatus(status);
+        courseRepository.save(course);
     }
 
     public void deleteById(Integer id) {
