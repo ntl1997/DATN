@@ -575,6 +575,10 @@
                         <span>Chứng chỉ</span><span class="rbt-feature-value rbt-badge-5"
                           th:text="${course.hasCertificate ? 'Có': 'Không'}">Yes</span>
                       </li>
+                      <li>
+                        <span>Trạng thái</span><span class="rbt-feature-value rbt-badge-5"
+                          th:text="${course.status}">status</span>
+                      </li>
                     </ul>
                     <div class="rbt-show-more-btn">Xem thêm</div>
                   </div>
