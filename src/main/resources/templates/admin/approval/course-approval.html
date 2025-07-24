@@ -44,10 +44,25 @@
                                     <tr th:each="course : ${courses}">
                                         <td th:text="${course.courseId}"></td>
                                         <td th:text="${course.title}"></td>
-                                        <td th:text="${course.createdBy != null ? course.createdBy.fullname : 'N/A'}"></td>
+                                        <td th:text="${course.createdBy != null ? course.createdBy.fullName : 'N/A'}"></td>
                                         <td>
-                                            <span th:classappend="'badge bg-' + (${course.status} == 'active' ? 'success' : 'warning')" 
+                                            <span th:classappend="'badge bg-' + (${course.status} == 'publish' ? 'success' : (${course.status} == 'pending' ? 'warning' : 'secondary'))"
                                                 th:text="${course.status}"></span>
+                                            <!-- Nếu trạng thái là publish -->
+                                            <div th:if="${course.status} == 'publish'">
+                                                <form th:action="@{/admin/function/course-hide}" method="post" style="margin-top:5px;">
+                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                                    <input type="text" name="note" placeholder="Lý do ẩn..." required style="width:120px;" />
+                                                    <button type="submit" class="btn btn-sm btn-danger">Ẩn khoá học</button>
+                                                </form>
+                                            </div>
+                                            <!-- Nếu trạng thái là pending -->
+                                            <div th:if="${course.status} == 'pending'">
+                                                <form th:action="@{/admin/function/course-publish}" method="post" style="margin-top:5px;">
+                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                                    <button type="submit" class="btn btn-sm btn-success">Phê duyệt</button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

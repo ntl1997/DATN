@@ -22,4 +22,16 @@ public class AdminApprovalController {
         model.addAttribute("courses", courseService.findAll());
         return "admin/layout/index";
     }
+
+    @PostMapping("/course-hide")
+    public String hideCourse(@RequestParam Integer courseId, @RequestParam String note) {
+        courseService.updateCourseStatus(courseId, "hidden", note);
+        return "redirect:/admin/function/course-approval";
+    }
+
+    @PostMapping("/course-publish")
+    public String publishCourse(@RequestParam Integer courseId) {
+        courseService.updateCourseStatus(courseId, "publish", null);
+        return "redirect:/admin/function/course-approval";
+    }
 }

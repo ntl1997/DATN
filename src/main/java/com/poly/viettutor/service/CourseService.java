@@ -225,4 +225,15 @@ public class CourseService {
         return result;
     }
 
+    public void updateCourseStatus(Integer courseId, String status, String note) {
+        Optional<Course> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isPresent()) {
+            Course course = optionalCourse.get();
+            course.setStatus(status);
+            course.setNote(note);
+            course.setUpdatedAt(new Date());
+            courseRepository.save(course);
+        }
+    }
+
 }
