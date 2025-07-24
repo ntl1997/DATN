@@ -23,11 +23,7 @@ import com.poly.viettutor.dto.CourseDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
-import com.poly.viettutor.service.CategoryService;
-import com.poly.viettutor.service.CourseService;
-import com.poly.viettutor.service.EnrollmentService;
-import com.poly.viettutor.service.UserService;
-
+import com.poly.viettutor.service.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CourseController {
 
+    private final CourseApprovalService courseApprovalService;
     private final EnrollmentService enrollmentService;
     private final CourseService courseService;
     private final CategoryService categoryService;
@@ -43,12 +40,13 @@ public class CourseController {
     private final Validator validator;
 
     public CourseController(CourseService courseService, CategoryService categoryService, UserService userService,
-            Validator validator, EnrollmentService enrollmentService) {
+            Validator validator, EnrollmentService enrollmentService, CourseApprovalService courseApprovalService) {
         this.courseService = courseService;
         this.categoryService = categoryService;
         this.userService = userService;
         this.validator = validator;
         this.enrollmentService = enrollmentService;
+        this.courseApprovalService = courseApprovalService;
     }
 
     // Hàm phân trang
@@ -222,6 +220,7 @@ public class CourseController {
         }
 
         courseService.updateStatus(course, "pending");
+        courseApprovalService.create(user, course);
         return "redirect:/instructor/courses";
     }
 

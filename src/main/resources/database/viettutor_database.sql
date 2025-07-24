@@ -79,7 +79,7 @@ CREATE TABLE Courses
     Price DECIMAL(18,2),
     Discount DECIMAL(5,2),
     CourseImage NVARCHAR(255),
-    Status NVARCHAR(20) CHECK (Status IN (N'Publish', N'Pending', N'Draft', N'Hidden')) DEFAULT N'Draft',
+    Status NVARCHAR(20) CHECK (Status IN (N'publish', N'pending', N'draft', N'hidden')) DEFAULT N'draft',
     CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE(),
@@ -307,6 +307,7 @@ CREATE TABLE Notifications
     CreatedAt DATETIME DEFAULT GETDATE()
 );
 GO
+
 -- 23. Quizzes
 CREATE TABLE Quizzes
 (
@@ -325,6 +326,8 @@ CREATE TABLE Quizzes
     CreatedAt DATETIME DEFAULT GETDATE()
     -- Ngày tạo quiz
 );
+GO
+
 -- 24. Questions
 CREATE TABLE Questions
 (
@@ -337,6 +340,7 @@ CREATE TABLE Questions
     Score INT DEFAULT 1
     -- Điểm cho câu hỏi này (mặc định 1 điểm)
 );
+GO
 
 -- 25. Options
 CREATE TABLE Options
@@ -349,6 +353,7 @@ CREATE TABLE Options
     IsCorrect BIT
     -- Đáp án này có đúng không (1 = đúng, 0 = sai)
 );
+GO
 
 -- 26. QuizSubmissions
 CREATE TABLE QuizSubmissions
@@ -364,6 +369,7 @@ CREATE TABLE QuizSubmissions
     Score INT
     -- Tổng điểm đạt được
 );
+GO
 
 -- 27. QuizAnswers (tùy chọn)
 CREATE TABLE QuizAnswers
@@ -379,6 +385,23 @@ CREATE TABLE QuizAnswers
     IsCorrect BIT
     -- Đáp án đó có đúng không (1 = đúng)
 );
+GO
+
+CREATE TABLE CourseApprovals
+(
+    ApprovalId BIGINT PRIMARY KEY IDENTITY,
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    RequestedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    ApprovedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    -- NULL nếu chưa duyệt
+    Status NVARCHAR(20) CHECK (Status IN ('pending', 'approved', 'rejected')) DEFAULT 'pending',
+    Note NVARCHAR(MAX),
+    -- Ghi chú hoặc lý do từ chối
+    RequestedAt DATETIME DEFAULT GETDATE(),
+    RespondedAt DATETIME
+    -- Thời gian admin xử lý
+);
+GO
 
 -- -- 28. Assignments
 -- CREATE TABLE Assignments
@@ -509,10 +532,10 @@ INSERT INTO Courses
     UpdatedAt, demoVideoUrl, HasCertificate, Language, SkillLevel
     )
 VALUES
-    (N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'image.png', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
-    (N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 400000, 10, N'image.png', N'Publish', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
-    (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://short.com.vn/08Wa', N'Publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
-    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao');
+    (N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'image.png', N'publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
+    (N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 400000, 10, N'image.png', N'publish', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
+    (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://short.com.vn/08Wa', N'publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
+    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao');
 
 -- 7. CourseCategories (phụ thuộc Courses + Categories)
 INSERT INTO CourseCategories

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div id="main" th:fragment="content">
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+
+      <div class="page-heading">
+        <div class="page-title">
+          <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+              <h3>Yêu cầu phê duyệt</h3>
+              <div th:if="${param.updateSuccess}" class="alert alert-success">
+                <i class="bi bi-check-circle"></i> Phản hồi thành công!
+              </div>
+              <div th:if="${updateError}" class="alert alert-danger">
+                <i class="bi bi-file-excel"></i> Phản hồi thất bại!
+                <p th:text="${updateError}"></p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+              <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Tổng quan</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Yêu cầu phê duyệt</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <section class="section">
+          <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body">
+              <table class="table table-striped" id="table1">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Khóa học</th>
+                    <th>Người gửi</th>
+                    <th>Ngày tạo</th>
+                    <th>Ghi chú</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="approval, stat : ${approvals}">
+                    <td th:text="${stat.index + 1}"></td>
+                    <td th:text="${approval.course.title}"></td>
+                    <td th:text="${approval.requestedBy.fullname}"></td>
+                    <td th:text="${#dates.format(approval.requestedAt, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${approval.note}"></td>
+                    <td>
+                      <span class="badge bg-warning" th:if="${approval.status == 'pending'}">Pending</span>
+                      <span class="badge bg-success" th:if="${approval.status == 'approved'}">Approved</span>
+                      <span class="badge bg-danger" th:if="${approval.status == 'rejected'}">Rejected</span>
+                    </td>
+                    <td>
+                      <form
+                        th:if="${approval.status == 'pending'}"
+                        th:action="@{/admin/course-approval/response/{id}(id=${approval.approvalId})}"
+                        onsubmit="return confirm('Xác nhận phản hồi yêu cầu này?')"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <input type="hidden" name="_method" value="put" />
+                        <input type="hidden" name="note" value="" />
+                        <button name="status" value="approved" type="submit" class="btn btn-info btn-sm">Duyệt</button>
+                      </form>
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        th:attr="data-approval-id=${approval.approvalId}"
+                        onclick="openRejectModal(this)"
+                        th:if="${approval.status == 'pending'}"
+                      >
+                        Từ chối
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Modal từ chối -->
+      <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <form id="reject-form" method="post">
+            <input type="hidden" name="_method" value="put" />
+            <input type="hidden" name="status" value="rejected" />
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Nhập lý do từ chối</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="reject-note">Ghi chú</label>
+                  <textarea
+                    class="form-control"
+                    name="note"
+                    id="reject-note"
+                    rows="4"
+                    placeholder="Nhập lý do từ chối"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-danger">Xác nhận từ chối</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <th:block th:fragment="scripts">
+      <script>
+        // Simple Datatable
+        let table1 = document.querySelector("#table1");
+        let dataTable = new simpleDatatables.DataTable(table1);
+
+        function openRejectModal(button) {
+          const approvalId = button.getAttribute("data-approval-id");
+          const form = document.getElementById("reject-form");
+          form.setAttribute("action", `/admin/course-approval/response/${approvalId}`);
+          const modal = new bootstrap.Modal(document.getElementById("rejectModal"));
+          modal.show();
+        }
+      </script>
+    </th:block>
+  </body>
+</html>

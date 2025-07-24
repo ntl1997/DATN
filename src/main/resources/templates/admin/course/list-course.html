@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div id="main" th:fragment="content">
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+
+      <div class="page-heading">
+        <div class="page-title">
+          <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+              <h3>Danh sách khóa học</h3>
+              <div th:if="${param.updateSuccess}" class="alert alert-success">
+                <i class="bi bi-check-circle"></i> Cập nhật khóa học thành công!
+              </div>
+              <div th:if="${updateError}" class="alert alert-danger">
+                <i class="bi bi-file-excel"></i> Cập nhật khóa học thất bại!
+                <p th:text="${updateError}"></p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+              <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Tổng quan</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Danh sách khóa học</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <section class="section">
+          <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body">
+              <table class="table table-striped" id="table1">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Tên khóa học</th>
+                    <th>Người tạo</th>
+                    <th>Ngày tạo</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="course, stat : ${courses}">
+                    <td th:text="${stat.index + 1}"></td>
+                    <td th:text="${course.title}"></td>
+                    <td th:text="${course.createdBy.fullname}"></td>
+                    <td th:text="${#dates.format(course.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td>
+                      <span class="badge bg-success" th:if="${course.status == 'publish'}">Publish</span>
+                      <span class="badge bg-warning" th:if="${course.status == 'pending'}">Pending</span>
+                      <span class="badge bg-secondary" th:if="${course.status == 'draft'}">Draft</span>
+                      <span class="badge bg-danger" th:if="${course.status == 'hidden'}">Hidden</span>
+                    </td>
+                    <td>
+                      <a th:href="@{/course-details/{id}(id=${course.courseId})}" class="btn btn-primary btn-sm"
+                        >Chi tiết</a
+                      >
+                      <a
+                        th:href="@{/admin/course-approvals}"
+                        class="btn btn-warning btn-sm"
+                        th:if="${course.status == 'pending'}"
+                        >Phê duyệt</a
+                      >
+                      <form
+                        th:action="@{/admin/course/changeStatus/{id}(id=${course.courseId})}"
+                        onsubmit="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái của khóa học này?')"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <input type="hidden" name="_method" value="put" />
+                        <button
+                          name="status"
+                          value="hidden"
+                          type="submit"
+                          class="btn btn-danger btn-sm"
+                          th:if="${course.status == 'publish'}"
+                        >
+                          Ẩn
+                        </button>
+                        <button
+                          name="status"
+                          value="publish"
+                          type="submit"
+                          class="btn btn-info btn-sm"
+                          th:if="${course.status == 'hidden'}"
+                        >
+                          Bỏ ẩn
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <th:block th:fragment="scripts">
+      <script>
+        // Simple Datatable
+        let table1 = document.querySelector("#table1");
+        let dataTable = new simpleDatatables.DataTable(table1);
+      </script>
+    </th:block>
+  </body>
+</html>

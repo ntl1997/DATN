@@ -88,4 +88,11 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Enrollment> enrollments;
+
+    @OneToMany(mappedBy = "requestedBy")
+    private List<CourseApproval> requestedApprovals;
+
+    @OneToMany(mappedBy = "approvedBy")
+    private List<CourseApproval> approvedApprovals;
+
 }

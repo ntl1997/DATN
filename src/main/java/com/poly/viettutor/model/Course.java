@@ -63,6 +63,9 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseCategory> courseCategories;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseApproval> courseApprovals;
+
     @Transient
     public int getReviewCount() {
         return reviews != null ? reviews.size() : 0;

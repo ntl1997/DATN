@@ -48,6 +48,21 @@
               </a>
             </li>
 
+            <li class="sidebar-item has-sub">
+              <a href="#" class="sidebar-link">
+                <i class="bi bi-journal-bookmark-fill"></i>
+                <span>Quản lý khóa học</span>
+              </a>
+              <ul class="submenu">
+                <li class="submenu-item">
+                  <a th:href="@{/admin/courses}">Danh sách khóa học</a>
+                </li>
+                <li class="submenu-item">
+                  <a th:href="@{/admin/course-approvals}">Yêu cầu phê duyệt</a>
+                </li>
+              </ul>
+            </li>
+
             <li class="sidebar-item">
               <a th:href="@{/admin/logout}" class="sidebar-link">
                 <i class="bi bi-box-arrow-left"></i>
