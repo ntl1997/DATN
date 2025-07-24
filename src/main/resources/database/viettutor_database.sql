@@ -82,7 +82,9 @@ CREATE TABLE Courses
     CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE(),
-
+    Note NVARCHAR(255),
+	ApprovedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+	ApprovedAt DATETIME DEFAULT GETDATE(),
     -- ✅ Các cột bổ sung
     HasCertificate BIT DEFAULT 0,
     Language NVARCHAR(50),
