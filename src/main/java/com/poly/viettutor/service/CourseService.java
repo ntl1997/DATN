@@ -5,9 +5,11 @@ import com.poly.viettutor.model.CourseCategory;
 import com.poly.viettutor.model.CourseMaterial;
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Lecture;
+
 import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
+
 
 import org.springframework.data.domain.Page;
 
@@ -27,10 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.Objects;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -341,6 +347,40 @@ public class CourseService {
 
     public List<Course> findCoursesByInstructorIdAndStatus(Long instructorId, String status) {
         return courseRepository.findByCreatedByIdAndStatus(instructorId, status);
+    }
+
+    public List<Map<String, Object>> getTop5PopularCourses() {
+        List<Object[]> rows = courseRepository.findTop5CourseStatistics();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Object[] row : rows) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("courseTitle", row[0]);
+            map.put("studentCount", row[1]);
+            map.put("completionRate", row[2]);
+            map.put("instructorName", row[3]);
+            result.add(map);
+        }
+
+        return result;
+    }
+
+    public Map<String, Object> getTop5CoursesChartData() {
+        List<Object[]> rawData = courseRepository.findTop5CoursesByStudentCount();
+
+        List<String> courseTitles = new ArrayList<>();
+        List<Long> studentCounts = new ArrayList<>();
+
+        for (Object[] row : rawData) {
+            courseTitles.add((String) row[0]);
+            studentCounts.add(((Number) row[1]).longValue());
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("labels", courseTitles);
+        result.put("data", studentCounts);
+
+        return result;
     }
 
 }
