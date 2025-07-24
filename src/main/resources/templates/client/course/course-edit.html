@@ -9,7 +9,7 @@
               <div class="col-lg-8">
                 <form
                   id="create-course-form"
-                  th:action="@{/instructor/create-course}"
+                  th:action="@{/instructor/update-course}"
                   th:object="${course}"
                   method="post"
                   enctype="multipart/form-data"
@@ -25,12 +25,43 @@
                   </div>
 
                   <div class="mt--10 row g-5 d-flex justify-content-end">
+                    <div class="col-lg-6" th:if="${course.status == 'draft'}">
+                      <a
+                        class="rbt-btn hover-icon-reverse bg-primary-opacity w-100 text-center"
+                        th:href="@{/instructor/request-approve-course/{id}(id=${course.courseId})}"
+                      >
+                        <span class="icon-reverse-wrapper">
+                          <span class="btn-text">Yêu cầu phê duyệt</span>
+                          <span class="btn-icon"><i class="feather-send"></i></span>
+                          <span class="btn-icon"><i class="feather-send"></i></span>
+                        </span>
+                      </a>
+                    </div>
+                    <div class="col-lg-6" th:if="${course.status == 'pending'}">
+                      <a class="rbt-btn bg-secondary w-100 text-center">
+                        <span class="btn-text">Đang chờ phê duyệt</span>
+                        <span class="btn-icon"><i class="feather-clock"></i></span>
+                      </a>
+                    </div>
+                    <div class="col-lg-6" th:if="${course.status == 'publish'}">
+                      <a class="rbt-btn bg-success w-100 text-center">
+                        <span class="btn-text">Đã phê duyệt</span>
+                        <span class="btn-icon"><i class="feather-check-circle"></i></span>
+                      </a>
+                    </div>
+                    <div class="col-lg-6" th:if="${course.status == 'hidden'}">
+                      <a class="rbt-btn bg-danger w-100 text-center">
+                        <span class="btn-text">Đang bị ẩn</span>
+                        <span class="btn-icon"><i class="feather-eye-off"></i></span>
+                      </a>
+                    </div>
                     <div class="col-lg-6">
                       <!-- Dữ liệu course, file image, file attachments gửi về backend dưới dạng JSON -->
                       <input type="hidden" name="courseJson" id="courseJson" />
+                      <input type="hidden" name="_method" value="put" />
                       <button type="submit" class="rbt-btn btn-gradient hover-icon-reverse w-100 text-center" href="#">
                         <span class="icon-reverse-wrapper">
-                          <span class="btn-text">Lưu bản nháp</span>
+                          <span class="btn-text">Lưu khóa học</span>
                           <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                           <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                         </span>
@@ -96,6 +127,35 @@
       <script th:src="@{/assets/js/module.js}"></script>
       <script th:src="@{/assets/js/lesson.js}"></script>
       <script th:src="@{/assets/js/quiz.js}"></script>
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+        const courseData = /*[[${course}]]*/ {};
+
+        // Chỉ gán dữ liệu nếu localStorage chưa có (tức là lần đầu load)
+        if (!localStorage.getItem("modules")) {
+          localStorage.setItem("modules", JSON.stringify(courseData.modules.map((m) => m.moduleTitle)));
+        }
+
+        if (!localStorage.getItem("lecturesPerModule")) {
+          localStorage.setItem(
+            "lecturesPerModule",
+            JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.lectures])))
+          );
+        }
+
+        if (!localStorage.getItem("quizzesPerModule")) {
+          localStorage.setItem(
+            "quizzesPerModule",
+            JSON.stringify(Object.fromEntries(courseData.modules.map((m, i) => [i, m.quizzes])))
+          );
+        }
+
+        // === THÊM VÀO SAU CÙNG ===
+        modules = Storage.get("modules", []);
+        lecturesPerModule = Storage.get("lecturesPerModule", {});
+        quizzesPerModule = Storage.get("quizzesPerModule", {});
+        /*]]>*/
+      </script>
     </th:block>
   </body>
 </html>
