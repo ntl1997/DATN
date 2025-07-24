@@ -1,9 +1,13 @@
 package com.poly.viettutor.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -128,4 +132,39 @@ public class UserService {
         save(user);
     }
 
+    public List<Map<String, Object>> getTop5Ints() {
+        List<Object[]> rows = userRepository.findTop5InstructorsWithMostStudents();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Object[] row : rows) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("ten", row[0]);
+            map.put("avatar", row[1]);
+            map.put("sdt", row[2]);
+            map.put("stcount", row[3]);
+            result.add(map);
+        }
+
+        return result;
+    }
+
+    public Map<String, Object> getTop5InstructorsForChart() {
+        List<Object[]> rawResults = userRepository.findTop5InstructorsWithMostStudents();
+
+        List<String> names = new ArrayList<>();
+        List<Long> studentCounts = new ArrayList<>();
+
+        for (Object[] row : rawResults) {
+            // row[0] = fullName (String)
+            // row[3] = studentCount (Number)
+            names.add((String) row[0]);
+            studentCounts.add(((Number) row[3]).longValue());
+        }
+
+        // Trả về Map chứa 2 mảng để đưa lên Thymeleaf
+        Map<String, Object> result = new HashMap<>();
+        result.put("labels", names);
+        result.put("data", studentCounts);
+        return result;
+    }
 }
