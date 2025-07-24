@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <th:block th:fragment="course-builder">
+      <div class="accordion-item card">
+        <h2 class="accordion-header card-header" id="accTwo">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#accCollapseTwo"
+            aria-expanded="false"
+            aria-controls="accCollapseTwo"
+          >
+            Xây dựng khóa học
+          </button>
+        </h2>
+        <div id="accCollapseTwo" class="accordion-collapse collapse" aria-labelledby="accTwo">
+          <div class="accordion-body card-body">
+            <!-- Chèn thêm các chương, bài giảng và quiz bằng JS -->
+            <div id="module-container"></div>
+
+            <button
+              class="rbt-btn btn-md btn-gradient hover-icon-reverse"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#CreateModuleModel"
+            >
+              <span class="icon-reverse-wrapper">
+                <span class="btn-text">Thêm chủ đề mới</span>
+                <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+                <span class="btn-icon"><i class="feather-plus-circle"></i></span>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              class="rbt-btn btn-md btn-border hover-icon-reverse"
+              onclick="document.getElementById('fileInput').click()"
+            >
+              <span class="icon-reverse-wrapper">
+                <span class="btn-text">Tải lên tệp đính kèm</span>
+                <span class="btn-icon"><i class="feather-paperclip"></i></span>
+                <span class="btn-icon"><i class="feather-paperclip"></i></span>
+              </span>
+            </button>
+
+            <!-- Số lượng file -->
+            <span id="fileCountText" style="margin-left: 10px; font-style: italic; color: #666"></span>
+
+            <input type="file" id="fileInput" name="attachments" style="display: none" multiple />
+
+            <hr class="mt--10 mb--20" />
+          </div>
+        </div>
+      </div>
+    </th:block>
+  </body>
+</html>

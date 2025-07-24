@@ -118,9 +118,12 @@
     <!-- Xóa dữ liệu create-course khi chuyển sang trang khác -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const url = "/instructor/create-course";
-        if (window.location.pathname !== url) {
+        const path = window.location.pathname.replace(/\/$/, "");
+        const isCreateCoursePage = path === "/instructor/create-course";
+        const isEditCoursePage = path.startsWith("/instructor/edit-course");
+        if (!isCreateCoursePage && !isEditCoursePage) {
           localStorage.removeItem("lecturesPerModule");
+          localStorage.removeItem("quizzesPerModule");
           localStorage.removeItem("modules");
         }
       });

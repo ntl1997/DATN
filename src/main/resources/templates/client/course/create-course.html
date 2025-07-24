@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <body>
+    <div th:fragment="content">
+      <main class="rbt-main-wrapper">
+        <div class="rbt-create-course-area bg-color-white rbt-section-gap">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col-lg-8">
+                <form
+                  id="create-course-form"
+                  th:action="@{/instructor/create-course}"
+                  th:object="${course}"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <div class="rbt-accordion-style rbt-accordion-01 rbt-accordion-06 accordion">
+                    <div class="accordion" id="tutionaccordionExamplea1">
+                      <!-- Thông tin cơ bản khóa học -->
+                      <div th:replace="~{client/course/course-info :: course-info}"></div>
+
+                      <!-- Các chương, bài học và tài liệu -->
+                      <div th:replace="~{client/course/course-builder :: course-builder}"></div>
+                    </div>
+                  </div>
+
+                  <div class="mt--10 row g-5 d-flex justify-content-end">
+                    <div class="col-lg-6">
+                      <!-- Dữ liệu course, file image, file attachments gửi về backend dưới dạng JSON -->
+                      <input type="hidden" name="courseJson" id="courseJson" />
+                      <button type="submit" class="rbt-btn btn-gradient hover-icon-reverse w-100 text-center" href="#">
+                        <span class="icon-reverse-wrapper">
+                          <span class="btn-text">Lưu bản nháp</span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="rbt-create-course-sidebar course-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+                  <div class="inner">
+                    <div class="section-title mb--30">
+                      <h4 class="title">Mẹo Tải Lên Khóa Học</h4>
+                    </div>
+                    <div class="rbt-course-upload-tips">
+                      <ul class="rbt-list-style-1">
+                        <li><i class="feather-check"></i> Đặt giá cho khóa học hoặc để miễn phí.</li>
+                        <li><i class="feather-check"></i> Kích thước chuẩn cho ảnh đại diện khóa học là 700x430.</li>
+                        <li><i class="feather-check"></i> Phần video điều khiển video tổng quan về khóa học.</li>
+                        <li>
+                          <i class="feather-check"></i> Trình tạo khóa học là nơi bạn tạo và sắp xếp nội dung khóa học.
+                        </li>
+                        <li>
+                          <i class="feather-check"></i> Thêm các chủ đề trong phần Trình tạo khóa học để tạo bài học,
+                          bài kiểm tra và bài tập.
+                        </li>
+                        <li>
+                          <i class="feather-check"></i> Yêu cầu tiên quyết là các khóa học cơ bản cần hoàn thành trước
+                          khi học khóa này.
+                        </li>
+                        <li>
+                          <i class="feather-check"></i> Thông tin từ phần Dữ liệu bổ sung sẽ hiển thị trên trang chi
+                          tiết khóa học.
+                        </li>
+                        <li><i class="feather-check"></i> Dung lượng tối đã mỗi file là 10 mb.</li>
+                        <li><i class="feather-check"></i> Tổng dung lượng tối đa các file tải lên là 100 mb</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div th:replace="~{client/course/module-model :: module-model}"></div>
+
+        <div th:replace="~{client/course/lesson-model :: lesson-model}"></div>
+
+        <div th:replace="~{client/course/quiz-model :: quiz-model}"></div>
+
+        <div class="rbt-separator-mid">
+          <div class="container">
+            <hr class="rbt-separator m-0" />
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <th:block th:fragment="scripts">
+      <script th:src="@{/assets/js/course.js}"></script>
+      <script th:src="@{/assets/js/module.js}"></script>
+      <script th:src="@{/assets/js/lesson.js}"></script>
+      <script th:src="@{/assets/js/quiz.js}"></script>
+    </th:block>
+  </body>
+</html>

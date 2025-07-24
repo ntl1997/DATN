@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="quiz-model">
+      <!-- Quiz Model -->
+      <div class="rbt-default-modal modal fade" id="create-quiz" tabindex="-1" aria-labelledby="QuizLabel">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="rbt-round-btn" data-bs-dismiss="modal" aria-label="Close">
+                <i class="feather-x"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="inner rbt-default-form">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h5 class="modal-title mb--20" id="LessonLabel">Quiz</h5>
+                    <form class="tabs-1" id="quiz-form">
+                      <div id="quiz-info">
+                        <div class="course-field mb--20">
+                          <label for="quiz-title">Tiêu đề Quiz</label>
+                          <input id="quiz-title" type="text" placeholder="tiêu đề" />
+                        </div>
+                        <div class="course-field mb--20">
+                          <label for="quiz-total-score">Tổng điểm tối đa</label>
+                          <input id="quiz-total-score" type="number" placeholder="tổng điểm tối đa" />
+                        </div>
+                        <div class="course-field mb--20">
+                          <label for="quiz-time-limit">Thời gian làm bài</label>
+                          <input id="quiz-time-limit" type="number" placeholder="phút" />
+                        </div>
+                        <div class="modal-footer pt--30 justify-content-between">
+                          <button
+                            type="button"
+                            class="rbt-btn btn-border btn-md radius-round-10"
+                            data-bs-dismiss="modal"
+                          >
+                            Hủy
+                          </button>
+                          <div class="content">
+                            <button
+                              type="button"
+                              class="rbt-btn btn-border btn-md radius-round-10 mr--10"
+                              id="prev-btn"
+                            >
+                              Quay lại
+                            </button>
+                            <button type="button" class="rbt-btn btn-md radius-round-10 d-inline-block" id="next-btn-2">
+                              Tiếp tục
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="question-list" class="d-none">
+                        <div class="content">
+                          <div class="course-field mb--20">
+                            <div id="question-list" class="mt--30">
+                              <h5>Danh sách câu hỏi</h5>
+                              <div id="question-items"></div>
+                            </div>
+                          </div>
+                          <div class="course-field mb--20">
+                            <button
+                              class="rbt-btn btn-active hover-icon-reverse rbt-sm-btn-2 btn-1"
+                              type="button"
+                              id="add-question"
+                            >
+                              <span class="icon-reverse-wrapper"
+                                ><span class="btn-text">Thêm câu hỏi</span
+                                ><span class="btn-icon"><i class="feather-plus-square"></i></span
+                                ><span class="btn-icon"><i class="feather-plus-square"></i></span
+                              ></span>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="modal-footer pt--30 justify-content-between">
+                          <button
+                            type="button"
+                            class="rbt-btn btn-border btn-md radius-round-10"
+                            data-bs-dismiss="modal"
+                          >
+                            Hủy
+                          </button>
+                          <div class="content">
+                            <button
+                              type="button"
+                              class="rbt-btn btn-border btn-md radius-round-10 mr--10"
+                              id="prev-btn"
+                            >
+                              Quay lại
+                            </button>
+                            <button type="button" class="rbt-btn btn-md radius-round-10 d-inline-block" id="save-quiz">
+                              Lưu Quiz
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="question-options" class="d-none">
+                        <div class="course-field mb--20">
+                          <label for="question-text">Câu hỏi</label>
+                          <textarea
+                            id="question-text"
+                            class="form-control auto-resize"
+                            style="overflow-y: hidden; min-height: 50px"
+                            placeholder="Câu hỏi chưa có tiêu đề"
+                          ></textarea>
+                        </div>
+
+                        <div id="options-container" class="mb--20"></div>
+
+                        <div class="course-field mb--20">
+                          <button id="add-option" class="rbt-btn btn-sm btn-border" type="button">Thêm tùy chọn</button>
+                        </div>
+
+                        <div class="modal-footer pt--30 justify-content-between">
+                          <button
+                            type="button"
+                            class="rbt-btn btn-border btn-md radius-round-10"
+                            data-bs-dismiss="modal"
+                          >
+                            Hủy
+                          </button>
+                          <div class="content">
+                            <button
+                              type="button"
+                              class="rbt-btn btn-border btn-md radius-round-10 mr--10"
+                              id="cancel-question"
+                            >
+                              Quay lại
+                            </button>
+                            <button
+                              type="button"
+                              class="rbt-btn btn-md radius-round-10 d-inline-block"
+                              id="save-question"
+                            >
+                              Lưu câu hỏi
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="top-circle-shape"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Quiz Modal -->
+    </div>
+  </body>
+</html>

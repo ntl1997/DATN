@@ -71,6 +71,9 @@ public class User {
     @Size(max = 1000, message = "Tiểu sử tối đa 1000 ký tự")
     private String biography;
 
+    @Column(name = "Status")
+    private Boolean status;
+
     @ManyToMany(fetch = FetchType.EAGER) // EAGER để nạp dữ liệu role ngay khi nạp user
     @JoinTable(name = "UserRoles", // Tên bảng trung gian
             joinColumns = @JoinColumn(name = "UserId"), // FK đến bảng User

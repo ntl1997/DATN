@@ -1,10 +1,14 @@
 package com.poly.viettutor.repository;
 
-import com.poly.viettutor.model.Quiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.poly.viettutor.model.CourseModule;
+import com.poly.viettutor.model.Quiz;
+
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
-    // Add custom query methods if needed
+
+    void deleteByModule(CourseModule module);
+
 }

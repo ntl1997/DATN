@@ -2,8 +2,8 @@
 
 -- Drop the database 'viettutor'
 -- Connect to the 'master' database to run this snippet
-USE master
-GO
+--USE master
+--GO
 -- Uncomment the ALTER DATABASE statement below to set the database to SINGLE_USER mode if the drop database command fails because the database is in use.
 -- ALTER DATABASE viettutor SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 -- Drop the database if it exists
@@ -52,7 +52,8 @@ CREATE TABLE Users
     CreatedAt DATETIME DEFAULT GETDATE(),
     PhoneNumber NVARCHAR(20),
     Occupation NVARCHAR(100),
-    Biography NVARCHAR(MAX)
+    Biography NVARCHAR(MAX),
+    Status BIT DEFAULT 1,
 );
 GO
 

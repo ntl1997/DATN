@@ -25,42 +25,31 @@
                       <i class="feather-chevron-right color-white"></i>
                     </div>
                   </li>
-                  <li class="rbt-breadcrumb-item active color-white opacity-8">
-                    Web Development
-                  </li>
+
+                  <li class="rbt-breadcrumb-item active color-white opacity-8">Web Development</li>
                 </ul>
                 <div class="d-flex align-items-center gap-3 flex-wrap mb--15">
                   <div class="profile-share"></div>
                   <div class="d-flex flex-column">
                     <h6 class="number mb--0 w-600 color-white">2,364</h6>
-                    <span class="small-text w-500 color-white opacity-8"
-                      >Học viên đã tham gia</span
-                    >
+
+                    <span class="small-text w-500 color-white opacity-8">Học viên đã tham gia</span>
                   </div>
                 </div>
-                <h2 class="w-600 mb--10 color-white" th:text="${course.title}">
-                  Basics of Histudy Theme Setup
-                </h2>
-                <p
-                  class="mb--20 color-white opacity-8"
-                  th:text="${course.description}"
-                >
-                  Orem Ipsum is that it has a more-or-less normal distribution
-                  of letters.
+                <h2 class="w-600 mb--10 color-white" th:text="${course.title}">Basics of Histudy Theme Setup</h2>
+                <p class="mb--20 color-white opacity-8" th:text="${course.description}">
+                  Orem Ipsum is that it has a more-or-less normal distribution of letters.
                 </p>
                 <hr class="divider color-white" />
-                <div
-                  class="d-flex align-items-center flex-wrap rbt-course-details-feature vertion-02"
-                >
+                <div class="d-flex align-items-center flex-wrap rbt-course-details-feature vertion-02">
                   <div class="feature-sin">
                     <span class="icon">
                       <i class="feather-user color-white"></i>
                     </span>
                     <h6 class="b3 w-400 mb--0 color-white">
                       <span class="opacity-8">Tạo bởi</span>
-                      <a href="#" th:text="${course.createdBy.fullname}"
-                        >Rainbow Themes</a
-                      >
+
+                      <a href="#" th:text="${course.createdBy.fullname}">Rainbow Themes</a>
                     </h6>
                   </div>
 
@@ -81,16 +70,26 @@
                       <i class="feather-thumbs-up color-white"></i>
                     </span>
                     <div>
-                      <span>
-                        <a href="#"><i class="fa fa-star"></i></a>
-                        <a href="#"><i class="fa fa-star"></i></a>
-                        <a href="#"><i class="fa fa-star"></i></a>
-                        <a href="#"><i class="fa fa-star"></i></a>
-                        <a href="#"><i class="fa fa-star"></i></a>
-                      </span>
-                      <span
-                        class="b3 color-white opacity-8"
-                        th:text="${#lists.size(course.reviews) + ' Bình luận'}"
+
+                      <th:block
+                        th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                      >
+                        <!-- Hiển thị sao đầy -->
+                        <i
+                          class="fas fa-star"
+                          th:each="star : ${#numbers.sequence(1, fullStars)}"
+                          th:if="${fullStars > 0}"
+                        ></i>
+
+                        <!-- Hiển thị sao rỗng -->
+                        <i
+                          class="far fa-star"
+                          th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                          th:if="${emptyStars > 0}"
+                        ></i>
+                      </th:block>
+
+                      <span class="b3 color-white opacity-8" th:text="${#lists.size(course.reviews) + ' Bình luận'}"
                         >(84 Reviews)</span
                       >
                     </div>
@@ -140,21 +139,16 @@
                 </div>
 
                 <!-- Start Course Feature Box  -->
-                <div
-                  class="rbt-course-feature-box overview-wrapper rbt-shadow-box mt--30 has-show-more"
-                  id="overview"
-                >
-                  <div
-                    class="rbt-course-feature-inner has-show-more-inner-content"
-                  >
+
+                <div class="rbt-course-feature-box overview-wrapper rbt-shadow-box mt--30 has-show-more" id="overview">
+                  <div class="rbt-course-feature-inner has-show-more-inner-content">
                     <div class="section-title">
                       <h4 class="rbt-title-style-3">Bạn sẽ học được gì</h4>
                     </div>
 
                     <div class="row g-5 mb--30">
-                      <div class="col-lg-12" th:utext="${course.overview}">
-                        Nội dung chi tiết
-                      </div>
+
+                      <div class="col-lg-12" th:utext="${course.overview}">Nội dung chi tiết</div>
                     </div>
                   </div>
                   <div class="rbt-show-more-btn">Show More</div>
@@ -162,10 +156,8 @@
                 <!-- End Course Feature Box  -->
 
                 <!-- Start Course Content  -->
-                <div
-                  class="course-content rbt-border-with-box coursecontent-wrapper mt--30"
-                  id="coursecontent"
-                >
+
+                <div class="course-content rbt-border-with-box coursecontent-wrapper mt--30" id="coursecontent">
                   <div class="rbt-course-feature-inner">
                     <div class="section-title">
                       <h4 class="rbt-title-style-3">Nội dung khóa học</h4>
@@ -193,6 +185,7 @@
                             class="accordion-collapse collapse"
                             th:id="'collapse-module-' + ${iterStat.index}"
                             th:attr="aria-labelledby='heading-module-' + ${iterStat.index}"
+
                           >
                             <div class="accordion-body card-body pr--0">
                               <ul class="rbt-course-main-content liststyle">
@@ -214,6 +207,7 @@
                                         class="rbt-badge variation-03 bg-primary-opacity"
                                         ><i class="feather-eye"></i>
                                         Preview</span
+
                                       >
                                     </div>
                                   </a>
@@ -229,10 +223,8 @@
                 <!-- End Course Content  -->
 
                 <!-- Start Intructor Area  -->
-                <div
-                  class="rbt-instructor rbt-border-with-box intructor-wrapper mt--30"
-                  id="intructor"
-                >
+
+                <div class="rbt-instructor rbt-border-with-box intructor-wrapper mt--30" id="intructor">
                   <div class="about-author border-0 pb--0 pt--0">
                     <div class="section-title mb--30">
                       <h4 class="rbt-title-style-3">Giảng viên</h4>
@@ -240,53 +232,40 @@
                     <div class="media align-items-center">
                       <div class="thumbnail">
                         <a href="#">
-                          <img
-                            th:src="@{${course.createdBy.image}}"
-                            alt="Author Images"
-                          />
+
+                          <img th:src="@{${course.createdBy.image}}" alt="Author Images" />
                         </a>
                       </div>
                       <div class="media-body">
                         <div class="author-info">
                           <h5 class="title">
-                            <a
-                              class="hover-flip-item-wrapper"
-                              href="author.html"
-                              th:text="${course.createdBy.fullname}"
+
+                            <a class="hover-flip-item-wrapper" href="author.html" th:text="${course.createdBy.fullname}"
                               >B.M. Rafekul Islam</a
                             >
                           </h5>
                           <ul class="rbt-meta mb--20 mt--10">
                             <li>
-                              <i class="fa fa-star color-warning"></i>75,237
-                              Đánh giá
+
+                              <i class="fa fa-star color-warning"></i>75,237 Đánh giá
                               <span class="rbt-badge-5 ml--5">4.4 Sao</span>
                             </li>
-                            <li>
-                              <i class="feather-users"></i>912,970 Học viên
-                            </li>
+                            <li><i class="feather-users"></i>912,970 Học viên</li>
                             <li>
                               <a href="#"
                                 ><i class="feather-video"></i
-                                ><span
-                                  th:text="${#lists.size(course.createdBy.courses) + ' Khóa học'}"
-                                ></span
+                                ><span th:text="${#lists.size(course.createdBy.courses) + ' Khóa học'}"></span
                               ></a>
                             </li>
                           </ul>
                         </div>
                         <div class="content">
-                          <p
-                            class="description"
-                            th:text="${course.createdBy.biography}"
-                          >
-                            John is a brilliant educator, whose life was spent
-                            for computer science and love of nature.
+
+                          <p class="description" th:text="${course.createdBy.biography}">
+                            John is a brilliant educator, whose life was spent for computer science and love of nature.
                           </p>
 
-                          <ul
-                            class="social-icon social-default icon-naked justify-content-start"
-                          >
+                          <ul class="social-icon social-default icon-naked justify-content-start">
                             <li>
                               <a href="https://www.facebook.com/">
                                 <i class="feather-facebook"></i>
@@ -316,10 +295,8 @@
                 <!-- End Intructor Area  -->
 
                 <!-- Start Edu Review List  -->
-                <div
-                  class="rbt-review-wrapper rbt-border-with-box review-wrapper mt--30"
-                  id="review"
-                >
+
+                <div class="rbt-review-wrapper rbt-border-with-box review-wrapper mt--30" id="review">
                   <div class="course-content">
                     <div class="section-title">
                       <h4 class="rbt-title-style-3">Đánh giá</h4>
@@ -781,58 +758,39 @@
                 </div>
                 <!-- End Edu Review List  -->
 
-                <div
-                  class="about-author-list rbt-border-with-box featured-wrapper mt--30 has-show-more"
-                >
+
+                <div class="about-author-list rbt-border-with-box featured-wrapper mt--30 has-show-more">
                   <div class="section-title">
                     <h4 class="rbt-title-style-3">Bình luận</h4>
                   </div>
-                  <div
-                    class="has-show-more-inner-content rbt-featured-review-list-wrapper"
-                  >
-                    <div
-                      class="rbt-course-review about-author"
-                      th:each="review : ${course.reviews}"
-                    >
+                  <div class="has-show-more-inner-content rbt-featured-review-list-wrapper">
+                    <div class="rbt-course-review about-author" th:each="review : ${course.reviews}">
                       <div class="media">
                         <div class="thumbnail">
                           <!-- Ảnh người đánh giá -->
                           <a href="#">
-                            <img
-                              src="assets/images/testimonial/testimonial-3.jpg"
-                              alt="Author Images"
-                            />
+
+                            <img src="assets/images/testimonial/testimonial-3.jpg" alt="Author Images" />
                           </a>
                         </div>
                         <div class="media-body">
                           <div class="author-info">
                             <h5 class="title">
                               <!-- Tên người đánh giá -->
-                              <a
-                                class="hover-flip-item-wrapper"
-                                href="#"
-                                th:text="${review.user.fullname}"
-                              >
+
+                              <a class="hover-flip-item-wrapper" href="#" th:text="${review.user.fullname}">
                                 Farjana Bawnia
                               </a>
                             </h5>
-                            <div
-                              class="rating"
-                              th:if="${review.rating != null}"
-                            >
+                            <div class="rating" th:if="${review.rating != null}">
                               <!-- Sao được đánh giá (sáng) -->
-                              <a
-                                href="#"
-                                th:each="i : ${#numbers.sequence(1, review.rating)}"
-                              >
+                              <a href="#" th:each="i : ${#numbers.sequence(1, review.rating)}">
                                 <i class="fa fa-star"></i>
                               </a>
 
                               <!-- Sao chưa được đánh giá (tối màu, rỗng) -->
-                              <a
-                                href="#"
-                                th:each="i : ${#numbers.sequence(1, 5 - review.rating)}"
-                              >
+
+                              <a href="#" th:each="i : ${#numbers.sequence(1, 5 - review.rating)}">
                                 <i class="fa fa-star-o"></i>
                                 <!-- dùng fa-star-o cho sao rỗng -->
                               </a>
@@ -840,13 +798,11 @@
                           </div>
                           <div class="content">
                             <p class="description" th:text="${review.comment}">
-                              At 29 years old, my favorite compliment is being
-                              told that I look like my mom. Seeing myself in her
-                              image, like this daughter up top.
+
+                              At 29 years old, my favorite compliment is being told that I look like my mom. Seeing
+                              myself in her image, like this daughter up top.
                             </p>
-                            <ul
-                              class="social-icon social-default transparent-with-border justify-content-start"
-                            >
+                            <ul class="social-icon social-default transparent-with-border justify-content-start">
                               <li>
                                 <a href="#">
                                   <i class="feather-thumbs-up"></i>
@@ -874,31 +830,30 @@
               >
                 <div class="inner">
                   <div class="content-item-content">
-                    <div
-                      class="rbt-price-wrapper d-flex flex-wrap align-items-center justify-content-between"
-                    ></div>
 
-                    <div class="buy-now-btn mt--15">
-                      <a
-                        class="rbt-btn btn-border icon-hover w-100 d-block text-center add-to-cart"
-                        href="#"
-                      >
+                    <div class="rbt-price-wrapper d-flex flex-wrap align-items-center justify-content-between"></div>
+
+                    <!-- <div class="buy-now-btn mt--15">
+                      <a class="rbt-btn btn-border icon-hover w-100 d-block text-center add-to-cart" href="#">
                         <span class="btn-text">Thêm vào giỏ hàng</span>
-                        <span class="btn-icon"
-                          ><i class="feather-arrow-right"></i
-                        ></span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                      </a>
+                    </div> -->
+
+                    <div class="add-to-card-button mt--15" th:unless="${isEnrolled}">
+                      <a
+                        class="rbt-btn btn-gradient icon-hover w-100 d-block text-center register-now"
+                        th:href="@{/enroll-course/{id}(id=${course.courseId})}"
+                      >
+                        <span class="btn-text">Đăng ký ngay</span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                       </a>
                     </div>
 
-                    <div class="add-to-card-button mt--15">
-                      <a
-                        class="rbt-btn btn-gradient icon-hover w-100 d-block text-center register-now"
-                        href="#"
-                      >
-                        <span class="btn-text">Đăng ký ngay</span>
-                        <span class="btn-icon"
-                          ><i class="feather-arrow-right"></i
-                        ></span>
+                    <div class="add-to-card-button mt--15" th:if="${isEnrolled}">
+                      <a class="rbt-btn bg-secondary w-100 text-center">
+                        <span class="btn-text">Bạn đã tham gia khóa học</span>
+                        <span class="btn-icon"><i class="feather-check-circle"></i></span>
                       </a>
                     </div>
 
@@ -908,64 +863,36 @@
                       th:attr="data-id=${course.courseId}, data-name=${course.title}, data-price=${course.price}, data-image=${course.courseImage}"
                     ></div>
 
-                    <div
-                      hidden
-                      id="auth"
-                      th:attr="auth=${#authorization.expression('isAuthenticated()')}"
-                    ></div>
 
-                    <span
-                      class="subtitle"
-                      th:text="${course.price} +' đ'"
-                    ></span>
-                    <span class="b3"
-                      ><i class="feather-calendar"></i> Thời gian sử dụng: Trọn
-                      đời</span
-                    >
+                    <div hidden id="auth" th:attr="auth=${#authorization.expression('isAuthenticated()')}"></div>
+
+                    <span class="subtitle" th:text="${course.price} +' đ'"></span>
+                    <span class="b3"><i class="feather-calendar"></i> Thời gian sử dụng: Trọn đời</span>
 
                     <div class="rbt-widget-details has-show-more">
-                      <ul
-                        class="has-show-more-inner-content rbt-course-details-list-wrapper"
-                      >
+                      <ul class="has-show-more-inner-content rbt-course-details-list-wrapper">
                         <li>
                           <span>Tổng thời lượng khóa học</span
-                          ><span
-                            class="rbt-feature-value rbt-badge-5"
-                            th:text="${totalDuration} + ' Min'"
+                          ><span class="rbt-feature-value rbt-badge-5" th:text="${totalDuration} + ' Min'"
                             >5 Hrs 20 Min</span
                           >
                         </li>
                         <li>
                           <span>Đã đăng ký</span
-                          ><span
-                            class="rbt-feature-value rbt-badge-5"
-                            th:text="${course.enrollments.size()}"
-                            >100</span
-                          >
+
+                          ><span class="rbt-feature-value rbt-badge-5" th:text="${course.enrollments.size()}">100</span>
                         </li>
                         <li>
                           <span>Bài giảng</span
-                          ><span
-                            class="rbt-feature-value rbt-badge-5"
-                            th:text="${course.modules.size()}"
-                            >50</span
-                          >
+                          ><span class="rbt-feature-value rbt-badge-5" th:text="${course.modules.size()}">50</span>
                         </li>
                         <li>
                           <span>Trình độ</span
-                          ><span
-                            class="rbt-feature-value rbt-badge-5"
-                            th:text="${course.skillLevel}"
-                            >Basic</span
-                          >
+                          ><span class="rbt-feature-value rbt-badge-5" th:text="${course.skillLevel}">Basic</span>
                         </li>
                         <li>
                           <span>Ngôn ngữ</span
-                          ><span
-                            class="rbt-feature-value rbt-badge-5"
-                            th:text="${course.language}"
-                            >English</span
-                          >
+                          ><span class="rbt-feature-value rbt-badge-5" th:text="${course.language}">English</span>
                         </li>
                         <li>
                           <span>Chứng chỉ</span
@@ -974,18 +901,20 @@
                             th:text="${course.hasCertificate ? 'Có': 'Không'}"
                             >Yes</span
                           >
+
+                        </li>
+                        <li>
+                          <span>Trạng thái</span
+                          ><span class="rbt-feature-value rbt-badge-5" th:text="${course.status}">status</span>
                         </li>
                       </ul>
                       <div class="rbt-show-more-btn">Xem thêm</div>
                     </div>
 
                     <div class="social-share-wrapper mt--30 text-center">
-                      <div
-                        class="rbt-post-share d-flex align-items-center justify-content-center"
-                      >
-                        <ul
-                          class="social-icon social-default transparent-with-border justify-content-center"
-                        >
+
+                      <div class="rbt-post-share d-flex align-items-center justify-content-center">
+                        <ul class="social-icon social-default transparent-with-border justify-content-center">
                           <li>
                             <a href="https://www.facebook.com/">
                               <i class="feather-facebook"></i>
@@ -1011,11 +940,9 @@
                       <hr class="mt--20" />
                       <div class="contact-with-us text-center">
                         <p>Để biết thêm chi tiết về khóa học</p>
-                        <p
-                          class="rbt-badge-2 mt--10 justify-content-center w-100"
-                        >
-                          <i class="feather-phone mr--5"></i> Liên hệ với chúng
-                          tôi:
+
+                        <p class="rbt-badge-2 mt--10 justify-content-center w-100">
+                          <i class="feather-phone mr--5"></i> Liên hệ với chúng tôi:
                           <a href="#"><strong>0979888626</strong></a>
                         </p>
                       </div>
@@ -1038,11 +965,8 @@
                 <div class="section-title">
                   <h4 class="title">
                     Thêm khóa học về
-                    <strong
-                      class="color-primary"
-                      th:text="${course.createdBy.fullname}"
-                      >Angela</strong
-                    >
+
+                    <strong class="color-primary" th:text="${course.createdBy.fullname}">Angela</strong>
                   </h4>
                 </div>
               </div>
@@ -1066,13 +990,8 @@
                 <div class="rbt-card variation-01 rbt-hover">
                   <div
                     class="rbt-card-img"
-                    style="
-                      height: 200px;
-                      overflow: hidden;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    "
+
+                    style="height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center"
                   >
                     <a href="course-details.html">
                       <img th:src="@{${course.courseImage}}" alt="Card image" />
@@ -1092,10 +1011,8 @@
                           <i class="fas fa-star"></i>
                           <i class="fas fa-star"></i>
                         </div>
-                        <span
-                          class="rating-count"
-                          th:text="${#lists.size(course.reviews) +' Bình luận'}"
-                        >
+
+                        <span class="rating-count" th:text="${#lists.size(course.reviews) +' Bình luận'}">
                           (15 Reviews)</span
                         >
                       </div>
@@ -1118,62 +1035,48 @@
                     </div>
 
                     <h4 class="rbt-card-title">
-                      <a href="course-details.html" th:text="${course.title}"
-                        >Web Front To Back</a
-                      >
+
+                      <a href="course-details.html" th:text="${course.title}">Web Front To Back</a>
                     </h4>
                     <ul class="rbt-meta">
                       <li>
                         <i class="feather-book"></i>
-                        <span
-                          th:text="${#lists.size(course.modules) + ' Khóa học'}"
-                        ></span>
+
+                        <span th:text="${#lists.size(course.modules) + ' Khóa học'}"></span>
                       </li>
                       <li>
                         <i class="feather-users"></i>
-                        <span
-                          th:text="${#lists.size(course.enrollments) + ' Học viên'}"
-                        ></span>
+                        <span th:text="${#lists.size(course.enrollments) + ' Học viên'}"></span>
                       </li>
                     </ul>
 
                     <p class="rbt-card-text" th:text="${course.description}">
-                      Web Js long fact that a reader will be distracted by the
-                      readable.
+
+                      Web Js long fact that a reader will be distracted by the readable.
                     </p>
                     <div class="rbt-author-meta mb--20">
                       <div class="rbt-avater">
                         <a href="#">
-                          <img
-                            th:src="@{${course.createdBy.image}}"
-                            alt="Sophia Jaymes"
-                          />
+
+                          <img th:src="@{${course.createdBy.image}}" alt="Sophia Jaymes" />
                         </a>
                       </div>
                       <div class="rbt-author-info">
                         By
-                        <a
-                          href="profile.html"
-                          th:text="${course.createdBy.fullname}"
-                          >Patrick</a
-                        >
+
+                        <a href="profile.html" th:text="${course.createdBy.fullname}">Patrick</a>
                       </div>
                     </div>
 
                     <div class="rbt-card-bottom">
                       <div class="rbt-price" style="font-size: 0.85em">
-                        <span class="current-price" th:text="${course.price}"
-                          >1.600.000₫</span
-                        >
-                        <span
-                          class="off-price"
-                          th:text="${course.price - (course.price * course.discount)}"
+
+                        <span class="current-price" th:text="${course.price}">1.600.000₫</span>
+                        <span class="off-price" th:text="${course.price - (course.price * course.discount)}"
                           >2.000.000₫</span
                         >
                       </div>
-                      <a class="rbt-btn-link" href="course-details.html"
-                        >Xem thêm<i class="feather-arrow-right"></i
-                      ></a>
+                      <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
                     </div>
                   </div>
                 </div>
@@ -1191,38 +1094,23 @@
           <div class="row align-items-center">
             <div class="col-lg-6 col-md-6">
               <div class="section-title text-center text-md-start">
-                <h5 class="title mb--0">
-                  Khóa học Histudy 2025: Từ cơ bản đến chuyên gia!
-                </h5>
+
+                <h5 class="title mb--0">Khóa học Histudy 2025: Từ cơ bản đến chuyên gia!</h5>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 mt_sm--15">
               <div class="course-action-bottom-right rbt-single-group">
-                <div
-                  class="rbt-single-list rbt-price large-size justify-content-center"
-                >
-                  <span class="current-price" th:text="${course.price}"
-                    >1.600.000₫</span
-                  >
-                  <span
-                    class="off-price"
-                    th:text="${course.price - (course.price * course.discount)}"
-                    >2.000.000₫</span
-                  >
+
+                <div class="rbt-single-list rbt-price large-size justify-content-center">
+                  <span class="current-price" th:text="${course.price}">1.600.000₫</span>
+                  <span class="off-price" th:text="${course.price - (course.price * course.discount)}">2.000.000₫</span>
                 </div>
                 <div class="rbt-single-list action-btn">
-                  <a
-                    class="rbt-btn btn-gradient hover-icon-reverse btn-md"
-                    href="#"
-                  >
+                  <a class="rbt-btn btn-gradient hover-icon-reverse btn-md" href="#">
                     <span class="icon-reverse-wrapper">
                       <span class="btn-text">Purchase Now</span>
-                      <span class="btn-icon"
-                        ><i class="feather-arrow-right"></i
-                      ></span>
-                      <span class="btn-icon"
-                        ><i class="feather-arrow-right"></i
-                      ></span>
+                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                     </span>
                   </a>
                 </div>
@@ -1238,69 +1126,69 @@
         </div>
       </div>
     </div>
-  </body>
 
-  <th:block th:fragment="scripts">
-    <script th:inline="javascript">
-      // Xác định trạng thái đăng nhập
-      const auth = document.querySelector("#auth");
-      const isAuthenticated = auth.getAttribute("auth") === "true";
+    <th:block th:fragment="scripts">
+      <!-- <script th:inline="javascript">
+        // Xác định trạng thái đăng nhập
+        const auth = document.querySelector("#auth");
+        const isAuthenticated = auth.getAttribute("auth") === "true";
 
-      // Lấy dữ liệu khóa học
-      const course = document.querySelector("#course-data");
-      const id = course.getAttribute("data-id");
-      const name = course.getAttribute("data-name");
-      const price = course.getAttribute("data-price");
-      const image = course.getAttribute("data-image");
+        // Lấy dữ liệu khóa học
+        const course = document.querySelector("#course-data");
+        const id = course.getAttribute("data-id");
+        const name = course.getAttribute("data-name");
+        const price = course.getAttribute("data-price");
+        const image = course.getAttribute("data-image");
 
-      // Lấy thông tin sản phẩm từ local storage (Nếu có)
-      function getCart() {
-        return JSON.parse(localStorage.getItem("cart")) || [];
-      }
-
-      // Lưu thông tin sản phẩm vào local storage
-      function saveCart(cart) {
-        localStorage.setItem("cart", JSON.stringify(cart));
-      }
-
-      // Hàm thêm sản phẩm vào giỏ hàng
-      function addToCart(id, name, price, image) {
-        let cart = getCart();
-        let existing = cart.find((item) => item.id === id);
-        if (existing) {
-          return;
-        } else {
-          cart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
-          console.log(cart);
+        // Lấy thông tin sản phẩm từ local storage (Nếu có)
+        function getCart() {
+          return JSON.parse(localStorage.getItem("cart")) || [];
         }
-        saveCart(cart);
-      }
 
-      // Gắn sự kiện cho nút
-      document.addEventListener("DOMContentLoaded", () => {
-        const addToCartBtn = document.querySelector(".add-to-cart");
-        const registerNowBtn = document.querySelector(".register-now");
-        // Nút thêm vào giỏ hang
-        addToCartBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          if (!isAuthenticated) {
-            window.location.href = "/login";
+        // Lưu thông tin sản phẩm vào local storage
+        function saveCart(cart) {
+          localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        // Hàm thêm sản phẩm vào giỏ hàng
+        function addToCart(id, name, price, image) {
+          let cart = getCart();
+          let existing = cart.find((item) => item.id === id);
+          if (existing) {
             return;
+          } else {
+            cart.push({ id, name, price: parseFloat(price), image, quantity: 1 });
+            console.log(cart);
           }
-          addToCart(id, name, price, image);
-          alert("Đã thêm vào giỏ hàng!");
+          saveCart(cart);
+        }
+
+        // Gắn sự kiện cho nút
+        document.addEventListener("DOMContentLoaded", () => {
+          const addToCartBtn = document.querySelector(".add-to-cart");
+          const registerNowBtn = document.querySelector(".register-now");
+          // Nút thêm vào giỏ hang
+          addToCartBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (!isAuthenticated) {
+              window.location.href = "/login";
+              return;
+            }
+            addToCart(id, name, price, image);
+            alert("Đã thêm vào giỏ hàng!");
+          });
+          // Nút đăng ký ngay
+          registerNowBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (!isAuthenticated) {
+              window.location.href = "/login";
+              return;
+            }
+            addToCart(id, name, price, image);
+            window.location.href = "/cart";
+          });
         });
-        // Nút đăng ký ngay
-        registerNowBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          if (!isAuthenticated) {
-            window.location.href = "/login";
-            return;
-          }
-          addToCart(id, name, price, image);
-          window.location.href = "/cart";
-        });
-      });
-    </script>
-  </th:block>
+      </script> -->
+    </th:block>
+  </body>
 </html>

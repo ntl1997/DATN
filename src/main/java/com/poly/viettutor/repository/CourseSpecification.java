@@ -10,14 +10,21 @@ import jakarta.persistence.criteria.Predicate;
 import java.util.List;
 
 public class CourseSpecification {
+
     public static Specification<Course> filterCourses(
             String keyword,
             List<String> categories,
             List<Integer> ratings,
             String instructor,
-            String priceType) {
+            String priceType,
+            boolean showAllStatuses) {
         return (root, query, cb) -> {
             Predicate predicate = cb.conjunction();
+
+            // ✅ Chỉ lọc status = "Publish" nếu không phải admin
+            if (!showAllStatuses) {
+                predicate = cb.and(predicate, cb.equal(root.get("status"), "Publish"));
+            }
 
             if (keyword != null && !keyword.isEmpty()) {
                 predicate = cb.and(predicate, cb.like(root.get("title"), "%" + keyword + "%"));
@@ -46,4 +53,14 @@ public class CourseSpecification {
             return predicate;
         };
     }
+
+    public static Specification<Course> filterCourses(
+            String keyword,
+            List<String> categories,
+            List<Integer> ratings,
+            String instructor,
+            String priceType) {
+        return filterCourses(keyword, categories, ratings, instructor, priceType, false);
+    }
+
 }

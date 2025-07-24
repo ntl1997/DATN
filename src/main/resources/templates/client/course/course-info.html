@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <th:block th:fragment="course-info">
+      <div class="accordion-item card">
+        <h2 class="accordion-header card-header" id="accOne">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#accCollapseOne"
+            aria-expanded="true"
+            aria-controls="accCollapseOne"
+          >
+            Thông tin khóa học
+          </button>
+        </h2>
+        <div
+          id="accCollapseOne"
+          class="accordion-collapse collapse show"
+          aria-labelledby="accOne"
+          data-bs-parent="#tutionaccordionExamplea1"
+        >
+          <div class="accordion-body card-body">
+            <!-- Start Course Field Wrapper  -->
+            <div class="rbt-course-field-wrapper rbt-default-form">
+              <div class="course-field mb--15">
+                <label for="course-title" th:unless="${#fields.hasErrors('title')}">Tiêu đề khóa học * </label>
+                <label for="course-title" th:errors="*{title}" class="text-danger"></label>
+                <input th:field="*{title}" id="course-title" type="text" placeholder="Tiêu đề của khóa học" />
+                <small class="d-block mt_dec--5"> <i class="feather-info"></i> Tiêu đề nên để 30 ký tự. </small>
+              </div>
+
+              <div class="course-field mb--15">
+                <label for="course-description" th:unless="${#fields.hasErrors('description')}"
+                  >Mô tả khóa học *
+                </label>
+                <label for="course-description" th:errors="*{description}" class="text-danger"></label>
+                <input
+                  th:field="*{description}"
+                  id="course-description"
+                  type="text"
+                  placeholder="Mô tả ngắn gọn khóa học"
+                />
+                <small class="d-block mt_dec--5">
+                  <i class="feather-info"></i> Mô tả khóa học nên viết ngắn gọn.
+                </small>
+              </div>
+
+              <div class="course-field mb--15">
+                <label for="videoUrl" th:unless="${#fields.hasErrors('demoVideoUrl')}">
+                  Video giới thiệu khóa học *
+                </label>
+                <label for="videoUrl" th:errors="*{demoVideoUrl}" class="text-danger"></label>
+                <input
+                  th:field="*{demoVideoUrl}"
+                  id="videoUrl"
+                  type="text"
+                  placeholder="Thêm video url của bạn vào đây."
+                />
+                <small class="d-block mt_dec--5">
+                  <i class="feather-info"></i> Ví dụ:
+                  <a href="https://www.youtube.com/watch?v=yourvideoid">https://www.youtube.com/watch?v=yourvideoid</a>
+                </small>
+              </div>
+
+              <hr class="mt--10 mb--20" />
+
+              <div class="course-field mb--15">
+                <label for="overview" th:unless="${#fields.hasErrors('overview')}"> Nội dung chi tiết * </label>
+                <label for="overview" th:errors="*{overview}" class="text-danger"></label>
+                <textarea
+                  th:field="*{overview}"
+                  id="overview"
+                  rows="10"
+                  placeholder="Mô tả chi tiết nội dung khóa học"
+                ></textarea>
+                <!-- <br /> -->
+                <small class="d-block mt_dec--5">
+                  <i class="feather-info"></i> Cho phép HTML hoặc văn bản thuần túy. Trường này được sử dụng để tìm
+                  kiếm, vì vậy hãy mô tả rõ ràng!
+                </small>
+              </div>
+
+              <hr class="mt--10 mb--20" />
+
+              <div class="course-field mb--20">
+                <label for="skillLevel" th:unless="${#fields.hasErrors('skillLevel')}">Trình độ *</label>
+                <label for="skillLevel" th:errors="*{skillLevel}" class="text-danger"></label>
+                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                  <select th:field="*{skillLevel}" class="w-100" data-live-search="true" id="skillLevel">
+                    <option th:value="__NULL__">Chọn trình độ khóa học</option>
+                    <option th:value="Beginner">Cơ bản</option>
+                    <option th:value="Intermediate">Trung cấp</option>
+                    <option th:value="Advanced">Nâng cao</option>
+                    <option th:value="Expert">Chuyên nghiệp</option>
+                  </select>
+                </div>
+                <small class="d-block mt_dec--5"><i class="feather-info"></i> Trình độ khóa học. </small>
+              </div>
+
+              <div class="course-field mb--15">
+                <label for="language" th:unless="${#fields.hasErrors('language')}">Ngôn ngữ *</label>
+                <label for="language" th:errors="*{language}" class="text-danger"></label>
+                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                  <select th:field="*{language}" class="w-100" data-live-search="true" id="language">
+                    <option th:value="__NULL__">Chọn ngôn ngữ khóa học</option>
+                    <option th:value="English">English</option>
+                    <option th:value="Vietnamese">Tiếng Việt</option>
+                    <option th:value="Chinese">中文</option>
+                    <option th:value="Japanese">日本語</option>
+                    <option th:value="French">Français</option>
+                  </select>
+                </div>
+                <small class="d-block mt_dec--5"> <i class="feather-info"></i> Ngôn ngữ nội dụng khóa học. </small>
+              </div>
+
+              <div class="course-field mb--15">
+                <label for="category" th:unless="${#fields.hasErrors('categoryIds')}">Danh mục *</label>
+                <label for="category" th:errors="*{categoryIds}" class="text-danger"> Chọn ít nhất 1 danh mục! </label>
+                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                  <select
+                    th:field="*{categoryIds}"
+                    id="category"
+                    class="w-100"
+                    data-live-search="true"
+                    title="Chọn ít nhất 1 danh mục"
+                    multiple
+                    data-size="7"
+                    data-actions-box="true"
+                    data-selected-text-format="count > 2"
+                  >
+                    <option
+                      th:each="category : ${categories}"
+                      th:text="${category.name}"
+                      th:value="${category.categoryId}"
+                    >
+                      Tên danh mục
+                    </option>
+                  </select>
+                </div>
+                <small class="d-block mt_dec--5"> <i class="feather-info"></i> Các danh mục khóa học. </small>
+              </div>
+
+              <div class="course-field mb--15">
+                <label for="hasCertificate" th:unless="${#fields.hasErrors('hasCertificate')}">Cấp chứng chỉ *</label>
+                <label for="hasCertificate" th:errors="*{hasCertificate}" class="text-danger">
+                  Hãy chọn có hoặc không cấp chứng chỉ!
+                </label>
+                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                  <select th:field="*{hasCertificate}" id="hasCertificate" class="w-100" data-live-search="true">
+                    <option th:value="true">Có cấp chứng chỉ</option>
+                    <option th:value="false">Không cấp chứng chỉ</option>
+                  </select>
+                </div>
+                <small class="d-block mt_dec--5"> <i class="feather-info"></i> Có/không cấp chứng chỉ. </small>
+              </div>
+
+              <hr class="mt--10 mb--20" />
+
+              <div class="course-field mb--15 edu-bg-gray">
+                <h6>Giá khóa học</h6>
+                <input type="hidden" th:field="*{price}" id="hiddenPrice" />
+                <div class="rbt-course-settings-content">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="advance-tab-button advance-tab-button-1">
+                        <ul class="rbt-default-tab-button nav nav-tabs" id="coursePrice" role="tablist">
+                          <li class="nav-item w-100" role="presentation">
+                            <a
+                              href="#"
+                              class="active"
+                              id="paid-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#paid"
+                              role="tab"
+                              aria-controls="paid"
+                              aria-selected="true"
+                            >
+                              <span>Trả phí</span>
+                            </a>
+                          </li>
+                          <li class="nav-item w-100" role="presentation">
+                            <a
+                              href="#"
+                              id="free-tab"
+                              data-bs-toggle="tab"
+                              data-bs-target="#free"
+                              role="tab"
+                              aria-controls="free"
+                              aria-selected="false"
+                            >
+                              <span>Miễn phí</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-8">
+                      <div class="tab-content">
+                        <div
+                          class="tab-pane fade advance-tab-content-1 active show"
+                          id="paid"
+                          role="tabpanel"
+                          aria-labelledby="paid-tab"
+                        >
+                          <div class="course-field mb--15">
+                            <label for="regularPrice" th:unless="${#fields.hasErrors('price')}"> Giá (VND) </label>
+                            <label for="regularPrice" th:errors="*{price}" class="text-danger"></label>
+                            <input id="regularPrice" type="number" placeholder="Giá khóa học (VND)" />
+                            <small class="d-block mt_dec--5"
+                              ><i class="feather-info"></i> Giá đã bao gồm phí tác giả bạn sẽ nhận được.
+                            </small>
+                          </div>
+                          <div class="course-field mb--15">
+                            <label for="discountedPrice">Giảm giá (%)</label>
+                            <input
+                              th:field="*{discount}"
+                              id="discountedPrice"
+                              type="number"
+                              placeholder="Giảm giá, VD: 78"
+                            />
+                            <small class="d-block mt_dec--5">
+                              <i class="feather-info"></i> Giá đã bao gồm phí tác giả bạn sẽ nhận được.
+                            </small>
+                          </div>
+                        </div>
+
+                        <div
+                          class="tab-pane fade advance-tab-content-1"
+                          id="free"
+                          role="tabpanel"
+                          aria-labelledby="free-tab"
+                        >
+                          <div class="course-field">
+                            <p class="b3">Khóa học này miễn phí cho tất cả mọi người.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="mt--10 mb--20" />
+
+              <div class="course-field mb--20">
+                <h6>Ảnh khóa học</h6>
+                <div class="rbt-create-course-thumbnail upload-area">
+                  <div class="upload-area">
+                    <div class="brows-file-wrapper" data-black-overlay="9">
+                      <!-- actual upload which is hidden -->
+                      <input name="createinputfile" id="createinputfile" type="file" class="inputfile" />
+                      <img
+                        id="createfileImage"
+                        th:src="@{/assets/images/others/thumbnail-placeholder.svg}"
+                        alt="file image"
+                      />
+                      <!-- our custom upload button -->
+                      <label class="d-flex" for="createinputfile" title="No File Choosen">
+                        <i class="feather-upload"></i>
+                        <span class="text-center">Chọn tệp</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <small
+                  ><i class="feather-info"></i> <b>Size:</b> 700x430 pixels, <b>File Support:</b> JPG, JPEG, PNG, GIF,
+                  WEBP</small
+                >
+              </div>
+            </div>
+            <!-- End Course Field Wrapper  -->
+          </div>
+        </div>
+      </div>
+    </th:block>
+  </body>
+</html>

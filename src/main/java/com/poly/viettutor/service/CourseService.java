@@ -5,14 +5,19 @@ import com.poly.viettutor.model.CourseCategory;
 import com.poly.viettutor.model.CourseMaterial;
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Lecture;
-import com.poly.viettutor.repository.CourseRepository;
-import com.poly.viettutor.repository.CourseSpecification;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.poly.viettutor.model.Option;
+import com.poly.viettutor.model.Question;
+import com.poly.viettutor.model.Quiz;
+
+
 import org.springframework.data.domain.Page;
 
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.dto.CourseDTO;
+import com.poly.viettutor.dto.ModuleDTO;
+import com.poly.viettutor.dto.QuestionDTO;
+import com.poly.viettutor.dto.QuizDTO;
 import com.poly.viettutor.model.Category;
 import com.poly.viettutor.repository.*;
 import com.poly.viettutor.utils.FileUtils;
@@ -20,13 +25,22 @@ import com.poly.viettutor.utils.FileUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import java.util.Objects;
+
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -37,19 +51,28 @@ public class CourseService {
     private final CourseModuleRepository courseModuleRepository;
     private final LectureRepository lectureRepository;
     private final CourseMaterialRepository courseMaterialRepository;
+    private final QuizRepository quizRepository;
+    private final QuestionRepository questionRepository;
+    private final OptionRepository optionRepository;
 
     CourseService(CourseRepository courseRepository,
             CourseCategoryRepository courseCategoryRepository,
             CategoryRepository categoryRepository,
             CourseModuleRepository courseModuleRepository,
             LectureRepository lectureRepository,
-            CourseMaterialRepository courseMaterialRepository) {
+            CourseMaterialRepository courseMaterialRepository,
+            QuizRepository quizRepository,
+            QuestionRepository questionRepository,
+            OptionRepository optionRepository) {
         this.courseRepository = courseRepository;
         this.courseCategoryRepository = courseCategoryRepository;
         this.categoryRepository = categoryRepository;
         this.courseModuleRepository = courseModuleRepository;
         this.lectureRepository = lectureRepository;
         this.courseMaterialRepository = courseMaterialRepository;
+        this.quizRepository = quizRepository;
+        this.questionRepository = questionRepository;
+        this.optionRepository = optionRepository;
     }
 
     public List<Course> findAll() {
@@ -60,7 +83,8 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-    public Course create(User user, CourseDTO courseDTO, MultipartFile imageFile) throws IOException {
+    public Course create(User user, CourseDTO courseDTO, MultipartFile imageFile, MultipartFile[] materialFiles)
+            throws IOException {
         String fileName = null;
         if (imageFile != null && !imageFile.isEmpty()) {
             fileName = FileUtils.saveImage(imageFile, "uploads/course/");
@@ -74,7 +98,7 @@ public class CourseService {
                 .discount(courseDTO.getDiscount())
                 .courseImage(fileName)
                 .demoVideoUrl(courseDTO.getDemoVideoUrl())
-                .status("pending")
+                .status("draft")
                 .skillLevel(courseDTO.getSkillLevel())
                 .hasCertificate(courseDTO.getHasCertificate())
                 .language(courseDTO.getLanguage())
@@ -82,7 +106,11 @@ public class CourseService {
                 .createdAt(new Date())
                 .createdBy(user)
                 .build();
-        return courseRepository.save(course);
+        Course savedCourse = courseRepository.save(course);
+        saveCourseCategories(courseDTO, savedCourse);
+        saveCourseModules(courseDTO, savedCourse);
+        saveCourseMaterials(savedCourse, materialFiles);
+        return savedCourse;
     }
 
     public void saveCourseCategories(CourseDTO courseDTO, Course savedCourse) {
@@ -107,20 +135,8 @@ public class CourseService {
                     .course(savedCourse)
                     .build();
             CourseModule savedModule = courseModuleRepository.save(module);
-
-            // Lưu các bài giảng của chương
-            AtomicInteger lectureIndex = new AtomicInteger(1);
-            moduleDTO.getLectures().forEach(lectureDTO -> {
-                Lecture lecture = Lecture.builder()
-                        .lectureTitle(lectureDTO.getLectureTitle())
-                        .content(lectureDTO.getContent())
-                        .videoUrl(lectureDTO.getVideoUrl())
-                        .duration(lectureDTO.getDuration())
-                        .sortOrder(lectureIndex.getAndIncrement())
-                        .module(savedModule)
-                        .build();
-                lectureRepository.save(lecture);
-            });
+            saveLectures(moduleDTO, savedModule);
+            saveQuizzes(moduleDTO, savedModule);
         });
     }
 
@@ -140,6 +156,148 @@ public class CourseService {
                 }
             }
         }
+    }
+
+    public void saveLectures(ModuleDTO moduleDTO, CourseModule savedModule) {
+        AtomicInteger lectureIndex = new AtomicInteger(1);
+        moduleDTO.getLectures().forEach(lectureDTO -> {
+            Lecture lecture = Lecture.builder()
+                    .lectureTitle(lectureDTO.getLectureTitle())
+                    .content(lectureDTO.getContent())
+                    .videoUrl(lectureDTO.getVideoUrl())
+                    .duration(lectureDTO.getDuration())
+                    .sortOrder(lectureIndex.getAndIncrement())
+                    .module(savedModule)
+                    .build();
+            lectureRepository.save(lecture);
+        });
+    }
+
+    public void saveQuizzes(ModuleDTO moduleDTO, CourseModule savedModule) {
+        moduleDTO.getQuizzes().forEach(quizDTO -> {
+            Quiz quiz = Quiz.builder()
+                    .module(savedModule)
+                    .title(quizDTO.getTitle())
+                    .totalScore(quizDTO.getTotalScore().intValue())
+                    .timeLimit(quizDTO.getTimeLimit())
+                    .quizType(quizDTO.getQuizType())
+                    .build();
+            Quiz savedQuiz = quizRepository.save(quiz);
+            saveQuestions(quizDTO, savedQuiz);
+        });
+    }
+
+    public void saveQuestions(QuizDTO quizDTO, Quiz savedQuiz) {
+        quizDTO.getQuestions().forEach(questionDTO -> {
+            Question question = Question.builder()
+                    .quiz(savedQuiz)
+                    .questionText(questionDTO.getQuestionText())
+                    .score(questionDTO.getScore().intValue())
+                    .build();
+            Question savedQuestion = questionRepository.save(question);
+            saveOptions(questionDTO, savedQuestion);
+        });
+    }
+
+    public void saveOptions(QuestionDTO questionDTO, Question savedQuestion) {
+        questionDTO.getOptions().forEach(optionDTO -> {
+            Option option = Option.builder()
+                    .question(savedQuestion)
+                    .optionText(optionDTO.getOptionText())
+                    .isCorrect(optionDTO.getIsCorrect())
+                    .build();
+            optionRepository.save(option);
+        });
+    }
+
+    @Transactional
+    public Course updateCourse(User user, CourseDTO courseDTO, MultipartFile imageFile, MultipartFile[] materialFiles)
+            throws IOException {
+
+        Course course = courseRepository.findById(courseDTO.getCourseId())
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Cập nhật thông tin cơ bản
+        course.setTitle(courseDTO.getTitle());
+        course.setDescription(courseDTO.getDescription());
+        course.setOverview(courseDTO.getOverview());
+        course.setPrice(courseDTO.getPrice());
+        course.setDiscount(courseDTO.getDiscount());
+        course.setDemoVideoUrl(courseDTO.getDemoVideoUrl());
+        course.setSkillLevel(courseDTO.getSkillLevel());
+        course.setLanguage(courseDTO.getLanguage());
+        course.setHasCertificate(courseDTO.getHasCertificate());
+        course.setUpdatedAt(new Date());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = FileUtils.saveImage(imageFile, "uploads/course/");
+            course.setCourseImage(fileName);
+        }
+
+        courseRepository.save(course);
+
+        // Cập nhật categories (xóa cũ → thêm lại)
+        courseCategoryRepository.deleteByCourse(course);
+        saveCourseCategories(courseDTO, course);
+
+        // Cập nhật modules, lectures, quizzes
+        updateCourseModules(courseDTO, course);
+
+        // Cập nhật tài liệu đính kèm (xóa cũ → thêm mới)
+        courseMaterialRepository.deleteByCourse(course);
+        saveCourseMaterials(course, materialFiles);
+
+        return course;
+    }
+
+    public void updateCourseModules(CourseDTO courseDTO, Course course) {
+        List<CourseModule> existingModules = courseModuleRepository.findByCourse(course);
+        Map<Integer, CourseModule> moduleMap = existingModules.stream()
+                .filter(m -> m.getModuleId() != null)
+                .collect(Collectors.toMap(CourseModule::getModuleId, m -> m));
+
+        // Xóa modules không còn tồn tại
+        Set<Integer> updatedIds = courseDTO.getModules().stream()
+                .map(ModuleDTO::getModuleId).filter(Objects::nonNull).collect(Collectors.toSet());
+        existingModules.stream()
+                .filter(m -> !updatedIds.contains(m.getModuleId()))
+                .forEach(m -> courseModuleRepository.delete(m));
+
+        AtomicInteger moduleIndex = new AtomicInteger(1);
+        for (ModuleDTO moduleDTO : courseDTO.getModules()) {
+            CourseModule module;
+
+            if (moduleDTO.getModuleId() != null && moduleMap.containsKey(moduleDTO.getModuleId())) {
+                // Cập nhật module cũ
+                module = moduleMap.get(moduleDTO.getModuleId());
+                module.setModuleTitle(moduleDTO.getModuleTitle());
+                module.setSortOrder(moduleIndex.getAndIncrement());
+                courseModuleRepository.save(module);
+
+                // Xoá bài học & quiz cũ
+                lectureRepository.deleteByModule(module);
+                quizRepository.deleteByModule(module);
+
+            } else {
+                // Tạo mới module
+                module = CourseModule.builder()
+                        .moduleTitle(moduleDTO.getModuleTitle())
+                        .course(course)
+                        .sortOrder(moduleIndex.getAndIncrement())
+                        .build();
+                module = courseModuleRepository.save(module);
+            }
+
+            // Thêm lectures mới
+            saveLectures(moduleDTO, module);
+            // Thêm quizzes mới
+            saveQuizzes(moduleDTO, module);
+        }
+    }
+
+    public void updateStatus(Course course, String status) {
+        course.setStatus(status);
+        courseRepository.save(course);
     }
 
     public void deleteById(Integer id) {
@@ -189,6 +347,40 @@ public class CourseService {
 
     public List<Course> findCoursesByInstructorIdAndStatus(Long instructorId, String status) {
         return courseRepository.findByCreatedByIdAndStatus(instructorId, status);
+    }
+
+    public List<Map<String, Object>> getTop5PopularCourses() {
+        List<Object[]> rows = courseRepository.findTop5CourseStatistics();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Object[] row : rows) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("courseTitle", row[0]);
+            map.put("studentCount", row[1]);
+            map.put("completionRate", row[2]);
+            map.put("instructorName", row[3]);
+            result.add(map);
+        }
+
+        return result;
+    }
+
+    public Map<String, Object> getTop5CoursesChartData() {
+        List<Object[]> rawData = courseRepository.findTop5CoursesByStudentCount();
+
+        List<String> courseTitles = new ArrayList<>();
+        List<Long> studentCounts = new ArrayList<>();
+
+        for (Object[] row : rawData) {
+            courseTitles.add((String) row[0]);
+            studentCounts.add(((Number) row[1]).longValue());
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("labels", courseTitles);
+        result.put("data", studentCounts);
+
+        return result;
     }
 
 }
