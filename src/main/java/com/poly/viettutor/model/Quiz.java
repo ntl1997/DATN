@@ -35,4 +35,7 @@ public class Quiz {
     @OneToMany
     @JoinColumn(name = "quizId")
     private List<Question> questions;
+
+    @OneToMany(mappedBy = "quiz")
+    private List<QuizSubmission> quizSubmissions;
 }
