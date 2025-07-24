@@ -19,6 +19,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,7 @@ import jakarta.validation.constraints.Email;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id()
@@ -85,4 +87,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Enrollment> enrollments;
+
+    @OneToMany(mappedBy = "user")
+    private List<QuizSubmission> quizSubmissions;
+
 }
