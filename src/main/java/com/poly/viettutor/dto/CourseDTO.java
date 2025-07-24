@@ -109,6 +109,7 @@ public class CourseDTO {
                 .title(quiz.getTitle())
                 .timeLimit(quiz.getTimeLimit())
                 .totalScore(quiz.getTotalScore().doubleValue())
+                .quizType(quiz.getQuizType())
                 .questions(quiz.getQuestions().stream().map(this::mapQuestion).toList())
                 .build();
     }
