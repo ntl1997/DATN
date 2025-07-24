@@ -28,4 +28,7 @@ public class Question {
     private Integer score;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Option> options;
+
+    @Transient
+    private Long selectedOptionId;
 }
