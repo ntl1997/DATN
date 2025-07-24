@@ -3,6 +3,7 @@ package com.poly.viettutor.model;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "QuizSubmissions")
@@ -27,4 +28,8 @@ public class QuizSubmission {
     private Date submittedAt;
 
     private Integer score;
+
+    @OneToMany(mappedBy = "submission", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuizAnswer> answers;
+
 }
