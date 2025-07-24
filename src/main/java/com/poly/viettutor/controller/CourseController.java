@@ -252,6 +252,12 @@ public class CourseController {
                 return "forward:/error";
             }
 
+            // Không cho cập nhật khóa học khi đã công khai
+            if (course.getStatus().equalsIgnoreCase("publish")) {
+                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
+                return "forward:/error";
+            }
+
             // Validate DTO
             DataBinder binder = new DataBinder(courseDTO);
             binder.setValidator(validator);
