@@ -89,8 +89,9 @@ document.getElementById("create-course-form").addEventListener("submit", (e) => 
     price: +document.getElementById("hiddenPrice").value || 0,
     discount: +document.getElementById("discountedPrice").value || 0,
     hasCertificate: +document.getElementById("hasCertificate").value || 0,
-    modules: modules.map((title, idx) => ({
-      moduleTitle: title,
+    modules: modules.map((mod, idx) => ({
+      moduleId: mod.moduleId || null, // ✅ giữ lại moduleId nếu có
+      moduleTitle: mod.moduleTitle,
       lectures: (lecturesPerModule[idx] || []).map(({ lectureTitle, content, videoUrl, duration }) => ({
         lectureTitle,
         content,

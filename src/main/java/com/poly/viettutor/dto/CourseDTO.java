@@ -89,6 +89,7 @@ public class CourseDTO {
 
     private ModuleDTO mapModule(CourseModule module) {
         return ModuleDTO.builder()
+                .moduleId(module.getModuleId())
                 .moduleTitle(module.getModuleTitle())
                 .lectures(module.getLectures().stream().map(this::mapLecture).toList())
                 .quizzes(module.getQuizzes().stream().map(this::mapQuiz).toList())

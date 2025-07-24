@@ -133,7 +133,15 @@
 
         // Chỉ gán dữ liệu nếu localStorage chưa có (tức là lần đầu load)
         if (!localStorage.getItem("modules")) {
-          localStorage.setItem("modules", JSON.stringify(courseData.modules.map((m) => m.moduleTitle)));
+          localStorage.setItem(
+            "modules",
+            JSON.stringify(
+              courseData.modules.map((m) => ({
+                moduleId: m.moduleId,
+                moduleTitle: m.moduleTitle,
+              }))
+            )
+          );
         }
 
         if (!localStorage.getItem("lecturesPerModule")) {

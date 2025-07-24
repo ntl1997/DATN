@@ -73,10 +73,6 @@ function updateLesson() {
   Storage.set("lecturesPerModule", lecturesPerModule);
 
   domElement.querySelector("h6").textContent = title;
-  ["lectureTitle", "content", "videoUrl", "duration"].forEach((key) => {
-    domElement.querySelector(`input[name="modules[${moduleIndex}].lectures[${lessonIndex}].${key}"]`).value =
-      lecturesPerModule[moduleIndex][lessonIndex][key];
-  });
 
   bootstrap.Modal.getInstance(document.getElementById("update-lesson")).hide();
   currentEditingLesson = { moduleIndex: null, lessonIndex: null, domElement: null };
