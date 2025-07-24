@@ -174,35 +174,32 @@
                       <div class="accordion" id="accordionExampleb2">
                         <div
                           class="accordion-item card"
-                          th:each="module : ${course.modules}"
+                          th:each="module, iterStat : ${course.modules}"
                         >
                           <h2
                             class="accordion-header card-header"
-                            id="headingTwo1"
+                            th:id="'heading-module-' + ${iterStat.index}"
                           >
                             <button
-                              class="accordion-button"
+                              class="accordion-button collapsed"
                               type="button"
                               data-bs-toggle="collapse"
-                              data-bs-target="#collapseTwo1"
-                              aria-expanded="true"
-                              aria-controls="collapseTwo1"
+                              th:attr="data-bs-target='#collapse-module-' + ${iterStat.index}, aria-controls='collapse-module-' + ${iterStat.index}"
+                              aria-expanded="false"
                               th:text="${module.moduleTitle}"
-                            >
-                              Intro to Course and Histudy
-                              <span class="rbt-badge-5 ml--10">1hr 30min</span>
-                            </button>
+                            ></button>
                           </h2>
                           <div
-                            id="collapseTwo1"
-                            class="accordion-collapse collapse show"
-                            aria-labelledby="headingTwo1"
-                            data-bs-parent="#accordionExampleb2"
+                            class="accordion-collapse collapse"
+                            th:id="'collapse-module-' + ${iterStat.index}"
+                            th:attr="aria-labelledby='heading-module-' + ${iterStat.index}"
                           >
                             <div class="accordion-body card-body pr--0">
                               <ul class="rbt-course-main-content liststyle">
                                 <li th:each="lecture : ${module.lectures}">
-                                  <a href="lesson.html">
+                                  <a
+                                    th:href="@{'/lesson/' + ${course.courseId}}"
+                                  >
                                     <div class="course-content-left">
                                       <i class="feather-play-circle"></i>
                                       <span
