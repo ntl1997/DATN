@@ -20,8 +20,4 @@ public class QuizSubmissionService {
     public List<QuizSubmission> findByQuizId(Long quizId) {
         return quizSubmissionRepository.findByQuizQuizId(quizId);
     }
-
-    public List<QuizSubmission> findByUserId(Long userId) {
-        return quizSubmissionRepository.findByUserId(userId);
-    }
 }
