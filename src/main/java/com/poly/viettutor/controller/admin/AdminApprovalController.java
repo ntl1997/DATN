@@ -18,6 +18,7 @@ public class AdminApprovalController {
     public String adminDashboard(Model model) {
         model.addAttribute("title", "Phê duyệt khóa học");
         model.addAttribute("content", "admin/approval/course-approval");
+        model.addAttribute("scripts", "admin/approval/course-approval");
         // Lấy danh sách khoá học trạng thái "pending"
         model.addAttribute("courses", courseService.findAll());
         return "admin/layout/index";
