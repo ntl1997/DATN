@@ -10,7 +10,7 @@ import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import com.poly.viettutor.model.User;
@@ -383,13 +383,20 @@ public class CourseService {
         return result;
     }
 
-    public void updateCourseStatus(Integer courseId, String status, String note) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public void updateCourseStatus(Integer courseId, String status, String note, String email) {
         Optional<Course> optionalCourse = courseRepository.findById(courseId);
         if (optionalCourse.isPresent()) {
             Course course = optionalCourse.get();
             course.setStatus(status);
             course.setNote(note);
             course.setUpdatedAt(new Date());
+            // Lấy user thực hiện thao tác
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            userOpt.ifPresent(user -> course.setApprovedBy(user));
+            course.setApprovedAt(new Date());
             courseRepository.save(course);
         }
     }
