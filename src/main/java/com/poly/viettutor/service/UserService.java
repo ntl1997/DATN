@@ -167,4 +167,24 @@ public class UserService {
         result.put("data", studentCounts);
         return result;
     }
+
+    public List<Map<String, Object>> getQuizSubmissionsByCourseTitle(String courseTitle) {
+        List<Object[]> rawResults = quizSubmissionRepository.getQuizSubmissionsByCourseTitle(courseTitle);
+
+        List<Map<String, Object>> formattedResults = new ArrayList<>();
+
+        for (Object[] row : rawResults) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("fullName", row[0]);
+            map.put("email", row[1]);
+            map.put("quizTitle", row[2]);
+            map.put("submittedAt", row[3]);
+            map.put("score", row[4]);
+            map.put("totalScore", row[5]);
+            map.put("moduleTitle", row[6]);
+            formattedResults.add(map);
+        }
+
+        return formattedResults;
+    }
 }
