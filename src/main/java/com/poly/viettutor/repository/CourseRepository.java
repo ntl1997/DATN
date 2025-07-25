@@ -56,4 +56,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer>, JpaSpe
             "ORDER BY COUNT(e.UserId) DESC", nativeQuery = true)
     List<Object[]> findTop5CoursesByStudentCount();
 
+    // Lấy tất cả khóa học do instructor tạo theo userId (instructorId)
+    List<Course> findByCreatedBy_Id(Long userId);
+
 }
