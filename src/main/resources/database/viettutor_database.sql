@@ -658,6 +658,21 @@ VALUES
     (2, N'Class', 0),
     (2, N'Pointer', 1);
 
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+    (3, N'<h1>', 1),
+    (3, N'<div>', 0),
+    (3, N'<title>', 0),
+    (3, N'<p>', 0);
+
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+    (4, N'<a>', 1),
+    (4, N'<link>', 0),
+    (4, N'<href>', 0),
+    (4, N'<img>', 0);
+
+
 -- -- 27. Assignment cuối khóa Python
 -- INSERT INTO Assignments
 --     (CourseId, Title, TotalScore, TimeLimit)
