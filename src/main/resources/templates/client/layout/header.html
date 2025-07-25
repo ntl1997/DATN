@@ -105,7 +105,7 @@
 
             <div class="rbt-header-sec-col rbt-header-right">
               <div class="rbt-header-content">
-                <div class="header-info">
+                <!-- <div class="header-info">
                   <ul class="quick-access">
                     <li>
                       <a class="d-none d-xl-block rbt-cart-sidenav-activation" th:href="@{/cart}">
@@ -117,7 +117,7 @@
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div> -->
 
                 <!-- is login -->
                 <div class="header-info" sec:authorize="isAuthenticated()">
@@ -158,11 +158,11 @@
                                 <i class="feather-list"></i><span>Danh sách chứng chỉ</span>
                               </a>
                             </li>
-                            <li>
+                            <!-- <li>
                               <a th:href="@{student/student-order-history}">
                                 <i class="feather-clock"></i><span>Lịch sử mua hàng</span>
                               </a>
-                            </li>
+                            </li> -->
                             <li>
                               <a th:href="@{/logout}"> <i class="feather-log-out"></i><span>Đăng xuất</span> </a>
                             </li>

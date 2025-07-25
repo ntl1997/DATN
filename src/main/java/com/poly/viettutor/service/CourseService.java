@@ -382,8 +382,4 @@ public class CourseService {
         return result;
     }
 
-    public List<Course> getCoursesByInstructorId(Long instructorId) {
-        return courseRepository.findByCreatedBy_Id(instructorId);
-    }
-
 }

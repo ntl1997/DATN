@@ -1,10 +1,10 @@
 package com.poly.viettutor.controller.instructor;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,11 +42,9 @@ public class instructorController {
 
         long courseCount = 0L;
         long studentCount = 0L;
-        BigDecimal totalRevenue = BigDecimal.ZERO;
 
         courseCount = courseService.countCoursesByUser(currentUser);
         studentCount = enrollmentService.countStudentsByInstructor(currentUser);
-        totalRevenue = orderDetailService.getTotalRevenueByInstructor(currentUser.getId());
         model.addAttribute("user", currentUser);
         Long instructorId = currentUser.getId();
         List<Object[]> courseSummary = courseService.getCourseSummaryByInstructor(instructorId);
@@ -54,7 +52,6 @@ public class instructorController {
         model.addAttribute("courseCount", courseCount);
         model.addAttribute("courseSummary", courseSummary);
         model.addAttribute("studentCount", studentCount);
-        model.addAttribute("totalRevenue", totalRevenue);
         model.addAttribute("content", "client/instructor/instructor-dashboard");
 
         return "client/layout/index";
@@ -76,7 +73,7 @@ public class instructorController {
         model.addAttribute("pendingCourses", pendingCourses);
         model.addAttribute("draftCourses", draftCourses);
         model.addAttribute("hiddenCourses", hiddenCourses);
-        model.addAttribute("title", "My Courses");
+        model.addAttribute("title", "Khóa học của tôi");
         model.addAttribute("content", "client/instructor/instructor-course");
         return "client/layout/index";
     }
@@ -86,7 +83,7 @@ public class instructorController {
         User currentUser = userService.getCurrentUser();
 
         model.addAttribute("user", currentUser);
-        model.addAttribute("title", "Announcements");
+        model.addAttribute("title", "Thông báo");
         model.addAttribute("content", "client/instructor/instructor-announcements");
 
         return "client/layout/index";
@@ -97,17 +94,34 @@ public class instructorController {
             @RequestParam(name = "courseTitle", required = false) String courseTitle,
             Model model) {
 
+        // System.out.println("Course Titles = " + courseTitles);
+
         User currentUser = userService.getCurrentUser();
-        List<Course> courses = courseService.getCoursesByInstructorId(currentUser.getId());
 
+        // Lấy danh sách khóa học đã publish của instructor
+        List<Course> courses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(), "Publish");
         model.addAttribute("courses", courses);
-
-        // Gọi service để lấy dữ liệu theo courseTitle
-        List<Map<String, Object>> quizSubmissions = quizService.getQuizSubmissionsByCourseTitle(courseTitle);
-
         model.addAttribute("user", currentUser);
+
+        List<Map<String, Object>> quizSubmissions;
+
+        // Lấy quiz submissions dựa trên instructorId, không cần điều kiện courseTitles
+        if (courseTitle != null && !courseTitle.isEmpty()) {
+            quizSubmissions = quizService.getQuizSubmissionsByCourseTitle(courseTitle);
+        } else {
+            // Nếu không chọn gì, lấy toàn bộ quiz submissions theo instructorId
+            quizSubmissions = quizService.getQuizSubmissionsByInstructorId(currentUser.getId());
+        }
+
+        // if (quizSubmissions.isEmpty()) {
+        // System.out.println("Quiz submissions list is empty");
+        // } else {
+        // quizSubmissions.forEach(submission -> System.out.println("Submission: " +
+        // submission));
+        // }
+        model.addAttribute("courseTitles", courseTitle);
         model.addAttribute("quizSubmissions", quizSubmissions);
-        model.addAttribute("title", "Quiz Attempts");
+        model.addAttribute("title", "Lịch sử Quizz của học sinh");
         model.addAttribute("content", "client/instructor/instructor-quiz-attempts");
 
         return "client/layout/index";
