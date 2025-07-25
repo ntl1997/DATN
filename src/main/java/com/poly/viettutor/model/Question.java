@@ -1,7 +1,6 @@
 package com.poly.viettutor.model;
 
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,7 +31,7 @@ public class Question {
     private Long questionId;
 
     @ManyToOne
-    @JoinColumn(name = "quizId")
+    @JoinColumn(name = "QuizId")
     private Quiz quiz;
 
     @Column(columnDefinition = "NVARCHAR(MAX)")

@@ -1,5 +1,6 @@
 package com.poly.viettutor.controller;
 
+import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
@@ -49,12 +50,14 @@ public class QuizController {
         User user = userService.getCurrentUser();
         int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
         boolean quizLimitReached = submissionCount >= 3;
+        Course course = quiz.getModule().getCourse();
 
         model.addAttribute("quiz", quiz);
+        model.addAttribute("course", course);
         model.addAttribute("quizLimitReached", quizLimitReached); // ✅ truyền ra Thymeleaf để ẩn nút
         model.addAttribute("error", error != null && error); // ✅ để hiển thị lỗi nếu có
         model.addAttribute("title", "Chi tiết Quiz");
-        model.addAttribute("content", "client/quiz/quiz");
+        model.addAttribute("content", "client/learning/quiz");
         return "client/layout/index";
     }
 
@@ -137,7 +140,7 @@ public class QuizController {
         QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
                 .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
                 .orElse(null);
-
+        Course course = quiz.getModule().getCourse();
         int correctAnswers = 0;
         int incorrectAnswers = 0;
 
@@ -171,11 +174,12 @@ public class QuizController {
         model.addAttribute("optionMap", optionMap);
         model.addAttribute("questionMap", questionMap);
         model.addAttribute("quiz", quiz);
+        model.addAttribute("course", course);
         model.addAttribute("latestSubmission", latestSubmission);
         model.addAttribute("correctAnswers", correctAnswers);
         model.addAttribute("incorrectAnswers", incorrectAnswers);
         model.addAttribute("title", "Chi tiết Quiz");
-        model.addAttribute("content", "client/quiz/quiz-result");
+        model.addAttribute("content", "client/learning/quiz-result");
         return "client/layout/index";
     }
 }

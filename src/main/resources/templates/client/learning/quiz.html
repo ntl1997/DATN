@@ -4,11 +4,27 @@
     <div th:fragment="content">
       <div class="rbt-lesson-area bg-color-white">
         <div class="rbt-lesson-content-wrapper">
+          <div th:replace="~{client/learning/learning-sidebar :: learning-sidebar}"></div>
+
           <div class="rbt-lesson-rightsidebar overflow-hidden">
             <div class="lesson-top-bar">
               <div class="lesson-top-left">
-                <div class="rbt-lesson-toggle"></div>
+                <div class="rbt-lesson-toggle">
+                  <button class="lesson-toggle-active btn-round-white-opacity" title="Toggle Sidebar">
+                    <i class="feather-arrow-left"></i>
+                  </button>
+                </div>
                 <h5 th:text="${quiz.title}">Title Quiz</h5>
+              </div>
+              <div class="lesson-top-right">
+                <div class="rbt-btn-close">
+                  <a
+                    th:href="@{/course-details/{id}(id=${course.courseId})}"
+                    title="Go Back to Course"
+                    class="rbt-round-btn"
+                    ><i class="feather-x"></i
+                  ></a>
+                </div>
               </div>
             </div>
             <div class="inner">
@@ -17,29 +33,17 @@
                   <div class="quize-top-left">
                     <span>
                       Tổng điểm:
-                      <strong
-                        th:if="${correctAnswers != null}"
-                        th:text="${correctAnswers} + '/' + ${totalQuestions}"
+                      <strong th:if="${correctAnswers != null}" th:text="${correctAnswers} + '/' + ${totalQuestions}"
                         >1/10</strong
                       >
-                      <strong
-                        th:if="${correctAnswers == null}"
-                        th:text="${quiz.totalScore}"
-                        >1/10</strong
-                      >
+                      <strong th:if="${correctAnswers == null}" th:text="${quiz.totalScore}">1/10</strong>
                     </span>
                   </div>
                 </div>
                 <hr />
-                <div
-                  class="rbt-dashboard-table table-responsive mobile-table-750 mt--30 overflow-hidden"
-                >
+                <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30 overflow-hidden">
                   <form th:action="@{/quiz}" method="post">
-                    <input
-                      type="hidden"
-                      name="quizId"
-                      th:value="${quiz.quizId}"
-                    />
+                    <input type="hidden" name="quizId" th:value="${quiz.quizId}" />
                     <div
                       th:each="question, iterStat : ${quiz.questions}"
                       class="mb--80"
@@ -49,22 +53,12 @@
                         <h4>
                           <span th:text="${iterStat.index + 1} + '.'"></span>
                           <span th:text="${question.questionText}"></span>
-                          <span
-                            class="question-score"
-                            style="
-                              font-weight: normal;
-                              font-size: 0.95em;
-                              color: #888;
-                            "
-                          >
+                          <span class="question-score" style="font-weight: normal; font-size: 0.95em; color: #888">
                             (Điểm: <span th:text="${question.score}"></span>)
                           </span>
                         </h4>
                         <div class="row g-3">
-                          <div
-                            class="col-lg-6"
-                            th:each="op, opStat : ${question.options}"
-                          >
+                          <div class="col-lg-6" th:each="op, opStat : ${question.options}">
                             <p class="rbt-checkbox-wrapper mb--5">
                               <input
                                 type="radio"
@@ -105,16 +99,11 @@
                       >
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">Submit Quiz</span>
-                          <span class="btn-icon"
-                            ><i class="feather-arrow-right"></i
-                          ></span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                         </span>
                       </button>
 
-                      <p
-                        th:if="${quizLimitReached}"
-                        class="text-danger fw-bold mt--10"
-                      >
+                      <p th:if="${quizLimitReached}" class="text-danger fw-bold mt--10">
                         Bạn đã làm tối đa 3 lần. Vui lòng xem kết quả.
                       </p>
 
@@ -124,9 +113,7 @@
                       >
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">View Result</span>
-                          <span class="btn-icon"
-                            ><i class="feather-arrow-right"></i
-                          ></span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                         </span>
                       </a>
                     </div>
@@ -136,21 +123,14 @@
 
               <div class="bg-color-extra2 ptb--15 overflow-hidden">
                 <div class="rbt-button-group">
-                  <a
-                    class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"
-                    href="#"
-                  >
-                    <span class="btn-icon"
-                      ><i class="feather-arrow-left"></i
-                    ></span>
+                  <a class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity" href="#">
+                    <span class="btn-icon"><i class="feather-arrow-left"></i></span>
                     <span class="btn-text">Previous</span>
                   </a>
 
                   <a class="rbt-btn icon-hover btn-md" href="#">
                     <span class="btn-text">Next</span>
-                    <span class="btn-icon"
-                      ><i class="feather-arrow-right"></i
-                    ></span>
+                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                   </a>
                 </div>
               </div>
@@ -160,12 +140,7 @@
       </div>
 
       <div class="rbt-progress-parent">
-        <svg
-          class="rbt-back-circle svg-inner"
-          width="100%"
-          height="100%"
-          viewBox="-1 -1 102 102"
-        >
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
           <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
       </div>

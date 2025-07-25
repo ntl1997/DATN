@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="content">
+        <a class="close_side_menu" href="javascript:void(0);"></a>
+
+        <div class="rbt-page-banner-wrapper">
+            <!-- Start Banner BG Image  -->
+            <div class="rbt-banner-image"></div>
+            <!-- End Banner BG Image  -->
+        </div>
+
+        <!-- Start Card Style -->
+        <div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Start Dashboard Top  -->
+                        <div th:replace="~{client/instructor/instructor-banner :: instructor-banner}"
+                            sec:authorize="hasRole('ROLE_INSTRUCTOR')"></div>
+                        <div th:replace="~{client/student/student-banner :: student-banner}"
+                            sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"></div>
+                        <!-- End Dashboard Top  -->
+
+                        <div class="row g-5">
+                            <div class="col-lg-3">
+                                <!-- Start Dashboard Sidebar  -->
+                                <div th:replace="~{client/student/studentSidebar :: student-sidebar}"></div>
+                                <!-- End Dashboard Sidebar  -->
+                            </div>
+
+                            <div class="col-lg-9">
+                                <!-- Start Enrole Course  -->
+                                <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
+                                    <div class="content">
+                                        <div class="section-title">
+                                            <h4 class="rbt-title-style-3">Lịch sử Quizz của học sinh
+                                            </h4>
+                                        </div>
+
+
+                                        <!-- Start Filter -->
+                                        <div class="rbt-dashboard-filter-wrapper">
+                                            <div class="row g-5">
+                                                <form method="get" action="/instructor/instructor-quiz-attempts"
+                                                    id="courseFilterForm">
+                                                    <div class="row g-3 align-items-end">
+                                                        <!-- Courses Dropdown -->
+                                                        <div class="col-lg-5">
+                                                            <div class="filter-select rbt-modern-select">
+                                                                <span class="select-label d-block"></span>
+                                                                <!-- Dropdown đơn giản -->
+                                                                <select class="w-100" name="courseTitle"
+                                                                    title="Chọn khóa học...">
+                                                                    <option th:value="null">Tất cả khóa học</option>
+                                                                    <option th:each="course : ${courses}"
+                                                                        th:value="${course.title}"
+                                                                        th:text="${course.title}">
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Filter Button -->
+                                                        <div
+                                                            class="col-lg-2 d-flex align-items-end justify-content-center">
+                                                            <button type="submit"
+                                                                class="btn btn-primary rounded-pill px-5 py-3 fs-5 w-100">
+                                                                <i class="feather-filter me-2"></i> Lọc
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- End Filter -->
+
+                                        <hr class="mt--30">
+
+                                        <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30">
+                                            <table class="rbt-table table table-borderless">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Quiz</th>
+                                                        <th>Student</th>
+                                                        <th>Email</th>
+                                                        <th>Score</th>
+                                                        <th>Total</th>
+                                                        <th>Result</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="submission : ${quizSubmissions}">
+                                                        <td>
+                                                            <p class="b3 mb--5"
+                                                                th:text="${#dates.format(submission['submittedAt'], 'MMMM dd, yyyy')}">
+                                                                July 20, 2025</p>
+                                                        </td>
+                                                        <td>
+                                                            <span class="h6 mb--5"
+                                                                th:text="${submission['quizTitle']}">Quiz Title</span>
+                                                        </td>
+                                                        <td>
+                                                            <p class="b3" th:text="${submission['fullName']}">Student
+                                                                Name</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="b3" th:text="${submission['email']}">Student
+                                                                Name</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="b3" th:text="${submission['score']}">0</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="b3" th:text="${submission['totalScore']}">0</p>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                th:if="${submission['score'] != null and submission['totalScore'] != null and submission['score'] >= submission['totalScore'] / 2}"
+                                                                class="rbt-badge-5 bg-color-success-opacity color-success">Pass</span>
+                                                            <span
+                                                                th:if="${submission['score'] == null or submission['totalScore'] == null or submission['score'] < submission['totalScore'] / 2}"
+                                                                class="rbt-badge-5 bg-color-danger-opacity color-danger">Fail</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Enrole Course  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Card Style -->
+
+        <div class="rbt-separator-mid">
+            <div class="container">
+                <hr class="rbt-separator m-0">
+            </div>
+        </div>
+
+        <div class="rbt-progress-parent">
+            <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+                <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+            </svg>
+        </div>
+    </div>
+</body>
+
+</html>

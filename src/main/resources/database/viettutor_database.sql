@@ -632,14 +632,17 @@ GO
 INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
-    (1, N'Quiz Giới thiệu Python', 2, 15);
+    (1, N'Quiz Giới thiệu Python', 10, 15),
+    (3, N'Quiz HTML cơ bản', 10, 15);
 
 -- 24. Thêm 2 câu hỏi trắc nghiệm
 INSERT INTO Questions
     (QuizId, QuestionText, Score)
 VALUES
     (1, N'Python là ngôn ngữ thông dịch?', 1),
-    (1, N'Kiểu dữ liệu nào không có trong Python?', 1);
+    (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
+    (2, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
+    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1);
 
 -- 25. Đáp án cho câu hỏi 1
 INSERT INTO Options
@@ -656,6 +659,24 @@ VALUES
     (2, N'Tuple', 0),
     (2, N'Class', 0),
     (2, N'Pointer', 1);
+
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+    (3, N'<h1>', 1),
+    (3, N'<div>', 0),
+    (3, N'<title>', 0),
+    (3, N'<p>', 0);
+
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+    (4, N'<a>', 1),
+    (4, N'<link>', 0),
+    (4, N'<href>', 0),
+    (4, N'<img>', 0);
+
+INSERT INTO QuizSubmissions (QuizId, UserId, Score, SubmittedAt)
+VALUES (2, 3, 10, GETDATE());
+
 
 -- -- 27. Assignment cuối khóa Python
 -- INSERT INTO Assignments

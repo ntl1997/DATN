@@ -10,7 +10,6 @@ import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import com.poly.viettutor.model.User;
@@ -54,6 +53,7 @@ public class CourseService {
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
     private final OptionRepository optionRepository;
+    private final UserRepository userRepository;
 
     CourseService(CourseRepository courseRepository,
             CourseCategoryRepository courseCategoryRepository,
@@ -63,7 +63,8 @@ public class CourseService {
             CourseMaterialRepository courseMaterialRepository,
             QuizRepository quizRepository,
             QuestionRepository questionRepository,
-            OptionRepository optionRepository) {
+            OptionRepository optionRepository,
+            UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.courseCategoryRepository = courseCategoryRepository;
         this.categoryRepository = categoryRepository;
@@ -73,6 +74,7 @@ public class CourseService {
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.optionRepository = optionRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Course> findAll() {
@@ -382,9 +384,6 @@ public class CourseService {
 
         return result;
     }
-
-    @Autowired
-    private UserRepository userRepository;
 
     public void updateCourseStatus(Integer courseId, String status, String note, String email) {
         Optional<Course> optionalCourse = courseRepository.findById(courseId);
