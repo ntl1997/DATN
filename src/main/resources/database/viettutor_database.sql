@@ -638,7 +638,9 @@ INSERT INTO Questions
     (QuizId, QuestionText, Score)
 VALUES
     (1, N'Python là ngôn ngữ thông dịch?', 1),
-    (1, N'Kiểu dữ liệu nào không có trong Python?', 1);
+    (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
+    (2, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
+    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1);
 
 -- 25. Đáp án cho câu hỏi 1
 INSERT INTO Options
