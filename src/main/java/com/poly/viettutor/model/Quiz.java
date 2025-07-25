@@ -26,10 +26,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Quiz {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer quizId;
+    private Long quizId;
+
 
     @ManyToOne
     @JoinColumn(name = "moduleId")
@@ -49,6 +49,10 @@ public class Quiz {
     private Date createdAt = new Date();
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "quizId")
     private List<Question> questions;
+  
+    @OneToMany(mappedBy = "quiz")
+    private List<QuizSubmission> quizSubmissions;
 
 }

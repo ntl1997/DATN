@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body class="rbt-header-sticky">
+    <div th:fragment="content">
+      <div class="rbt-lesson-area bg-color-white">
+        <div class="rbt-lesson-content-wrapper">
+          <div class="rbt-lesson-leftsidebar">
+            <div class="rbt-course-feature-inner rbt-search-activation">
+              <div class="section-title">
+                <h4 class="rbt-title-style-3">Toàn bộ nội dung khóa học</h4>
+              </div>
+
+              <div class="lesson-search-wrapper">
+                <form action="#" class="rbt-search-style-1">
+                  <input
+                    class="rbt-search-active"
+                    type="text"
+                    placeholder="Tìm kiếm bài giảng"
+                  />
+                  <button class="search-btn disabled">
+                    <i class="feather-search"></i>
+                  </button>
+                </form>
+              </div>
+
+              <hr class="mt--10" />
+
+              <div
+                class="rbt-accordion-style rbt-accordion-02 for-right-content accordion"
+              >
+                <div class="accordion" id="accordionExampleb2">
+                  <div class="accordion-item card">
+                    <div
+                      class="accordion-item card"
+                      th:each="module, iterStat : ${course.modules}"
+                    >
+                      <h2
+                        class="accordion-header card-header"
+                        th:id="'heading-module-' + ${iterStat.index}"
+                      >
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          th:attr="data-bs-target='#collapse-module-' + ${iterStat.index}, aria-controls='collapse-module-' + ${iterStat.index}"
+                          aria-expanded="false"
+                          th:text="${module.moduleTitle}"
+                        ></button>
+                      </h2>
+                      <div
+                        class="accordion-collapse collapse"
+                        th:id="'collapse-module-' + ${iterStat.index}"
+                        th:attr="aria-labelledby='heading-module-' + ${iterStat.index}"
+                      >
+                        <div class="accordion-body card-body">
+                          <ul class="rbt-course-main-content liststyle">
+                            <li th:each="lecture : ${module.lectures}">
+                              <a
+                                href="#"
+                                th:attr="data-video-url=${lecture.videoUrl}"
+                              >
+                                <div class="course-content-left">
+                                  <i class="feather-play-circle"></i>
+                                  <span
+                                    class="text"
+                                    th:text="${lecture.lectureTitle}"
+                                    >Values and Variables</span
+                                  >
+                                </div>
+                                <div class="course-content-right">
+                                  <span
+                                    class="min-lable"
+                                    th:text="${lecture.duration + ' min'}"
+                                    >20 min</span
+                                  >
+                                  <span class="rbt-check unread"
+                                    ><i class="feather-circle"></i
+                                  ></span>
+                                </div>
+                              </a>
+                            </li>
+
+                            <li th:each="quiz : ${module.quizzes}">
+                              <a th:href="@{/quiz/{id}(id=${quiz.quizId})}">
+                                <div class="course-content-left">
+                                  <i class="feather-help-circle"></i>
+                                  <span class="text" th:text="${quiz.title}"
+                                    >Quiz</span
+                                  >
+                                </div>
+                                <div class="course-content-right">
+                                  <span
+                                    class="min-lable"
+                                    th:text="${quiz.timeLimit + ' min'}"
+                                    >15 min</span
+                                  >
+                                  <span class="rbt-check unread"
+                                    ><i class="feather-circle"></i
+                                  ></span>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rbt-lesson-rightsidebar overflow-hidden lesson-video">
+            <div class="lesson-top-bar">
+              <div class="lesson-top-left">
+                <div class="rbt-lesson-toggle">
+                  <button
+                    class="lesson-toggle-active btn-round-white-opacity"
+                    title="Toggle Sidebar"
+                  >
+                    <i class="feather-arrow-left"></i>
+                  </button>
+                </div>
+                <h5>
+                  Trọn bộ Vietstudy 2025: Hành trình từ con số 0 đến chuyên gia!
+                </h5>
+              </div>
+              <div class="lesson-top-right">
+                <div class="rbt-btn-close">
+                  <a
+                    th:href="@{/courses}"
+                    title="Go Back to Course"
+                    class="rbt-round-btn"
+                    ><i class="feather-x"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="inner">
+              <div class="plyr__video-embed rbtplayer">
+                <iframe
+                  id="lecturePlayer"
+                  width="100%"
+                  height="500"
+                  src=""
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="content">
+                <div class="section-title">
+                  <h4>Về bài học</h4>
+                  <p>
+                    Hãy cùng nhau phân tích những bản hit vĩ đại nhất trong quá
+                    khứ và tìm hiểu điều gì khiến chúng trở nên đặc biệt đến
+                    vậy.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-color-extra2 ptb--15 overflow-hidden">
+              <div class="rbt-button-group">
+                <a
+                  class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"
+                  href="#"
+                >
+                  <span class="btn-icon"
+                    ><i class="feather-arrow-left"></i
+                  ></span>
+                  <span class="btn-text">Previous</span>
+                </a>
+
+                <a class="rbt-btn icon-hover btn-md" href="#">
+                  <span class="btn-text">Next</span>
+                  <span class="btn-icon"
+                    ><i class="feather-arrow-right"></i
+                  ></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rbt-progress-parent">
+        <svg
+          class="rbt-back-circle svg-inner"
+          width="100%"
+          height="100%"
+          viewBox="-1 -1 102 102"
+        >
+          <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+      </div>
+    </div>
+    <div th:fragment="scripts">
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const links = document.querySelectorAll("[data-video-url]");
+          const player = document.getElementById("lecturePlayer");
+
+          console.log("Iframe DOM: ", player); // THÊM DÒNG NÀY
+
+          if (!player) {
+            console.error("Không tìm thấy iframe #lecturePlayer");
+            return;
+          }
+
+          links.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+              event.preventDefault();
+              const videoUrl = link.getAttribute("data-video-url");
+              console.log("Đã click vào bài giảng:", videoUrl);
+              player.setAttribute("src", videoUrl);
+            });
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>
