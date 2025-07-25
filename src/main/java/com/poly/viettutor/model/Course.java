@@ -69,12 +69,4 @@ public class Course {
     @Transient
     private int rating;
 
-    private String note; // Lý do (nếu có)
-
-    @ManyToOne
-    @JoinColumn(name = "approvedBy")
-    private User approvedBy;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date approvedAt;
 }
