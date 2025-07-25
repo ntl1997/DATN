@@ -1,16 +1,14 @@
 package com.poly.viettutor.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.CourseModule;
+import com.poly.viettutor.model.Quiz;
 
 @Repository
-public interface CourseModuleRepository extends JpaRepository<CourseModule, Integer> {
+public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
-    List<CourseModule> findByCourse(Course course);
+    void deleteByModule(CourseModule module);
 
 }
