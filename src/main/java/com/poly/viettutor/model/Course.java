@@ -66,4 +66,10 @@ public class Course {
     @Transient
     private int reviewCount;
 
+    @Transient
+    public int getRating() {
+        if (reviews == null || reviews.isEmpty())
+            return 0;
+        return (int) reviews.stream().mapToInt(Review::getRating).average().orElse(0);
+    }
 }
