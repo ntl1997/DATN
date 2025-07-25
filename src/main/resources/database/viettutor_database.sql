@@ -672,6 +672,9 @@ VALUES
     (4, N'<href>', 0),
     (4, N'<img>', 0);
 
+INSERT INTO QuizSubmissions (QuizId, UserId, Score, SubmittedAt)
+VALUES (2, 3, 8, GETDATE());
+
 
 -- -- 27. Assignment cuối khóa Python
 -- INSERT INTO Assignments
