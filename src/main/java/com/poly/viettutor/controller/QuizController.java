@@ -151,6 +151,13 @@ public class QuizController {
             }
         }
 
+         // ✅ Thêm đoạn này để tính totalScore động từ các câu hỏi
+        int totalScore = quiz.getQuestions().stream()
+                .mapToInt(Question::getScore)
+                .sum();
+        model.addAttribute("totalScore", totalScore); // ✅ Truyền vào model
+
+        // Tạo map hỗ trợ hiển thị
         Map<Long, Question> questionMap = new HashMap<>();
         for (Question q : this.questionService.findAll()) {
             questionMap.put(q.getQuestionId(), q);
