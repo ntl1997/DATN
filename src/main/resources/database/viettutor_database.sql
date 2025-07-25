@@ -630,7 +630,8 @@ GO
 INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
-    (1, N'Quiz Giới thiệu Python', 10, 15);
+    (1, N'Quiz Giới thiệu Python', 10, 15),
+    (3, N'Quiz HTML cơ bản', 10, 15);
 
 -- 24. Thêm 2 câu hỏi trắc nghiệm
 INSERT INTO Questions
