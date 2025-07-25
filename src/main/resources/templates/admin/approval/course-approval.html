@@ -39,6 +39,7 @@
                                         <th>Ngày Tạo</th>
                                         <th>Giảng Viên</th>
                                         <th>Ngày Duyệt</th>
+                                        <th>Ghi Chú</th>
                                         <th>Người Duyệt</th>
                                         <th>Trạng Thái</th>
                                         <th>Hành Động</th>
@@ -51,6 +52,7 @@
                                         <td th:text="${course.createdAt}"></td>
                                         <td th:text="${course.createdBy != null ? course.createdBy.fullname : 'N/A'}"></td>
                                         <td th:text="${course.approvedAt}"></td>
+                                        <td th:text="${course.note != null ? course.note : 'N/A'}"></td>
                                         <td th:text="${course.approvedBy != null ? course.approvedBy.fullname : 'N/A'}"></td>
                                         <td>
                                             <!-- Hiển thị trạng thái -->
@@ -77,10 +79,19 @@
                                             </div>
                                             <!-- Nếu trạng thái là pending -->
                                             <div th:if="${#strings.toLowerCase(course.status)} == 'pending'">
-                                                <form th:action="@{/admin/function/course-publish}" method="post" style="margin-top:5px;" 
-                                                    onsubmit="return confirm('Bạn có chắc muốn phê duyệt khoá học này?');">
+                                                <form th:action="@{/admin/function/course-publish}" method="post" style="display:inline;">
                                                     <input type="hidden" name="courseId" th:value="${course.courseId}" />
                                                     <button type="submit" class="btn btn-sm btn-success">Phê duyệt</button>
+                                                </form>
+                                                <button type="button" class="btn btn-sm btn-danger"
+                                                    th:attr="onclick=|showHideForm('reject-form-' + ${course.courseId})|">
+                                                    Từ chối
+                                                </button>
+                                                <form th:id="'reject-form-' + ${course.courseId}" th:action="@{/admin/function/course-reject}" method="post"
+                                                    style="display:none; margin-top:5px;">
+                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                                    <input type="text" name="note" placeholder="Lý do từ chối..." required style="width:120px;" />
+                                                    <button type="submit" class="btn btn-sm btn-primary">Xác nhận từ chối</button>
                                                 </form>
                                             </div>
                                             <!-- Nếu trạng thái là draft -->
@@ -89,10 +100,6 @@
                                             </div>
                                             <!-- Nếu trạng thái là hidden -->
                                             <div th:if="${#strings.toLowerCase(course.status)} == 'hidden'">
-                                                <span class="text-muted">Đã ẩn</span>
-                                                <div th:if="${course.note != null}">
-                                                    <small th:text="'Lý do: ' + ${course.note}"></small>
-                                                </div>
                                                 <form th:action="@{/admin/function/course-publish}" method="post" style="margin-top:5px;">
                                                     <input type="hidden" name="courseId" th:value="${course.courseId}" />
                                                     <button type="submit" class="btn btn-sm btn-warning">Bỏ Ẩn</button>
