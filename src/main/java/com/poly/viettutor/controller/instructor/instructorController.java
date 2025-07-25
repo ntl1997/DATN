@@ -2,7 +2,9 @@ package com.poly.viettutor.controller.instructor;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,12 +89,16 @@ public class instructorController {
     }
 
     @GetMapping("/instructor/instructor-quiz-attempts")
-    public String instructorQuizAttemps(Model model) {
+    public String instructorQuizAttempts(Model model) {
         User currentUser = userService.getCurrentUser();
 
+        List<Map<String, Object>> quizSubmissions = userService
+                .getQuizSubmissionsByInstructorId(currentUser.getId());
+
         model.addAttribute("user", currentUser);
+        model.addAttribute("quizSubmissions", quizSubmissions);
         model.addAttribute("title", "Quiz Attempts");
-        model.addAttribute("content", "client//instructor/instructor-quiz-attempts");
+        model.addAttribute("content", "client/instructor/instructor-quiz-attempts");
 
         return "client/layout/index";
     }
