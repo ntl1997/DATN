@@ -1,106 +1,107 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <body>
-    <div th:fragment="student-sidebar">
-      <!-- Start Dashboard Sidebar  -->
-      <div class="rbt-default-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
-        <div class="inner">
-          <div class="content-item-content">
-            <div class="rbt-default-sidebar-wrapper">
-              <div class="section-title mb--20">
-                <h6 class="rbt-title-style-2" th:text="'Xin chào, ' + ${user.fullname}"></h6>
-              </div>
-              <nav class="mainmenu-nav">
-                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                  <li>
-                    <a
-                      th:href="@{/student/student-dashboard}"
-                      sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
-                    >
-                      <i class="feather-home"></i><span>Bảng điều khiển</span>
-                    </a>
-                    <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
-                      <i class="feather-home"></i><span>Bảng điều khiển</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a th:href="@{/student/student-profile}">
-                      <i class="feather-user"></i><span>Thông tin của tôi</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a th:href="@{/student/student-enrolled-courses}">
-                      <i class="feather-book-open"></i><span>Các khóa học đã đăng ký</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a th:href="@{/student/student-wishlist}">
-                      <i class="feather-bookmark"></i><span>Danh sách yêu thích</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a th:href="@{/reviews}"> <i class="feather-star"></i><span>Đánh giá</span></a>
-                  </li>
-                  <li>
-                    <a th:href="@{/student/student-certificate}">
-                      <i class="feather feather-file"></i><span>Danh sách chứng chỉ</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a th:href="@{/student/student-order-history}">
-                      <i class="feather-shopping-bag"></i><span>Lịch sử đơn hàng</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
 
-              <div class="section-title mt--40 mb--20" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
-                <h6 class="rbt-title-style-2">Giảng viên</h6>
-              </div>
-
-              <!-- Menu cho Giảng viên -->
-              <nav class="mainmenu-nav" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
-                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                  <!-- Ẩn mục này chỉ hiển thị với giảng viên (ROLE_INSTRUCTOR) -->
-                  <li>
-                    <a th:href="@{/instructor/courses}">
-                      <i class="feather-monitor"></i><span>Khóa học của tôi</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a th:href="@{/instructor/announcements}">
-                      <i class="feather-volume-2"></i><span>Thông báo</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-
-              <div class="section-title mt--40 mb--20">
-                <h6 class="rbt-title-style-2">Người dùng</h6>
-              </div>
-
-              <nav class="mainmenu-nav">
-                <ul class="dashboard-mainmenu rbt-default-sidebar-list">
-                  <li>
-                    <a th:href="@{/student/student-settings}">
-                      <i class="feather-settings"></i>
-                      <span>Cài đặt</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a th:href="@{/logout}">
-                      <i class="feather-log-out"></i>
-                      <span>Đăng xuất</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+<body>
+  <div th:fragment="student-sidebar">
+    <!-- Start Dashboard Sidebar  -->
+    <div class="rbt-default-sidebar sticky-top rbt-shadow-box rbt-gradient-border">
+      <div class="inner">
+        <div class="content-item-content">
+          <div class="rbt-default-sidebar-wrapper">
+            <div class="section-title mb--20">
+              <h6 class="rbt-title-style-2" th:text="'Xin chào, ' + ${user.fullname}"></h6>
             </div>
+            <nav class="mainmenu-nav">
+              <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                <li>
+                  <a th:href="@{/student/student-dashboard}"
+                    sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')">
+                    <i class="feather-home"></i><span>Bảng điều khiển</span>
+                  </a>
+                  <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                    <i class="feather-home"></i><span>Bảng điều khiển</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{/student/student-profile}">
+                    <i class="feather-user"></i><span>Thông tin của tôi</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{/student/student-enrolled-courses}">
+                    <i class="feather-book-open"></i><span>Các khóa học đã đăng ký</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{/student/student-wishlist}">
+                    <i class="feather-bookmark"></i><span>Danh sách yêu thích</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{/reviews}"> <i class="feather-star"></i><span>Đánh giá</span></a>
+                </li>
+                <li>
+                  <a th:href="@{/student/student-certificate}">
+                    <i class="feather feather-file"></i><span>Danh sách chứng chỉ</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{/student/student-order-history}">
+                    <i class="feather-shopping-bag"></i><span>Lịch sử đơn hàng</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+            <div class="section-title mt--40 mb--20" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+              <h6 class="rbt-title-style-2">Giảng viên</h6>
+            </div>
+
+            <!-- Menu cho Giảng viên -->
+            <nav class="mainmenu-nav" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+              <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                <!-- Ẩn mục này chỉ hiển thị với giảng viên (ROLE_INSTRUCTOR) -->
+                <li>
+                  <a th:href="@{/instructor/courses}">
+                    <i class="feather-monitor"></i><span>Khóa học của tôi</span>
+                  </a>
+                </li>
+                <li><a href="instructor-quiz-attempts.html"><i class="feather-message-square"></i><span>Quiz
+                      Attempts</span></a></li>
+                <li>
+                  <a th:href="@{/instructor/announcements}">
+                    <i class="feather-volume-2"></i><span>Thông báo</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+            <div class="section-title mt--40 mb--20">
+              <h6 class="rbt-title-style-2">Người dùng</h6>
+            </div>
+
+            <nav class="mainmenu-nav">
+              <ul class="dashboard-mainmenu rbt-default-sidebar-list">
+                <li>
+                  <a th:href="@{/student/student-settings}">
+                    <i class="feather-settings"></i>
+                    <span>Cài đặt</span>
+                  </a>
+                </li>
+                <li>
+                  <a th:href="@{/logout}">
+                    <i class="feather-log-out"></i>
+                    <span>Đăng xuất</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
-      <!-- End Dashboard Sidebar  -->
     </div>
-  </body>
+    <!-- End Dashboard Sidebar  -->
+  </div>
+</body>
+
 </html>
