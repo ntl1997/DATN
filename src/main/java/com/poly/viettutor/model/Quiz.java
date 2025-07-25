@@ -19,17 +19,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "Quizzes")
 @Entity
+@Table(name = "Quizzes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Quiz {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizId;
-
 
     @ManyToOne
     @JoinColumn(name = "moduleId")
@@ -48,11 +48,10 @@ public class Quiz {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
+    // Quan hệ OneToMany, không cần @JoinColumn ở đây
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "quizId")
     private List<Question> questions;
-  
+
     @OneToMany(mappedBy = "quiz")
     private List<QuizSubmission> quizSubmissions;
-
 }

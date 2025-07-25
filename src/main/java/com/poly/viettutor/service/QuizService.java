@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,9 +85,12 @@ public class QuizService {
                 score += question.getScore();
             }
 
+            // Chuyển đổi questionId từ Integer sang Long nếu cần thiết
+            Long questionId = Long.valueOf(question.getQuestionId().longValue()); // Chuyển Integer sang Long
+
             QuizAnswer answer = QuizAnswer.builder()
                     .submission(submission)
-                    .questionId(question.getQuestionId())
+                    .questionId(questionId) // Sử dụng Long ở đây
                     .selectedOptionId(selectedOptionId)
                     .isCorrect(isCorrect)
                     .build();

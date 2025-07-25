@@ -1,10 +1,10 @@
 package com.poly.viettutor.model;
 
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.Transient;
 
 @Table(name = "Questions")
 @Entity
@@ -30,7 +31,7 @@ public class Question {
     private Integer questionId;
 
     @ManyToOne
-    @JoinColumn(name = "quizId")
+    // @JoinColumn đã được bỏ, vì đã có mappedBy trong Quiz
     private Quiz quiz;
 
     @Column(columnDefinition = "NVARCHAR(MAX)")
