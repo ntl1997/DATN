@@ -98,6 +98,9 @@ public class instructorController {
             Model model) {
 
         User currentUser = userService.getCurrentUser();
+        List<Course> courses = courseService.getCoursesByInstructorId(currentUser.getId());
+
+        model.addAttribute("courses", courses);
 
         // Gọi service để lấy dữ liệu theo courseTitle
         List<Map<String, Object>> quizSubmissions = quizService.getQuizSubmissionsByCourseTitle(courseTitle);
