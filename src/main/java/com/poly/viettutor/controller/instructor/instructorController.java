@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.EnrollmentService;
 import com.poly.viettutor.service.OrderDetailService;
+import com.poly.viettutor.service.QuizService;
 import com.poly.viettutor.service.UserService;
 
 @Controller
@@ -23,13 +25,15 @@ public class instructorController {
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
     private final OrderDetailService orderDetailService;
+    private final QuizService quizService;
 
     public instructorController(UserService userService, CourseService courseService,
-            EnrollmentService enrollmentService, OrderDetailService orderDetailService) {
+            EnrollmentService enrollmentService, OrderDetailService orderDetailService, QuizService quizService) {
         this.userService = userService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
         this.orderDetailService = orderDetailService;
+        this.quizService = quizService;
     }
 
     @GetMapping("/instructor/dashboard")
@@ -89,11 +93,14 @@ public class instructorController {
     }
 
     @GetMapping("/instructor/instructor-quiz-attempts")
-    public String instructorQuizAttempts(Model model) {
+    public String instructorQuizAttempts(
+            @RequestParam(name = "courseTitle", required = false) String courseTitle,
+            Model model) {
+
         User currentUser = userService.getCurrentUser();
 
-        List<Map<String, Object>> quizSubmissions = userService
-                .getQuizSubmissionsByInstructorId(currentUser.getId());
+        // Gọi service để lấy dữ liệu theo courseTitle
+        List<Map<String, Object>> quizSubmissions = quizService.getQuizSubmissionsByCourseTitle(courseTitle);
 
         model.addAttribute("user", currentUser);
         model.addAttribute("quizSubmissions", quizSubmissions);

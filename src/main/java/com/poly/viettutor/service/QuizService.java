@@ -5,15 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poly.viettutor.repository.QuizRepository;
 
 @Service
 public class QuizService {
-    @Autowired
-    private QuizRepository quizRepository;
+    private final QuizRepository quizRepository;
+
+    public QuizService(QuizRepository quizRepository) {
+        this.quizRepository = quizRepository;
+    }
 
     public List<Map<String, Object>> getQuizSubmissionsByCourseTitle(String courseTitle) {
         List<Object[]> rawResults = quizRepository.getQuizSubmissionsByCourseTitle(courseTitle);

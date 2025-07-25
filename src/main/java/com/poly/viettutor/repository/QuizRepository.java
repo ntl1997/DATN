@@ -18,20 +18,20 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     @Query(value = """
                 SELECT
-                    u.full_name,
+                    u.fullName,
                     u.email,
                     qz.title,
-                    qs.submitted_at,
+                    qs.submittedAt,
                     qs.score,
-                    qz.total_score,
-                    cm.module_title
-                FROM quiz_submissions qs
-                JOIN quizzes qz ON qs.quiz_id = qz.quiz_id
-                JOIN course_modules cm ON qz.module_id = cm.module_id
-                JOIN courses c ON cm.course_id = c.course_id
-                JOIN users u ON qs.user_id = u.user_id
+                    qz.totalScore,
+                    cm.moduleTitle
+                FROM QuizSubmissions qs
+                JOIN Quizzes qz ON qs.quizId = qz.quizId
+                JOIN CourseModules cm ON qz.moduleId = cm.moduleId
+                JOIN Courses c ON cm.courseId = c.courseId
+                JOIN Users u ON qs.userId = u.userId
                 WHERE c.title = :courseTitle
-                ORDER BY qs.submitted_at DESC
+                ORDER BY qs.submittedAt DESC
             """, nativeQuery = true)
     List<Object[]> getQuizSubmissionsByCourseTitle(@Param("courseTitle") String courseTitle);
 
