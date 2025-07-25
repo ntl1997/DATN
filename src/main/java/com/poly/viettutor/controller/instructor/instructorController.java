@@ -86,4 +86,15 @@ public class instructorController {
         return "client/layout/index";
     }
 
+    @GetMapping("/instructor/instructor-quiz-attempts")
+    public String instructorQuizAttemps(Model model) {
+        User currentUser = userService.getCurrentUser();
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("title", "Quiz Attempts");
+        model.addAttribute("content", "client//instructor/instructor-quiz-attempts");
+
+        return "client/layout/index";
+    }
+
 }
