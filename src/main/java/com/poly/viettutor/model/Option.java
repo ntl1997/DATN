@@ -24,8 +24,7 @@ public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer optionId;
-
+    private Long optionId;
 
     @ManyToOne
     @JoinColumn(name = "questionId")
