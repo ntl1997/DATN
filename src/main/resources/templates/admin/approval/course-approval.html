@@ -55,10 +55,10 @@
                                         <td>
                                             <!-- Hiển thị trạng thái -->
                                             <span th:classappend="'badge bg-' + 
-                                                (${course.status} == 'publish' ? 'success' : 
-                                                (${course.status} == 'pending' ? 'warning' : 
-                                                (${course.status} == 'draft' ? 'info' : 
-                                                (${course.status} == 'hidden' ? 'secondary' : 'success'))))"
+                                                (${#strings.toLowerCase(course.status)} == 'publish' ? 'success' : 
+                                                (${#strings.toLowerCase(course.status)} == 'pending' ? 'warning' : 
+                                                (${#strings.toLowerCase(course.status)} == 'draft' ? 'info' : 
+                                                (${#strings.toLowerCase(course.status)} == 'hidden' ? 'secondary' : 'light'))))"
                                                 th:text="${course.status}"></span>
                                         </td>
                                         <td>
