@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.poly.viettutor.service.CourseService;
+
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
@@ -25,14 +28,20 @@ public class AdminApprovalController {
     }
 
     @PostMapping("/course-hide")
-    public String hideCourse(@RequestParam Integer courseId, @RequestParam String note) {
-        courseService.updateCourseStatus(courseId, "hidden", note);
+    public String hideCourse(@RequestParam Integer courseId, @RequestParam String note, Principal principal) {
+        courseService.updateCourseStatus(courseId, "hidden", note, principal.getName());
         return "redirect:/admin/function/course-approval";
     }
 
     @PostMapping("/course-publish")
-    public String publishCourse(@RequestParam Integer courseId) {
-        courseService.updateCourseStatus(courseId, "publish", null);
+    public String publishCourse(@RequestParam Integer courseId, Principal principal) {
+        courseService.updateCourseStatus(courseId, "publish", null, principal.getName());
+        return "redirect:/admin/function/course-approval";
+    }
+
+    @PostMapping("/course-reject")
+    public String rejectCourse(@RequestParam Integer courseId, @RequestParam String note, Principal principal) {
+        courseService.updateCourseStatus(courseId, "draft", note, principal.getName());
         return "redirect:/admin/function/course-approval";
     }
 }
