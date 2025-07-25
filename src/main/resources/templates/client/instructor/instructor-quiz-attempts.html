@@ -48,15 +48,13 @@
                                                         <span class="select-label d-block">Courses</span>
                                                         <select class="w-100" data-live-search="true" title="All"
                                                             multiple data-size="7" data-actions-box="true"
-                                                            data-selected-text-format="count > 2">
-                                                            <option data-subtext="HTML">Web Design</option>
-                                                            <option data-subtext="Photoshop">Graphic</option>
-                                                            <option data-subtext="Career">English</option>
-                                                            <option data-subtext="Career">Spoken English</option>
-                                                            <option data-subtext="Experts">Art Painting</option>
-                                                            <option data-subtext="Experts">App Development</option>
-                                                            <option data-subtext="Experts">Web Application</option>
-                                                            <option data-subtext="Experts">Php Development</option>
+                                                            data-selected-text-format="count > 2" name="courses">
+
+                                                            <option th:each="course : ${courses}"
+                                                                th:value="${course.courseId}" th:text="${course.title}"
+                                                                th:data-subtext="${course.skillLevel}">
+                                                            </option>
+
                                                         </select>
                                                     </div>
                                                 </div>
