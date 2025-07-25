@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Table(name = "Options")
 @Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +26,7 @@ public class Option {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer optionId;
 
+
     @ManyToOne
     @JoinColumn(name = "questionId")
     private Question question;
@@ -33,5 +35,4 @@ public class Option {
     private String optionText;
 
     private Boolean isCorrect;
-
 }
