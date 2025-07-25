@@ -26,9 +26,9 @@ public class LessonController {
         }
         Course course = courseOpt.get();
         model.addAttribute("title", "Nội dung khóa học"); // tiêu đề trang (title)
-        model.addAttribute("content", "client/lesson"); // nội dung trang (phần content)
+        model.addAttribute("content", "client/learning/lesson"); // nội dung trang (phần content)
         model.addAttribute("course", course);
-        model.addAttribute("scripts", "client/lesson");
+        model.addAttribute("scripts", "client/learning/lesson");
         return "client/layout/index";
     }
 

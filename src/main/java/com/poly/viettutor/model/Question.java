@@ -17,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.Transient;
 
 @Table(name = "Questions")
 @Entity
@@ -32,7 +31,7 @@ public class Question {
     private Long questionId;
 
     @ManyToOne
-    // @JoinColumn đã được bỏ, vì đã có mappedBy trong Quiz
+    @JoinColumn(name = "QuizId")
     private Quiz quiz;
 
     @Column(columnDefinition = "NVARCHAR(MAX)")
