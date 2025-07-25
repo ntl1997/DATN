@@ -1,13 +1,19 @@
 package com.poly.viettutor.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import jakarta.validation.Valid;
+import com.poly.viettutor.model.Course;
+import com.poly.viettutor.model.CourseModule;
+import com.poly.viettutor.model.Lecture;
+import com.poly.viettutor.model.Option;
+import com.poly.viettutor.model.Question;
+import com.poly.viettutor.model.Quiz;
+
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +26,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CourseDTO {
 
+    private Integer courseId;
+
     @NotBlank(message = "Tiêu đề không được để trống!")
     private String title;
 
@@ -29,8 +37,8 @@ public class CourseDTO {
     @NotBlank(message = "Nội dung chi tiết không được để trống!")
     private String overview;
 
-    @NotNull(message = "Giá tiền không được để trống!")
-    @PositiveOrZero(message = "Giá tiền phải lớn hơn hoặc btrống!")
+    // @NotNull(message = "Giá tiền không được để trống!")
+    @PositiveOrZero(message = "Giá tiền phải lớn hơn hoặc trống!")
     private Double price;
 
     @Builder.Default
@@ -57,9 +65,69 @@ public class CourseDTO {
     @NotEmpty(message = "Chọn ít nhất một danh mục!")
     private List<Integer> categoryIds;
 
-    @NotEmpty(message = "Khóa học phải có ít nhất 1 chương!")
-    private List<@Valid ModuleDTO> modules;
+    private List<ModuleDTO> modules;
 
-    private List<MaterialDTO> materials;
+    public CourseDTO toDTO(Course course) {
+        return CourseDTO.builder()
+                .courseId(course.getCourseId())
+                .title(course.getTitle())
+                .description(course.getDescription())
+                .overview(course.getOverview())
+                .price(course.getPrice())
+                .discount(course.getDiscount())
+                .courseImage(course.getCourseImage())
+                .demoVideoUrl(course.getDemoVideoUrl())
+                .status(course.getStatus())
+                .skillLevel(course.getSkillLevel())
+                .hasCertificate(course.getHasCertificate())
+                .language(course.getLanguage())
+                .categoryIds(course.getCourseCategories()
+                        .stream().map(cc -> cc.getCategory().getCategoryId()).collect(Collectors.toList()))
+                .modules(course.getModules().stream().map(this::mapModule).toList())
+                .build();
+    }
+
+    private ModuleDTO mapModule(CourseModule module) {
+        return ModuleDTO.builder()
+                .moduleId(module.getModuleId())
+                .moduleTitle(module.getModuleTitle())
+                .lectures(module.getLectures().stream().map(this::mapLecture).toList())
+                .quizzes(module.getQuizzes().stream().map(this::mapQuiz).toList())
+                .build();
+    }
+
+    private LectureDTO mapLecture(Lecture lecture) {
+        return LectureDTO.builder()
+                .lectureTitle(lecture.getLectureTitle())
+                .content(lecture.getContent())
+                .videoUrl(lecture.getVideoUrl())
+                .duration(lecture.getDuration())
+                .build();
+    }
+
+    private QuizDTO mapQuiz(Quiz quiz) {
+        return QuizDTO.builder()
+                .title(quiz.getTitle())
+                .timeLimit(quiz.getTimeLimit())
+                .totalScore(quiz.getTotalScore().doubleValue())
+                .quizType(quiz.getQuizType())
+                .questions(quiz.getQuestions().stream().map(this::mapQuestion).toList())
+                .build();
+    }
+
+    private QuestionDTO mapQuestion(Question question) {
+        return QuestionDTO.builder()
+                .questionText(question.getQuestionText())
+                .score(question.getScore().doubleValue())
+                .options(question.getOptions().stream().map(this::mapOption).toList())
+                .build();
+    }
+
+    private OptionDTO mapOption(Option option) {
+        return OptionDTO.builder()
+                .optionText(option.getOptionText())
+                .isCorrect(option.getIsCorrect())
+                .build();
+    }
 
 }

@@ -25,16 +25,23 @@
             <!-- Start Course Field Wrapper  -->
             <div class="rbt-course-field-wrapper rbt-default-form">
               <div class="course-field mb--15">
-                <label for="field-1" th:unless="${#fields.hasErrors('title')}">Tiêu đề khóa học * </label>
-                <label for="field-1" th:errors="*{title}" class="text-danger"></label>
-                <input th:field="*{title}" id="field-1" type="text" placeholder="Tiêu đề của khóa học" />
+                <label for="course-title" th:unless="${#fields.hasErrors('title')}">Tiêu đề khóa học * </label>
+                <label for="course-title" th:errors="*{title}" class="text-danger"></label>
+                <input th:field="*{title}" id="course-title" type="text" placeholder="Tiêu đề của khóa học" />
                 <small class="d-block mt_dec--5"> <i class="feather-info"></i> Tiêu đề nên để 30 ký tự. </small>
               </div>
 
               <div class="course-field mb--15">
-                <label for="field-2" th:unless="${#fields.hasErrors('description')}">Mô tả khóa học * </label>
-                <label for="field-2" th:errors="*{description}" class="text-danger"></label>
-                <input th:field="*{description}" id="field-2" type="text" placeholder="Mô tả ngắn gọn khóa học" />
+                <label for="course-description" th:unless="${#fields.hasErrors('description')}"
+                  >Mô tả khóa học *
+                </label>
+                <label for="course-description" th:errors="*{description}" class="text-danger"></label>
+                <input
+                  th:field="*{description}"
+                  id="course-description"
+                  type="text"
+                  placeholder="Mô tả ngắn gọn khóa học"
+                />
                 <small class="d-block mt_dec--5">
                   <i class="feather-info"></i> Mô tả khóa học nên viết ngắn gọn.
                 </small>
@@ -78,10 +85,10 @@
               <hr class="mt--10 mb--20" />
 
               <div class="course-field mb--20">
-                <label for="field-4" th:unless="${#fields.hasErrors('skillLevel')}">Trình độ *</label>
-                <label for="field-4" th:errors="*{skillLevel}" class="text-danger"></label>
+                <label for="skillLevel" th:unless="${#fields.hasErrors('skillLevel')}">Trình độ *</label>
+                <label for="skillLevel" th:errors="*{skillLevel}" class="text-danger"></label>
                 <div class="rbt-modern-select bg-transparent height-50 mb--10">
-                  <select th:field="*{skillLevel}" class="w-100" data-live-search="true" id="field-4">
+                  <select th:field="*{skillLevel}" class="w-100" data-live-search="true" id="skillLevel">
                     <option th:value="__NULL__">Chọn trình độ khóa học</option>
                     <option th:value="Beginner">Cơ bản</option>
                     <option th:value="Intermediate">Trung cấp</option>
@@ -133,6 +140,20 @@
                   </select>
                 </div>
                 <small class="d-block mt_dec--5"> <i class="feather-info"></i> Các danh mục khóa học. </small>
+              </div>
+
+              <div class="course-field mb--15">
+                <label for="hasCertificate" th:unless="${#fields.hasErrors('hasCertificate')}">Cấp chứng chỉ *</label>
+                <label for="hasCertificate" th:errors="*{hasCertificate}" class="text-danger">
+                  Hãy chọn có hoặc không cấp chứng chỉ!
+                </label>
+                <div class="rbt-modern-select bg-transparent height-50 mb--10">
+                  <select th:field="*{hasCertificate}" id="hasCertificate" class="w-100" data-live-search="true">
+                    <option th:value="true">Có cấp chứng chỉ</option>
+                    <option th:value="false">Không cấp chứng chỉ</option>
+                  </select>
+                </div>
+                <small class="d-block mt_dec--5"> <i class="feather-info"></i> Có/không cấp chứng chỉ. </small>
               </div>
 
               <hr class="mt--10 mb--20" />

@@ -64,12 +64,10 @@ public class Course {
     private List<CourseCategory> courseCategories;
 
     @Transient
-    private int reviewCount;
+    public int getReviewCount() {
+        return reviews != null ? reviews.size() : 0;
+    }
 
     @Transient
-    public int getRating() {
-        if (reviews == null || reviews.isEmpty())
-            return 0;
-        return (int) reviews.stream().mapToInt(Review::getRating).average().orElse(0);
-    }
+    private int rating;
 }

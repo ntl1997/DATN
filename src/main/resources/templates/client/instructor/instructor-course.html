@@ -71,6 +71,34 @@
                               <span class="title">Đang chờ phê duyệt</span>
                             </a>
                           </li>
+                          <li role="presentation">
+                            <a
+                              href="#"
+                              class="tab-button"
+                              id="draft-tab-4"
+                              data-bs-toggle="tab"
+                              data-bs-target="#draft-4"
+                              role="tab"
+                              aria-controls="draft-4"
+                              aria-selected="false"
+                            >
+                              <span class="title">Bản nháp</span>
+                            </a>
+                          </li>
+                          <li role="presentation">
+                            <a
+                              href="#"
+                              class="tab-button"
+                              id="hidden-tab-4"
+                              data-bs-toggle="tab"
+                              data-bs-target="#hidden-4"
+                              role="tab"
+                              aria-controls="hidden-4"
+                              aria-selected="false"
+                            >
+                              <span class="title">Đang bị ẩn</span>
+                            </a>
+                          </li>
                         </ul>
                       </div>
 
@@ -83,7 +111,7 @@
                         >
                           <div class="row g-5">
                             <!-- Lặp qua danh sách khóa học đã approved -->
-                            <div class="col-lg-4 col-md-6 col-12" th:each="course : ${approvedCourses}">
+                            <div class="col-lg-4 col-md-6 col-12" th:each="course : ${publishCourses}">
                               <div class="rbt-card variation-01 rbt-hover">
                                 <!-- Ảnh khóa học -->
                                 <div class="rbt-card-img">
@@ -97,17 +125,23 @@
                                   <div class="rbt-card-top">
                                     <div class="rbt-review">
                                       <div class="rating">
-                                        <!-- Hiển thị sao vàng theo số nguyên -->
-                                        <i
-                                          class="fas fa-star"
-                                          th:each="star : ${#numbers.sequence(1, T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
 
-                                        <!-- Nếu muốn có sao rỗng cho đủ 5 -->
-                                        <i
-                                          class="far fa-star"
-                                          th:each="star : ${#numbers.sequence(1, 5 - T(java.lang.Math).floor(course.rating))}"
-                                        ></i>
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
                                       </div>
                                       <!-- Số lượng đánh giá -->
                                       <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
@@ -166,7 +200,7 @@
                                     <!-- Nút sửa khóa học -->
                                     <a
                                       class="rbt-btn-link left-icon"
-                                      th:href="@{'/instructor/course/edit/' + ${course.courseId}}"
+                                      th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
                                     >
                                       <i class="feather-edit"></i> Edit
                                     </a>
@@ -189,23 +223,35 @@
                                 </div>
                                 <div class="rbt-card-body">
                                   <div class="rbt-card-top">
-                                    <!-- <div class="rbt-review">
-                                                                        <div class="rating">
-                                                                            <i class="fas fa-star"></i>
-                                                                            <i class="fas fa-star"></i>
-                                                                            <i class="fas fa-star"></i>
-                                                                            <i class="fas fa-star"></i>
-                                                                            <i class="fas fa-star"></i>
-                                                                        </div>
-                                                                        <span class="rating-count"> (3 Reviews)</span> -->
-                                    <!-- giữ nguyên -->
-                                    <!-- </div>
-                                                                    <div class="rbt-bookmark-btn">
-                                                                        <a class="rbt-round-btn" title="Bookmark"
-                                                                            href="#">
-                                                                            <i class="feather-bookmark"></i>
-                                                                        </a>
-                                                                    </div> -->
+                                    <div class="rbt-review">
+                                      <div class="rating">
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
+
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
+                                      </div>
+                                      <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
+                                        (0 Reviews)
+                                      </span>
+                                    </div>
+                                    <div class="rbt-bookmark-btn">
+                                      <a class="rbt-round-btn" title="Bookmark" href="#"
+                                        ><i class="feather-bookmark"></i
+                                      ></a>
+                                    </div>
                                   </div>
                                   <h4 class="rbt-card-title">
                                     <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}"
@@ -213,31 +259,220 @@
                                     >
                                   </h4>
                                   <ul class="rbt-meta">
-                                    <li><i class="feather-book"></i>20 Lessons</li>
-                                    <!-- giữ nguyên -->
-                                    <!-- <li><i class="feather-users"></i>30 Students</li> -->
-                                    <!-- giữ nguyên -->
+                                    <li>
+                                      <i class="feather-book"></i>
+                                      <span th:text="${course.modules.size()} + ' Lessons'">0 Lessons</span>
+                                    </li>
+                                    <li>
+                                      <i class="feather-users"></i>
+                                      <span th:text="${course.enrollments.size()} + ' Students'">0 Students</span>
+                                    </li>
                                   </ul>
 
                                   <div class="rbt-card-bottom">
                                     <div class="rbt-price">
+                                      <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
+                                        th:style="'font-size: 2.2rem;'"
                                         th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
-                                        style="font-size: 2.2rem"
                                       >
                                       </span>
+
+                                      <!-- Hiển thị giá gốc nếu có giảm giá -->
                                       <span
                                         class="off-price"
                                         th:if="${course.discount > 0}"
+                                        th:style="'font-size: 1.4rem; text-decoration: line-through; color: #999;'"
                                         th:text="${#numbers.formatDecimal(course.price / (1 - (course.discount / 100)), 0, 'COMMA', 0, 'POINT')} + ' đ'"
-                                        style="font-size: 1.2rem; text-decoration: line-through; color: #999"
                                       >
                                       </span>
                                     </div>
                                     <a
                                       class="rbt-btn-link left-icon"
-                                      th:href="@{'/instructor/course/edit/' + ${course.courseId}}"
+                                      th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
+                                    >
+                                      <i class="feather-edit"></i> Edit
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End Single Course -->
+                          </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="draft-4" role="tabpanel" aria-labelledby="draft-tab-4">
+                          <div class="row g-5">
+                            <!-- Start Single Course -->
+                            <div class="col-lg-4 col-md-6 col-12" th:each="course : ${draftCourses}">
+                              <div class="rbt-card variation-01 rbt-hover">
+                                <div class="rbt-card-img">
+                                  <a th:href="@{'/course-details/' + ${course.courseId}}">
+                                    <img th:src="@{${course.courseImage}}" alt="Card image" />
+                                  </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                  <div class="rbt-card-top">
+                                    <div class="rbt-review">
+                                      <div class="rating">
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
+
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
+                                      </div>
+                                      <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
+                                        (0 Reviews)
+                                      </span>
+                                    </div>
+                                    <div class="rbt-bookmark-btn">
+                                      <a class="rbt-round-btn" title="Bookmark" href="#"
+                                        ><i class="feather-bookmark"></i
+                                      ></a>
+                                    </div>
+                                  </div>
+                                  <h4 class="rbt-card-title">
+                                    <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}"
+                                      >Course Title</a
+                                    >
+                                  </h4>
+                                  <ul class="rbt-meta">
+                                    <li>
+                                      <i class="feather-book"></i>
+                                      <span th:text="${course.modules.size()} + ' Lessons'">0 Lessons</span>
+                                    </li>
+                                    <li>
+                                      <i class="feather-users"></i>
+                                      <span th:text="${course.enrollments.size()} + ' Students'">0 Students</span>
+                                    </li>
+                                  </ul>
+
+                                  <div class="rbt-card-bottom">
+                                    <div class="rbt-price">
+                                      <!-- Hiển thị giá hiện tại -->
+                                      <span
+                                        class="current-price"
+                                        th:style="'font-size: 2.2rem;'"
+                                        th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                      >
+                                      </span>
+
+                                      <!-- Hiển thị giá gốc nếu có giảm giá -->
+                                      <span
+                                        class="off-price"
+                                        th:if="${course.discount > 0}"
+                                        th:style="'font-size: 1.4rem; text-decoration: line-through; color: #999;'"
+                                        th:text="${#numbers.formatDecimal(course.price / (1 - (course.discount / 100)), 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                      >
+                                      </span>
+                                    </div>
+                                    <a
+                                      class="rbt-btn-link left-icon"
+                                      th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
+                                    >
+                                      <i class="feather-edit"></i> Edit
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End Single Course -->
+                          </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="hidden-4" role="tabpanel" aria-labelledby="hidden-tab-4">
+                          <div class="row g-5">
+                            <!-- Start Single Course -->
+                            <div class="col-lg-4 col-md-6 col-12" th:each="course : ${hiddenCourses}">
+                              <div class="rbt-card variation-01 rbt-hover">
+                                <div class="rbt-card-img">
+                                  <a th:href="@{'/course-details/' + ${course.courseId}}">
+                                    <img th:src="@{${course.courseImage}}" alt="Card image" />
+                                  </a>
+                                </div>
+                                <div class="rbt-card-body">
+                                  <div class="rbt-card-top">
+                                    <div class="rbt-review">
+                                      <div class="rating">
+                                        <th:block
+                                          th:with="fullStars=${T(java.lang.Math).floor(course.rating)}, emptyStars=${5 - T(java.lang.Math).floor(course.rating)}"
+                                        >
+                                          <!-- Hiển thị sao đầy -->
+                                          <i
+                                            class="fas fa-star"
+                                            th:each="star : ${#numbers.sequence(1, fullStars)}"
+                                            th:if="${fullStars > 0}"
+                                          ></i>
+
+                                          <!-- Hiển thị sao rỗng -->
+                                          <i
+                                            class="far fa-star"
+                                            th:each="star : ${#numbers.sequence(1, emptyStars)}"
+                                            th:if="${emptyStars > 0}"
+                                          ></i>
+                                        </th:block>
+                                      </div>
+                                      <span class="rating-count" th:text="'(' + ${course.reviewCount} + ' Reviews)'">
+                                        (0 Reviews)
+                                      </span>
+                                    </div>
+                                    <div class="rbt-bookmark-btn">
+                                      <a class="rbt-round-btn" title="Bookmark" href="#"
+                                        ><i class="feather-bookmark"></i
+                                      ></a>
+                                    </div>
+                                  </div>
+                                  <h4 class="rbt-card-title">
+                                    <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}"
+                                      >Course Title</a
+                                    >
+                                  </h4>
+                                  <ul class="rbt-meta">
+                                    <li>
+                                      <i class="feather-book"></i>
+                                      <span th:text="${course.modules.size()} + ' Lessons'">0 Lessons</span>
+                                    </li>
+                                    <li>
+                                      <i class="feather-users"></i>
+                                      <span th:text="${course.enrollments.size()} + ' Students'">0 Students</span>
+                                    </li>
+                                  </ul>
+
+                                  <div class="rbt-card-bottom">
+                                    <div class="rbt-price">
+                                      <!-- Hiển thị giá hiện tại -->
+                                      <span
+                                        class="current-price"
+                                        th:style="'font-size: 2.2rem;'"
+                                        th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                      >
+                                      </span>
+
+                                      <!-- Hiển thị giá gốc nếu có giảm giá -->
+                                      <span
+                                        class="off-price"
+                                        th:if="${course.discount > 0}"
+                                        th:style="'font-size: 1.4rem; text-decoration: line-through; color: #999;'"
+                                        th:text="${#numbers.formatDecimal(course.price / (1 - (course.discount / 100)), 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                      >
+                                      </span>
+                                    </div>
+                                    <a
+                                      class="rbt-btn-link left-icon"
+                                      th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
                                     >
                                       <i class="feather-edit"></i> Edit
                                     </a>

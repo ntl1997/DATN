@@ -1,7 +1,6 @@
 package com.poly.viettutor.controller.instructor;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.poly.viettutor.model.Course;
-import com.poly.viettutor.model.Review;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.EnrollmentService;
@@ -59,45 +57,19 @@ public class instructorController {
     @GetMapping("/instructor/courses")
     public String instructorCourses(Model model) {
         User currentUser = userService.getCurrentUser();
-
-        if (currentUser != null) {
-            model.addAttribute("name", currentUser.getFullname());
-
-            List<Course> approvedCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
-                    "approved");
-            List<Course> pendingCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
-                    "pending");
-
-            // Tính review count và rating cho approvedCourses
-            for (Course course : approvedCourses) {
-                List<Review> reviews = course.getReviews();
-                int reviewCount = reviews.size();
-                double avgRating = reviewCount > 0
-                        ? reviews.stream().mapToInt(Review::getRating).average().orElse(0)
-                        : 0;
-                course.setReviewCount(reviewCount);
-                course.setRating((int) avgRating);
-            }
-
-            // Tính review count và rating cho pendingCourses
-            for (Course course : pendingCourses) {
-                List<Review> reviews = course.getReviews();
-                int reviewCount = reviews.size();
-                double avgRating = reviewCount > 0
-                        ? reviews.stream().mapToInt(Review::getRating).average().orElse(0)
-                        : 0;
-                course.setReviewCount(reviewCount);
-                course.setRating((int) avgRating);
-            }
-            model.addAttribute("user", currentUser);
-            model.addAttribute("approvedCourses", approvedCourses);
-            model.addAttribute("pendingCourses", pendingCourses);
-        } else {
-            model.addAttribute("name", "Unknown");
-            model.addAttribute("approvedCourses", Collections.emptyList());
-            model.addAttribute("pendingCourses", Collections.emptyList());
-        }
-
+        List<Course> publishCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                "publish");
+        List<Course> pendingCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                "pending");
+        List<Course> draftCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                "draft");
+        List<Course> hiddenCourses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(),
+                "hidden");
+        model.addAttribute("user", currentUser);
+        model.addAttribute("publishCourses", publishCourses);
+        model.addAttribute("pendingCourses", pendingCourses);
+        model.addAttribute("draftCourses", draftCourses);
+        model.addAttribute("hiddenCourses", hiddenCourses);
         model.addAttribute("title", "My Courses");
         model.addAttribute("content", "client/instructor/instructor-course");
         return "client/layout/index";
