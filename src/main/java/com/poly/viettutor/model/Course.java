@@ -66,7 +66,4 @@ public class Course {
     @Transient
     private int reviewCount;
 
-    @Transient
-    private int rating;
-
 }
