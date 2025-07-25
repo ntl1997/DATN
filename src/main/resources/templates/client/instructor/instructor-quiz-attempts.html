@@ -53,6 +53,7 @@
                                                                 <!-- Dropdown đơn giản -->
                                                                 <select class="w-100" name="courseTitle"
                                                                     title="Chọn khóa học...">
+                                                                    <option th:value="null">Tất cả khóa học</option>
                                                                     <option th:each="course : ${courses}"
                                                                         th:value="${course.title}"
                                                                         th:text="${course.title}">
