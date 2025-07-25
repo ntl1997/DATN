@@ -53,6 +53,7 @@ public class CourseService {
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
     private final OptionRepository optionRepository;
+    private final UserRepository userRepository;
 
     CourseService(CourseRepository courseRepository,
             CourseCategoryRepository courseCategoryRepository,
@@ -62,7 +63,8 @@ public class CourseService {
             CourseMaterialRepository courseMaterialRepository,
             QuizRepository quizRepository,
             QuestionRepository questionRepository,
-            OptionRepository optionRepository) {
+            OptionRepository optionRepository,
+            UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.courseCategoryRepository = courseCategoryRepository;
         this.categoryRepository = categoryRepository;
@@ -72,6 +74,7 @@ public class CourseService {
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.optionRepository = optionRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Course> findAll() {
@@ -380,6 +383,21 @@ public class CourseService {
         result.put("data", studentCounts);
 
         return result;
+    }
+
+    public void updateCourseStatus(Integer courseId, String status, String note, String email) {
+        Optional<Course> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isPresent()) {
+            Course course = optionalCourse.get();
+            course.setStatus(status);
+            course.setNote(note);
+            course.setUpdatedAt(new Date());
+            // Lấy user thực hiện thao tác
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            userOpt.ifPresent(user -> course.setApprovedBy(user));
+            course.setApprovedAt(new Date());
+            courseRepository.save(course);
+        }
     }
 
 }
