@@ -1,7 +1,5 @@
 package com.poly.viettutor.controller.instructor;
 
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,6 @@ import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.EnrollmentService;
-import com.poly.viettutor.service.OrderDetailService;
 import com.poly.viettutor.service.QuizService;
 import com.poly.viettutor.service.UserService;
 
@@ -24,15 +21,13 @@ public class instructorController {
     private final UserService userService;
     private final CourseService courseService;
     private final EnrollmentService enrollmentService;
-    private final OrderDetailService orderDetailService;
     private final QuizService quizService;
 
     public instructorController(UserService userService, CourseService courseService,
-            EnrollmentService enrollmentService, OrderDetailService orderDetailService, QuizService quizService) {
+            EnrollmentService enrollmentService, QuizService quizService) {
         this.userService = userService;
         this.courseService = courseService;
         this.enrollmentService = enrollmentService;
-        this.orderDetailService = orderDetailService;
         this.quizService = quizService;
     }
 

@@ -56,6 +56,7 @@ public class User {
     @Column(name = "PasswordHash", nullable = false)
     private String password;
 
+    @Builder.Default
     @Column(name = "CreatedAt", nullable = false)
     private Date createdAt = new Date();
 
@@ -79,6 +80,7 @@ public class User {
             joinColumns = @JoinColumn(name = "UserId"), // FK đến bảng User
             inverseJoinColumns = @JoinColumn(name = "RoleId") // FK đến bảng Role
     )
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "createdBy")

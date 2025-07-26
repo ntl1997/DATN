@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Quiz;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
