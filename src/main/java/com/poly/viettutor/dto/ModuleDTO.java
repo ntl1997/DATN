@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ModuleDTO {
 
-    private Integer moduleId;
+    private Long moduleId;
 
     @NotBlank(message = "Tiêu đề chương không được để trống!")
     private String moduleTitle;

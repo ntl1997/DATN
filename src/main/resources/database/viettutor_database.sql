@@ -17,8 +17,6 @@ GO
 
 -- Create a new database called 'viettutor'
 -- Connect to the 'master' database to run this snippet
-USE master
-GO
 -- Create the new database if it does not exist already
 IF NOT EXISTS (
     SELECT [name]
@@ -514,8 +512,14 @@ VALUES
     (N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'image.png', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
     (N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 400000, 10, N'image.png', N'Publish', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
     (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://short.com.vn/08Wa', N'Publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
-    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao');
-
+    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao'),
+    (
+    N'Phân Tích Dữ Liệu Cho Người Mới Bắt Đầu', N'Học cách xử lý và phân tích dữ liệu với Python và Excel.', N'Khóa học này giúp bạn hiểu các khái niệm cơ bản về phân tích dữ liệu, thực hành với các công cụ như Pandas và biểu đồ trực quan.', 600000, 20, N'https://img-cdn.com/data-analysis.jpg', N'Publish', 2, GETDATE(), GETDATE(),
+    N'https://youtu.be/abcdefg',
+    1,
+    N'Tiếng Việt',
+    N'Cơ bản'
+)
 -- 7. CourseCategories (phụ thuộc Courses + Categories)
 INSERT INTO CourseCategories
     (CourseId, CategoryId)
@@ -529,8 +533,8 @@ INSERT INTO CourseModules
 VALUES
     (1, N'Giới thiệu Python', 1),
     (1, N'Cấu trúc điều kiện và vòng lặp', 2),
-    (2, N'Cơ bản HTML', 1);
-
+    (2, N'Cơ bản HTML', 1),
+    (5, N'Giới thiệu về Phân tích Dữ liệu', 1);
 -- 9. Lectures (phụ thuộc CourseModules)
 INSERT INTO Lectures
     (
@@ -633,7 +637,8 @@ INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
     (1, N'Quiz Giới thiệu Python', 10, 15),
-    (3, N'Quiz HTML cơ bản', 10, 15);
+    (3, N'Quiz HTML cơ bản', 10, 15),
+    (4, N'Quiz Giới thiệu Phân tích Dữ liệu', 10, 15);
 
 -- 24. Thêm 2 câu hỏi trắc nghiệm
 INSERT INTO Questions
@@ -642,7 +647,9 @@ VALUES
     (1, N'Python là ngôn ngữ thông dịch?', 1),
     (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
     (2, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
-    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1);
+    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1),
+    (3, N'Dữ liệu là gì trong phân tích dữ liệu?', 1),
+    (3, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 1);
 
 -- 25. Đáp án cho câu hỏi 1
 INSERT INTO Options
@@ -674,8 +681,30 @@ VALUES
     (4, N'<href>', 0),
     (4, N'<img>', 0);
 
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+(5, N'Tập hợp các thông tin có thể xử lý', 1),
+(5, N'Một dạng ngôn ngữ lập trình', 0),
+(5, N'Công cụ phân tích dữ liệu', 0),
+(5, N'Một phần mềm thống kê', 0);
+
+
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+(6, N'Pandas', 1),
+(6, N'Django', 0),
+(6, N'NumPy', 0),
+(6, N'Flask', 0);
+
 INSERT INTO QuizSubmissions (QuizId, UserId, Score, SubmittedAt)
-VALUES (2, 3, 10, GETDATE());
+VALUES (2, 3, 10, GETDATE()),
+(3, 3, 5, GETDATE());
+
+INSERT INTO QuizAnswers (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
+VALUES (1, 3, 9, 1),
+(1, 4, 16, 0),
+(2, 5, 17, 1),
+(2, 6, 24, 0);
 
 
 -- -- 27. Assignment cuối khóa Python
