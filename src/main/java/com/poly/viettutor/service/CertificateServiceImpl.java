@@ -28,4 +28,8 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateRepository.findById(certificateId).orElse(null);
     }
 
+    @Override
+    public void saveCertificate(Certificate certificate) {
+        certificateRepository.save(certificate);
+    }
 }
