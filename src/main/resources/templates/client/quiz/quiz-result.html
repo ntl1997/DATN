@@ -16,12 +16,13 @@
                   <p class="mb--10">Quiz</p>
                   <!-- <h5>Musical Theory</h5> -->
                 </div>
-                <div
-                  class="rbt-dashboard-table table-responsive mobile-table-750 mt--30"
-                >
-                  <table
-                    class="rbt-table rbt-table-scroll table table-borderless"
-                  >
+                <div th:if="${param.cert}" class="alert alert-success mt-3 fw-semibold text-success">
+                  🎉 Chúc mừng! Bạn đã nhận được chứng chỉ cho khóa học này.
+                  <a th:href="@{/student/student-certificate}" class="ms-2 text-primary fw-bold">Xem chứng chỉ →</a>
+                </div>
+
+                <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30">
+                  <table class="rbt-table rbt-table-scroll table table-borderless">
                     <thead>
                       <tr>
                         <th>Ngày</th>
@@ -36,20 +37,12 @@
                     <tbody>
                       <tr th:if="${latestSubmission != null}">
                         <th>
-                          <p
-                            class="b3 mb--5"
-                            th:text="${#dates.format(latestSubmission.submittedAt, 'yyyy-MM-dd')}"
-                          >
+                          <p class="b3 mb--5" th:text="${#dates.format(latestSubmission.submittedAt, 'yyyy-MM-dd')}">
                             2024-12-26
                           </p>
                         </th>
                         <td>
-                          <p
-                            class="b3"
-                            th:text="${#lists.size(quiz.questions)}"
-                          >
-                            4
-                          </p>
+                          <p class="b3" th:text="${#lists.size(quiz.questions)}">4</p>
                         </td>
                         <td>
                           <p class="b3" th:text="${quiz.totalScore}">8</p>
@@ -63,21 +56,21 @@
                         </td>
 
                         <td>
-                          <p
-                            th:text="${(quiz.totalScore/#lists.size(quiz.questions)) * correctAnswers}"
-                          ></p>
+                          <p th:text="${(quiz.totalScore/#lists.size(quiz.questions)) * correctAnswers}"></p>
                         </td>
                         <td>
                           <span
                             class="rbt-badge-5 bg-color-success-opacity color-success"
                             th:if="${latestSubmission.score >= totalScore / 2}"
-                            >Pass</span
                           >
+                            Pass
+                          </span>
                           <span
                             class="rbt-badge-5 bg-color-danger-opacity color-danger"
                             th:if="${latestSubmission.score < totalScore / 2}"
-                            >Fail</span
                           >
+                            Fail
+                          </span>
                         </td>
                       </tr>
                     </tbody>
@@ -86,9 +79,7 @@
                 <div
                   class="rbt-dashboard-table table-responsive mobile-table-750 mt--50 quiz-result-enter quiz-result-enter-active"
                 >
-                  <table
-                    class="rbt-table rbt-table-scroll table table-borderless"
-                  >
+                  <table class="rbt-table rbt-table-scroll table table-borderless">
                     <thead>
                       <tr>
                         <th>STT</th>
@@ -99,45 +90,30 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        th:each="item, iterStat : ${latestSubmission.answers}"
-                      >
+                      <tr th:each="item, iterStat : ${latestSubmission.answers}">
                         <td>
                           <p class="b3" th:text="${iterStat.index + 1}"></p>
                         </td>
 
                         <td>
-                          <p
-                            class="b3"
-                            th:text="${questionMap[item.questionId].questionText}"
-                          ></p>
+                          <p class="b3" th:text="${questionMap[item.questionId].questionText}"></p>
                         </td>
 
                         <td>
-                          <p
-                            class="b3"
-                            th:text="${optionMap[item.selectedOptionId].optionText}"
-                          ></p>
+                          <p class="b3" th:text="${optionMap[item.selectedOptionId].optionText}"></p>
                         </td>
 
                         <td>
-                          <p
-                            class="b3"
-                            th:text="${correctOptionMap[item.questionId].optionText}"
-                          ></p>
+                          <p class="b3" th:text="${correctOptionMap[item.questionId].optionText}"></p>
                         </td>
 
                         <td>
-                          <span
-                            th:if="${item.isCorrect}"
-                            class="rbt-badge-5 bg-color-success-opacity color-success"
-                            >Correct</span
-                          >
-                          <span
-                            th:if="${!item.isCorrect}"
-                            class="rbt-badge-5 bg-color-danger-opacity color-danger"
-                            >Incorrect</span
-                          >
+                          <span th:if="${item.isCorrect}" class="rbt-badge-5 bg-color-success-opacity color-success">
+                            Correct
+                          </span>
+                          <span th:if="${!item.isCorrect}" class="rbt-badge-5 bg-color-danger-opacity color-danger">
+                            Incorrect
+                          </span>
                         </td>
                       </tr>
                     </tbody>
@@ -148,21 +124,14 @@
 
             <div class="bg-color-extra2 ptb--15 overflow-hidden">
               <div class="rbt-button-group">
-                <a
-                  class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"
-                  href="#"
-                >
-                  <span class="btn-icon"
-                    ><i class="feather-arrow-left"></i
-                  ></span>
+                <a class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity" href="#">
+                  <span class="btn-icon"><i class="feather-arrow-left"></i></span>
                   <span class="btn-text">Previous</span>
                 </a>
 
                 <a class="rbt-btn icon-hover btn-md" href="#">
                   <span class="btn-text">Next</span>
-                  <span class="btn-icon"
-                    ><i class="feather-arrow-right"></i
-                  ></span>
+                  <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                 </a>
               </div>
             </div>
@@ -170,12 +139,7 @@
         </div>
       </div>
       <div class="rbt-progress-parent">
-        <svg
-          class="rbt-back-circle svg-inner"
-          width="100%"
-          height="100%"
-          viewBox="-1 -1 102 102"
-        >
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
           <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
       </div>
