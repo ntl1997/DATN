@@ -123,7 +123,7 @@ public class QuizController {
         model.addAttribute("totalQuestions", quiz.getQuestions().size());
         // model.addAttribute("content", "client/quiz/quiz-result");
         // return "client/layout/index";
-        return "redirect:/quiz/" + quizId;
+        return "redirect:/quiz/result/" + quizId;
     }
 
     @GetMapping("/result/{id}")
