@@ -15,17 +15,21 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<Certificate> getCertificatesByUserId(Long userId) {
-        return certificateRepository.getCertificatesWithCourseByUserId(userId); // ✅ fetch course
+        return certificateRepository.getCertificatesWithCourseByUserId(userId);
     }
 
     @Override
     public List<Certificate> searchCertificatesByUserAndTitle(Long userId, String keyword) {
-        return certificateRepository.searchCertificatesWithCourseByUserAndTitle(userId, keyword); // ✅ fetch course with
-                                                                                                  // keyword
+        return certificateRepository.searchCertificatesWithCourseByUserAndTitle(userId, keyword);
     }
 
     @Override
     public Certificate getCertificateById(Integer certificateId) {
         return certificateRepository.findById(certificateId).orElse(null);
+    }
+
+    @Override
+    public void saveCertificate(Certificate certificate) {
+        certificateRepository.save(certificate);
     }
 }

@@ -33,6 +33,11 @@
                   <p class="mb--10">Quiz</p>
                   <!-- <h5>Musical Theory</h5> -->
                 </div>
+                <div th:if="${param.cert}" class="alert alert-success mt-3 fw-semibold text-success">
+                  🎉 Chúc mừng! Bạn đã nhận được chứng chỉ cho khóa học này.
+                  <a th:href="@{/student/student-certificate}" class="ms-2 text-primary fw-bold">Xem chứng chỉ →</a>
+                </div>
+
                 <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30">
                   <table class="rbt-table rbt-table-scroll table table-borderless">
                     <thead>
@@ -73,14 +78,16 @@
                         <td>
                           <span
                             class="rbt-badge-5 bg-color-success-opacity color-success"
-                            th:if="${latestSubmission.score >= quiz.totalScore / 2}"
-                            >Pass</span
+                            th:if="${latestSubmission.score >= totalScore / 2}"
                           >
+                            Pass
+                          </span>
                           <span
                             class="rbt-badge-5 bg-color-danger-opacity color-danger"
-                            th:if="${latestSubmission.score < quiz.totalScore / 2}"
-                            >Fail</span
+                            th:if="${latestSubmission.score < totalScore / 2}"
                           >
+                            Fail
+                          </span>
                         </td>
                       </tr>
                     </tbody>
@@ -118,12 +125,12 @@
                         </td>
 
                         <td>
-                          <span th:if="${item.isCorrect}" class="rbt-badge-5 bg-color-success-opacity color-success"
-                            >Correct</span
-                          >
-                          <span th:if="${!item.isCorrect}" class="rbt-badge-5 bg-color-danger-opacity color-danger"
-                            >Incorrect</span
-                          >
+                          <span th:if="${item.isCorrect}" class="rbt-badge-5 bg-color-success-opacity color-success">
+                            Correct
+                          </span>
+                          <span th:if="${!item.isCorrect}" class="rbt-badge-5 bg-color-danger-opacity color-danger">
+                            Incorrect
+                          </span>
                         </td>
                       </tr>
                     </tbody>

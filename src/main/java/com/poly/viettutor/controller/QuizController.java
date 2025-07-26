@@ -1,5 +1,6 @@
 package com.poly.viettutor.controller;
 
+import com.poly.viettutor.model.Certificate;
 import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
@@ -7,6 +8,7 @@ import com.poly.viettutor.model.Quiz;
 import com.poly.viettutor.model.QuizAnswer;
 import com.poly.viettutor.model.QuizSubmission;
 import com.poly.viettutor.model.User;
+import com.poly.viettutor.service.CertificateService;
 import com.poly.viettutor.service.OptionService;
 import com.poly.viettutor.service.QuestionService;
 import com.poly.viettutor.service.QuizService;
@@ -30,6 +32,9 @@ public class QuizController {
 
     @Autowired
     private UserService userService; // Inject UserService
+
+    @Autowired
+    private CertificateService certificateService;
 
     @Autowired
     private QuestionService questionService; // Inject QuestionService
@@ -66,33 +71,29 @@ public class QuizController {
             @RequestParam("quizId") Long quizId,
             @RequestParam Map<String, String> answers,
             Model model) {
+
         Quiz quiz = quizService.findById(quizId);
         if (quiz == null) {
             return "redirect:/error";
         }
 
-        // Lấy thông tin người dùng hiện tại
         User user = userService.getCurrentUser();
         if (user == null) {
-            return "redirect:/error"; // Xử lý nếu không tìm thấy người dùng hiện tại
+            return "redirect:/error";
         }
 
-        // Kiểm tra số lần làm quiz
         int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), quizId);
         if (submissionCount >= 3) {
             model.addAttribute("error", "Bạn đã đạt giới hạn số lần làm quiz.");
             return "redirect:/quiz/" + quizId + "?error=true";
         }
 
-        // Tạo QuizSubmission
         QuizSubmission submission = QuizSubmission.builder()
                 .quiz(quiz)
-                .user(user) // Sử dụng User lấy từ hàm getCurrentUser
+                .user(user)
                 .submittedAt(new Date())
-                .score(0) // Điểm sẽ được tính sau
+                .score(0)
                 .build();
-
-        // Lưu QuizSubmission vào cơ sở dữ liệu
         quizService.saveQuizSubmission(submission);
 
         int correctAnswers = 0;
@@ -104,33 +105,58 @@ public class QuizController {
                     .anyMatch(option -> option.getOptionId().equals(selectedOptionId) && option.getIsCorrect());
 
             if (isCorrect) {
-                correctAnswers += question.getScore(); // Cộng điểm nếu đúng
+                correctAnswers += question.getScore();
             }
 
-            // Lưu từng câu trả lời vào QuizAnswer
             QuizAnswer answer = QuizAnswer.builder()
                     .submission(submission)
                     .questionId(question.getQuestionId())
                     .selectedOptionId(selectedOptionId)
                     .isCorrect(isCorrect)
                     .build();
-            quizService.saveQuizAnswer(answer); // Gọi service để lưu QuizAnswer
+            quizService.saveQuizAnswer(answer);
         }
 
-        // Cập nhật điểm cho QuizSubmission
         submission.setScore(correctAnswers);
-        quizService.saveQuizSubmission(submission); // Gọi service để lưu QuizSubmission
+        quizService.saveQuizSubmission(submission);
 
-        model.addAttribute("quiz", quiz);
-        model.addAttribute("correctAnswers", correctAnswers);
-        model.addAttribute("totalQuestions", quiz.getQuestions().size());
-        // model.addAttribute("content", "client/quiz/quiz-result");
-        // return "client/layout/index";
-        return "redirect:/quiz/" + quizId;
+        int totalScore = quiz.getQuestions().stream()
+                .mapToInt(Question::getScore)
+                .sum();
+
+        boolean granted = false;
+        if (correctAnswers >= (totalScore / 2)) {
+            var course = quiz.getModule().getCourse();
+
+            boolean hasCertificate = certificateService.getCertificatesByUserId(user.getId())
+                    .stream()
+                    .anyMatch(cert -> cert.getCourse().getCourseId().equals(course.getCourseId()));
+
+            if (!hasCertificate) {
+                certificateService.saveCertificate(
+                        Certificate.builder()
+                                .user(user)
+                                .course(course)
+                                .issuedAt(new Date())
+                                .description("Chứng chỉ hoàn thành quiz với kết quả đạt yêu cầu")
+                                .build());
+                granted = true;
+            }
+        }
+
+        if (granted) {
+            return "redirect:/quiz/result/" + quizId + "?cert=true";
+        } else {
+            return "redirect:/quiz/result/" + quizId;
+        }
     }
 
     @GetMapping("/result/{id}")
-    public String getResultQuizById(@PathVariable("id") Long id, Model model) {
+    public String getResultQuizById(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "cert", required = false) Boolean cert,
+            Model model) {
+
         Quiz quiz = quizService.findById(id);
         if (quiz == null) {
             return "redirect:/error";
@@ -154,6 +180,11 @@ public class QuizController {
             }
         }
 
+        int totalScore = quiz.getQuestions().stream()
+                .mapToInt(Question::getScore)
+                .sum();
+        model.addAttribute("totalScore", totalScore);
+
         Map<Long, Question> questionMap = new HashMap<>();
         for (Question q : this.questionService.findAll()) {
             questionMap.put(q.getQuestionId(), q);
@@ -162,7 +193,7 @@ public class QuizController {
         for (Option q : this.optionService.findAll()) {
             optionMap.put(q.getOptionId(), q);
         }
-        // Tạo map chứa đáp án đúng của từng câu hỏi
+
         Map<Long, Option> correctOptionMap = new HashMap<>();
         for (Question question : quiz.getQuestions()) {
             question.getOptions().stream()
@@ -170,6 +201,7 @@ public class QuizController {
                     .findFirst()
                     .ifPresent(opt -> correctOptionMap.put(question.getQuestionId(), opt));
         }
+
         model.addAttribute("correctOptionMap", correctOptionMap);
         model.addAttribute("optionMap", optionMap);
         model.addAttribute("questionMap", questionMap);
@@ -178,6 +210,7 @@ public class QuizController {
         model.addAttribute("latestSubmission", latestSubmission);
         model.addAttribute("correctAnswers", correctAnswers);
         model.addAttribute("incorrectAnswers", incorrectAnswers);
+        model.addAttribute("certGranted", cert != null && cert); // ✅ Gửi ra để hiển thị thông báo
         model.addAttribute("title", "Chi tiết Quiz");
         model.addAttribute("content", "client/learning/quiz-result");
         return "client/layout/index";
