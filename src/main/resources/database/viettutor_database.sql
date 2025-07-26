@@ -515,7 +515,7 @@ VALUES
     (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao'),
     (
     N'Phân Tích Dữ Liệu Cho Người Mới Bắt Đầu', N'Học cách xử lý và phân tích dữ liệu với Python và Excel.', N'Khóa học này giúp bạn hiểu các khái niệm cơ bản về phân tích dữ liệu, thực hành với các công cụ như Pandas và biểu đồ trực quan.', 600000, 20, N'https://img-cdn.com/data-analysis.jpg', N'Publish', 2, GETDATE(), GETDATE(),
-    N'https://youtu.be/abcdefg',
+    N'https://www.youtube.com/watch?v=iMbCKOQnLMg',
     1,
     N'Tiếng Việt',
     N'Cơ bản'
