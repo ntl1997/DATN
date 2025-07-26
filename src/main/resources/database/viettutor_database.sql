@@ -229,8 +229,7 @@ CREATE TABLE Certificates
     CertificateId BIGINT PRIMARY KEY IDENTITY,
     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    IssuedAt DATETIME DEFAULT GETDATE(),
-    Description NVARCHAR(MAX)
+    IssuedAt DATETIME DEFAULT GETDATE()
 );
 GO
 
@@ -315,8 +314,6 @@ CREATE TABLE Quizzes
     -- Mã định danh tự tăng cho mỗi bài quiz
     ModuleId BIGINT FOREIGN KEY REFERENCES CourseModules(ModuleId),
     -- Gắn quiz với một module cụ thể
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    -- Gắn quiz với một khóa học cụ thể
     Title NVARCHAR(255),
     -- Tiêu đề bài quiz (VD: Quiz bài 1)
     TotalScore INT,
@@ -634,14 +631,6 @@ INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
     (1, N'Quiz Giới thiệu Python', 2, 15);
--- Gán courseId cho quiz vừa tạo dựa vào module
-UPDATE Quizzes
-SET CourseId = (
-    SELECT CourseId
-    FROM CourseModules
-    WHERE CourseModules.ModuleId = Quizzes.ModuleId
-)
-WHERE CourseId IS NULL;
 
 -- 24. Thêm 2 câu hỏi trắc nghiệm
 INSERT INTO Questions
