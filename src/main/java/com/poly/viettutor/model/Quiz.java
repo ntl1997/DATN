@@ -34,10 +34,6 @@ public class Quiz {
     @JoinColumn(name = "moduleId")
     private CourseModule module;
 
-    @ManyToOne
-    @JoinColumn(name = "courseId")
-    private Course course;
-
     private String title;
 
     private Integer totalScore;
