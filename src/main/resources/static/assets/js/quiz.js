@@ -192,7 +192,7 @@ function createEmptyQuiz(index, type = "regular") {
       {
         questionText: "câu hỏi chưa có tiêu đề",
         correctOption: 0,
-        score: 0,
+        score: 100,
         options: [
           { optionText: "Tùy chọn 1", isCorrect: true },
           { optionText: "Tùy chọn 2", isCorrect: false },

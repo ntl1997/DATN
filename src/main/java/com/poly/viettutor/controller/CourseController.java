@@ -74,7 +74,7 @@ public class CourseController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", courses.getTotalPages());
         model.addAttribute("title", "Danh sách khóa học");
-        model.addAttribute("content", "client/courses");
+        model.addAttribute("content", "client/course/courses");
         // Truyền lại các filter để giữ trạng thái trên giao diện
         model.addAttribute("selectedCategories", categories);
         model.addAttribute("selectedRatings", ratings);
@@ -112,8 +112,8 @@ public class CourseController {
         model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
         model.addAttribute("isEnrolled", isEnrolled); // Kiểm tra đã tham gia khóa học chưa
         model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
-        model.addAttribute("content", "client/course-detail"); // nội dung trang (phần content)
-        model.addAttribute("scripts", "client/course-detail");
+        model.addAttribute("content", "client/course/course-detail"); // nội dung trang (phần content)
+        model.addAttribute("scripts", "client/course/course-detail");
         return "client/layout/index";
     }
 

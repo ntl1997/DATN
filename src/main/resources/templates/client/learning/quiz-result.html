@@ -4,10 +4,27 @@
     <div th:fragment="content">
       <div class="rbt-lesson-area bg-color-white">
         <div class="rbt-lesson-content-wrapper">
+          <div th:replace="~{client/learning/learning-sidebar :: learning-sidebar}"></div>
+
           <div class="rbt-lesson-rightsidebar overflow-hidden">
             <div class="lesson-top-bar">
               <div class="lesson-top-left">
-                <h5>Result</h5>
+                <div class="rbt-lesson-toggle">
+                  <button class="lesson-toggle-active btn-round-white-opacity" title="Toggle Sidebar">
+                    <i class="feather-arrow-left"></i>
+                  </button>
+                </div>
+                <h5 th:text="${quiz.title} + ' - Kết quả'">Result</h5>
+              </div>
+              <div class="lesson-top-right">
+                <div class="rbt-btn-close">
+                  <a
+                    th:href="@{/course-details/{id}(id=${course.courseId})}"
+                    title="Go Back to Course"
+                    class="rbt-round-btn"
+                    ><i class="feather-x"></i
+                  ></a>
+                </div>
               </div>
             </div>
             <div class="inner">

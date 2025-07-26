@@ -1,6 +1,7 @@
 package com.poly.viettutor.controller;
 
 import com.poly.viettutor.model.Certificate;
+import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
@@ -54,161 +55,164 @@ public class QuizController {
         User user = userService.getCurrentUser();
         int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
         boolean quizLimitReached = submissionCount >= 3;
+        Course course = quiz.getModule().getCourse();
 
         model.addAttribute("quiz", quiz);
+        model.addAttribute("course", course);
         model.addAttribute("quizLimitReached", quizLimitReached); // ✅ truyền ra Thymeleaf để ẩn nút
         model.addAttribute("error", error != null && error); // ✅ để hiển thị lỗi nếu có
         model.addAttribute("title", "Chi tiết Quiz");
-        model.addAttribute("content", "client/quiz/quiz");
+        model.addAttribute("content", "client/learning/quiz");
         return "client/layout/index";
     }
 
     @PostMapping
     public String submitQuiz(
-        @RequestParam("quizId") Long quizId,
-        @RequestParam Map<String, String> answers,
-        Model model) {
+            @RequestParam("quizId") Long quizId,
+            @RequestParam Map<String, String> answers,
+            Model model) {
 
-    Quiz quiz = quizService.findById(quizId);
-    if (quiz == null) {
-        return "redirect:/error";
-    }
-
-    User user = userService.getCurrentUser();
-    if (user == null) {
-        return "redirect:/error";
-    }
-
-    int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), quizId);
-    if (submissionCount >= 3) {
-        model.addAttribute("error", "Bạn đã đạt giới hạn số lần làm quiz.");
-        return "redirect:/quiz/" + quizId + "?error=true";
-    }
-
-    QuizSubmission submission = QuizSubmission.builder()
-            .quiz(quiz)
-            .user(user)
-            .submittedAt(new Date())
-            .score(0)
-            .build();
-    quizService.saveQuizSubmission(submission);
-
-    int correctAnswers = 0;
-    for (Question question : quiz.getQuestions()) {
-        String selectedOptionIdStr = answers.get("question-" + question.getQuestionId() + "-option");
-        Long selectedOptionId = selectedOptionIdStr != null ? Long.parseLong(selectedOptionIdStr) : null;
-
-        boolean isCorrect = question.getOptions().stream()
-                .anyMatch(option -> option.getOptionId().equals(selectedOptionId) && option.getIsCorrect());
-
-        if (isCorrect) {
-            correctAnswers += question.getScore();
+        Quiz quiz = quizService.findById(quizId);
+        if (quiz == null) {
+            return "redirect:/error";
         }
 
-        QuizAnswer answer = QuizAnswer.builder()
-                .submission(submission)
-                .questionId(question.getQuestionId())
-                .selectedOptionId(selectedOptionId)
-                .isCorrect(isCorrect)
+        User user = userService.getCurrentUser();
+        if (user == null) {
+            return "redirect:/error";
+        }
+
+        int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), quizId);
+        if (submissionCount >= 3) {
+            model.addAttribute("error", "Bạn đã đạt giới hạn số lần làm quiz.");
+            return "redirect:/quiz/" + quizId + "?error=true";
+        }
+
+        QuizSubmission submission = QuizSubmission.builder()
+                .quiz(quiz)
+                .user(user)
+                .submittedAt(new Date())
+                .score(0)
                 .build();
-        quizService.saveQuizAnswer(answer);
-    }
+        quizService.saveQuizSubmission(submission);
 
-    submission.setScore(correctAnswers);
-    quizService.saveQuizSubmission(submission);
+        int correctAnswers = 0;
+        for (Question question : quiz.getQuestions()) {
+            String selectedOptionIdStr = answers.get("question-" + question.getQuestionId() + "-option");
+            Long selectedOptionId = selectedOptionIdStr != null ? Long.parseLong(selectedOptionIdStr) : null;
 
-    int totalScore = quiz.getQuestions().stream()
-            .mapToInt(Question::getScore)
-            .sum();
+            boolean isCorrect = question.getOptions().stream()
+                    .anyMatch(option -> option.getOptionId().equals(selectedOptionId) && option.getIsCorrect());
 
-    boolean granted = false;
-    if (correctAnswers >= (totalScore / 2)) {
-    var course = quiz.getModule().getCourse();
+            if (isCorrect) {
+                correctAnswers += question.getScore();
+            }
 
-    boolean hasCertificate = certificateService.getCertificatesByUserId(user.getId())
-            .stream()
-            .anyMatch(cert -> cert.getCourse().getCourseId().equals(course.getCourseId()));
+            QuizAnswer answer = QuizAnswer.builder()
+                    .submission(submission)
+                    .questionId(question.getQuestionId())
+                    .selectedOptionId(selectedOptionId)
+                    .isCorrect(isCorrect)
+                    .build();
+            quizService.saveQuizAnswer(answer);
+        }
 
-    if (!hasCertificate) {
-        certificateService.saveCertificate(
-                Certificate.builder()
-                        .user(user)
-                        .course(course)
-                        .issuedAt(new Date())
-                        .description("Chứng chỉ hoàn thành quiz với kết quả đạt yêu cầu")
-                        .build()
-        );
-        granted = true;
-    }
-    }
+        submission.setScore(correctAnswers);
+        quizService.saveQuizSubmission(submission);
 
-    if (granted) {
-        return "redirect:/quiz/result/" + quizId + "?cert=true";
-    } else {
-        return "redirect:/quiz/result/" + quizId;
-    }
+        int totalScore = quiz.getQuestions().stream()
+                .mapToInt(Question::getScore)
+                .sum();
+
+        boolean granted = false;
+        if (correctAnswers >= (totalScore / 2)) {
+            var course = quiz.getModule().getCourse();
+
+            boolean hasCertificate = certificateService.getCertificatesByUserId(user.getId())
+                    .stream()
+                    .anyMatch(cert -> cert.getCourse().getCourseId().equals(course.getCourseId()));
+
+            if (!hasCertificate) {
+                certificateService.saveCertificate(
+                        Certificate.builder()
+                                .user(user)
+                                .course(course)
+                                .issuedAt(new Date())
+                                .description("Chứng chỉ hoàn thành quiz với kết quả đạt yêu cầu")
+                                .build());
+                granted = true;
+            }
+        }
+
+        if (granted) {
+            return "redirect:/quiz/result/" + quizId + "?cert=true";
+        } else {
+            return "redirect:/quiz/result/" + quizId;
+        }
     }
 
     @GetMapping("/result/{id}")
     public String getResultQuizById(
-        @PathVariable("id") Long id,
-        @RequestParam(value = "cert", required = false) Boolean cert,
-        Model model) {
+            @PathVariable("id") Long id,
+            @RequestParam(value = "cert", required = false) Boolean cert,
+            Model model) {
 
-    Quiz quiz = quizService.findById(id);
-    if (quiz == null) {
-        return "redirect:/error";
-    }
+        Quiz quiz = quizService.findById(id);
+        if (quiz == null) {
+            return "redirect:/error";
+        }
 
-    QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
-            .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
-            .orElse(null);
+        // Lấy lần submit cuối cùng
+        QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
+                .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
+                .orElse(null);
+        Course course = quiz.getModule().getCourse();
+        int correctAnswers = 0;
+        int incorrectAnswers = 0;
 
-    int correctAnswers = 0;
-    int incorrectAnswers = 0;
-
-    if (latestSubmission != null) {
-        for (QuizAnswer answer : latestSubmission.getAnswers()) {
-            if (answer.getIsCorrect()) {
-                correctAnswers++;
-            } else {
-                incorrectAnswers++;
+        if (latestSubmission != null) {
+            for (QuizAnswer answer : latestSubmission.getAnswers()) {
+                if (answer.getIsCorrect()) {
+                    correctAnswers++;
+                } else {
+                    incorrectAnswers++;
+                }
             }
         }
-    }
 
-    int totalScore = quiz.getQuestions().stream()
-            .mapToInt(Question::getScore)
-            .sum();
-    model.addAttribute("totalScore", totalScore);
+        int totalScore = quiz.getQuestions().stream()
+                .mapToInt(Question::getScore)
+                .sum();
+        model.addAttribute("totalScore", totalScore);
 
-    Map<Long, Question> questionMap = new HashMap<>();
-    for (Question q : this.questionService.findAll()) {
-        questionMap.put(q.getQuestionId(), q);
-    }
-    Map<Long, Option> optionMap = new HashMap<>();
-    for (Option q : this.optionService.findAll()) {
-        optionMap.put(q.getOptionId(), q);
-    }
+        Map<Long, Question> questionMap = new HashMap<>();
+        for (Question q : this.questionService.findAll()) {
+            questionMap.put(q.getQuestionId(), q);
+        }
+        Map<Long, Option> optionMap = new HashMap<>();
+        for (Option q : this.optionService.findAll()) {
+            optionMap.put(q.getOptionId(), q);
+        }
 
-    Map<Long, Option> correctOptionMap = new HashMap<>();
-    for (Question question : quiz.getQuestions()) {
-        question.getOptions().stream()
-                .filter(Option::getIsCorrect)
-                .findFirst()
-                .ifPresent(opt -> correctOptionMap.put(question.getQuestionId(), opt));
-    }
+        Map<Long, Option> correctOptionMap = new HashMap<>();
+        for (Question question : quiz.getQuestions()) {
+            question.getOptions().stream()
+                    .filter(Option::getIsCorrect)
+                    .findFirst()
+                    .ifPresent(opt -> correctOptionMap.put(question.getQuestionId(), opt));
+        }
 
-    model.addAttribute("correctOptionMap", correctOptionMap);
-    model.addAttribute("optionMap", optionMap);
-    model.addAttribute("questionMap", questionMap);
-    model.addAttribute("quiz", quiz);
-    model.addAttribute("latestSubmission", latestSubmission);
-    model.addAttribute("correctAnswers", correctAnswers);
-    model.addAttribute("incorrectAnswers", incorrectAnswers);
-    model.addAttribute("certGranted", cert != null && cert); // ✅ Gửi ra để hiển thị thông báo
-    model.addAttribute("title", "Chi tiết Quiz");
-    model.addAttribute("content", "client/quiz/quiz-result");
-    return "client/layout/index";
+        model.addAttribute("correctOptionMap", correctOptionMap);
+        model.addAttribute("optionMap", optionMap);
+        model.addAttribute("questionMap", questionMap);
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("course", course);
+        model.addAttribute("latestSubmission", latestSubmission);
+        model.addAttribute("correctAnswers", correctAnswers);
+        model.addAttribute("incorrectAnswers", incorrectAnswers);
+        model.addAttribute("certGranted", cert != null && cert); // ✅ Gửi ra để hiển thị thông báo
+        model.addAttribute("title", "Chi tiết Quiz");
+        model.addAttribute("content", "client/learning/quiz-result");
+        return "client/layout/index";
     }
 }
