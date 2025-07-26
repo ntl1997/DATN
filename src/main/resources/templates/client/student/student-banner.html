@@ -1,44 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<body>
+  <body>
     <div th:fragment="student-banner">
-        <!-- Start Dashboard Top  -->
-        <div class="rbt-dashboard-content-wrapper">
-            <div class="tutor-bg-photo height-350"
-                style="background-image: url('/assets/images/bg/background-student.jpg'); background-size: cover; background-position: center;">
+      <!-- Start Dashboard Top  -->
+      <div class="rbt-dashboard-content-wrapper">
+        <div
+          class="tutor-bg-photo height-350"
+          style="
+            background-image: url('/assets/images/bg/background-student.jpg');
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
+        <!-- Start Tutor Information  -->
+        <div class="rbt-tutor-information">
+          <div class="rbt-tutor-information-left">
+            <div class="thumbnail rbt-avatars size-lg">
+              <img
+                th:src="@{'/uploads/users/' + ${user.image}}"
+                onerror="this.onerror=null; this.src='/assets/images/team/user-icon.png';"
+                alt="Avatar"
+              />
             </div>
-            <!-- Start Tutor Information  -->
-            <div class="rbt-tutor-information">
-                <div class="rbt-tutor-information-left">
-                    <div class="thumbnail rbt-avatars size-lg">
-                        <img th:src="${user.image != null && !#strings.isEmpty(user.image) ? '/uploads/users/' + user.image : '/assets/images/team/user-icon.png'}"
-                            alt="Avatar" />
-                    </div>
-                    <div class="tutor-content">
-                        <h5 class="title" th:text="${user.fullname}"></h5>
-                        <ul class="rbt-meta rbt-meta-white mt--5">
-                            <li><i class="feather-book"></i>5 Courses Enroled</li>
-                            <li><i class="feather-award"></i>4 Certificate</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="rbt-tutor-information-right">
-                    <div class="tutor-btn">
-                        <a class="rbt-btn btn-md hover-icon-reverse" href="#">
-                            <span class="icon-reverse-wrapper">
-                                <span class="btn-text">Become an Instructor</span>
-                                <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
+            <div class="tutor-content">
+              <h5 class="title" th:text="${user.fullname}"></h5>
+              <ul class="rbt-meta rbt-meta-white mt--5">
+                <li><i class="feather-book"></i>5 Courses Enroled</li>
+                <li><i class="feather-award"></i>4 Certificate</li>
+              </ul>
             </div>
-            <!-- End Tutor Information  -->
+          </div>
+          <div class="rbt-tutor-information-right">
+            <div class="tutor-btn">
+              <a class="rbt-btn btn-md hover-icon-reverse" href="#">
+                <span class="icon-reverse-wrapper">
+                  <span class="btn-text">Become an Instructor</span>
+                  <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                  <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
-        <!-- End Dashboard Top  -->
+        <!-- End Tutor Information  -->
+      </div>
+      <!-- End Dashboard Top  -->
     </div>
-</body>
-
+  </body>
 </html>

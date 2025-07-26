@@ -73,7 +73,8 @@
                                 <div class="rbt-card-img">
                                   <a th:href="@{/course-details/{id}(id=${enrollment.course.courseId})}">
                                     <img
-                                      th:src="@{'/assets/images/course/' + ${enrollment.course.courseImage}}"
+                                      th:src="@{'/uploads/course/' + ${enrollment.course.courseImage}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
                                       alt="Card image"
                                     />
                                   </a>
