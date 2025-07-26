@@ -10,4 +10,5 @@ public interface CertificateService {
     List<Certificate> searchCertificatesByUserAndTitle(Long userId, String keyword);
 
     Certificate getCertificateById(Integer certificateId);
+    void saveCertificate(Certificate certificate);
 }
