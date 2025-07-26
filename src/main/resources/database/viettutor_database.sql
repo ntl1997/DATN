@@ -314,6 +314,8 @@ CREATE TABLE Quizzes
     -- Mã định danh tự tăng cho mỗi bài quiz
     ModuleId BIGINT FOREIGN KEY REFERENCES CourseModules(ModuleId),
     -- Gắn quiz với một module cụ thể
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    -- Gắn quiz với một khóa học cụ thể
     Title NVARCHAR(255),
     -- Tiêu đề bài quiz (VD: Quiz bài 1)
     TotalScore INT,
