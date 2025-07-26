@@ -36,7 +36,7 @@ public class Quiz {
 
     @ManyToOne
     @JoinColumn(name = "courseId")
-private Course course;
+    private Course course;
 
     private String title;
 
