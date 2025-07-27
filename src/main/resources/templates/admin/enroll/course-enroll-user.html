@@ -123,7 +123,7 @@
             </div>
             <div class="modal-body">
               <!-- Bảng danh sách học viên với checkbox -->
-              <form th:action="@{/admin/add-users-to-course}" method="post">
+              <form th:action="@{/admin/add-users-to-course}" method="post" onsubmit="return checkUserSelection()">
                 <input type="hidden" name="courseId" th:value="${course.courseId}" />
                 <table class="table">
                   <thead>
@@ -181,6 +181,17 @@
         function submitForm() {
           var form = document.getElementById("excel-form");
           form.submit(); // Tự động gửi form khi người dùng chọn file
+        }
+
+        function checkUserSelection() {
+          var checkboxes = document.querySelectorAll('input[name="userIds"]');
+          var anyChecked = Array.from(checkboxes).some((cb) => cb.checked);
+
+          if (!anyChecked) {
+            alert("Vui lòng chọn ít nhất một học viên để thêm vào khóa học.");
+            return false;
+          }
+          return true;
         }
       </script>
     </th:block>
