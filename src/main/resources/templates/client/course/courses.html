@@ -391,7 +391,7 @@
                         justify-content: center;
                       "
                     >
-                      <a href="course-details.html">
+                      <a th:href="@{'/course-details/' + ${course.courseId}}">
                         <img
                           th:src="@{${course.courseImage}}"
                           onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
@@ -482,8 +482,12 @@
                         >
                           <span class="current-price fw-bold" style="font-size: 2rem">Miễn phí</span>
                         </div>
-                        <a class="rbt-btn-link left-icon" href="course-details.html" style="white-space: nowrap">
-                          <i class="feather-shopping-cart"></i> Thêm
+                        <a
+                          class="rbt-btn-link left-icon"
+                          th:href="@{'/course-details/' + ${course.courseId}}"
+                          style="white-space: nowrap"
+                        >
+                          Xem thêm <i class="feather-arrow-right"></i>
                         </a>
                       </div>
                     </div>

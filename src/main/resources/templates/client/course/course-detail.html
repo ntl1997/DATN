@@ -161,7 +161,8 @@
                       <h4 class="rbt-title-style-3">Nội dung khóa học</h4>
                     </div>
                     <div class="rbt-accordion-style rbt-accordion-02 accordion">
-                      <div class="accordion" id="accordionExampleb2">
+                      <p th:unless="${isEnrolled}">Tham gia khóa học để hiển thị nội dung!</p>
+                      <div class="accordion" id="accordionExampleb2" th:if="${isEnrolled}">
                         <div class="accordion-item card" th:each="module, iterStat : ${course.modules}">
                           <h2 class="accordion-header card-header" th:id="'heading-module-' + ${iterStat.index}">
                             <button
@@ -963,7 +964,7 @@
                     class="rbt-card-img"
                     style="height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center"
                   >
-                    <a href="course-details.html">
+                    <a th:href="@{'/course-details/' + ${course.courseId}}">
                       <img
                         th:src="@{${course.courseImage}}"
                         onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
@@ -1009,7 +1010,9 @@
                     </div>
 
                     <h4 class="rbt-card-title">
-                      <a href="course-details.html" th:text="${course.title}">Web Front To Back</a>
+                      <a th:href="@{'/course-details/' + ${course.courseId}}" th:text="${course.title}"
+                        >Web Front To Back</a
+                      >
                     </h4>
                     <ul class="rbt-meta">
                       <li>
@@ -1049,7 +1052,9 @@
                       <div class="rbt-price" style="font-size: 0.85em" th:if="${course.price == 0}">
                         <span class="current-price">Miễn phí</span>
                       </div>
-                      <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
+                      <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}"
+                        >Xem thêm<i class="feather-arrow-right"></i
+                      ></a>
                     </div>
                   </div>
                 </div>
