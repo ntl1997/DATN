@@ -82,8 +82,8 @@ CREATE TABLE Courses
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE(),
     Note NVARCHAR(255),
-	ApprovedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
-	ApprovedAt DATETIME DEFAULT GETDATE(),
+    ApprovedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    ApprovedAt DATETIME DEFAULT GETDATE(),
     -- ✅ Các cột bổ sung
     HasCertificate BIT DEFAULT 0,
     Language NVARCHAR(50),
@@ -128,7 +128,8 @@ CREATE TABLE Enrollments
     EnrollmentId BIGINT PRIMARY KEY IDENTITY,
     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    EnrolledAt DATETIME DEFAULT GETDATE()
+    EnrolledAt DATETIME DEFAULT GETDATE(),
+    EnrolledBy BIGINT DEFAULT NULL
 );
 GO
 
@@ -376,7 +377,27 @@ INSERT INTO Users
 VALUES
     (N'Admin User', N'admin@viettutor.com', N'$2a$12$V2XUN.FhiVRyIpev2m6.MOUdKlRveFMlC3C6kfYT/Y7ZrClNep55W', GETDATE(), N'https://short.com.vn/6tMs', N'An experienced software engineer passionate about building scalable applications.', N'Software Engineer', N'0901234567'),
     (N'John Instructor', N'john@viettutor.com', N'$2a$12$CvyLQybDyPrkgBjMwVjsj./KYP806nPneY1A7VU/PaRoSL0jkleZS', GETDATE(), N'https://short.com.vn/U9Ow', N'Marketing specialist with a focus on digital campaigns and brand growth.', N'Digital Marketer', N'0902345678'),
-    (N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789');
+    (N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789'),
+    (N'Student 01', N'student01@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std01', N'Enthusiastic student.', N'Student', N'0900000001'),
+    (N'Student 02', N'student02@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std02', N'Enthusiastic student.', N'Student', N'0900000002'),
+    (N'Student 03', N'student03@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std03', N'Enthusiastic student.', N'Student', N'0900000003'),
+    (N'Student 04', N'student04@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std04', N'Enthusiastic student.', N'Student', N'0900000004'),
+    (N'Student 05', N'student05@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std05', N'Enthusiastic student.', N'Student', N'0900000005'),
+    (N'Student 06', N'student06@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std06', N'Enthusiastic student.', N'Student', N'0900000006'),
+    (N'Student 07', N'student07@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std07', N'Enthusiastic student.', N'Student', N'0900000007'),
+    (N'Student 08', N'student08@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std08', N'Enthusiastic student.', N'Student', N'0900000008'),
+    (N'Student 09', N'student09@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std09', N'Enthusiastic student.', N'Student', N'0900000009'),
+    (N'Student 10', N'student10@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std10', N'Enthusiastic student.', N'Student', N'0900000010'),
+    (N'Student 11', N'student11@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std11', N'Enthusiastic student.', N'Student', N'0900000011'),
+    (N'Student 12', N'student12@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std12', N'Enthusiastic student.', N'Student', N'0900000012'),
+    (N'Student 13', N'student13@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std13', N'Enthusiastic student.', N'Student', N'0900000013'),
+    (N'Student 14', N'student14@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std14', N'Enthusiastic student.', N'Student', N'0900000014'),
+    (N'Student 15', N'student15@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std15', N'Enthusiastic student.', N'Student', N'0900000015'),
+    (N'Student 16', N'student16@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std16', N'Enthusiastic student.', N'Student', N'0900000016'),
+    (N'Student 17', N'student17@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std17', N'Enthusiastic student.', N'Student', N'0900000017'),
+    (N'Student 18', N'student18@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std18', N'Enthusiastic student.', N'Student', N'0900000018'),
+    (N'Student 19', N'student19@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std19', N'Enthusiastic student.', N'Student', N'0900000019'),
+    (N'Student 20', N'student20@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std20', N'Enthusiastic student.', N'Student', N'0900000020');
 
 
 -- 3. UserRoles (phụ thuộc Roles + Users)
@@ -387,7 +408,27 @@ VALUES
     -- Admin
     (2, 2),
     -- Instructor
-    (3, 3);
+    (3, 3),
+    (3, 4),
+    (3, 5),
+    (3, 6),
+    (3, 7),
+    (3, 8),
+    (3, 9),
+    (3, 10),
+    (3, 11),
+    (3, 12),
+    (3, 13),
+    (3, 14),
+    (3, 15),
+    (3, 16),
+    (3, 17),
+    (3, 18),
+    (3, 19),
+    (3, 20),
+    (3, 21),
+    (3, 22),
+    (3, 23);
 -- Student
 
 
@@ -419,11 +460,11 @@ VALUES
     (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 0, 0, N'https://short.com.vn/08Wa', N'Publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
     (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 0, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao'),
     (
-    N'Phân Tích Dữ Liệu Cho Người Mới Bắt Đầu', N'Học cách xử lý và phân tích dữ liệu với Python và Excel.', N'Khóa học này giúp bạn hiểu các khái niệm cơ bản về phân tích dữ liệu, thực hành với các công cụ như Pandas và biểu đồ trực quan.', 0, 0, N'https://img-cdn.com/data-analysis.jpg', N'Publish', 2, GETDATE(), GETDATE(),
-    N'https://www.youtube.com/watch?v=iMbCKOQnLMg',
-    1,
-    N'Tiếng Việt',
-    N'Cơ bản'
+        N'Phân Tích Dữ Liệu Cho Người Mới Bắt Đầu', N'Học cách xử lý và phân tích dữ liệu với Python và Excel.', N'Khóa học này giúp bạn hiểu các khái niệm cơ bản về phân tích dữ liệu, thực hành với các công cụ như Pandas và biểu đồ trực quan.', 0, 0, N'https://img-cdn.com/data-analysis.jpg', N'Publish', 2, GETDATE(), GETDATE(),
+        N'https://www.youtube.com/watch?v=iMbCKOQnLMg',
+        1,
+        N'Tiếng Việt',
+        N'Cơ bản'
 )
 -- 7. CourseCategories (phụ thuộc Courses + Categories)
 INSERT INTO CourseCategories
@@ -440,8 +481,8 @@ VALUES
     (1, N'Cấu trúc điều kiện và vòng lặp', 2),
     (2, N'Cơ bản HTML', 1),
     (5, N'Giới thiệu về Phân tích Dữ liệu', 1),
-    (1, N'Hàm và Thư viện trong Python', 3),  
-    (2, N'CSS cơ bản', 2),                    
+    (1, N'Hàm và Thư viện trong Python', 3),
+    (2, N'CSS cơ bản', 2),
     (5, N'Công cụ trực quan hóa dữ liệu', 2);
 
 -- 9. Lectures (phụ thuộc CourseModules)
@@ -595,41 +636,49 @@ VALUES
     (2, N'Class', 0),
     (2, N'Pointer', 1);
 
-INSERT INTO Options (QuestionId, OptionText, IsCorrect)
-VALUES 
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
     (3, N'<h1>', 1),
     (3, N'<div>', 0),
     (3, N'<title>', 0),
     (3, N'<p>', 0);
 
-INSERT INTO Options (QuestionId, OptionText, IsCorrect)
-VALUES 
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
     (4, N'<a>', 1),
     (4, N'<link>', 0),
     (4, N'<href>', 0),
     (4, N'<img>', 0);
 
-INSERT INTO Options (QuestionId, OptionText, IsCorrect)
-VALUES 
-(5, N'Tập hợp các thông tin có thể xử lý', 1),
-(5, N'Một dạng ngôn ngữ lập trình', 0),
-(5, N'Công cụ phân tích dữ liệu', 0),
-(5, N'Một phần mềm thống kê', 0);
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (5, N'Tập hợp các thông tin có thể xử lý', 1),
+    (5, N'Một dạng ngôn ngữ lập trình', 0),
+    (5, N'Công cụ phân tích dữ liệu', 0),
+    (5, N'Một phần mềm thống kê', 0);
 
 
-INSERT INTO Options (QuestionId, OptionText, IsCorrect)
-VALUES 
-(6, N'Pandas', 1),
-(6, N'Django', 0),
-(6, N'NumPy', 0),
-(6, N'Flask', 0);
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (6, N'Pandas', 1),
+    (6, N'Django', 0),
+    (6, N'NumPy', 0),
+    (6, N'Flask', 0);
 
-INSERT INTO QuizSubmissions (QuizId, UserId, Score, SubmittedAt)
-VALUES (2, 3, 10, GETDATE()),
-(3, 3, 5, GETDATE());
+INSERT INTO QuizSubmissions
+    (QuizId, UserId, Score, SubmittedAt)
+VALUES
+    (2, 3, 10, GETDATE()),
+    (3, 3, 5, GETDATE());
 
-INSERT INTO QuizAnswers (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
-VALUES (1, 3, 9, 1),
-(1, 4, 16, 0),
-(2, 5, 17, 1),
-(2, 6, 24, 0);
+INSERT INTO QuizAnswers
+    (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
+VALUES
+    (1, 3, 9, 1),
+    (1, 4, 16, 0),
+    (2, 5, 17, 1),
+    (2, 6, 24, 0);
