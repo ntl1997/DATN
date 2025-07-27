@@ -58,8 +58,8 @@ public class AdminEnrollController {
     }
 
     @GetMapping("/admin/course-enroll/{id}")
-    public String showEnrollCourseUsers(@PathVariable("id") int id, Model model) {
-        Course course = courseService.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
+    public String showEnrollCourseUsers(@PathVariable("id") int courseId, Model model) {
+        Course course = courseService.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
         List<User> users = userService.getAllStudents();
         model.addAttribute("title", "Danh sách học viên");
         model.addAttribute("content", "admin/enroll/course-enroll-user");
@@ -70,10 +70,7 @@ public class AdminEnrollController {
     }
 
     @PostMapping("/admin/add-users-to-course")
-    public String addUsersToCourse(
-            @RequestParam int courseId,
-            @RequestParam int[] userIds) {
-
+    public String addUsersToCourse(@RequestParam int courseId, @RequestParam int[] userIds) {
         Course course = courseService.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         for (int userId : userIds) {
@@ -94,8 +91,8 @@ public class AdminEnrollController {
         return "redirect:/admin/course-enroll/" + courseId; // Redirect về danh sách học viên của khóa học
     }
 
-    @DeleteMapping("/admin/course-enroll/delete/{id}")
-    public String deleteUserFormCourse(@PathVariable("id") int enrollmentId, @RequestParam("courseId") int courseId) {
+    @DeleteMapping("/admin/course-enroll/delete")
+    public String deleteUserFormCourse(@RequestParam int enrollmentId, @RequestParam int courseId) {
         Optional<Enrollment> existingEnrollment = enrollmentService.findById(enrollmentId);
         if (existingEnrollment.isPresent()) {
             enrollmentService.deleteById(enrollmentId);

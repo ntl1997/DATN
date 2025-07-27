@@ -84,12 +84,13 @@
 
                     <td>
                       <form
-                        th:action="@{/admin/course-enroll/delete/{id}(id=${enrollment.enrollmentId})}"
+                        th:action="@{/admin/course-enroll/delete}"
                         onsubmit="return confirm('Bạn có chắc chắn muốn xóa học viên này?')"
                         method="post"
                         style="display: inline"
                       >
                         <input type="hidden" name="_method" value="delete" />
+                        <input type="hidden" name="enrollmentId" th:value="${enrollment.enrollmentId}" />
                         <input type="hidden" name="courseId" th:value="${enrollment.course.courseId}" />
                         <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                       </form>
@@ -166,9 +167,10 @@
         let dataTable = new simpleDatatables.DataTable(table1);
 
         document.getElementById("select-all").addEventListener("change", function () {
+          var isChecked = this.checked;
           var checkboxes = document.querySelectorAll('input[name="userIds"]');
           checkboxes.forEach(function (checkbox) {
-            checkbox.checked = this.checked;
+            checkbox.checked = isChecked;
           });
         });
 
