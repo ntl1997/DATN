@@ -30,6 +30,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer>, JpaSpe
             "GROUP BY c.CourseId, c.Title", nativeQuery = true)
     List<Object[]> findCourseSummaryByInstructorNative(@Param("instructorId") Long instructorId);
 
+    List<Course> findByStatus(String status);
+
     List<Course> findByCreatedByIdAndStatus(Long instructorId, String status);
 
     @Query(value = """

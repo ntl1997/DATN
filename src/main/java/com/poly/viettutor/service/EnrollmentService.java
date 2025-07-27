@@ -44,6 +44,10 @@ public class EnrollmentService {
         return enrollmentRepository.existsByUserAndCourse(user, course);
     }
 
+    public Optional<Enrollment> findByUserAndCourse(User user, Course course) {
+        return enrollmentRepository.findByUserAndCourse(user, course);
+    }
+
     public Enrollment enrollCourse(User user, Course course) {
         Enrollment enrollment = Enrollment.builder()
                 .user(user)

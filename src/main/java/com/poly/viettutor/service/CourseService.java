@@ -81,6 +81,10 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
+    public List<Course> findByStatus(String status) {
+        return courseRepository.findByStatus(status);
+    }
+
     public Optional<Course> findById(Integer id) {
         return courseRepository.findById(id);
     }
