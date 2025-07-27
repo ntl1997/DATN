@@ -17,8 +17,6 @@ GO
 
 -- Create a new database called 'viettutor'
 -- Connect to the 'master' database to run this snippet
-USE master
-GO
 -- Create the new database if it does not exist already
 IF NOT EXISTS (
     SELECT [name]
@@ -514,8 +512,14 @@ VALUES
     (N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'image.png', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
     (N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 400000, 10, N'image.png', N'Publish', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
     (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://short.com.vn/08Wa', N'Publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
-    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao');
-
+    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao'),
+    (
+    N'Phân Tích Dữ Liệu Cho Người Mới Bắt Đầu', N'Học cách xử lý và phân tích dữ liệu với Python và Excel.', N'Khóa học này giúp bạn hiểu các khái niệm cơ bản về phân tích dữ liệu, thực hành với các công cụ như Pandas và biểu đồ trực quan.', 600000, 20, N'https://img-cdn.com/data-analysis.jpg', N'Publish', 2, GETDATE(), GETDATE(),
+    N'https://www.youtube.com/watch?v=iMbCKOQnLMg',
+    1,
+    N'Tiếng Việt',
+    N'Cơ bản'
+)
 -- 7. CourseCategories (phụ thuộc Courses + Categories)
 INSERT INTO CourseCategories
     (CourseId, CategoryId)
@@ -529,7 +533,11 @@ INSERT INTO CourseModules
 VALUES
     (1, N'Giới thiệu Python', 1),
     (1, N'Cấu trúc điều kiện và vòng lặp', 2),
-    (2, N'Cơ bản HTML', 1);
+    (2, N'Cơ bản HTML', 1),
+    (5, N'Giới thiệu về Phân tích Dữ liệu', 1),
+    (1, N'Hàm và Thư viện trong Python', 3),  
+    (2, N'CSS cơ bản', 2),                    
+    (5, N'Công cụ trực quan hóa dữ liệu', 2);
 
 -- 9. Lectures (phụ thuộc CourseModules)
 INSERT INTO Lectures
@@ -538,8 +546,34 @@ INSERT INTO Lectures
     )
 VALUES
     (1, N'Giới thiệu ngôn ngữ Python', N'Nội dung bài giảng 1', N'https://www.youtube.com/embed/K7ZKTjmZeWw', 1, 30),
+    (1, N'Biến và Kiểu dữ liệu', N'Nội dung bài giảng về biến và kiểu dữ liệu', N'https://www.youtube.com/embed/rfscVS0vtbw', 2, 28),
+    (1, N'Hello World và print()', N'Cách in ra màn hình dòng chữ đầu tiên', N'https://www.youtube.com/embed/hxGX2m2xw0A', 3, 15),
+    (1, N'Tổng quan kiểu dữ liệu nâng cao', N'List, Tuple, Dictionary, Set', N'https://www.youtube.com/embed/R-HLU9Fl5ug', 4, 25),
+    (2, N'Vòng lặp for trong Python', N'Nội dung về vòng lặp for', N'https://www.youtube.com/embed/6iF8Xb7Z3wQ', 2, 26),
     (2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://www.youtube.com/embed/W0kMn7dYNGo', 1, 18),
-    (3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://www.youtube.com/embed/PN9EUufNkWA', 1, 14);
+    (2, N'Vòng lặp while', N'Sử dụng vòng lặp while hiệu quả', N'https://www.youtube.com/embed/6iF8Xb7Z3wQ', 3, 22),
+    (2, N'break và continue', N'Dừng hoặc bỏ qua lặp', N'https://www.youtube.com/embed/1XQg6WxaIyQ', 4, 20),
+    (3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://www.youtube.com/embed/PN9EUufNkWA', 1, 14),
+    (3, N'Thực hành HTML: danh sách', N'Danh sách có thứ tự và không thứ tự trong HTML', N'https://www.youtube.com/embed/kUMe1FH4CHE', 2, 21),
+    (3, N'Thẻ a và img trong HTML', N'Tạo liên kết và chèn ảnh', N'https://www.youtube.com/embed/n4R2E7O-Ngo', 3, 18),
+    (3, N'Thẻ table trong HTML', N'Tạo bảng với HTML', N'https://www.youtube.com/embed/9uOETcuFjbE', 4, 22),
+    (4, N'Công cụ phân tích dữ liệu', N'Giới thiệu pandas và matplotlib', N'https://www.youtube.com/embed/1xtrIEwY_zY', 2, 35),
+    (4, N'Biểu đồ trong phân tích dữ liệu', N'Cách vẽ biểu đồ với matplotlib', N'https://www.youtube.com/embed/GW0rj4sNH2w', 3, 30),
+    (4, N'Đọc file CSV với Pandas', N'Thực hành đọc dữ liệu', N'https://www.youtube.com/embed/zmdjNSmRXF4', 4, 24),
+    (4, N'Làm sạch dữ liệu với Pandas', N'Handling missing values', N'https://www.youtube.com/embed/0gRc-d3k_8Y', 5, 26),
+    (5, N'Hàm trong Python', N'Học cách định nghĩa và sử dụng hàm', N'https://www.youtube.com/embed/9Os0o3wzS_I', 1, 24),
+    (5, N'Hàm có tham số và giá trị trả về', N'Sử dụng tham số mặc định và return', N'https://www.youtube.com/embed/YB2v4jjl2j8', 3, 22),
+    (5, N'Thư viện ngoài: requests, numpy', N'Cài và sử dụng thư viện', N'https://www.youtube.com/embed/gbnDnV1qdK0', 4, 27),
+    (5, N'Thư viện chuẩn Python', N'Giới thiệu các thư viện như math, datetime, random', N'https://www.youtube.com/embed/tVZc2E9s7QY', 2, 28),
+    (6, N'CSS cơ bản', N'Cách viết và liên kết CSS với HTML', N'https://www.youtube.com/embed/1PnVor36_40', 1, 20),
+    (6, N'Selector và thuộc tính cơ bản', N'Sử dụng selector id, class', N'https://www.youtube.com/embed/yfoY53QXEnI', 2, 20),
+    (6, N'Màu sắc và font chữ trong CSS', N'Cách tùy chỉnh giao diện trang web', N'https://www.youtube.com/embed/1Rs2ND1ryYc', 3, 19),
+    (6, N'Margin, Padding, Border', N'Tùy chỉnh layout cơ bản', N'https://www.youtube.com/embed/1KkA9bJj-rM', 4, 21),
+    (7, N'Giới thiệu Matplotlib', N'Vẽ biểu đồ đường, cột với matplotlib', N'https://www.youtube.com/embed/a9UrKTVEeZA', 1, 25),
+    (7, N'Biểu đồ nâng cao với Seaborn', N'Direct plot và heatmap', N'https://www.youtube.com/embed/5cLmzM-lENg', 2, 26),
+    (7, N'Biểu đồ tròn và biểu đồ phân tán', N'Phân tích dữ liệu nâng cao với biểu đồ', N'https://www.youtube.com/embed/ZjX2ZAdb0Rw', 3, 23),
+    (7, N'Tùy chỉnh biểu đồ: màu, nhãn, tiêu đề', N'Làm đẹp biểu đồ với matplotlib', N'https://www.youtube.com/embed/3Xc3CA655Y4', 4, 25);
+
 
 -- -- 10. CourseObjectives (phụ thuộc Courses)
 -- INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 
@@ -633,7 +667,8 @@ INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
     (1, N'Quiz Giới thiệu Python', 10, 15),
-    (3, N'Quiz HTML cơ bản', 10, 15);
+    (3, N'Quiz HTML cơ bản', 10, 15),
+    (4, N'Quiz Giới thiệu Phân tích Dữ liệu', 10, 15);
 
 -- 24. Thêm 2 câu hỏi trắc nghiệm
 INSERT INTO Questions
@@ -642,7 +677,9 @@ VALUES
     (1, N'Python là ngôn ngữ thông dịch?', 1),
     (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
     (2, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
-    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1);
+    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1),
+    (3, N'Dữ liệu là gì trong phân tích dữ liệu?', 1),
+    (3, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 1);
 
 -- 25. Đáp án cho câu hỏi 1
 INSERT INTO Options
@@ -674,8 +711,30 @@ VALUES
     (4, N'<href>', 0),
     (4, N'<img>', 0);
 
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+(5, N'Tập hợp các thông tin có thể xử lý', 1),
+(5, N'Một dạng ngôn ngữ lập trình', 0),
+(5, N'Công cụ phân tích dữ liệu', 0),
+(5, N'Một phần mềm thống kê', 0);
+
+
+INSERT INTO Options (QuestionId, OptionText, IsCorrect)
+VALUES 
+(6, N'Pandas', 1),
+(6, N'Django', 0),
+(6, N'NumPy', 0),
+(6, N'Flask', 0);
+
 INSERT INTO QuizSubmissions (QuizId, UserId, Score, SubmittedAt)
-VALUES (2, 3, 10, GETDATE());
+VALUES (2, 3, 10, GETDATE()),
+(3, 3, 5, GETDATE());
+
+INSERT INTO QuizAnswers (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
+VALUES (1, 3, 9, 1),
+(1, 4, 16, 0),
+(2, 5, 17, 1),
+(2, 6, 24, 0);
 
 
 -- -- 27. Assignment cuối khóa Python

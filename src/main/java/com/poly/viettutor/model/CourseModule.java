@@ -13,7 +13,7 @@ import java.util.List;
 public class CourseModule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer moduleId;
+    private Long moduleId;
 
     private String moduleTitle;
 

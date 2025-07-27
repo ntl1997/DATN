@@ -61,13 +61,6 @@
             </a>
           </li>
 
-          <li class="sidebar-item">
-            <a th:href="@{/admin/logout}" class="sidebar-link">
-              <i class="bi bi-box-arrow-left"></i>
-              <span>Đăng xuất</span>
-            </a>
-          </li>
-
           <li class="sidebar-item has-sub">
             <a href="#" class="sidebar-link">
               <i class="bi bi-stack"></i>
@@ -83,7 +76,14 @@
             </ul>
           </li>
 
-          <li class="sidebar-item has-sub">
+          <li class="sidebar-item">
+            <a th:href="@{/admin/logout}" class="sidebar-link">
+              <i class="bi bi-box-arrow-left"></i>
+              <span>Đăng xuất</span>
+            </a>
+          </li>
+
+          <!-- <li class="sidebar-item has-sub">
             <a href="#" class="sidebar-link">
               <i class="bi bi-collection-fill"></i>
               <span>Extra Components</span>
@@ -361,7 +361,7 @@
               <i class="bi bi-cash"></i>
               <span>Donate</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
       <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

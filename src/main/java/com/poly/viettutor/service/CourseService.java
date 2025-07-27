@@ -252,31 +252,86 @@ public class CourseService {
         return course;
     }
 
+    // public void updateCourseModules(CourseDTO courseDTO, Course course) {
+    // List<CourseModule> existingModules =
+    // courseModuleRepository.findByCourse(course);
+    // Map<Integer, CourseModule> moduleMap = existingModules.stream()
+    // .filter(m -> m.getModuleId() != null)
+    // .collect(Collectors.toMap(CourseModule::getModuleId, m -> m));
+
+    // // Xóa modules không còn tồn tại
+    // Set<Integer> updatedIds = courseDTO.getModules().stream()
+    // .map(ModuleDTO::getModuleId).filter(Objects::nonNull).collect(Collectors.toSet());
+    // existingModules.stream()
+    // .filter(m -> !updatedIds.contains(m.getModuleId()))
+    // .forEach(m -> courseModuleRepository.delete(m));
+
+    // AtomicInteger moduleIndex = new AtomicInteger(1);
+    // for (ModuleDTO moduleDTO : courseDTO.getModules()) {
+    // CourseModule module;
+
+    // if (moduleDTO.getModuleId() != null &&
+    // moduleMap.containsKey(moduleDTO.getModuleId())) {
+    // // Cập nhật module cũ
+    // module = moduleMap.get(moduleDTO.getModuleId());
+    // module.setModuleTitle(moduleDTO.getModuleTitle());
+    // module.setSortOrder(moduleIndex.getAndIncrement());
+    // courseModuleRepository.save(module);
+
+    // // Xoá bài học & quiz cũ
+    // lectureRepository.deleteByModule(module);
+    // quizRepository.deleteByModule(module);
+
+    // } else {
+    // // Tạo mới module
+    // module = CourseModule.builder()
+    // .moduleTitle(moduleDTO.getModuleTitle())
+    // .course(course)
+    // .sortOrder(moduleIndex.getAndIncrement())
+    // .build();
+    // module = courseModuleRepository.save(module);
+    // }
+
+    // // Thêm lectures mới
+    // saveLectures(moduleDTO, module);
+    // // Thêm quizzes mới
+    // saveQuizzes(moduleDTO, module);
+    // }
+    // }
+
     public void updateCourseModules(CourseDTO courseDTO, Course course) {
         List<CourseModule> existingModules = courseModuleRepository.findByCourse(course);
-        Map<Integer, CourseModule> moduleMap = existingModules.stream()
+
+        // Map khóa theo Long (moduleId)
+        Map<Long, CourseModule> moduleMap = existingModules.stream()
                 .filter(m -> m.getModuleId() != null)
                 .collect(Collectors.toMap(CourseModule::getModuleId, m -> m));
 
-        // Xóa modules không còn tồn tại
-        Set<Integer> updatedIds = courseDTO.getModules().stream()
-                .map(ModuleDTO::getModuleId).filter(Objects::nonNull).collect(Collectors.toSet());
+        // Tập ID module đang update, loại bỏ null
+        Set<Long> updatedIds = courseDTO.getModules().stream()
+                .map(ModuleDTO::getModuleId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Xóa module không còn trong danh sách update
         existingModules.stream()
                 .filter(m -> !updatedIds.contains(m.getModuleId()))
                 .forEach(m -> courseModuleRepository.delete(m));
 
         AtomicInteger moduleIndex = new AtomicInteger(1);
+
         for (ModuleDTO moduleDTO : courseDTO.getModules()) {
             CourseModule module;
 
-            if (moduleDTO.getModuleId() != null && moduleMap.containsKey(moduleDTO.getModuleId())) {
+            Long dtoModuleId = moduleDTO.getModuleId();
+            if (dtoModuleId != null && moduleMap.containsKey(dtoModuleId)) {
                 // Cập nhật module cũ
-                module = moduleMap.get(moduleDTO.getModuleId());
+                module = moduleMap.get(dtoModuleId);
                 module.setModuleTitle(moduleDTO.getModuleTitle());
                 module.setSortOrder(moduleIndex.getAndIncrement());
                 courseModuleRepository.save(module);
 
-                // Xoá bài học & quiz cũ
+                // Xoá bài học & quiz cũ của module này
                 lectureRepository.deleteByModule(module);
                 quizRepository.deleteByModule(module);
 
