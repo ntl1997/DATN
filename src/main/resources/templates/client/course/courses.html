@@ -457,7 +457,11 @@
                         </div>
                       </div>
                       <div class="rbt-card-bottom d-flex align-items-center justify-content-between" style="gap: 10px">
-                        <div class="rbt-price" style="font-size: 1.3rem; display: flex; align-items: center; gap: 8px">
+                        <div
+                          class="rbt-price"
+                          style="font-size: 1.3rem; display: flex; align-items: center; gap: 8px"
+                          th:if="${course.price > 0}"
+                        >
                           <span
                             class="current-price fw-bold"
                             style="font-size: 2rem"
@@ -470,6 +474,13 @@
                             th:text="${#numbers.formatDecimal(course.price, 0, 0)}"
                             >600000</span
                           >
+                        </div>
+                        <div
+                          class="rbt-price"
+                          style="font-size: 1.3rem; display: flex; align-items: center; gap: 8px"
+                          th:if="${course.price == 0}"
+                        >
+                          <span class="current-price fw-bold" style="font-size: 2rem">Miễn phí</span>
                         </div>
                         <a class="rbt-btn-link left-icon" href="course-details.html" style="white-space: nowrap">
                           <i class="feather-shopping-cart"></i> Thêm

@@ -91,11 +91,14 @@
                             >
                           </div>
                           <div class="rbt-card-bottom">
-                            <div class="rbt-price" style="font-size: 0.45em">
+                            <div class="rbt-price" style="font-size: 0.45em" th:if="${course.price > 0}">
                               <span class="current-price" th:text="${course.price - (course.price * course.discount)}">
                                 1.600.000₫
                               </span>
                               <span class="off-price" th:text="${course.price}">2.000.000₫</span>
+                            </div>
+                            <div class="rbt-price" style="font-size: 0.45em" th:if="${course.price == 0}">
+                              <span class="current-price"> Miễn phí </span>
                             </div>
                             <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}">
                               Xem thêm
@@ -303,11 +306,14 @@
                     </div>
                   </div>
                   <div class="rbt-card-bottom">
-                    <div class="rbt-price" style="font-size: 0.85em">
+                    <div class="rbt-price" style="font-size: 0.85em" th:if="${course.price > 0}">
                       <span class="current-price" th:text="${course.price}">1.600.000₫</span>
                       <span class="off-price" th:text="${course.price - (course.price * course.discount)}">
                         2.000.000₫
                       </span>
+                    </div>
+                    <div class="rbt-price" style="font-size: 0.45em" th:if="${course.price == 0}">
+                      <span class="current-price"> Miễn phí </span>
                     </div>
                     <a class="rbt-btn-link" th:href="@{'/course-details/' + ${course.courseId}}">
                       Xem thêm

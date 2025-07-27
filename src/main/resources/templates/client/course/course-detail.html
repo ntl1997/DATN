@@ -839,7 +839,8 @@
 
                     <div hidden id="auth" th:attr="auth=${#authorization.expression('isAuthenticated()')}"></div>
 
-                    <span class="subtitle" th:text="${course.price} +' đ'"></span>
+                    <span class="subtitle" th:text="${course.price} +' đ'" th:if="${course.price > 0}"></span>
+                    <span class="subtitle" th:if="${course.price == 0}"> Miễn phí</span>
                     <span class="b3"><i class="feather-calendar"></i> Thời gian sử dụng: Trọn đời</span>
 
                     <div class="rbt-widget-details has-show-more">
@@ -1039,11 +1040,14 @@
                     </div>
 
                     <div class="rbt-card-bottom">
-                      <div class="rbt-price" style="font-size: 0.85em">
+                      <div class="rbt-price" style="font-size: 0.85em" th:if="${course.price > 0}">
                         <span class="current-price" th:text="${course.price}">1.600.000₫</span>
                         <span class="off-price" th:text="${course.price - (course.price * course.discount)}"
                           >2.000.000₫</span
                         >
+                      </div>
+                      <div class="rbt-price" style="font-size: 0.85em" th:if="${course.price == 0}">
+                        <span class="current-price">Miễn phí</span>
                       </div>
                       <a class="rbt-btn-link" href="course-details.html">Xem thêm<i class="feather-arrow-right"></i></a>
                     </div>
@@ -1057,35 +1061,6 @@
       </div>
       <!-- End Top Course Area -->
 
-      <!-- Start Course Action Bottom  -->
-      <div class="rbt-course-action-bottom">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6">
-              <div class="section-title text-center text-md-start">
-                <h5 class="title mb--0">Khóa học Histudy 2025: Từ cơ bản đến chuyên gia!</h5>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 mt_sm--15">
-              <div class="course-action-bottom-right rbt-single-group">
-                <div class="rbt-single-list rbt-price large-size justify-content-center">
-                  <span class="current-price" th:text="${course.price}">1.600.000₫</span>
-                  <span class="off-price" th:text="${course.price - (course.price * course.discount)}">2.000.000₫</span>
-                </div>
-                <div class="rbt-single-list action-btn">
-                  <a class="rbt-btn btn-gradient hover-icon-reverse btn-md" href="#">
-                    <span class="icon-reverse-wrapper">
-                      <span class="btn-text">Purchase Now</span>
-                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                      <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <!-- End Course Action Bottom  -->
       <div class="rbt-separator-mid">
         <div class="container">
