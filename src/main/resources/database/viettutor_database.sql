@@ -570,7 +570,7 @@ VALUES
     (6, N'Màu sắc và font chữ trong CSS', N'Cách tùy chỉnh giao diện trang web', N'https://www.youtube.com/embed/1Rs2ND1ryYc', 3, 19),
     (6, N'Margin, Padding, Border', N'Tùy chỉnh layout cơ bản', N'https://www.youtube.com/embed/1KkA9bJj-rM', 4, 21),
     (7, N'Giới thiệu Matplotlib', N'Vẽ biểu đồ đường, cột với matplotlib', N'https://www.youtube.com/embed/a9UrKTVEeZA', 1, 25),
-    (7, N'Biểu đồ nâng cao với Seaborn', N'Direct plot và heatmap', N'https://www.youtube.com/embed/5cLmzM-lENg', 2, 26);
+    (7, N'Biểu đồ nâng cao với Seaborn', N'Direct plot và heatmap', N'https://www.youtube.com/embed/5cLmzM-lENg', 2, 26),
     (7, N'Biểu đồ tròn và biểu đồ phân tán', N'Phân tích dữ liệu nâng cao với biểu đồ', N'https://www.youtube.com/embed/ZjX2ZAdb0Rw', 3, 23),
     (7, N'Tùy chỉnh biểu đồ: màu, nhãn, tiêu đề', N'Làm đẹp biểu đồ với matplotlib', N'https://www.youtube.com/embed/3Xc3CA655Y4', 4, 25);
 
