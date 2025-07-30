@@ -559,33 +559,56 @@ VALUES
     (3, N'Enrollment Successful', N'You have successfully enrolled in Java for Beginners');
 GO
 
--- 23. Quiz cho bài học đầu tiên
+-- 23. Thêm 6 quiz: mỗi module có 2 quiz
 INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
     (1, N'Quiz Giới thiệu Python', 10, 15),
+    (1, N'Quiz Biến và Kiểu dữ liệu', 10, 15),
     (3, N'Quiz HTML cơ bản', 10, 15),
-    (4, N'Quiz Giới thiệu Phân tích Dữ liệu', 10, 15);
+    (3, N'Quiz Thẻ HTML nâng cao', 10, 15),
+    (4, N'Quiz Giới thiệu Phân tích Dữ liệu', 10, 15),
+    (4, N'Quiz Công cụ Phân tích Dữ liệu', 10, 15);
 
--- 24. Thêm 2 câu hỏi trắc nghiệm
+
+-- 24. Thêm câu hỏi cho mỗi quiz
 INSERT INTO Questions
     (QuizId, QuestionText, Score)
 VALUES
+    -- Quiz 1: Giới thiệu Python
     (1, N'Python là ngôn ngữ thông dịch?', 1),
     (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
-    (2, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
-    (2, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1),
-    (3, N'Dữ liệu là gì trong phân tích dữ liệu?', 1),
-    (3, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 1);
 
--- 25. Đáp án cho câu hỏi 1
+    -- Quiz 2: Biến và Kiểu dữ liệu
+    (2, N'Biến trong Python có thể đổi kiểu dữ liệu sau khi gán?', 1),
+    (2, N'Kiểu dữ liệu nào trong Python biểu diễn số thực?', 1),
+
+    -- Quiz 3: HTML cơ bản
+    (3, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
+    (3, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1),
+
+    -- Quiz 4: Thẻ HTML nâng cao
+    (4, N'Thẻ HTML nào dùng để chèn ảnh?', 1),
+    (4, N'Thẻ nào dùng để tạo danh sách có thứ tự?', 1),
+
+    -- Quiz 5: Giới thiệu Phân tích Dữ liệu
+    (5, N'Dữ liệu là gì trong phân tích dữ liệu?', 1),
+    (5, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 1),
+
+    -- Quiz 6: Công cụ Phân tích Dữ liệu
+    (6, N'Công cụ nào dùng để vẽ biểu đồ trong phân tích dữ liệu?', 1),
+    (6, N'Jupyter Notebook thường dùng cho mục đích nào?', 1);
+
+
+-- 25. Đáp án cho từng câu hỏi
+-- Câu 1
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
     (1, N'Đúng', 1),
     (1, N'Sai', 0);
 
--- 26. Đáp án cho câu hỏi 2
+-- Câu 2
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
@@ -594,49 +617,105 @@ VALUES
     (2, N'Class', 0),
     (2, N'Pointer', 1);
 
+-- Câu 3
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
-    (3, N'<h1>', 1),
-    (3, N'<div>', 0),
-    (3, N'<title>', 0),
-    (3, N'<p>', 0);
+    (3, N'Có', 1),
+    (3, N'Không', 0);
 
+-- Câu 4
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
-    (4, N'<a>', 1),
-    (4, N'<link>', 0),
-    (4, N'<href>', 0),
-    (4, N'<img>', 0);
+    (4, N'float', 1),
+    (4, N'int', 0),
+    (4, N'str', 0),
+    (4, N'bool', 0);
 
+-- Câu 5
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
-    (5, N'Tập hợp các thông tin có thể xử lý', 1),
-    (5, N'Một dạng ngôn ngữ lập trình', 0),
-    (5, N'Công cụ phân tích dữ liệu', 0),
-    (5, N'Một phần mềm thống kê', 0);
+    (5, N'<h1>', 1),
+    (5, N'<div>', 0),
+    (5, N'<title>', 0),
+    (5, N'<p>', 0);
 
-
+-- Câu 6
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
-    (6, N'Pandas', 1),
-    (6, N'Django', 0),
-    (6, N'NumPy', 0),
-    (6, N'Flask', 0);
+    (6, N'<a>', 1),
+    (6, N'<link>', 0),
+    (6, N'<href>', 0),
+    (6, N'<img>', 0);
 
-INSERT INTO QuizSubmissions
-    (QuizId, UserId, Score, SubmittedAt)
+-- Câu 7
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
 VALUES
-    (2, 3, 10, GETDATE()),
-    (3, 3, 5, GETDATE());
+    (7, N'<img>', 1),
+    (7, N'<src>', 0),
+    (7, N'<picture>', 0),
+    (7, N'<media>', 0);
 
-INSERT INTO QuizAnswers
-    (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
+-- Câu 8
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
 VALUES
-    (1, 3, 9, 1),
-    (1, 4, 16, 0),
-    (2, 5, 17, 1),
-    (2, 6, 24, 0);
+    (8, N'<ol>', 1),
+    (8, N'<ul>', 0),
+    (8, N'<li>', 0),
+    (8, N'<list>', 0);
+
+-- Câu 9
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (9, N'Tập hợp các thông tin có thể xử lý', 1),
+    (9, N'Một dạng ngôn ngữ lập trình', 0),
+    (9, N'Công cụ phân tích dữ liệu', 0),
+    (9, N'Một phần mềm thống kê', 0);
+
+-- Câu 10
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (10, N'Pandas', 1),
+    (10, N'Django', 0),
+    (10, N'NumPy', 0),
+    (10, N'Flask', 0);
+
+-- Câu 11
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (11, N'Matplotlib', 1),
+    (11, N'Pandas', 0),
+    (11, N'NumPy', 0),
+    (11, N'Scipy', 0);
+
+-- Câu 12
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (12, N'Viết mã và phân tích dữ liệu tương tác', 1),
+    (12, N'Thiết kế giao diện đồ họa', 0),
+    (12, N'Xây dựng hệ quản trị cơ sở dữ liệu', 0),
+    (12, N'Tạo game trong Python', 0);
+
+-- 26. Dữ liệu mẫu bài làm quiz
+-- INSERT INTO QuizSubmissions
+--     (QuizId, UserId, Score, SubmittedAt)
+-- VALUES
+--     (2, 3, 10, GETDATE()),
+--     (3, 3, 5, GETDATE());
+
+-- INSERT INTO QuizAnswers
+--     (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
+-- VALUES
+--     (1, 3, 9, 1),
+--     (1, 4, 16, 0),
+--     (2, 5, 17, 1),
+--     (2, 6, 24, 0);
