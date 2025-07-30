@@ -103,6 +103,9 @@ public class AdminEnrollController {
     @PostMapping("/admin/import-excel-users-to-course")
     public String bulkAddUsersToCourse(@RequestParam("file") MultipartFile file, @RequestParam int courseId) {
         try {
+            Course course = courseService.findById(courseId)
+                    .orElseThrow(() -> new RuntimeException("Course not found"));
+
             // Đọc dữ liệu từ file Excel
             InputStream inputStream = file.getInputStream();
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -114,11 +117,8 @@ public class AdminEnrollController {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                Long userId = (long) row.getCell(0).getNumericCellValue();
-
-                Course course = courseService.findById(courseId)
-                        .orElseThrow(() -> new RuntimeException("Course not found"));
-                User user = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+                String email = row.getCell(2).getStringCellValue();
+                User user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
                 Optional<Enrollment> existingEnrollment = enrollmentService.findByUserAndCourse(user, course);
 
                 // Nếu chưa có, thêm vào bảng Enrollments
@@ -143,20 +143,21 @@ public class AdminEnrollController {
     @GetMapping("/admin/download-excel-enrolled-users/{id}")
     public ResponseEntity<InputStreamResource> downloadExcelTemplate(@PathVariable("id") int courseId)
             throws IOException {
+        Course course = courseService.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
         // Tạo Workbook và Sheet
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Học viên");
 
         // Tạo dòng đầu tiên cho các tiêu đề cột
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Mã sinh viên");
+        headerRow.createCell(0).setCellValue("STT");
         headerRow.createCell(1).setCellValue("Họ tên");
         headerRow.createCell(2).setCellValue("Email");
         headerRow.createCell(3).setCellValue("SĐT");
 
         // Tạo dữ liệu mẫu (có thể bỏ qua hoặc thay thế nếu cần)
-        Course course = courseService.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
         List<Enrollment> enrollments = course.getEnrollments();
         AtomicInteger rowIndex = new AtomicInteger(1);
         for (Enrollment enrollment : enrollments) {
@@ -177,7 +178,7 @@ public class AdminEnrollController {
                 new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
 
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=enrolled-users.xlsx")
+                .header("Content-Disposition", "attachment; filename=danh_sach_sinh_vien.xlsx")
                 .contentType(org.springframework.http.MediaType
                         .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(resource);

@@ -193,7 +193,7 @@ public class AdminAccountController {
 
         // Tạo dòng đầu tiên cho các tiêu đề cột
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Mã sinh viên");
+        headerRow.createCell(0).setCellValue("STT");
         headerRow.createCell(1).setCellValue("Họ tên");
         headerRow.createCell(2).setCellValue("Email");
         headerRow.createCell(3).setCellValue("SĐT");
@@ -216,7 +216,7 @@ public class AdminAccountController {
 
         // Trả về ResponseEntity với file Excel
         return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=students_account_template.xlsx")
+                .header("Content-Disposition", "attachment; filename=danh_sach_sinh_vien_mau.xlsx")
                 .contentType(org.springframework.http.MediaType
                         .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                 .body(resource); // Trả về tài nguyên dưới dạng response body

@@ -106,6 +106,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public User updateInfo(long id, UpdateUserInfoDTO userDTO) {
         User user = findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         user.setFullname(userDTO.getFullname());
