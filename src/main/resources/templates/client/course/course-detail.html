@@ -188,7 +188,21 @@
                                       <span class="text" th:text="${lecture.lectureTitle}">Course Intro</span>
                                     </div>
                                     <div class="course-content-right">
-                                      <span class="min-lable">30 min</span>
+                                      <span class="min-lable" th:text="${lecture.duration} + ' phút'">30 min</span>
+                                      <span class="rbt-badge variation-03 bg-primary-opacity"
+                                        ><i class="feather-eye"></i> Preview</span
+                                      >
+                                    </div>
+                                  </a>
+                                </li>
+                                <li th:each="quiz : ${module.quizzes}">
+                                  <a th:href="@{/quiz/{id}(id=${quiz.quizId})}">
+                                    <div class="course-content-left">
+                                      <i class="feather-help-circle"></i>
+                                      <span class="text" th:text="${quiz.title}">Course Intro</span>
+                                    </div>
+                                    <div class="course-content-right">
+                                      <span class="min-lable" th:text="${quiz.timeLimit + ' phút'}">30 min</span>
                                       <span class="rbt-badge variation-03 bg-primary-opacity"
                                         ><i class="feather-eye"></i> Preview</span
                                       >
