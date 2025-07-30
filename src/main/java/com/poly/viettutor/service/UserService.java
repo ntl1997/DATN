@@ -38,6 +38,7 @@ public class UserService {
         user.setEmail(registerRequest.getEmail());
         user.setPhoneNumber(registerRequest.getPhoneNumber());
         user.setOccupation(registerRequest.getOccupation());
+        user.setBiography(registerRequest.getBiography());
         user.setImage(null); // Ảnh sẽ được xử lý sau
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreatedAt(new Date());

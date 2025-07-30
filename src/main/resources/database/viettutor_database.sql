@@ -377,28 +377,7 @@ INSERT INTO Users
 VALUES
     (N'Admin User', N'admin@viettutor.com', N'$2a$12$V2XUN.FhiVRyIpev2m6.MOUdKlRveFMlC3C6kfYT/Y7ZrClNep55W', GETDATE(), N'https://short.com.vn/6tMs', N'An experienced software engineer passionate about building scalable applications.', N'Software Engineer', N'0901234567'),
     (N'John Instructor', N'john@viettutor.com', N'$2a$12$CvyLQybDyPrkgBjMwVjsj./KYP806nPneY1A7VU/PaRoSL0jkleZS', GETDATE(), N'https://short.com.vn/U9Ow', N'Marketing specialist with a focus on digital campaigns and brand growth.', N'Digital Marketer', N'0902345678'),
-    (N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789'),
-    (N'Student 01', N'student01@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std01', N'Enthusiastic student.', N'Student', N'0900000001'),
-    (N'Student 02', N'student02@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std02', N'Enthusiastic student.', N'Student', N'0900000002'),
-    (N'Student 03', N'student03@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std03', N'Enthusiastic student.', N'Student', N'0900000003'),
-    (N'Student 04', N'student04@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std04', N'Enthusiastic student.', N'Student', N'0900000004'),
-    (N'Student 05', N'student05@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std05', N'Enthusiastic student.', N'Student', N'0900000005'),
-    (N'Student 06', N'student06@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std06', N'Enthusiastic student.', N'Student', N'0900000006'),
-    (N'Student 07', N'student07@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std07', N'Enthusiastic student.', N'Student', N'0900000007'),
-    (N'Student 08', N'student08@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std08', N'Enthusiastic student.', N'Student', N'0900000008'),
-    (N'Student 09', N'student09@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std09', N'Enthusiastic student.', N'Student', N'0900000009'),
-    (N'Student 10', N'student10@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std10', N'Enthusiastic student.', N'Student', N'0900000010'),
-    (N'Student 11', N'student11@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std11', N'Enthusiastic student.', N'Student', N'0900000011'),
-    (N'Student 12', N'student12@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std12', N'Enthusiastic student.', N'Student', N'0900000012'),
-    (N'Student 13', N'student13@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std13', N'Enthusiastic student.', N'Student', N'0900000013'),
-    (N'Student 14', N'student14@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std14', N'Enthusiastic student.', N'Student', N'0900000014'),
-    (N'Student 15', N'student15@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std15', N'Enthusiastic student.', N'Student', N'0900000015'),
-    (N'Student 16', N'student16@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std16', N'Enthusiastic student.', N'Student', N'0900000016'),
-    (N'Student 17', N'student17@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std17', N'Enthusiastic student.', N'Student', N'0900000017'),
-    (N'Student 18', N'student18@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std18', N'Enthusiastic student.', N'Student', N'0900000018'),
-    (N'Student 19', N'student19@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std19', N'Enthusiastic student.', N'Student', N'0900000019'),
-    (N'Student 20', N'student20@viettutor.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/std20', N'Enthusiastic student.', N'Student', N'0900000020');
-
+    (N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789');
 
 -- 3. UserRoles (phụ thuộc Roles + Users)
 INSERT INTO UserRoles
@@ -408,29 +387,8 @@ VALUES
     -- Admin
     (2, 2),
     -- Instructor
-    (3, 3),
-    (3, 4),
-    (3, 5),
-    (3, 6),
-    (3, 7),
-    (3, 8),
-    (3, 9),
-    (3, 10),
-    (3, 11),
-    (3, 12),
-    (3, 13),
-    (3, 14),
-    (3, 15),
-    (3, 16),
-    (3, 17),
-    (3, 18),
-    (3, 19),
-    (3, 20),
-    (3, 21),
-    (3, 22),
-    (3, 23);
+    (3, 3);
 -- Student
-
 
 -- 4. Categories (độc lập)
 INSERT INTO Categories
