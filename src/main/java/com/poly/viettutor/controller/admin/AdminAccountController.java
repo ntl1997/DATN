@@ -170,7 +170,6 @@ public class AdminAccountController {
                             .email(email)
                             .phoneNumber(phoneNumber)
                             .password("123456")
-                            .confirmPassword("123456")
                             .build();
 
                     // Đăng ký tài khoản mới
