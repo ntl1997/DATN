@@ -70,6 +70,7 @@ public class instructorController {
         model.addAttribute("hiddenCourses", hiddenCourses);
         model.addAttribute("title", "Khóa học của tôi");
         model.addAttribute("content", "client/instructor/instructor-course");
+        model.addAttribute("scripts", "client/instructor/instructor-course");
         return "client/layout/index";
     }
 

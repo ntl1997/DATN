@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -284,10 +285,21 @@ public class CourseController {
         try {
             User user = userService.getCurrentUser();
             int newCourseId = courseService.cloneCourse(courseId, user).getCourseId();
-            return "redirect:/instructor/edit-course/" + newCourseId;
+            return "redirect:/instructor/edit-course/" + newCourseId + "?cloneSuccess=true";
         } catch (Exception e) {
             log.error("Clone course failed", e);
             return "redirect:/instructor/dashboard?cloneFailed=true";
+        }
+    }
+
+    @DeleteMapping("/instructor/delete-draft-course")
+    public String deleteDraftCourse(@RequestParam int courseId, Model model) {
+        try {
+            courseService.deleteById(courseId);
+            return "redirect:/instructor/courses?deleteSuccess=true";
+        } catch (Exception e) {
+            log.error("Delete draft course failed", e);
+            return "redirect:/instructor/courses?deleteFailed=true";
         }
     }
 
