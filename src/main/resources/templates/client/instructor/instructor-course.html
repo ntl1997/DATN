@@ -411,6 +411,18 @@
                                     >
                                       <i class="feather-edit"></i> Edit
                                     </a>
+
+                                    <form
+                                      th:action="@{/instructor/delete-draft-course}"
+                                      onsubmit="return confirm('Bạn có muốn xóa bản nháp này')"
+                                      method="post"
+                                    >
+                                      <input type="hidden" name="_method" value="delete" />
+                                      <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                      <button type="submit" class="btn btn-danger">
+                                        <i class="feather-trash"></i> Delete
+                                      </button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
@@ -541,5 +553,37 @@
         </svg>
       </div>
     </div>
+
+    <th:block th:fragment="scripts">
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const urlParams = new URLSearchParams(window.location.search);
+          const cloneSuccess = urlParams.get("deleteSuccess");
+
+          if (cloneSuccess === "true") {
+            // Hiển thị thông báo thành công (có thể dùng toast, sweetalert2, ...)
+            console.log("Tạo bản sao khóa học thành công");
+
+            // Ví dụ: hiển thị toast đơn giản
+            const toast = document.createElement("div");
+            toast.textContent = "🎉 Xóa bản nháp khóa học thành công!";
+            toast.style.position = "fixed";
+            toast.style.bottom = "20px";
+            toast.style.right = "20px";
+            toast.style.padding = "10px 15px";
+            toast.style.backgroundColor = "#4CAF50";
+            toast.style.color = "#fff";
+            toast.style.borderRadius = "6px";
+            toast.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+            document.body.appendChild(toast);
+
+            // Tự động ẩn sau 3s
+            setTimeout(() => {
+              toast.remove();
+            }, 3000);
+          }
+        });
+      </script>
+    </th:block>
   </body>
 </html>
