@@ -182,17 +182,27 @@
 
                                   <!-- Phần giá -->
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
-                                      <!-- <span class="current-price" th:style="'font-size: 2.2rem;'"
-                                      th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">
-                                    </span> -->
+                                      <span
+                                        class="current-price"
+                                        th:style="'font-size: 2.2rem;'"
+                                        th:text="${#numbers.formatDecimal(course.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                      >
+                                      </span>
 
                                       <!-- Hiển thị giá gốc nếu có giảm giá -->
-                                      <!-- <span class="off-price" th:if="${course.discount > 0}"
-                                      th:style="'font-size: 1.4rem; text-decoration: line-through; color: #999;'"
-                                      th:text="${#numbers.formatDecimal(course.price / (1 - (course.discount / 100)), 0, 'COMMA', 0, 'POINT')} + ' đ'">
-                                    </span> -->
+                                      <span
+                                        class="off-price"
+                                        th:if="${course.discount > 0}"
+                                        th:style="'font-size: 1.4rem; text-decoration: line-through; color: #999;'"
+                                        th:text="${#numbers.formatDecimal(course.price / (1 - (course.discount / 100)), 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                                      >
+                                      </span>
+                                    </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
                                     </div>
 
                                     <!-- Nút sửa khóa học -->
@@ -272,7 +282,7 @@
                                   </ul>
 
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -290,6 +300,11 @@
                                       >
                                       </span>
                                     </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
+                                    </div>
+
                                     <a
                                       class="rbt-btn-link left-icon"
                                       th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
@@ -367,7 +382,7 @@
                                   </ul>
 
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -385,6 +400,11 @@
                                       >
                                       </span>
                                     </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
+                                    </div>
+
                                     <a
                                       class="rbt-btn-link left-icon"
                                       th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
@@ -462,7 +482,7 @@
                                   </ul>
 
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -480,6 +500,11 @@
                                       >
                                       </span>
                                     </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
+                                    </div>
+
                                     <a
                                       class="rbt-btn-link left-icon"
                                       th:href="@{'/instructor/edit-course/' + ${course.courseId}}"

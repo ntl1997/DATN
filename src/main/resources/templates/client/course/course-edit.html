@@ -69,6 +69,21 @@
                     </div>
                   </div>
                 </form>
+
+                <br />
+                <div class="col-lg-12">
+                  <form
+                    th:action="@{/instructor/clone-course}"
+                    onsubmit="return confirm('Bạn có muốn tạo bản sao không?')"
+                    method="post"
+                  >
+                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                    <button type="submit" class="rbt-btn bg-info w-100 text-center">
+                      <span class="btn-text">Tạo bản sao</span>
+                      <span class="btn-icon"><i class="feather-copy"></i></span>
+                    </button>
+                  </form>
+                </div>
               </div>
 
               <div class="col-lg-4">

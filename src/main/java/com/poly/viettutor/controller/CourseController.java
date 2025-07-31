@@ -279,6 +279,18 @@ public class CourseController {
         return "redirect:/instructor/dashboard?updateSuccess=true";
     }
 
+    @PostMapping("/instructor/clone-course")
+    public String cloneCourse(@RequestParam int courseId, Model model) {
+        try {
+            User user = userService.getCurrentUser();
+            int newCourseId = courseService.cloneCourse(courseId, user).getCourseId();
+            return "redirect:/instructor/edit-course/" + newCourseId;
+        } catch (Exception e) {
+            log.error("Clone course failed", e);
+            return "redirect:/instructor/dashboard?cloneFailed=true";
+        }
+    }
+
     private boolean isOwnerOrADmin(User user, Course course) {
         boolean isAdmin = userService.hasRole(user, "ADMIN");
         boolean isOwner = user.getId() == course.getCreatedBy().getId();
