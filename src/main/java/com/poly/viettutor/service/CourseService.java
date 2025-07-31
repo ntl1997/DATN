@@ -256,53 +256,6 @@ public class CourseService {
         return course;
     }
 
-    // public void updateCourseModules(CourseDTO courseDTO, Course course) {
-    // List<CourseModule> existingModules =
-    // courseModuleRepository.findByCourse(course);
-    // Map<Integer, CourseModule> moduleMap = existingModules.stream()
-    // .filter(m -> m.getModuleId() != null)
-    // .collect(Collectors.toMap(CourseModule::getModuleId, m -> m));
-
-    // // Xóa modules không còn tồn tại
-    // Set<Integer> updatedIds = courseDTO.getModules().stream()
-    // .map(ModuleDTO::getModuleId).filter(Objects::nonNull).collect(Collectors.toSet());
-    // existingModules.stream()
-    // .filter(m -> !updatedIds.contains(m.getModuleId()))
-    // .forEach(m -> courseModuleRepository.delete(m));
-
-    // AtomicInteger moduleIndex = new AtomicInteger(1);
-    // for (ModuleDTO moduleDTO : courseDTO.getModules()) {
-    // CourseModule module;
-
-    // if (moduleDTO.getModuleId() != null &&
-    // moduleMap.containsKey(moduleDTO.getModuleId())) {
-    // // Cập nhật module cũ
-    // module = moduleMap.get(moduleDTO.getModuleId());
-    // module.setModuleTitle(moduleDTO.getModuleTitle());
-    // module.setSortOrder(moduleIndex.getAndIncrement());
-    // courseModuleRepository.save(module);
-
-    // // Xoá bài học & quiz cũ
-    // lectureRepository.deleteByModule(module);
-    // quizRepository.deleteByModule(module);
-
-    // } else {
-    // // Tạo mới module
-    // module = CourseModule.builder()
-    // .moduleTitle(moduleDTO.getModuleTitle())
-    // .course(course)
-    // .sortOrder(moduleIndex.getAndIncrement())
-    // .build();
-    // module = courseModuleRepository.save(module);
-    // }
-
-    // // Thêm lectures mới
-    // saveLectures(moduleDTO, module);
-    // // Thêm quizzes mới
-    // saveQuizzes(moduleDTO, module);
-    // }
-    // }
-
     public void updateCourseModules(CourseDTO courseDTO, Course course) {
         List<CourseModule> existingModules = courseModuleRepository.findByCourse(course);
 
@@ -354,6 +307,107 @@ public class CourseService {
             // Thêm quizzes mới
             saveQuizzes(moduleDTO, module);
         }
+    }
+
+    @Transactional
+    public Course cloneCourse(Integer courseIdToClone, User currentInstructor) {
+        Course original = courseRepository.findById(courseIdToClone)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // 1. Clone Course (chỉ dữ liệu cơ bản)
+        Course cloned = Course.builder()
+                .title(original.getTitle() + " - [Copy]")
+                .description(original.getDescription())
+                .overview(original.getOverview())
+                .price(original.getPrice())
+                .discount(original.getDiscount())
+                .courseImage(original.getCourseImage())
+                .demoVideoUrl(original.getDemoVideoUrl())
+                .status("draft")
+                .skillLevel(original.getSkillLevel())
+                .hasCertificate(original.getHasCertificate())
+                .language(original.getLanguage())
+                .createdAt(new Date())
+                .createdBy(currentInstructor)
+                .build();
+
+        courseRepository.save(cloned);
+
+        // 2. Clone CourseMaterials
+        for (CourseMaterial oldMaterial : original.getMaterials()) {
+            CourseMaterial newMaterial = CourseMaterial.builder()
+                    .course(cloned)
+                    .fileName(oldMaterial.getFileName())
+                    .fileUrl(oldMaterial.getFileUrl())
+                    .fileType(oldMaterial.getFileType())
+                    .uploadedAt(new Date())
+                    .build();
+
+            courseMaterialRepository.save(newMaterial);
+        }
+
+        // 3. Clone CourseModules
+        for (CourseModule oldModule : original.getModules()) {
+            CourseModule newModule = CourseModule.builder()
+                    .moduleTitle(oldModule.getModuleTitle())
+                    .sortOrder(oldModule.getSortOrder())
+                    .course(cloned)
+                    .build();
+
+            courseModuleRepository.save(newModule);
+
+            // 3. Clone Lectures
+            for (Lecture oldLecture : oldModule.getLectures()) {
+                Lecture newLecture = Lecture.builder()
+                        .lectureTitle(oldLecture.getLectureTitle())
+                        .content(oldLecture.getContent())
+                        .videoUrl(oldLecture.getVideoUrl())
+                        .sortOrder(oldLecture.getSortOrder())
+                        .duration(oldLecture.getDuration())
+                        .module(newModule)
+                        .build();
+
+                lectureRepository.save(newLecture);
+            }
+
+            // 4. Clone Quizzes
+            for (Quiz oldQuiz : oldModule.getQuizzes()) {
+                Quiz newQuiz = Quiz.builder()
+                        .title(oldQuiz.getTitle())
+                        .totalScore(oldQuiz.getTotalScore())
+                        .timeLimit(oldQuiz.getTimeLimit())
+                        .quizType(oldQuiz.getQuizType())
+                        .createdAt(new Date())
+                        .module(newModule)
+                        .build();
+
+                quizRepository.save(newQuiz);
+
+                // 5. Clone Questions
+                for (Question oldQuestion : oldQuiz.getQuestions()) {
+                    Question newQuestion = Question.builder()
+                            .questionText(oldQuestion.getQuestionText())
+                            .score(oldQuestion.getScore())
+                            .quiz(newQuiz)
+                            .build();
+
+                    questionRepository.save(newQuestion);
+
+                    // 6. Clone Options
+                    for (Option oldOption : oldQuestion.getOptions()) {
+                        Option newOption = Option.builder()
+                                .optionText(oldOption.getOptionText())
+                                .isCorrect(oldOption.getIsCorrect())
+                                .question(newQuestion)
+                                .build();
+
+                        optionRepository.save(newOption);
+                    }
+                }
+            }
+        }
+
+        return cloned;
     }
 
     public void updateStatus(Course course, String status) {
