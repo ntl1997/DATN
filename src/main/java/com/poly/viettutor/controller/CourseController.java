@@ -3,8 +3,6 @@ package com.poly.viettutor.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +23,6 @@ import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CategoryService;
 import com.poly.viettutor.service.CourseService;
-import com.poly.viettutor.service.EnrollmentService;
 import com.poly.viettutor.service.UserService;
 
 import jakarta.servlet.RequestDispatcher;
@@ -36,110 +33,17 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CourseController {
 
-    private final EnrollmentService enrollmentService;
     private final CourseService courseService;
     private final CategoryService categoryService;
     private final UserService userService;
     private final Validator validator;
 
     public CourseController(CourseService courseService, CategoryService categoryService, UserService userService,
-            Validator validator, EnrollmentService enrollmentService) {
+            Validator validator) {
         this.courseService = courseService;
         this.categoryService = categoryService;
         this.userService = userService;
         this.validator = validator;
-        this.enrollmentService = enrollmentService;
-    }
-
-    // Hàm phân trang
-    @GetMapping("/courses")
-    public String listCoursesPage(
-            Model model,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "9") int size,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) List<String> categories,
-            @RequestParam(required = false) List<Integer> ratings,
-            @RequestParam(required = false) List<String> instructor,
-            @RequestParam(required = false) String priceType) {
-        Page<Course> courses = courseService.searchCourses(
-                keyword, categories, ratings,
-                (instructor != null && !instructor.isEmpty()) ? instructor.get(0) : null,
-                priceType, PageRequest.of(page - 1, size));
-        List<Category> categoryList = categoryService.findAll();
-        List<User> instructors = userService.getAllInstructors();
-        model.addAttribute("instructors", instructors);
-        model.addAttribute("categories", categoryList);
-        model.addAttribute("courses", courses);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", courses.getTotalPages());
-        model.addAttribute("title", "Danh sách khóa học");
-        model.addAttribute("content", "client/course/courses");
-        // Truyền lại các filter để giữ trạng thái trên giao diện
-        model.addAttribute("selectedCategories", categories);
-        model.addAttribute("selectedRatings", ratings);
-        model.addAttribute("selectedInstructor", instructor);
-        model.addAttribute("selectedPriceType", priceType);
-        model.addAttribute("keyword", keyword);
-        return "client/layout/index";
-    }
-
-    @GetMapping("/course-details/{id}")
-    public String getById(@PathVariable("id") int id, HttpServletRequest request, Model model) {
-        Optional<Course> existingItemOptional = courseService.findById(id);
-
-        // Xử lý khi không tìm thấy khóa học, chuyển hướng hoặc báo lỗi
-        if (existingItemOptional.isEmpty()) {
-            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
-            return "forward:/error";
-        }
-
-        Course course = existingItemOptional.get();
-        User user = userService.getCurrentUser();
-
-        // CHẶN nếu không phải chủ sở hữu hoặc admin khi course chưa được duyệt
-        if (!course.getStatus().equalsIgnoreCase("publish")) {
-            if (!isOwnerOrADmin(user, course)) {
-                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
-                return "forward:/error";
-            }
-        }
-
-        int totalDuration = courseService.totalDuration(course);
-        boolean isEnrolled = enrollmentService.isEnrolled(user, course);
-
-        model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
-        model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
-        model.addAttribute("isEnrolled", isEnrolled); // Kiểm tra đã tham gia khóa học chưa
-        model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
-        model.addAttribute("content", "client/course/course-detail"); // nội dung trang (phần content)
-        model.addAttribute("scripts", "client/course/course-detail");
-        return "client/layout/index";
-    }
-
-    @GetMapping("/enroll-course/{id}")
-    public String getMethodName(@PathVariable("id") int id, HttpServletRequest request, Model model) {
-        Optional<Course> existingItemOptional = courseService.findById(id);
-
-        // Xử lý khi không tìm thấy khóa học, chuyển hướng hoặc báo lỗi
-        if (existingItemOptional.isEmpty()) {
-            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
-            return "forward:/error";
-        }
-
-        Course course = existingItemOptional.get();
-        User user = userService.getCurrentUser();
-
-        // CHẶN nếu không phải chủ sở hữu hoặc admin khi course chưa được duyệt
-        if (!course.getStatus().equalsIgnoreCase("publish")) {
-            if (!isOwnerOrADmin(user, course)) {
-                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
-                return "forward:/error";
-            }
-        }
-
-        enrollmentService.enrollCourse(user, course);
-        return "redirect:/course-details/" + id;
     }
 
     @GetMapping("/instructor/create-course")
