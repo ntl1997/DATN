@@ -143,11 +143,14 @@
                               <li>
                                 <a
                                   th:href="@{/student/student-dashboard}"
-                                  sec:authorize="not hasRole('ROLE_INSTRUCTOR')"
+                                  sec:authorize="not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
                                 >
                                   <i class="feather-home"></i><span>Bảng điều khiển</span>
                                 </a>
-                                <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                                <a
+                                  th:href="@{/instructor/dashboard}"
+                                  sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
+                                >
                                   <i class="feather-home"></i><span>Bảng điều khiển</span>
                                 </a>
                               </li>
@@ -191,11 +194,14 @@
                               <li>
                                 <a
                                   th:href="@{/student/student-dashboard}"
-                                  sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                                  sec:authorize="hasRole('ROLE_STUDENT') and not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
                                 >
                                   <i class="feather-home"></i><span>Bảng điều khiển</span>
                                 </a>
-                                <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                                <a
+                                  th:href="@{/instructor/dashboard}"
+                                  sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
+                                >
                                   <i class="feather-home"></i><span>Bảng điều khiển</span>
                                 </a>
                               </li>

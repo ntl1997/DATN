@@ -22,11 +22,11 @@
               <!-- Start Dashboard Top  -->
               <div
                 th:replace="~{client/instructor/instructor-banner :: instructor-banner}"
-                sec:authorize="hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <div
                 th:replace="~{client/student/student-banner :: student-banner}"
-                sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasRole('ROLE_STUDENT') and not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <!-- End Dashboard Top  -->
 
