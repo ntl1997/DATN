@@ -311,6 +311,18 @@
                                     >
                                       <i class="feather-edit"></i> Edit
                                     </a>
+
+                                    <form
+                                      th:action="@{/instructor/delete-course}"
+                                      onsubmit="return confirm('Bạn có muốn xóa bản nháp này')"
+                                      method="post"
+                                    >
+                                      <input type="hidden" name="_method" value="delete" />
+                                      <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                      <button type="submit" class="btn btn-danger">
+                                        <i class="feather-trash"></i> Delete
+                                      </button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
@@ -413,7 +425,7 @@
                                     </a>
 
                                     <form
-                                      th:action="@{/instructor/delete-draft-course}"
+                                      th:action="@{/instructor/delete-course}"
                                       onsubmit="return confirm('Bạn có muốn xóa bản nháp này')"
                                       method="post"
                                     >

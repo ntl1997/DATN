@@ -292,13 +292,20 @@ public class CourseController {
         }
     }
 
-    @DeleteMapping("/instructor/delete-draft-course")
+    @DeleteMapping("/instructor/delete-course")
     public String deleteDraftCourse(@RequestParam int courseId, Model model) {
         try {
+            Course course = courseService.findById(courseId)
+                    .orElseThrow(() -> new RuntimeException("Course not found"));
+
+            String status = course.getStatus();
+            if (status.equals("publish") || status.equals("hidden"))
+                throw new RuntimeException("Cannot delete publish or hidden course");
+
             courseService.deleteById(courseId);
             return "redirect:/instructor/courses?deleteSuccess=true";
         } catch (Exception e) {
-            log.error("Delete draft course failed", e);
+            log.error("Delete course failed", e);
             return "redirect:/instructor/courses?deleteFailed=true";
         }
     }
