@@ -92,6 +92,20 @@ CREATE TABLE Courses
 );
 GO
 
+-- 5. CourseOffering
+CREATE TABLE CourseOffering
+(
+    CourseOfferingId BIGINT PRIMARY KEY IDENTITY,
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    Semester NVARCHAR(255),
+    ClassName NVARCHAR(255),
+    InstructorId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    StartDate DATETIME,
+    EndDate DATETIME,
+    EnrollmentStartDate DATETIME,
+    EnrollmentEndDate DATETIME,
+)
+
 -- 6
 -- COURSE MODULES
 CREATE TABLE CourseModules
@@ -127,7 +141,7 @@ CREATE TABLE Enrollments
 (
     EnrollmentId BIGINT PRIMARY KEY IDENTITY,
     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    CourseOfferingId BIGINT FOREIGN KEY REFERENCES CourseOffering(CourseOfferingId),
     EnrolledAt DATETIME DEFAULT GETDATE(),
     EnrolledBy BIGINT DEFAULT NULL
 );
@@ -360,20 +374,7 @@ CREATE TABLE QuizAnswers
     IsCorrect BIT
     -- Đáp án đó có đúng không (1 = đúng)
 );
-
--- 28. CourseOffering
-CREATE TABLE CourseOffering
-(
-    CourseOfferingId BIGINT PRIMARY KEY IDENTITY,
-    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    Semester NVARCHAR(255),
-    ClassName NVARCHAR(255),
-    InstructorId BIGINT FOREIGN KEY REFERENCES Users(UserId),
-    StartDate DATETIME,
-    EndDate DATETIME,
-    EnrollmentStartDate DATETIME,
-    EnrollmentEndDate DATETIME,
-)
+GO
 
 -- DỮ LIỆU MẪU CHO viettutor
 -- 1. Roles (độc lập)

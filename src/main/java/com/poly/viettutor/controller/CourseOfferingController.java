@@ -73,19 +73,19 @@ public class CourseOfferingController {
 
     @GetMapping("/course-details/{id}")
     public String getById(@PathVariable("id") int id, HttpServletRequest request, Model model) {
-        Optional<Course> existingItemOptional = courseService.findById(id);
-
+        Optional<CourseOffering> courseOfferingOpt = courseOfferingService.findById(id);
         // Xử lý khi không tìm thấy khóa học, chuyển hướng hoặc báo lỗi
-        if (existingItemOptional.isEmpty()) {
+        if (courseOfferingOpt.isEmpty()) {
             request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 404);
             return "forward:/error";
         }
 
-        Course course = existingItemOptional.get();
+        CourseOffering courseOffering = courseOfferingOpt.get();
         User user = userService.getCurrentUser();
+        Course course = courseOffering.getCourse();
 
         int totalDuration = courseService.totalDuration(course);
-        boolean isEnrolled = enrollmentService.isEnrolled(user, course);
+        boolean isEnrolled = enrollmentService.isEnrolled(user, courseOffering);
 
         model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
         model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học

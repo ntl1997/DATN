@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
-import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.CourseOffering;
 
 import java.util.Optional;
@@ -15,10 +14,10 @@ import java.util.Optional;
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
 
-    @Query("SELECT COUNT(DISTINCT e.user) FROM Enrollment e WHERE e.course.createdBy = :instructor")
+    @Query("SELECT COUNT(DISTINCT e.user) FROM Enrollment e WHERE e.courseOffering.instructor = :instructor")
     long countStudentsByInstructor(@Param("instructor") User instructor);
 
-    boolean existsByUserAndCourse(User user, Course course);
+    boolean existsByUserAndCourseOffering(User user, CourseOffering courseOffering);
 
     Optional<Enrollment> findByUserAndCourseOffering(User user, CourseOffering courseOffering);
 

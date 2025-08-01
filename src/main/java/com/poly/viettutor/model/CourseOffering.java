@@ -58,7 +58,7 @@ public class CourseOffering {
     @Builder.Default
     private String status = "open"; // (open, closed, in_progress, finished)
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "courseOffering", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments;
 
 }
