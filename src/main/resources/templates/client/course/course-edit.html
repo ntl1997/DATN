@@ -49,13 +49,13 @@
                         <span class="btn-icon"><i class="feather-check-circle"></i></span>
                       </a>
                     </div>
-                    <div class="col-lg-6" th:if="${course.status == 'hidden'}">
+                    <div class="col-lg-12" th:if="${course.status == 'hidden'}">
                       <a class="rbt-btn bg-danger w-100 text-center">
-                        <span class="btn-text">Đang bị ẩn</span>
+                        <span class="btn-text">Khóa học đang bị ẩn, không thể chỉnh sửa</span>
                         <span class="btn-icon"><i class="feather-eye-off"></i></span>
                       </a>
                     </div>
-                    <div class="col-lg-6" th:unless="${course.status == 'publish'}">
+                    <div class="col-lg-6" th:unless="${course.status == 'publish' or course.status == 'hidden'}">
                       <!-- Dữ liệu course, file image, file attachments gửi về backend dưới dạng JSON -->
                       <input type="hidden" name="courseJson" id="courseJson" />
                       <input type="hidden" name="_method" value="put" />

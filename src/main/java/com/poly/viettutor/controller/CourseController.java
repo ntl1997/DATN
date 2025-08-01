@@ -253,8 +253,9 @@ public class CourseController {
                 return "forward:/error";
             }
 
-            // Không cho cập nhật khóa học khi đã công khai
-            if (course.getStatus().equalsIgnoreCase("publish")) {
+            // Không cho cập nhật khóa học khi đã công khai hoặc bị ẩn
+            String status = course.getStatus();
+            if (status.equals("publish") || status.equals("hidden")) {
                 request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, 403);
                 return "forward:/error";
             }
@@ -293,7 +294,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/instructor/delete-course")
-    public String deleteDraftCourse(@RequestParam int courseId, Model model) {
+    public String deleteCourse(@RequestParam int courseId, Model model) {
         try {
             Course course = courseService.findById(courseId)
                     .orElseThrow(() -> new RuntimeException("Course not found"));
