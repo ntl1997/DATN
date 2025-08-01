@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminApprovalController {
+public class AdminCourseController {
 
     @Autowired
     private CourseService courseService;
@@ -22,7 +22,6 @@ public class AdminApprovalController {
         model.addAttribute("title", "Quản lý khóa học");
         model.addAttribute("content", "admin/course/courses");
         model.addAttribute("scripts", "admin/course/courses");
-        // Lấy danh sách khoá học trạng thái "pending"
         model.addAttribute("courses", courseService.findAll());
         return "admin/layout/index";
     }

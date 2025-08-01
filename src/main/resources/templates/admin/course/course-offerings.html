@@ -12,13 +12,13 @@
         <div class="page-title">
           <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-              <h3>Thêm vào khóa học</h3>
+              <h3>Quản lý lớp học</h3>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
               <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Tổng quan</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Thêm vào khóa học</li>
+                  <li class="breadcrumb-item active" aria-current="page">Quản lý lớp học</li>
                 </ol>
               </nav>
             </div>
@@ -26,41 +26,40 @@
         </div>
         <section class="section">
           <div class="card">
-            <div class="card-header"></div>
+            <div class="card-header">
+              <a th:href="@{/admin/course-offering/create}" class="btn btn-primary">Tạo lớp học</a>
+            </div>
             <div class="card-body">
               <table class="table table-striped" id="table1">
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th>Tên Khóa Học</th>
-                    <th>Ngày Tạo</th>
+                    <th>Khóa học</th>
+                    <th>Học kỳ</th>
+                    <th>Tên lớp</th>
                     <th>Giảng Viên</th>
                     <th>Số lượng học viên</th>
-                    <th>Trạng Thái</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="course, stat : ${courses}">
+                  <tr th:each="courseOffering, stat : ${courseOfferings}">
                     <td th:text="${stat.index + 1}"></td>
-                    <td th:text="${course.title}"></td>
-                    <td th:text="${course.createdAt}"></td>
-                    <td th:text="${course.createdBy != null ? course.createdBy.fullname : 'N/A'}"></td>
-                    <td th:text="${#lists.size(course.enrollments)}"></td>
-                    <td>
-                      <!-- Hiển thị trạng thái -->
-                      <span
-                        th:classappend="'badge bg-' + 
-                            (${#strings.toLowerCase(course.status)} == 'publish' ? 'success' : 
-                            (${#strings.toLowerCase(course.status)} == 'pending' ? 'warning' : 
-                            (${#strings.toLowerCase(course.status)} == 'draft' ? 'info' : 
-                            (${#strings.toLowerCase(course.status)} == 'hidden' ? 'secondary' : 'light'))))"
-                        th:text="${course.status}"
-                      ></span>
-                    </td>
+                    <td th:text="${courseOffering.course.title}"></td>
+                    <td th:text="${courseOffering.semester}"></td>
+                    <td th:text="${courseOffering.className}"></td>
+                    <td th:text="${courseOffering.instructor.fullname}"></td>
+                    <td th:text="${#lists.size(courseOffering.enrollments)}"></td>
+                    <td th:text="${courseOffering.startDate}"></td>
+                    <td th:text="${courseOffering.endDate}"></td>
                     <td>
                       <!-- Nếu trạng thái là publish -->
-                      <a th:href="@{/admin/course-enroll/{id}(id=${course.courseId})}" class="btn btn-primary btn-sm">
+                      <a
+                        th:href="@{/admin/course-offering/{id}(id=${courseOffering.courseOfferingId})}"
+                        class="btn btn-primary btn-sm"
+                      >
                         Danh sách học viên
                       </a>
                     </td>

@@ -9,10 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.EnrollmentService;
 import com.poly.viettutor.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.poi.ss.usermodel.*;
@@ -21,8 +22,10 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,41 +40,72 @@ import com.poly.viettutor.service.CourseOfferingService;
 @Controller
 public class AdminEnrollController {
 
+    private final CourseService courseService;
     private final CourseOfferingService courseOfferingService;
     private final EnrollmentService enrollmentService;
     private final UserService userService;
 
     public AdminEnrollController(EnrollmentService enrollmentService, UserService userService,
-            CourseOfferingService courseOfferingService) {
+            CourseOfferingService courseOfferingService, CourseService courseService) {
         this.enrollmentService = enrollmentService;
         this.userService = userService;
         this.courseOfferingService = courseOfferingService;
+        this.courseService = courseService;
     }
 
-    @GetMapping("/admin/course-enroll")
-    public String showEnrollCourses(Model model) {
-        model.addAttribute("title", "Thêm vào khóa học");
-        model.addAttribute("content", "admin/enroll/course-enroll");
-        model.addAttribute("scripts", "admin/enroll/course-enroll");
+    @GetMapping("/admin/course-offerings")
+    public String showCourseOfferings(Model model) {
+        model.addAttribute("title", "Quản lý lớp học");
+        model.addAttribute("content", "admin/course/course-offerings");
+        model.addAttribute("scripts", "admin/course/course-offerings");
         model.addAttribute("courseOfferings", courseOfferingService.findAll());
         return "admin/layout/index";
     }
 
-    @GetMapping("/admin/course-enroll/{id}")
-    public String showEnrollCourseUsers(@PathVariable("id") int offeringId, Model model) {
+    @GetMapping("/admin/course-offering/create")
+    public String newCourseOffering(@ModelAttribute CourseOffering courseOffering, Model model) {
+        model.addAttribute("title", "Tạo lớp học");
+        model.addAttribute("content", "admin/course/new-course-offering");
+        model.addAttribute("courses", courseService.findByStatus("publish"));
+        model.addAttribute("instructors", userService.getAllInstructors());
+        return "admin/layout/index";
+    }
+
+    @PostMapping("/admin/course-offering/create")
+    public String createCourseOffering(@Valid @ModelAttribute CourseOffering courseOffering, BindingResult result,
+            Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("title", "Tạo lớp học");
+            model.addAttribute("content", "admin/course/new-course-offering");
+            model.addAttribute("courses", courseService.findByStatus("publish"));
+            model.addAttribute("instructors", userService.getAllInstructors());
+            return "admin/layout/index";
+        }
+
+        try {
+            courseOfferingService.save(courseOffering);
+            return "redirect:/admin/course-offerings";
+        } catch (Exception e) {
+            log.error("create course offering fail", e);
+            return "redirect:/admin/course-offerings?error=true";
+        }
+    }
+
+    @GetMapping("/admin/course-offering/{id}")
+    public String showEnrollUsers(@PathVariable("id") int offeringId, Model model) {
         CourseOffering courseOffering = courseOfferingService.findById(offeringId)
                 .orElseThrow(() -> new RuntimeException("Course offering not found"));
         List<User> users = userService.getAllStudents();
         model.addAttribute("title", "Danh sách học viên");
-        model.addAttribute("content", "admin/enroll/course-enroll-user");
-        model.addAttribute("scripts", "admin/enroll/course-enroll-user");
+        model.addAttribute("content", "admin/course/course-offering-users");
+        model.addAttribute("scripts", "admin/course/course-offering-users");
         model.addAttribute("courseOffering", courseOffering);
         model.addAttribute("users", users);
         return "admin/layout/index";
     }
 
-    @PostMapping("/admin/add-users-to-course")
-    public String addUsersToCourse(@RequestParam int offeringId, @RequestParam int[] userIds) {
+    @PostMapping("/admin/add-users-to-course-offering")
+    public String addUsersToCourseOffering(@RequestParam int offeringId, @RequestParam int[] userIds) {
         CourseOffering courseOffering = courseOfferingService.findById(offeringId)
                 .orElseThrow(() -> new RuntimeException("Course offering not found"));
         for (int userId : userIds) {
@@ -90,20 +124,20 @@ public class AdminEnrollController {
             }
         }
 
-        return "redirect:/admin/course-enroll/" + offeringId; // Redirect về danh sách học viên của khóa học
+        return "redirect:/admin/course-offering/" + offeringId; // Redirect về danh sách học viên của khóa học
     }
 
     @DeleteMapping("/admin/course-enroll/delete")
-    public String deleteUserFormCourse(@RequestParam int enrollmentId, @RequestParam int offeringId) {
+    public String deleteUserFormCourseOffering(@RequestParam int enrollmentId, @RequestParam int offeringId) {
         Optional<Enrollment> existingEnrollment = enrollmentService.findById(enrollmentId);
         if (existingEnrollment.isPresent()) {
             enrollmentService.deleteById(enrollmentId);
         }
-        return "redirect:/admin/course-enroll/" + offeringId;
+        return "redirect:/admin/course-offering/" + offeringId;
     }
 
     @PostMapping("/admin/import-excel-users-to-course")
-    public String bulkAddUsersToCourse(@RequestParam("file") MultipartFile file, @RequestParam int offeringId) {
+    public String bulkAddUsersToCourseOffering(@RequestParam("file") MultipartFile file, @RequestParam int offeringId) {
         try {
             CourseOffering courseOffering = courseOfferingService.findById(offeringId)
                     .orElseThrow(() -> new RuntimeException("Course offering not found"));
@@ -136,10 +170,10 @@ public class AdminEnrollController {
             }
 
             workbook.close();
-            return "redirect:/admin/course-enroll/" + offeringId;
+            return "redirect:/admin/course-offering/" + offeringId;
         } catch (Exception e) {
             log.error("add user by excel fail", e);
-            return "redirect:/admin/course-enroll/" + offeringId + "?error=true";
+            return "redirect:/admin/course-offering/" + offeringId + "?error=true";
         }
     }
 

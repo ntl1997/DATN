@@ -102,8 +102,6 @@ CREATE TABLE CourseOffering
     InstructorId BIGINT FOREIGN KEY REFERENCES Users(UserId),
     StartDate DATETIME,
     EndDate DATETIME,
-    EnrollmentStartDate DATETIME,
-    EnrollmentEndDate DATETIME,
 )
 
 -- 6
