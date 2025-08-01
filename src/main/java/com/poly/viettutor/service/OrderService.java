@@ -72,7 +72,7 @@ public class OrderService {
                 order.getOrderDetails().forEach(orderDetail -> {
                     Enrollment enrollment = new Enrollment();
                     enrollment.setUser(order.getUser());
-                    enrollment.setCourse(orderDetail.getCourse());
+                    // enrollment.setCourse(orderDetail.getCourse());
                     enrollment.setEnrolledAt(new Date());
                     enrollmentRepository.save(enrollment);
                 });

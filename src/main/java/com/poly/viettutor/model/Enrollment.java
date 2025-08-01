@@ -20,8 +20,8 @@ public class Enrollment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "courseId")
-    private Course course;
+    @JoinColumn(name = "courseOfferingId")
+    private CourseOffering courseOffering;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date enrolledAt;

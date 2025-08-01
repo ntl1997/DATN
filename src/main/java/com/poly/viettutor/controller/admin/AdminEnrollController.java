@@ -28,24 +28,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.poly.viettutor.model.Course;
+import com.poly.viettutor.model.CourseOffering;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
-import com.poly.viettutor.service.CourseService;
+import com.poly.viettutor.service.CourseOfferingService;
 
 @Slf4j
 @Controller
 public class AdminEnrollController {
 
+    private final CourseOfferingService courseOfferingService;
     private final EnrollmentService enrollmentService;
-    private final CourseService courseService;
     private final UserService userService;
 
-    public AdminEnrollController(CourseService courseService, EnrollmentService enrollmentService,
-            UserService userService) {
-        this.courseService = courseService;
+    public AdminEnrollController(EnrollmentService enrollmentService, UserService userService,
+            CourseOfferingService courseOfferingService) {
         this.enrollmentService = enrollmentService;
         this.userService = userService;
+        this.courseOfferingService = courseOfferingService;
     }
 
     @GetMapping("/admin/course-enroll")
@@ -53,58 +53,60 @@ public class AdminEnrollController {
         model.addAttribute("title", "Thêm vào khóa học");
         model.addAttribute("content", "admin/enroll/course-enroll");
         model.addAttribute("scripts", "admin/enroll/course-enroll");
-        model.addAttribute("courses", courseService.findByStatus("publish"));
+        model.addAttribute("courseOfferings", courseOfferingService.findAll());
         return "admin/layout/index";
     }
 
     @GetMapping("/admin/course-enroll/{id}")
-    public String showEnrollCourseUsers(@PathVariable("id") int courseId, Model model) {
-        Course course = courseService.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+    public String showEnrollCourseUsers(@PathVariable("id") int offeringId, Model model) {
+        CourseOffering courseOffering = courseOfferingService.findById(offeringId)
+                .orElseThrow(() -> new RuntimeException("Course offering not found"));
         List<User> users = userService.getAllStudents();
         model.addAttribute("title", "Danh sách học viên");
         model.addAttribute("content", "admin/enroll/course-enroll-user");
         model.addAttribute("scripts", "admin/enroll/course-enroll-user");
-        model.addAttribute("course", course);
+        model.addAttribute("courseOffering", courseOffering);
         model.addAttribute("users", users);
         return "admin/layout/index";
     }
 
     @PostMapping("/admin/add-users-to-course")
-    public String addUsersToCourse(@RequestParam int courseId, @RequestParam int[] userIds) {
-        Course course = courseService.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+    public String addUsersToCourse(@RequestParam int offeringId, @RequestParam int[] userIds) {
+        CourseOffering courseOffering = courseOfferingService.findById(offeringId)
+                .orElseThrow(() -> new RuntimeException("Course offering not found"));
         for (int userId : userIds) {
             User user = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-            Optional<Enrollment> existingEnrollment = enrollmentService.findByUserAndCourse(user, course);
+            Optional<Enrollment> existingEnrollment = enrollmentService.findByUserAndCourseOffering(user,
+                    courseOffering);
 
             // Nếu người dùng chưa được thêm vào khóa học, thêm vào bảng Enrollments
             if (!existingEnrollment.isPresent()) {
                 Enrollment enrollment = new Enrollment();
                 enrollment.setUser(user);
-                enrollment.setCourse(course);
+                enrollment.setCourseOffering(courseOffering);
                 enrollment.setEnrolledAt(new Date());
                 enrollment.setEnrolledBy(userService.getCurrentUser()); // Gán người admin đã thêm
                 enrollmentService.save(enrollment);
             }
         }
 
-        return "redirect:/admin/course-enroll/" + courseId; // Redirect về danh sách học viên của khóa học
+        return "redirect:/admin/course-enroll/" + offeringId; // Redirect về danh sách học viên của khóa học
     }
 
     @DeleteMapping("/admin/course-enroll/delete")
-    public String deleteUserFormCourse(@RequestParam int enrollmentId, @RequestParam int courseId) {
+    public String deleteUserFormCourse(@RequestParam int enrollmentId, @RequestParam int offeringId) {
         Optional<Enrollment> existingEnrollment = enrollmentService.findById(enrollmentId);
         if (existingEnrollment.isPresent()) {
             enrollmentService.deleteById(enrollmentId);
         }
-        return "redirect:/admin/course-enroll/" + courseId;
+        return "redirect:/admin/course-enroll/" + offeringId;
     }
 
     @PostMapping("/admin/import-excel-users-to-course")
-    public String bulkAddUsersToCourse(@RequestParam("file") MultipartFile file, @RequestParam int courseId) {
+    public String bulkAddUsersToCourse(@RequestParam("file") MultipartFile file, @RequestParam int offeringId) {
         try {
-            Course course = courseService.findById(courseId)
-                    .orElseThrow(() -> new RuntimeException("Course not found"));
+            CourseOffering courseOffering = courseOfferingService.findById(offeringId)
+                    .orElseThrow(() -> new RuntimeException("Course offering not found"));
 
             // Đọc dữ liệu từ file Excel
             InputStream inputStream = file.getInputStream();
@@ -119,13 +121,14 @@ public class AdminEnrollController {
                 Row row = rowIterator.next();
                 String email = row.getCell(2).getStringCellValue();
                 User user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-                Optional<Enrollment> existingEnrollment = enrollmentService.findByUserAndCourse(user, course);
+                Optional<Enrollment> existingEnrollment = enrollmentService.findByUserAndCourseOffering(user,
+                        courseOffering);
 
                 // Nếu chưa có, thêm vào bảng Enrollments
                 if (!existingEnrollment.isPresent()) {
                     Enrollment enrollment = new Enrollment();
                     enrollment.setUser(user);
-                    enrollment.setCourse(course);
+                    enrollment.setCourseOffering(courseOffering);
                     enrollment.setEnrolledAt(new Date());
                     enrollment.setEnrolledBy(userService.getCurrentUser());
                     enrollmentService.save(enrollment);
@@ -133,18 +136,18 @@ public class AdminEnrollController {
             }
 
             workbook.close();
-            return "redirect:/admin/course-enroll/" + courseId;
+            return "redirect:/admin/course-enroll/" + offeringId;
         } catch (Exception e) {
             log.error("add user by excel fail", e);
-            return "redirect:/admin/course-enroll/" + courseId + "?error=true";
+            return "redirect:/admin/course-enroll/" + offeringId + "?error=true";
         }
     }
 
     @GetMapping("/admin/download-excel-enrolled-users/{id}")
-    public ResponseEntity<InputStreamResource> downloadExcelTemplate(@PathVariable("id") int courseId)
+    public ResponseEntity<InputStreamResource> downloadExcelTemplate(@PathVariable("id") int offeringId)
             throws IOException {
-        Course course = courseService.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+        CourseOffering courseOffering = courseOfferingService.findById(offeringId)
+                .orElseThrow(() -> new RuntimeException("Course offering not found"));
 
         // Tạo Workbook và Sheet
         Workbook workbook = new XSSFWorkbook();
@@ -156,9 +159,11 @@ public class AdminEnrollController {
         headerRow.createCell(1).setCellValue("Họ tên");
         headerRow.createCell(2).setCellValue("Email");
         headerRow.createCell(3).setCellValue("SĐT");
+        headerRow.createCell(4).setCellValue("Học kỳ");
+        headerRow.createCell(5).setCellValue("Lớp");
 
         // Tạo dữ liệu mẫu (có thể bỏ qua hoặc thay thế nếu cần)
-        List<Enrollment> enrollments = course.getEnrollments();
+        List<Enrollment> enrollments = courseOffering.getEnrollments();
         AtomicInteger rowIndex = new AtomicInteger(1);
         for (Enrollment enrollment : enrollments) {
             Row row = sheet.createRow(rowIndex.getAndIncrement());
@@ -166,6 +171,8 @@ public class AdminEnrollController {
             row.createCell(1).setCellValue(enrollment.getUser().getFullname());
             row.createCell(2).setCellValue(enrollment.getUser().getEmail());
             row.createCell(3).setCellValue(enrollment.getUser().getPhoneNumber());
+            row.createCell(4).setCellValue(courseOffering.getSemester());
+            row.createCell(5).setCellValue(courseOffering.getClassName());
         }
 
         // Ghi file ra ByteArrayOutputStream

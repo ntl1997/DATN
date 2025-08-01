@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.poly.viettutor.model.Course;
+import com.poly.viettutor.model.CourseOffering;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.repository.EnrollmentRepository;
@@ -44,14 +45,14 @@ public class EnrollmentService {
         return enrollmentRepository.existsByUserAndCourse(user, course);
     }
 
-    public Optional<Enrollment> findByUserAndCourse(User user, Course course) {
-        return enrollmentRepository.findByUserAndCourse(user, course);
+    public Optional<Enrollment> findByUserAndCourseOffering(User user, CourseOffering courseOffering) {
+        return enrollmentRepository.findByUserAndCourseOffering(user, courseOffering);
     }
 
-    public Enrollment enrollCourse(User user, Course course) {
+    public Enrollment enrollCourse(User user, CourseOffering courseOffering) {
         Enrollment enrollment = Enrollment.builder()
                 .user(user)
-                .course(course)
+                .courseOffering(courseOffering)
                 .enrolledAt(new Date())
                 .build();
         return enrollmentRepository.save(enrollment);

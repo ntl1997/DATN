@@ -361,6 +361,20 @@ CREATE TABLE QuizAnswers
     -- Đáp án đó có đúng không (1 = đúng)
 );
 
+-- 28. CourseOffering
+CREATE TABLE CourseOffering
+(
+    CourseOfferingId BIGINT PRIMARY KEY IDENTITY,
+    CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
+    Semester NVARCHAR(255),
+    ClassName NVARCHAR(255),
+    InstructorId BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    StartDate DATETIME,
+    EndDate DATETIME,
+    EnrollmentStartDate DATETIME,
+    EnrollmentEndDate DATETIME,
+)
+
 -- DỮ LIỆU MẪU CHO viettutor
 -- 1. Roles (độc lập)
 INSERT INTO Roles
@@ -507,11 +521,11 @@ VALUES
     (1, 2, 5.00);
 
 -- 15. Enrollments (phụ thuộc Users + Courses)
-INSERT INTO Enrollments
-    (UserId, CourseId)
-VALUES
-    (3, 1),
-    (3, 2);
+-- INSERT INTO Enrollments
+--     (UserId, CourseId)
+-- VALUES
+--     (3, 1),
+--     (3, 2);
 
 -- 16. Wishlist (phụ thuộc Users + Courses)
 INSERT INTO Wishlist
@@ -530,10 +544,10 @@ VALUES
     (3, 2, 4, N'Great content, could use more exercises');
 
 -- 19. Certificates (phụ thuộc Users + Courses)
-INSERT INTO Certificates
-    (UserId, CourseId)
-VALUES
-    (3, 1);
+-- INSERT INTO Certificates
+--     (UserId, CourseId)
+-- VALUES
+--     (3, 1);
 
 -- 20. BlogPosts (phụ thuộc Users)
 INSERT INTO BlogPosts

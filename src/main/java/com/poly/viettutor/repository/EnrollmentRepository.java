@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.model.Course;
+import com.poly.viettutor.model.CourseOffering;
+
 import java.util.Optional;
 
 @Repository
@@ -18,6 +20,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
 
     boolean existsByUserAndCourse(User user, Course course);
 
-    Optional<Enrollment> findByUserAndCourse(User user, Course course);
+    Optional<Enrollment> findByUserAndCourseOffering(User user, CourseOffering courseOffering);
 
 }

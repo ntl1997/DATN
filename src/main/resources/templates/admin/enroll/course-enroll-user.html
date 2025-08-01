@@ -41,7 +41,7 @@
                 <!-- Nút "Nhập Excel" -->
                 <button type="button" class="btn btn-primary" onclick="triggerFileInput()">Nhập Excel</button>
 
-                <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                <input type="hidden" name="offeringId" th:value="${course.courseId}" />
 
                 <!-- Input file ẩn đi -->
                 <input
@@ -91,7 +91,7 @@
                       >
                         <input type="hidden" name="_method" value="delete" />
                         <input type="hidden" name="enrollmentId" th:value="${enrollment.enrollmentId}" />
-                        <input type="hidden" name="courseId" th:value="${enrollment.course.courseId}" />
+                        <input type="hidden" name="offeringId" th:value="${enrollment.course.courseId}" />
                         <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                       </form>
                     </td>
@@ -124,7 +124,7 @@
             <div class="modal-body">
               <!-- Bảng danh sách học viên với checkbox -->
               <form th:action="@{/admin/add-users-to-course}" method="post" onsubmit="return checkUserSelection()">
-                <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                <input type="hidden" name="offeringId" th:value="${course.courseId}" />
                 <table class="table">
                   <thead>
                     <tr>
