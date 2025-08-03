@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.service.UserService;
 
@@ -46,6 +47,34 @@ public class AdminThongKeController {
 
         List<Map<String, Object>> topInstructors = userService.getTop5Ints();
         model.addAttribute("topInstructors", topInstructors);
+        return "admin/layout/index";
+    }
+
+    @GetMapping("/admin/totalUsers")
+    public String showTaiKhoan(Model model) {
+        List<User> user = userService.getAllInstructorsAndStudents();
+        model.addAttribute("users", user);
+        model.addAttribute("totalUsers", user.size());
+        model.addAttribute("totalAdmins", userService.getAllAdmins().size());
+        model.addAttribute("totalInstructors", userService.getAllInstructors().size());
+        model.addAttribute("totalStudents", userService.getAllStudents().size());
+        model.addAttribute("title", "Tài khoản");
+        model.addAttribute("content", "admin/thongKe/tongTaiKhoan");
+        model.addAttribute("scripts", "admin/thongKe/tongTaiKhoan");
+        return "admin/layout/index";
+    }
+
+    @GetMapping("/admin/totalQuiz")
+    public String showKqQuiz(Model model) {
+        List<User> user = userService.getAllInstructorsAndStudents();
+        model.addAttribute("users", user);
+        model.addAttribute("totalUsers", user.size());
+        model.addAttribute("totalAdmins", userService.getAllAdmins().size());
+        model.addAttribute("totalInstructors", userService.getAllInstructors().size());
+        model.addAttribute("totalStudents", userService.getAllStudents().size());
+        model.addAttribute("title", "Tài khoản");
+        model.addAttribute("content", "admin/thongKe/tongTaiKhoan");
+        model.addAttribute("scripts", "admin/thongKe/tongTaiKhoan");
         return "admin/layout/index";
     }
 
