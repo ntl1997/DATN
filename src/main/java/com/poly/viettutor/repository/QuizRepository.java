@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Quiz;
+
 import java.util.List;
 
 @Repository
@@ -15,6 +16,13 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     void deleteByModule(CourseModule module);
 
     List<Quiz> findByModule(CourseModule module);
+
+    // ✅ THÊM: Tìm tất cả quiz trong 1 khóa học
+    @Query("""
+        SELECT q FROM Quiz q
+        WHERE q.module.course.courseId = :courseId
+    """)
+    List<Quiz> findByCourseId(@Param("courseId") Long courseId);
 
     @Query(value = """
             SELECT
@@ -55,5 +63,4 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
             ORDER BY qs.SubmittedAt DESC
             """, nativeQuery = true)
     List<Object[]> getQuizSubmissionsByInstructorId(@Param("instructorId") Long instructorId);
-
 }
