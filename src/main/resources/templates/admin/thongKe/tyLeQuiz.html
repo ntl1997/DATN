@@ -27,32 +27,43 @@
         </div>
         <section class="section">
           <div class="card">
-            <div class="card-header">
-              <h4 class="card-title">Danh sách tài khoản</h4>
-            </div>
+            <form method="get" action="#" class="mb-4">
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Chọn khoá học:</label>
+                  <select name="courseId" class="form-select" onchange="this.form.submit()">
+                    <option th:value="" th:selected="${selectedCourseId == null}">-- Tất cả khoá học --</option>
+                    <option th:each="c : ${courses}"
+                            th:value="${c.courseId}"
+                            th:text="${c.title}"
+                            th:selected="${selectedCourseId != null and c.courseId == selectedCourseId}">
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </form>
             <div class="card-body">
               <table class="table table-striped" id="table1">
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th>Họ và tên</th>
-                    <th>Tài khoản</th>
-                    <th>Vai trò</th>
-                    <th>Trạng thái</th>
+                    <th>Khoá học</th>
+                    <th>Tên Quiz</th>
+                    <th>Tổng câu</th>
+                    <th>Số câu đúng</th>
+                    <th>Số câu sai</th>
+                    <th>Tỷ lệ đúng (%)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="user, stat : ${users}">
-                    <td th:text="${stat.index + 1}"></td>
-                    <td th:text="${user.fullname}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td>
-                      <p th:each="role : ${user.roles}" th:text="${role.roleName}"></p>
-                    </td>
-                    <td>
-                      <span class="badge bg-success" th:if="${user.status}">Active</span>
-                      <span class="badge bg-danger" th:unless="${user.status}">Inactive</span>
-                    </td>
+                  <tr th:each="row, iter : ${quizStats}">
+                    <td th:text="${iter.index + 1}"></td>
+                    <td th:text="${row[0]}"></td> <!-- courseName -->
+                    <td th:text="${row[1]}"></td> <!-- quizTitle -->
+                    <td th:text="${row[2]}"></td> <!-- totalAnswers -->
+                    <td th:text="${row[3]}"></td> <!-- correctAnswers -->
+                    <td th:text="${row[4]}"></td> <!-- incorrectAnswers -->
+                    <td th:text="${#numbers.formatDecimal(row[5], 1, 'POINT', 2, 'POINT')} + '%'"></td> <!-- correctRate -->
                   </tr>
                 </tbody>
               </table>
@@ -62,26 +73,7 @@
       </div>
     </div>
     <th:block th:fragment="scripts">
-      <script>
-        // Simple Datatable
-        let dataTable = new simpleDatatables.DataTable(table1, {
-          perPageSelect: [10, 20, 50], // Dropdown chọn số lượng bản ghi
-          searchable: true, // Tìm kiếm
-          sortable: true, // Sắp xếp
-          labels: {
-            placeholder: "Tìm kiếm...",
-            noRows: "Không có bản ghi nào",
-            info: "Hiển thị {start} đến {end} của {rows} bản ghi"
-          }
-        });
-        // Gán lại label "entries per page" thành "bản ghi mỗi trang"
-        setTimeout(() => {
-          const labelEl = document.querySelector('.dataTable-dropdown label');
-          if (labelEl) {
-            labelEl.innerHTML = labelEl.innerHTML.replace('entries per page', 'bản ghi mỗi trang');
-          }
-        }, 100);
-      </script>
+      
     </th:block>
   </body>
 </html>
