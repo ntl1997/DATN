@@ -17,7 +17,8 @@
           <div class="rbt-tutor-information-left">
             <div class="thumbnail rbt-avatars size-lg">
               <img
-                th:src="${user.image != null && !#strings.isEmpty(user.image) ? '/uploads/users/' + user.image : '/assets/images/team/user-icon.png'}"
+                th:src="@{'/uploads/users/' + ${user.image}}"
+                onerror="this.onerror=null; this.src='/assets/images/team/user-icon.png';"
                 alt="Avatar"
               />
             </div>

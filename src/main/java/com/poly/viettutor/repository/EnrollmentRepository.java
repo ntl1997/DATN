@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.model.Course;
+import java.util.Optional;
 
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer> {
@@ -16,5 +17,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
     long countStudentsByInstructor(@Param("instructor") User instructor);
 
     boolean existsByUserAndCourse(User user, Course course);
+
+    Optional<Enrollment> findByUserAndCourse(User user, Course course);
 
 }

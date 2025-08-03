@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,7 +75,7 @@ public class CourseController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", courses.getTotalPages());
         model.addAttribute("title", "Danh sách khóa học");
-        model.addAttribute("content", "client/courses");
+        model.addAttribute("content", "client/course/courses");
         // Truyền lại các filter để giữ trạng thái trên giao diện
         model.addAttribute("selectedCategories", categories);
         model.addAttribute("selectedRatings", ratings);
@@ -112,8 +113,8 @@ public class CourseController {
         model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
         model.addAttribute("isEnrolled", isEnrolled); // Kiểm tra đã tham gia khóa học chưa
         model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
-        model.addAttribute("content", "client/course-detail"); // nội dung trang (phần content)
-        model.addAttribute("scripts", "client/course-detail");
+        model.addAttribute("content", "client/course/course-detail"); // nội dung trang (phần content)
+        model.addAttribute("scripts", "client/course/course-detail");
         return "client/layout/index";
     }
 
@@ -277,6 +278,36 @@ public class CourseController {
         }
 
         return "redirect:/instructor/dashboard?updateSuccess=true";
+    }
+
+    @PostMapping("/instructor/clone-course")
+    public String cloneCourse(@RequestParam int courseId, Model model) {
+        try {
+            User user = userService.getCurrentUser();
+            int newCourseId = courseService.cloneCourse(courseId, user).getCourseId();
+            return "redirect:/instructor/edit-course/" + newCourseId + "?cloneSuccess=true";
+        } catch (Exception e) {
+            log.error("Clone course failed", e);
+            return "redirect:/instructor/dashboard?cloneFailed=true";
+        }
+    }
+
+    @DeleteMapping("/instructor/delete-course")
+    public String deleteDraftCourse(@RequestParam int courseId, Model model) {
+        try {
+            Course course = courseService.findById(courseId)
+                    .orElseThrow(() -> new RuntimeException("Course not found"));
+
+            String status = course.getStatus();
+            if (status.equals("publish") || status.equals("hidden"))
+                throw new RuntimeException("Cannot delete publish or hidden course");
+
+            courseService.deleteById(courseId);
+            return "redirect:/instructor/courses?deleteSuccess=true";
+        } catch (Exception e) {
+            log.error("Delete course failed", e);
+            return "redirect:/instructor/courses?deleteFailed=true";
+        }
     }
 
     private boolean isOwnerOrADmin(User user, Course course) {

@@ -1,7 +1,17 @@
 package com.poly.viettutor.controller.admin;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,13 +22,17 @@ import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 public class AdminAccountController {
 
@@ -128,6 +142,84 @@ public class AdminAccountController {
         }
 
         return "redirect:/admin/account/users?updateSuccess=true";
+    }
+
+    @PostMapping("/import-excel-users-account")
+    public String importExcel(@RequestParam("file") MultipartFile file) {
+        try {
+            // Đọc dữ liệu từ file Excel
+            InputStream inputStream = file.getInputStream();
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // Duyệt qua các dòng trong sheet
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next(); // Bỏ qua dòng tiêu đề
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+
+                String fullName = row.getCell(1).getStringCellValue();
+                String email = row.getCell(2).getStringCellValue();
+                String phoneNumber = row.getCell(3).getStringCellValue();
+
+                if (!userService.isEmailExists(email)) {
+                    // Tạo học viên và thêm vào cơ sở dữ liệu
+                    RegisterRequest request = RegisterRequest.builder()
+                            .fullname(fullName)
+                            .email(email)
+                            .phoneNumber(phoneNumber)
+                            .password("123456")
+                            .build();
+
+                    // Đăng ký tài khoản mới
+                    userService.register(request);
+                }
+            }
+
+            workbook.close();
+            return "redirect:/admin/account/users?createError=true";
+        } catch (IOException e) {
+            log.error("register account by excel fail", e);
+            return "redirect:/admin/account/users?createSuccess=true";
+        }
+    }
+
+    @GetMapping("/admin/account/download-excel-template")
+    public ResponseEntity<InputStreamResource> downloadExcelTemplate() throws IOException {
+        // Tạo Workbook và Sheet
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Học viên");
+
+        // Tạo dòng đầu tiên cho các tiêu đề cột
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("STT");
+        headerRow.createCell(1).setCellValue("Họ tên");
+        headerRow.createCell(2).setCellValue("Email");
+        headerRow.createCell(3).setCellValue("SĐT");
+
+        // Tạo dữ liệu mẫu (có thể bỏ qua hoặc thay thế nếu cần)
+        Row row = sheet.createRow(1);
+        row.createCell(0).setCellValue(1);
+        row.createCell(1).setCellValue("Nguyễn Văn A");
+        row.createCell(2).setCellValue("nguyenvana@example.com");
+        row.createCell(3).setCellValue("0901234567");
+
+        // Ghi file ra ByteArrayOutputStream
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        workbook.write(byteArrayOutputStream);
+        workbook.close();
+
+        // Đưa file về cho người dùng tải xuống
+        InputStreamResource resource = new InputStreamResource(
+                new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+
+        // Trả về ResponseEntity với file Excel
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=danh_sach_sinh_vien_mau.xlsx")
+                .contentType(org.springframework.http.MediaType
+                        .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(resource); // Trả về tài nguyên dưới dạng response body
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +38,7 @@ public class UserService {
         user.setEmail(registerRequest.getEmail());
         user.setPhoneNumber(registerRequest.getPhoneNumber());
         user.setOccupation(registerRequest.getOccupation());
+        user.setBiography(registerRequest.getBiography());
         user.setImage(null); // Ảnh sẽ được xử lý sau
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setCreatedAt(new Date());
@@ -106,6 +106,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public User updateInfo(long id, UpdateUserInfoDTO userDTO) {
         User user = findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         user.setFullname(userDTO.getFullname());
@@ -167,4 +171,5 @@ public class UserService {
         result.put("data", studentCounts);
         return result;
     }
+
 }

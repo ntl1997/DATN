@@ -10,7 +10,6 @@ import com.poly.viettutor.model.Option;
 import com.poly.viettutor.model.Question;
 import com.poly.viettutor.model.Quiz;
 
-
 import org.springframework.data.domain.Page;
 
 import com.poly.viettutor.model.User;
@@ -54,6 +53,7 @@ public class CourseService {
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
     private final OptionRepository optionRepository;
+    private final UserRepository userRepository;
 
     CourseService(CourseRepository courseRepository,
             CourseCategoryRepository courseCategoryRepository,
@@ -63,7 +63,8 @@ public class CourseService {
             CourseMaterialRepository courseMaterialRepository,
             QuizRepository quizRepository,
             QuestionRepository questionRepository,
-            OptionRepository optionRepository) {
+            OptionRepository optionRepository,
+            UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.courseCategoryRepository = courseCategoryRepository;
         this.categoryRepository = categoryRepository;
@@ -73,10 +74,15 @@ public class CourseService {
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.optionRepository = optionRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Course> findAll() {
         return courseRepository.findAll();
+    }
+
+    public List<Course> findByStatus(String status) {
+        return courseRepository.findByStatus(status);
     }
 
     public Optional<Course> findById(Integer id) {
@@ -252,29 +258,37 @@ public class CourseService {
 
     public void updateCourseModules(CourseDTO courseDTO, Course course) {
         List<CourseModule> existingModules = courseModuleRepository.findByCourse(course);
-        Map<Integer, CourseModule> moduleMap = existingModules.stream()
+
+        // Map khóa theo Long (moduleId)
+        Map<Long, CourseModule> moduleMap = existingModules.stream()
                 .filter(m -> m.getModuleId() != null)
                 .collect(Collectors.toMap(CourseModule::getModuleId, m -> m));
 
-        // Xóa modules không còn tồn tại
-        Set<Integer> updatedIds = courseDTO.getModules().stream()
-                .map(ModuleDTO::getModuleId).filter(Objects::nonNull).collect(Collectors.toSet());
+        // Tập ID module đang update, loại bỏ null
+        Set<Long> updatedIds = courseDTO.getModules().stream()
+                .map(ModuleDTO::getModuleId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        // Xóa module không còn trong danh sách update
         existingModules.stream()
                 .filter(m -> !updatedIds.contains(m.getModuleId()))
                 .forEach(m -> courseModuleRepository.delete(m));
 
         AtomicInteger moduleIndex = new AtomicInteger(1);
+
         for (ModuleDTO moduleDTO : courseDTO.getModules()) {
             CourseModule module;
 
-            if (moduleDTO.getModuleId() != null && moduleMap.containsKey(moduleDTO.getModuleId())) {
+            Long dtoModuleId = moduleDTO.getModuleId();
+            if (dtoModuleId != null && moduleMap.containsKey(dtoModuleId)) {
                 // Cập nhật module cũ
-                module = moduleMap.get(moduleDTO.getModuleId());
+                module = moduleMap.get(dtoModuleId);
                 module.setModuleTitle(moduleDTO.getModuleTitle());
                 module.setSortOrder(moduleIndex.getAndIncrement());
                 courseModuleRepository.save(module);
 
-                // Xoá bài học & quiz cũ
+                // Xoá bài học & quiz cũ của module này
                 lectureRepository.deleteByModule(module);
                 quizRepository.deleteByModule(module);
 
@@ -293,6 +307,107 @@ public class CourseService {
             // Thêm quizzes mới
             saveQuizzes(moduleDTO, module);
         }
+    }
+
+    @Transactional
+    public Course cloneCourse(Integer courseIdToClone, User currentInstructor) {
+        Course original = courseRepository.findById(courseIdToClone)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // 1. Clone Course (chỉ dữ liệu cơ bản)
+        Course cloned = Course.builder()
+                .title(original.getTitle() + " - [Copy]")
+                .description(original.getDescription())
+                .overview(original.getOverview())
+                .price(original.getPrice())
+                .discount(original.getDiscount())
+                .courseImage(original.getCourseImage())
+                .demoVideoUrl(original.getDemoVideoUrl())
+                .status("draft")
+                .skillLevel(original.getSkillLevel())
+                .hasCertificate(original.getHasCertificate())
+                .language(original.getLanguage())
+                .createdAt(new Date())
+                .createdBy(currentInstructor)
+                .build();
+
+        courseRepository.save(cloned);
+
+        // 2. Clone CourseMaterials
+        for (CourseMaterial oldMaterial : original.getMaterials()) {
+            CourseMaterial newMaterial = CourseMaterial.builder()
+                    .course(cloned)
+                    .fileName(oldMaterial.getFileName())
+                    .fileUrl(oldMaterial.getFileUrl())
+                    .fileType(oldMaterial.getFileType())
+                    .uploadedAt(new Date())
+                    .build();
+
+            courseMaterialRepository.save(newMaterial);
+        }
+
+        // 3. Clone CourseModules
+        for (CourseModule oldModule : original.getModules()) {
+            CourseModule newModule = CourseModule.builder()
+                    .moduleTitle(oldModule.getModuleTitle())
+                    .sortOrder(oldModule.getSortOrder())
+                    .course(cloned)
+                    .build();
+
+            courseModuleRepository.save(newModule);
+
+            // 3. Clone Lectures
+            for (Lecture oldLecture : oldModule.getLectures()) {
+                Lecture newLecture = Lecture.builder()
+                        .lectureTitle(oldLecture.getLectureTitle())
+                        .content(oldLecture.getContent())
+                        .videoUrl(oldLecture.getVideoUrl())
+                        .sortOrder(oldLecture.getSortOrder())
+                        .duration(oldLecture.getDuration())
+                        .module(newModule)
+                        .build();
+
+                lectureRepository.save(newLecture);
+            }
+
+            // 4. Clone Quizzes
+            for (Quiz oldQuiz : oldModule.getQuizzes()) {
+                Quiz newQuiz = Quiz.builder()
+                        .title(oldQuiz.getTitle())
+                        .totalScore(oldQuiz.getTotalScore())
+                        .timeLimit(oldQuiz.getTimeLimit())
+                        .quizType(oldQuiz.getQuizType())
+                        .createdAt(new Date())
+                        .module(newModule)
+                        .build();
+
+                quizRepository.save(newQuiz);
+
+                // 5. Clone Questions
+                for (Question oldQuestion : oldQuiz.getQuestions()) {
+                    Question newQuestion = Question.builder()
+                            .questionText(oldQuestion.getQuestionText())
+                            .score(oldQuestion.getScore())
+                            .quiz(newQuiz)
+                            .build();
+
+                    questionRepository.save(newQuestion);
+
+                    // 6. Clone Options
+                    for (Option oldOption : oldQuestion.getOptions()) {
+                        Option newOption = Option.builder()
+                                .optionText(oldOption.getOptionText())
+                                .isCorrect(oldOption.getIsCorrect())
+                                .question(newQuestion)
+                                .build();
+
+                        optionRepository.save(newOption);
+                    }
+                }
+            }
+        }
+
+        return cloned;
     }
 
     public void updateStatus(Course course, String status) {
@@ -381,6 +496,21 @@ public class CourseService {
         result.put("data", studentCounts);
 
         return result;
+    }
+
+    public void updateCourseStatus(Integer courseId, String status, String note, String email) {
+        Optional<Course> optionalCourse = courseRepository.findById(courseId);
+        if (optionalCourse.isPresent()) {
+            Course course = optionalCourse.get();
+            course.setStatus(status);
+            course.setNote(note);
+            course.setUpdatedAt(new Date());
+            // Lấy user thực hiện thao tác
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            userOpt.ifPresent(user -> course.setApprovedBy(user));
+            course.setApprovedAt(new Date());
+            courseRepository.save(course);
+        }
     }
 
 }

@@ -10,10 +10,12 @@ import com.poly.viettutor.repository.QuizAnswerRepository;
 import com.poly.viettutor.repository.QuizSubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,9 +84,12 @@ public class QuizService {
                 score += question.getScore();
             }
 
+            // Chuyển đổi questionId từ Integer sang Long nếu cần thiết
+            Long questionId = Long.valueOf(question.getQuestionId().longValue()); // Chuyển Integer sang Long
+
             QuizAnswer answer = QuizAnswer.builder()
                     .submission(submission)
-                    .questionId(question.getQuestionId())
+                    .questionId(questionId) // Sử dụng Long ở đây
                     .selectedOptionId(selectedOptionId)
                     .isCorrect(isCorrect)
                     .build();
@@ -116,5 +121,46 @@ public class QuizService {
                 .filter(submission -> submission.getUser().getId() == userId
                         && submission.getQuiz().getQuizId().equals(quizId))
                 .count();
+    }
+
+    public List<Map<String, Object>> getQuizSubmissionsByCourseTitle(String courseTitle) {
+        // Lấy dữ liệu raw từ repo (List<Object[]>)
+        List<Object[]> rawResults = quizRepository.getQuizSubmissionsByCourseTitles(courseTitle);
+
+        List<Map<String, Object>> formattedResults = new ArrayList<>();
+
+        for (Object[] row : rawResults) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("fullName", row[0]);
+            map.put("email", row[1]);
+            map.put("quizTitle", row[2]);
+            map.put("submittedAt", row[3]);
+            map.put("score", row[4]);
+            map.put("totalScore", row[5]);
+            map.put("moduleTitle", row[6]);
+            formattedResults.add(map);
+        }
+
+        return formattedResults;
+    }
+
+    public List<Map<String, Object>> getQuizSubmissionsByInstructorId(Long instructorId) {
+        List<Object[]> rawResults = quizRepository.getQuizSubmissionsByInstructorId(instructorId);
+
+        List<Map<String, Object>> formattedResults = new ArrayList<>();
+
+        for (Object[] row : rawResults) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("fullName", row[0]);
+            map.put("email", row[1]);
+            map.put("quizTitle", row[2]);
+            map.put("submittedAt", row[3]);
+            map.put("score", row[4]);
+            map.put("totalScore", row[5]);
+            map.put("moduleTitle", row[6]);
+            formattedResults.add(map);
+        }
+
+        return formattedResults;
     }
 }

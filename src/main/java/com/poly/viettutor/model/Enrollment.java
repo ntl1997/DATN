@@ -25,4 +25,8 @@ public class Enrollment {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date enrolledAt;
+
+    @ManyToOne
+    @JoinColumn(name = "EnrolledBy")
+    private User enrolledBy;
 }

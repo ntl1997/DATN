@@ -17,8 +17,6 @@ GO
 
 -- Create a new database called 'viettutor'
 -- Connect to the 'master' database to run this snippet
-USE master
-GO
 -- Create the new database if it does not exist already
 IF NOT EXISTS (
     SELECT [name]
@@ -79,11 +77,13 @@ CREATE TABLE Courses
     Price DECIMAL(18,2),
     Discount DECIMAL(5,2),
     CourseImage NVARCHAR(255),
-    Status NVARCHAR(20) CHECK (Status IN (N'Publish', N'Pending', N'Draft', N'Hidden')) DEFAULT N'Draft',
+    Status NVARCHAR(20) CHECK (Status IN (N'publish', N'pending', N'draft', N'hidden')) DEFAULT N'draft',
     CreatedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CreatedAt DATETIME DEFAULT GETDATE(),
     UpdatedAt DATETIME DEFAULT GETDATE(),
-
+    Note NVARCHAR(255),
+    ApprovedBy BIGINT FOREIGN KEY REFERENCES Users(UserId),
+    ApprovedAt DATETIME DEFAULT GETDATE(),
     -- ✅ Các cột bổ sung
     HasCertificate BIT DEFAULT 0,
     Language NVARCHAR(50),
@@ -91,16 +91,6 @@ CREATE TABLE Courses
     demoVideoUrl NVARCHAR(1000)
 );
 GO
-
-
--- -- 5
--- -- COURSE OBJECTIVES
--- CREATE TABLE CourseObjectives (
---     ObjectiveId BIGINT PRIMARY KEY IDENTITY,
---     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
---     ObjectiveText NVARCHAR(500)
--- );
--- GO
 
 -- 6
 -- COURSE MODULES
@@ -138,19 +128,10 @@ CREATE TABLE Enrollments
     EnrollmentId BIGINT PRIMARY KEY IDENTITY,
     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
-    EnrolledAt DATETIME DEFAULT GETDATE()
+    EnrolledAt DATETIME DEFAULT GETDATE(),
+    EnrolledBy BIGINT DEFAULT NULL
 );
 GO
-
--- -- 9
--- -- CART
--- CREATE TABLE Cart (
---     CartId BIGINT PRIMARY KEY IDENTITY,
---     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
---     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
---     AddedAt DATETIME DEFAULT GETDATE()
--- );
--- GO
 
 -- 10
 -- WISHLIST
@@ -380,81 +361,6 @@ CREATE TABLE QuizAnswers
     -- Đáp án đó có đúng không (1 = đúng)
 );
 
--- -- 28. Assignments
--- CREATE TABLE Assignments
--- (
---     AssignmentId BIGINT PRIMARY KEY IDENTITY,
---     -- Mã định danh bài đánh giá cuối khóa
---     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId) UNIQUE,-- Mỗi khóa học chỉ có 1 assignment
---     Title NVARCHAR(255),
---     -- Tiêu đề assignment (VD: "Đánh giá cuối khóa Python")
---     TotalScore INT,
---     -- Tổng điểm toàn bài
---     TimeLimit INT,
---     -- Giới hạn thời gian (phút)
---     CreatedAt DATETIME DEFAULT GETDATE()
---     -- Ngày tạo bài kiểm tra
--- );
-
--- -- 29. AssignmentQuestions
--- CREATE TABLE AssignmentQuestions
--- (
---     QuestionId BIGINT PRIMARY KEY IDENTITY,
---     -- Mã định danh câu hỏi
---     AssignmentId BIGINT FOREIGN KEY REFERENCES Assignments(AssignmentId),
---     -- Gắn với assignment
---     QuestionText NVARCHAR(MAX),
---     -- Nội dung câu hỏi
---     Score INT DEFAULT 1
---     -- Điểm cho câu hỏi
--- );
-
--- -- 30. AssignmentOptions
--- CREATE TABLE AssignmentOptions
--- (
---     OptionId BIGINT PRIMARY KEY IDENTITY,
---     -- Mã định danh đáp án
---     QuestionId BIGINT FOREIGN KEY REFERENCES AssignmentQuestions(QuestionId),
---     -- Gắn đáp án với câu hỏi
---     OptionText NVARCHAR(MAX),
---     -- Nội dung đáp án
---     IsCorrect BIT
---     -- Có phải đáp án đúng không (1 = đúng)
--- );
-
--- -- 31. AssignmentSubmissions
--- CREATE TABLE AssignmentSubmissions
--- (
---     SubmissionId BIGINT PRIMARY KEY IDENTITY,
---     -- Mã định danh lần nộp bài assignment
---     AssignmentId BIGINT FOREIGN KEY REFERENCES Assignments(AssignmentId),
---     -- Bài kiểm tra nào
---     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
---     -- Học sinh nào nộp
---     SubmittedAt DATETIME DEFAULT GETDATE(),
---     -- Thời điểm nộp
---     Score INT,
---     -- Tổng điểm đạt được
---     Passed BIT DEFAULT 0
---     -- Có vượt qua không (1 = pass, 0 = fail)
--- );
-
--- -- 32. AssignmentAnswers (tùy chọn)
--- CREATE TABLE AssignmentAnswers
--- (
---     AnswerId BIGINT PRIMARY KEY IDENTITY,
---     -- Mã định danh câu trả lời
---     SubmissionId BIGINT FOREIGN KEY REFERENCES AssignmentSubmissions(SubmissionId),
---     -- Gắn với lần nộp
---     QuestionId BIGINT,
---     -- Câu hỏi nào
---     SelectedOptionId BIGINT,
---     -- Đáp án học sinh chọn
---     IsCorrect BIT
---     -- Có đúng không (1 = đúng)
--- );
-
-
 -- DỮ LIỆU MẪU CHO viettutor
 -- 1. Roles (độc lập)
 INSERT INTO Roles
@@ -473,7 +379,6 @@ VALUES
     (N'John Instructor', N'john@viettutor.com', N'$2a$12$CvyLQybDyPrkgBjMwVjsj./KYP806nPneY1A7VU/PaRoSL0jkleZS', GETDATE(), N'https://short.com.vn/U9Ow', N'Marketing specialist with a focus on digital campaigns and brand growth.', N'Digital Marketer', N'0902345678'),
     (N'Jane Student', N'jane@student.com', N'$2a$12$5KxQ27DY6NeQB0B115wa8eOXDzJmrejMdWFK6LkPsniklvy2JqTOy', GETDATE(), N'https://short.com.vn/nKzp', N'A dedicated teacher who loves helping students achieve their goals.', N'High School Teacher', N'0903456789');
 
-
 -- 3. UserRoles (phụ thuộc Roles + Users)
 INSERT INTO UserRoles
     (RoleId, UserId)
@@ -484,7 +389,6 @@ VALUES
     -- Instructor
     (3, 3);
 -- Student
-
 
 -- 4. Categories (độc lập)
 INSERT INTO Categories
@@ -509,11 +413,17 @@ INSERT INTO Courses
     UpdatedAt, demoVideoUrl, HasCertificate, Language, SkillLevel
     )
 VALUES
-    (N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'image.png', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
-    (N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 400000, 10, N'image.png', N'Publish', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
-    (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://short.com.vn/08Wa', N'Publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
-    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 500000, 0, N'https://s.pro.vn/epcy', N'Publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao');
-
+    (N'Khóa học Lập trình Python', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 0, 0, N'image.png', N'publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/kISRDWXC6-A?si=2JVJqTg6029m3J-P', 1, N'Tiếng Việt', N'Cơ bản'),
+    (N'Thiết kế Web cơ bản', N'Hướng dẫn thiết kế website cho người mới.', N'Đây là nội dung chi tiết', 0, 0, N'image.png', N'publish', 2, GETDATE(), GETDATE(), N'https://youtu.be/TvUNY2VfyX8?si=Pvm8n3LvYVYLhOzJ', 1, N'Tiếng Anh', N'Trung cấp'),
+    (N'Khóa học Lập trình Robotics', N'Học lập trình Spike từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 0, 0, N'https://short.com.vn/08Wa', N'publish', 1, GETDATE(), GETDATE(), NULL, 0, N'Tiếng Việt', N'Phổ thông'),
+    (N'Khóa học Lập trình Python Cơ Bản 2', N'Học lập trình Python từ cơ bản đến nâng cao.', N'Đây là nội dung chi tiết', 0, 0, N'https://s.pro.vn/epcy', N'publish', 1, GETDATE(), GETDATE(), N'https://youtu.be/NZj6LI5a9vc?si=0JOLcPjuaSgmNrJb', 1, N'English', N'Nâng cao'),
+    (
+        N'Phân Tích Dữ Liệu Cho Người Mới Bắt Đầu', N'Học cách xử lý và phân tích dữ liệu với Python và Excel.', N'Khóa học này giúp bạn hiểu các khái niệm cơ bản về phân tích dữ liệu, thực hành với các công cụ như Pandas và biểu đồ trực quan.', 0, 0, N'https://img-cdn.com/data-analysis.jpg', N'publish', 2, GETDATE(), GETDATE(),
+        N'https://www.youtube.com/watch?v=iMbCKOQnLMg',
+        1,
+        N'Tiếng Việt',
+        N'Cơ bản'
+)
 -- 7. CourseCategories (phụ thuộc Courses + Categories)
 INSERT INTO CourseCategories
     (CourseId, CategoryId)
@@ -527,7 +437,11 @@ INSERT INTO CourseModules
 VALUES
     (1, N'Giới thiệu Python', 1),
     (1, N'Cấu trúc điều kiện và vòng lặp', 2),
-    (2, N'Cơ bản HTML', 1);
+    (2, N'Cơ bản HTML', 1),
+    (5, N'Giới thiệu về Phân tích Dữ liệu', 1),
+    (1, N'Hàm và Thư viện trong Python', 3),
+    (2, N'CSS cơ bản', 2),
+    (5, N'Công cụ trực quan hóa dữ liệu', 2);
 
 -- 9. Lectures (phụ thuộc CourseModules)
 INSERT INTO Lectures
@@ -536,14 +450,33 @@ INSERT INTO Lectures
     )
 VALUES
     (1, N'Giới thiệu ngôn ngữ Python', N'Nội dung bài giảng 1', N'https://www.youtube.com/embed/K7ZKTjmZeWw', 1, 30),
+    (1, N'Biến và Kiểu dữ liệu', N'Nội dung bài giảng về biến và kiểu dữ liệu', N'https://www.youtube.com/embed/rfscVS0vtbw', 2, 28),
+    (1, N'Hello World và print()', N'Cách in ra màn hình dòng chữ đầu tiên', N'https://www.youtube.com/embed/hxGX2m2xw0A', 3, 15),
+    (1, N'Tổng quan kiểu dữ liệu nâng cao', N'List, Tuple, Dictionary, Set', N'https://www.youtube.com/embed/R-HLU9Fl5ug', 4, 25),
+    (2, N'Vòng lặp for trong Python', N'Nội dung về vòng lặp for', N'https://www.youtube.com/embed/6iF8Xb7Z3wQ', 2, 26),
     (2, N'Câu lệnh if-else', N'Nội dung bài giảng 2', N'https://www.youtube.com/embed/W0kMn7dYNGo', 1, 18),
-    (3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://www.youtube.com/embed/PN9EUufNkWA', 1, 14);
-
--- -- 10. CourseObjectives (phụ thuộc Courses)
--- INSERT INTO CourseObjectives (CourseId, ObjectiveText) VALUES 
--- (1, N'Understand basic Java syntax'),
--- (1, N'Build OOP Java applications');
-
+    (2, N'Vòng lặp while', N'Sử dụng vòng lặp while hiệu quả', N'https://www.youtube.com/embed/6iF8Xb7Z3wQ', 3, 22),
+    (2, N'break và continue', N'Dừng hoặc bỏ qua lặp', N'https://www.youtube.com/embed/1XQg6WxaIyQ', 4, 20),
+    (3, N'Thẻ HTML cơ bản', N'Nội dung bài giảng 3', N'https://www.youtube.com/embed/PN9EUufNkWA', 1, 14),
+    (3, N'Thực hành HTML: danh sách', N'Danh sách có thứ tự và không thứ tự trong HTML', N'https://www.youtube.com/embed/kUMe1FH4CHE', 2, 21),
+    (3, N'Thẻ a và img trong HTML', N'Tạo liên kết và chèn ảnh', N'https://www.youtube.com/embed/n4R2E7O-Ngo', 3, 18),
+    (3, N'Thẻ table trong HTML', N'Tạo bảng với HTML', N'https://www.youtube.com/embed/9uOETcuFjbE', 4, 22),
+    (4, N'Công cụ phân tích dữ liệu', N'Giới thiệu pandas và matplotlib', N'https://www.youtube.com/embed/1xtrIEwY_zY', 2, 35),
+    (4, N'Biểu đồ trong phân tích dữ liệu', N'Cách vẽ biểu đồ với matplotlib', N'https://www.youtube.com/embed/GW0rj4sNH2w', 3, 30),
+    (4, N'Đọc file CSV với Pandas', N'Thực hành đọc dữ liệu', N'https://www.youtube.com/embed/zmdjNSmRXF4', 4, 24),
+    (4, N'Làm sạch dữ liệu với Pandas', N'Handling missing values', N'https://www.youtube.com/embed/0gRc-d3k_8Y', 5, 26),
+    (5, N'Hàm trong Python', N'Học cách định nghĩa và sử dụng hàm', N'https://www.youtube.com/embed/9Os0o3wzS_I', 1, 24),
+    (5, N'Hàm có tham số và giá trị trả về', N'Sử dụng tham số mặc định và return', N'https://www.youtube.com/embed/YB2v4jjl2j8', 3, 22),
+    (5, N'Thư viện ngoài: requests, numpy', N'Cài và sử dụng thư viện', N'https://www.youtube.com/embed/gbnDnV1qdK0', 4, 27),
+    (5, N'Thư viện chuẩn Python', N'Giới thiệu các thư viện như math, datetime, random', N'https://www.youtube.com/embed/tVZc2E9s7QY', 2, 28),
+    (6, N'CSS cơ bản', N'Cách viết và liên kết CSS với HTML', N'https://www.youtube.com/embed/1PnVor36_40', 1, 20),
+    (6, N'Selector và thuộc tính cơ bản', N'Sử dụng selector id, class', N'https://www.youtube.com/embed/yfoY53QXEnI', 2, 20),
+    (6, N'Màu sắc và font chữ trong CSS', N'Cách tùy chỉnh giao diện trang web', N'https://www.youtube.com/embed/1Rs2ND1ryYc', 3, 19),
+    (6, N'Margin, Padding, Border', N'Tùy chỉnh layout cơ bản', N'https://www.youtube.com/embed/1KkA9bJj-rM', 4, 21),
+    (7, N'Giới thiệu Matplotlib', N'Vẽ biểu đồ đường, cột với matplotlib', N'https://www.youtube.com/embed/a9UrKTVEeZA', 1, 25),
+    (7, N'Biểu đồ nâng cao với Seaborn', N'Direct plot và heatmap', N'https://www.youtube.com/embed/5cLmzM-lENg', 2, 26),
+    (7, N'Biểu đồ tròn và biểu đồ phân tán', N'Phân tích dữ liệu nâng cao với biểu đồ', N'https://www.youtube.com/embed/ZjX2ZAdb0Rw', 3, 23),
+    (7, N'Tùy chỉnh biểu đồ: màu, nhãn, tiêu đề', N'Làm đẹp biểu đồ với matplotlib', N'https://www.youtube.com/embed/3Xc3CA655Y4', 4, 25);
 
 -- 11. CourseMaterials (phụ thuộc Courses)
 INSERT INTO CourseMaterials
@@ -626,27 +559,56 @@ VALUES
     (3, N'Enrollment Successful', N'You have successfully enrolled in Java for Beginners');
 GO
 
--- 23. Quiz cho bài học đầu tiên
+-- 23. Thêm 6 quiz: mỗi module có 2 quiz
 INSERT INTO Quizzes
     (ModuleId, Title, TotalScore, TimeLimit)
 VALUES
-    (1, N'Quiz Giới thiệu Python', 2, 15);
+    (1, N'Quiz Giới thiệu Python', 10, 15),
+    (1, N'Quiz Biến và Kiểu dữ liệu', 10, 15),
+    (3, N'Quiz HTML cơ bản', 10, 15),
+    (3, N'Quiz Thẻ HTML nâng cao', 10, 15),
+    (4, N'Quiz Giới thiệu Phân tích Dữ liệu', 10, 15),
+    (4, N'Quiz Công cụ Phân tích Dữ liệu', 10, 15);
 
--- 24. Thêm 2 câu hỏi trắc nghiệm
+
+-- 24. Thêm câu hỏi cho mỗi quiz
 INSERT INTO Questions
     (QuizId, QuestionText, Score)
 VALUES
+    -- Quiz 1: Giới thiệu Python
     (1, N'Python là ngôn ngữ thông dịch?', 1),
-    (1, N'Kiểu dữ liệu nào không có trong Python?', 1);
+    (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
 
--- 25. Đáp án cho câu hỏi 1
+    -- Quiz 2: Biến và Kiểu dữ liệu
+    (2, N'Biến trong Python có thể đổi kiểu dữ liệu sau khi gán?', 1),
+    (2, N'Kiểu dữ liệu nào trong Python biểu diễn số thực?', 1),
+
+    -- Quiz 3: HTML cơ bản
+    (3, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
+    (3, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1),
+
+    -- Quiz 4: Thẻ HTML nâng cao
+    (4, N'Thẻ HTML nào dùng để chèn ảnh?', 1),
+    (4, N'Thẻ nào dùng để tạo danh sách có thứ tự?', 1),
+
+    -- Quiz 5: Giới thiệu Phân tích Dữ liệu
+    (5, N'Dữ liệu là gì trong phân tích dữ liệu?', 1),
+    (5, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 1),
+
+    -- Quiz 6: Công cụ Phân tích Dữ liệu
+    (6, N'Công cụ nào dùng để vẽ biểu đồ trong phân tích dữ liệu?', 1),
+    (6, N'Jupyter Notebook thường dùng cho mục đích nào?', 1);
+
+
+-- 25. Đáp án cho từng câu hỏi
+-- Câu 1
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
     (1, N'Đúng', 1),
     (1, N'Sai', 0);
 
--- 26. Đáp án cho câu hỏi 2
+-- Câu 2
 INSERT INTO Options
     (QuestionId, OptionText, IsCorrect)
 VALUES
@@ -655,36 +617,105 @@ VALUES
     (2, N'Class', 0),
     (2, N'Pointer', 1);
 
--- -- 27. Assignment cuối khóa Python
--- INSERT INTO Assignments
---     (CourseId, Title, TotalScore, TimeLimit)
--- VALUES
---     (1, N'Bài kiểm tra cuối khóa: Python', 10, 20);
+-- Câu 3
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (3, N'Có', 1),
+    (3, N'Không', 0);
 
--- -- 28. Câu hỏi 1
--- INSERT INTO AssignmentQuestions
---     (AssignmentId, QuestionText, Score)
--- VALUES
---     (1, N'Phát biểu nào đúng về biến trong Python?', 1);
+-- Câu 4
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (4, N'float', 1),
+    (4, N'int', 0),
+    (4, N'str', 0),
+    (4, N'bool', 0);
 
--- -- 29 Đáp án cho câu 1
--- INSERT INTO AssignmentOptions
---     (QuestionId, OptionText, IsCorrect)
--- VALUES
---     (1, N'Phải khai báo kiểu dữ liệu trước', 0),
---     (1, N'Không cần khai báo kiểu dữ liệu', 1),
---     (1, N'Phải khởi tạo trong hàm main()', 0);
+-- Câu 5
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (5, N'<h1>', 1),
+    (5, N'<div>', 0),
+    (5, N'<title>', 0),
+    (5, N'<p>', 0);
 
--- -- 30. Câu hỏi 2
--- INSERT INTO AssignmentQuestions
---     (AssignmentId, QuestionText, Score)
--- VALUES
---     (1, N'Python được phát triển bởi ai?', 1);
+-- Câu 6
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (6, N'<a>', 1),
+    (6, N'<link>', 0),
+    (6, N'<href>', 0),
+    (6, N'<img>', 0);
 
--- -- 31 Đáp án cho câu 2
--- INSERT INTO AssignmentOptions
---     (QuestionId, OptionText, IsCorrect)
+-- Câu 7
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (7, N'<img>', 1),
+    (7, N'<src>', 0),
+    (7, N'<picture>', 0),
+    (7, N'<media>', 0);
+
+-- Câu 8
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (8, N'<ol>', 1),
+    (8, N'<ul>', 0),
+    (8, N'<li>', 0),
+    (8, N'<list>', 0);
+
+-- Câu 9
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (9, N'Tập hợp các thông tin có thể xử lý', 1),
+    (9, N'Một dạng ngôn ngữ lập trình', 0),
+    (9, N'Công cụ phân tích dữ liệu', 0),
+    (9, N'Một phần mềm thống kê', 0);
+
+-- Câu 10
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (10, N'Pandas', 1),
+    (10, N'Django', 0),
+    (10, N'NumPy', 0),
+    (10, N'Flask', 0);
+
+-- Câu 11
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (11, N'Matplotlib', 1),
+    (11, N'Pandas', 0),
+    (11, N'NumPy', 0),
+    (11, N'Scipy', 0);
+
+-- Câu 12
+INSERT INTO Options
+    (QuestionId, OptionText, IsCorrect)
+VALUES
+    (12, N'Viết mã và phân tích dữ liệu tương tác', 1),
+    (12, N'Thiết kế giao diện đồ họa', 0),
+    (12, N'Xây dựng hệ quản trị cơ sở dữ liệu', 0),
+    (12, N'Tạo game trong Python', 0);
+
+-- 26. Dữ liệu mẫu bài làm quiz
+-- INSERT INTO QuizSubmissions
+--     (QuizId, UserId, Score, SubmittedAt)
 -- VALUES
---     (2, N'Dennis Ritchie', 0),
---     (2, N'Guido van Rossum', 1),
---     (2, N'James Gosling', 0);
+--     (2, 3, 10, GETDATE()),
+--     (3, 3, 5, GETDATE());
+
+-- INSERT INTO QuizAnswers
+--     (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
+-- VALUES
+--     (1, 3, 9, 1),
+--     (1, 4, 16, 0),
+--     (2, 5, 17, 1),
+--     (2, 6, 24, 0);

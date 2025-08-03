@@ -18,11 +18,11 @@
               <!-- Start Dashboard Top  -->
               <div
                 th:replace="~{client/instructor/instructor-banner :: instructor-banner}"
-                sec:authorize="hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <div
                 th:replace="~{client/student/student-banner :: student-banner}"
-                sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasRole('ROLE_STUDENT') and not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <!-- End Dashboard Top  -->
 
@@ -116,7 +116,11 @@
                                 <!-- Ảnh khóa học -->
                                 <div class="rbt-card-img">
                                   <a th:href="@{'/course-details/' + ${course.courseId}}">
-                                    <img th:src="@{${course.courseImage}}" alt="Course image" />
+                                    <img
+                                      th:src="@{${course.courseImage}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
+                                      alt="Course image"
+                                    />
                                   </a>
                                 </div>
 
@@ -178,7 +182,7 @@
 
                                   <!-- Phần giá -->
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -195,6 +199,10 @@
                                         th:text="${#numbers.formatDecimal(course.price / (1 - (course.discount / 100)), 0, 'COMMA', 0, 'POINT')} + ' đ'"
                                       >
                                       </span>
+                                    </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
                                     </div>
 
                                     <!-- Nút sửa khóa học -->
@@ -218,7 +226,11 @@
                               <div class="rbt-card variation-01 rbt-hover">
                                 <div class="rbt-card-img">
                                   <a th:href="@{'/course-details/' + ${course.courseId}}">
-                                    <img th:src="@{${course.courseImage}}" alt="Card image" />
+                                    <img
+                                      th:src="@{${course.courseImage}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
+                                      alt="Card image"
+                                    />
                                   </a>
                                 </div>
                                 <div class="rbt-card-body">
@@ -270,7 +282,7 @@
                                   </ul>
 
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -288,12 +300,29 @@
                                       >
                                       </span>
                                     </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
+                                    </div>
+
                                     <a
                                       class="rbt-btn-link left-icon"
                                       th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
                                     >
                                       <i class="feather-edit"></i> Edit
                                     </a>
+
+                                    <form
+                                      th:action="@{/instructor/delete-course}"
+                                      onsubmit="return confirm('Bạn có muốn xóa bản nháp này')"
+                                      method="post"
+                                    >
+                                      <input type="hidden" name="_method" value="delete" />
+                                      <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                      <button type="submit" class="btn btn-danger">
+                                        <i class="feather-trash"></i> Delete
+                                      </button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
@@ -309,7 +338,11 @@
                               <div class="rbt-card variation-01 rbt-hover">
                                 <div class="rbt-card-img">
                                   <a th:href="@{'/course-details/' + ${course.courseId}}">
-                                    <img th:src="@{${course.courseImage}}" alt="Card image" />
+                                    <img
+                                      th:src="@{${course.courseImage}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
+                                      alt="Card image"
+                                    />
                                   </a>
                                 </div>
                                 <div class="rbt-card-body">
@@ -361,7 +394,7 @@
                                   </ul>
 
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -379,12 +412,29 @@
                                       >
                                       </span>
                                     </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
+                                    </div>
+
                                     <a
                                       class="rbt-btn-link left-icon"
                                       th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
                                     >
                                       <i class="feather-edit"></i> Edit
                                     </a>
+
+                                    <form
+                                      th:action="@{/instructor/delete-course}"
+                                      onsubmit="return confirm('Bạn có muốn xóa bản nháp này')"
+                                      method="post"
+                                    >
+                                      <input type="hidden" name="_method" value="delete" />
+                                      <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                                      <button type="submit" class="btn btn-danger">
+                                        <i class="feather-trash"></i> Delete
+                                      </button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
@@ -400,7 +450,11 @@
                               <div class="rbt-card variation-01 rbt-hover">
                                 <div class="rbt-card-img">
                                   <a th:href="@{'/course-details/' + ${course.courseId}}">
-                                    <img th:src="@{${course.courseImage}}" alt="Card image" />
+                                    <img
+                                      th:src="@{${course.courseImage}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
+                                      alt="Card image"
+                                    />
                                   </a>
                                 </div>
                                 <div class="rbt-card-body">
@@ -452,7 +506,7 @@
                                   </ul>
 
                                   <div class="rbt-card-bottom">
-                                    <div class="rbt-price">
+                                    <div class="rbt-price" th:if="${course.price > 0}">
                                       <!-- Hiển thị giá hiện tại -->
                                       <span
                                         class="current-price"
@@ -470,6 +524,11 @@
                                       >
                                       </span>
                                     </div>
+
+                                    <div class="rbt-price" th:if="${course.price == 0}">
+                                      <span class="current-price" th:style="'font-size: 2.2rem;'">Miễn phí</span>
+                                    </div>
+
                                     <a
                                       class="rbt-btn-link left-icon"
                                       th:href="@{'/instructor/edit-course/' + ${course.courseId}}"
@@ -506,5 +565,37 @@
         </svg>
       </div>
     </div>
+
+    <th:block th:fragment="scripts">
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const urlParams = new URLSearchParams(window.location.search);
+          const cloneSuccess = urlParams.get("deleteSuccess");
+
+          if (cloneSuccess === "true") {
+            // Hiển thị thông báo thành công (có thể dùng toast, sweetalert2, ...)
+            console.log("Tạo bản sao khóa học thành công");
+
+            // Ví dụ: hiển thị toast đơn giản
+            const toast = document.createElement("div");
+            toast.textContent = "🎉 Xóa bản nháp khóa học thành công!";
+            toast.style.position = "fixed";
+            toast.style.bottom = "20px";
+            toast.style.right = "20px";
+            toast.style.padding = "10px 15px";
+            toast.style.backgroundColor = "#4CAF50";
+            toast.style.color = "#fff";
+            toast.style.borderRadius = "6px";
+            toast.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+            document.body.appendChild(toast);
+
+            // Tự động ẩn sau 3s
+            setTimeout(() => {
+              toast.remove();
+            }, 3000);
+          }
+        });
+      </script>
+    </th:block>
   </body>
 </html>

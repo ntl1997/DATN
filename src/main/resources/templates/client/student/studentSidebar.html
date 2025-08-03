@@ -15,11 +15,11 @@
                   <li>
                     <a
                       th:href="@{/student/student-dashboard}"
-                      sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                      sec:authorize="not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
                     >
                       <i class="feather-home"></i><span>Bảng điều khiển</span>
                     </a>
-                    <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                    <a th:href="@{/instructor/dashboard}" sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
                       <i class="feather-home"></i><span>Bảng điều khiển</span>
                     </a>
                   </li>
@@ -46,20 +46,20 @@
                       <i class="feather feather-file"></i><span>Danh sách chứng chỉ</span>
                     </a>
                   </li>
-                  <li>
-                    <a th:href="@{/student/student-order-history}">
-                      <i class="feather-shopping-bag"></i><span>Lịch sử đơn hàng</span>
-                    </a>
-                  </li>
+                  <!-- <li>
+                  <a th:href="@{/student/student-order-history}">
+                    <i class="feather-shopping-bag"></i><span>Lịch sử đơn hàng</span>
+                  </a>
+                </li> -->
                 </ul>
               </nav>
 
-              <div class="section-title mt--40 mb--20" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+              <div class="section-title mt--40 mb--20" sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
                 <h6 class="rbt-title-style-2">Giảng viên</h6>
               </div>
 
               <!-- Menu cho Giảng viên -->
-              <nav class="mainmenu-nav" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+              <nav class="mainmenu-nav" sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
                 <ul class="dashboard-mainmenu rbt-default-sidebar-list">
                   <!-- Ẩn mục này chỉ hiển thị với giảng viên (ROLE_INSTRUCTOR) -->
                   <li>
@@ -67,12 +67,21 @@
                       <i class="feather-monitor"></i><span>Khóa học của tôi</span>
                     </a>
                   </li>
-
                   <li>
-                    <a th:href="@{/instructor/announcements}">
-                      <i class="feather-volume-2"></i><span>Thông báo</span>
-                    </a>
+                    <a th:href="@{/instructor/instructor-quiz-attempts}"
+                      ><i class="feather-message-square"></i><span>Lịch sử Quizz của học sinh</span></a
+                    >
                   </li>
+                  <!-- <li>
+                    <a th:href="@{/instructor/template-courses}">
+                      <i class="feather-monitor"></i><span>Các mẫu Khóa học</span>
+                    </a>
+                  </li> -->
+                  <!-- <li>
+                  <a th:href="@{/instructor/announcements}">
+                    <i class="feather-volume-2"></i><span>Thông báo</span>
+                  </a>
+                </li> -->
                 </ul>
               </nav>
 

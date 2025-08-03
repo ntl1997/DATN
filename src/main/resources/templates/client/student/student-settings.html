@@ -16,11 +16,11 @@
               <!-- Start Dashboard Top  -->
               <div
                 th:replace="~{client/instructor/instructor-banner :: instructor-banner}"
-                sec:authorize="hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <div
                 th:replace="~{client/student/student-banner :: student-banner}"
-                sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasRole('ROLE_STUDENT') and not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <!-- End Dashboard Top  -->
 
@@ -98,7 +98,7 @@
                                   background-size: cover;
                                   background-position: center;
                                 "
-                                sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                                sec:authorize="hasRole('ROLE_STUDENT') and not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
                               ></div>
 
                               <div
@@ -108,7 +108,7 @@
                                   background-size: cover;
                                   background-position: center;
                                 "
-                                sec:authorize="hasRole('ROLE_INSTRUCTOR')"
+                                sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
                               ></div>
 
                               <!-- Start Tutor Information  -->
@@ -117,7 +117,8 @@
                                   <div class="thumbnail rbt-avatars size-lg position-relative">
                                     <img
                                       id="previewImage"
-                                      th:src="${user.image != null && !#strings.isEmpty(user.image) ? '/uploads/users/' + user.image : '/assets/images/team/user-icon.png'}"
+                                      th:src="@{'/uploads/users/' + ${user.image}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/team/user-icon.png';"
                                       alt="Avatar"
                                     />
                                     <div class="rbt-edit-photo-inner">

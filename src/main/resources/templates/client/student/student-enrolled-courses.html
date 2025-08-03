@@ -22,11 +22,11 @@
               <!-- Start Dashboard Top  -->
               <div
                 th:replace="~{client/instructor/instructor-banner :: instructor-banner}"
-                sec:authorize="hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <div
                 th:replace="~{client/student/student-banner :: student-banner}"
-                sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                sec:authorize="hasRole('ROLE_STUDENT') and not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
               ></div>
               <!-- End Dashboard Top  -->
 
@@ -73,7 +73,8 @@
                                 <div class="rbt-card-img">
                                   <a th:href="@{/course-details/{id}(id=${enrollment.course.courseId})}">
                                     <img
-                                      th:src="@{'/assets/images/course/' + ${enrollment.course.courseImage}}"
+                                      th:src="@{'/uploads/course/' + ${enrollment.course.courseImage}}"
+                                      onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
                                       alt="Card image"
                                     />
                                   </a>

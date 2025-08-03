@@ -51,8 +51,20 @@ public class Course {
     @JoinColumn(name = "createdBy")
     private User createdBy;
 
+    private String note; // Lý do (nếu có)
+
+    @ManyToOne
+    @JoinColumn(name = "approvedBy")
+    private User approvedBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date approvedAt;
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseModule> modules;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseMaterial> materials;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
@@ -69,10 +81,5 @@ public class Course {
     }
 
     @Transient
-    public int getRating() {
-        if (reviews == null || reviews.isEmpty())
-            return 0;
-        return (int) reviews.stream().mapToInt(Review::getRating).average().orElse(0);
-    }
-
+    private int rating;
 }

@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:fragment="header-styles">
+      <style>
+        .subcategories .subcategory {
+          display: none;
+          /* Mặc định, ẩn tất cả danh mục con */
+        }
+
+        .subcategories .subcategory.active {
+          display: block !important;
+          /* Hiển thị danh mục con khi có lớp active */
+        }
+
+        .parent-list li {
+          cursor: pointer;
+          /* Thêm con trỏ chuột vào mục cha */
+        }
+
+        /* Thêm hiệu ứng cho hover */
+        .parent-list li:hover {
+          background-color: #f0f0f0;
+          /* Màu nền khi hover */
+        }
+
+        /* Làm cho chữ trong danh mục con giống chữ trong danh mục chính */
+        .subcategory a {
+          font-size: 14px;
+          /* Kích thước chữ nhỏ hơn một chút */
+          color: #666;
+          /* Màu chữ xám giống với danh mục */
+          text-decoration: none;
+          /* Bỏ gạch dưới cho chữ */
+          font-weight: normal;
+          /* Đảm bảo font chữ giống với danh mục chính */
+        }
+
+        /* Loại bỏ dấu chấm đầu mỗi mục con */
+        .subcategory {
+          list-style-type: none;
+          /* Loại bỏ dấu chấm */
+          padding-left: 0;
+          /* Xóa lề trái của danh sách */
+        }
+
+        /* Đảm bảo các mục cha (Danh mục) có kiểu giống nhau */
+        .parent-list li a {
+          font-size: 16px;
+          /* Đảm bảo kích thước chữ giống với mục con */
+          color: #333;
+          /* Màu chữ giống mục con */
+          text-decoration: none;
+          /* Bỏ gạch dưới */
+          font-weight: normal;
+          /* Đảm bảo font chữ giống mục con */
+        }
+
+        .parent-list li {
+          list-style-type: none;
+          /* Loại bỏ dấu chấm đầu mỗi mục cha */
+          padding-left: 0;
+          /* Xóa lề trái của danh sách */
+        }
+
+        /* Tùy chọn để thay đổi màu sắc của các mục khi hover */
+        .parent-list li a:hover,
+        .subcategory a:hover {
+          color: #007bff;
+          /* Màu chữ khi hover */
+        }
+      </style>
+    </th:block>
+  </head>
+
+  <body>
+    <header th:fragment="header">
+      <!-- Start Header Area -->
+      <header class="rbt-header rbt-header-9">
+        <div class="rbt-sticky-placeholder"></div>
+
+        <!-- Start Header Top -->
+        <div class="rbt-header-middle position-relative rbt-header-mid-1 bg-color-white rbt-border-bottom">
+          <div class="container">
+            <div class="rbt-header-sec align-items-center">
+              <div class="rbt-header-sec-col rbt-header-left">
+                <div class="rbt-header-content"></div>
+              </div>
+
+              <div class="rbt-header-sec-col rbt-header-center d-none d-md-block">
+                <div class="rbt-header-content">
+                  <div class="header-info">
+                    <div class="rbt-search-field">
+                      <div class="search-field">
+                        <input type="text" placeholder="Tìm kiếm khoá học" />
+                        <button class="rbt-round-btn serach-btn" type="submit">
+                          <i class="feather-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rbt-header-sec-col rbt-header-right">
+                <div class="rbt-header-content">
+                  <!-- <div class="header-info">
+                  <ul class="quick-access">
+                    <li>
+                      <a class="d-none d-xl-block rbt-cart-sidenav-activation" th:href="@{/cart}">
+                        <i class="feather-shopping-cart"></i>
+                        Giỏ hàng
+                      </a>
+                      <a class="d-block d-xl-none rbt-cart-sidenav-activation" th:href="@{/cart}">
+                        <i class="feather-shopping-cart"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div> -->
+
+                  <!-- is login -->
+                  <div class="header-info" sec:authorize="isAuthenticated()">
+                    <ul class="quick-access">
+                      <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
+                        <a href="#">
+                          <i class="feather-user"></i>
+                          <span sec:authentication="name"></span>
+                        </a>
+                        <div class="rbt-user-menu-list-wrapper">
+                          <div class="inner">
+                            <div class="rbt-admin-profile">
+                              <div class="admin-thumbnail">
+                                <img th:src="@{/assets/images/team/avatar.jpg}" alt="User Images" />
+                              </div>
+                              <div class="admin-info">
+                                <span sec:authentication="name" class="name">RainbowIT</span>
+                                <a class="rbt-btn-link color-primary" th:href="@{/student/student-profile}"
+                                  >Xem hồ sơ</a
+                                >
+                              </div>
+                            </div>
+                            <ul class="user-list-wrapper">
+                              <li>
+                                <a
+                                  th:href="@{/student/student-dashboard}"
+                                  sec:authorize="not hasRole('ROLE_INSTRUCTOR')"
+                                >
+                                  <i class="feather-home"></i><span>Bảng điều khiển</span>
+                                </a>
+                                <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                                  <i class="feather-home"></i><span>Bảng điều khiển</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a th:href="@{/student/student-enrolled-courses}">
+                                  <i class="feather-shopping-bag"></i><span>Khoá học của tôi</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a th:href="@{/student/student-certificate}">
+                                  <i class="feather-list"></i><span>Danh sách chứng chỉ</span>
+                                </a>
+                              </li>
+                              <!-- <li>
+                              <a th:href="@{student/student-order-history}">
+                                <i class="feather-clock"></i><span>Lịch sử mua hàng</span>
+                              </a>
+                            </li> -->
+                              <li>
+                                <a th:href="@{/logout}"> <i class="feather-log-out"></i><span>Đăng xuất</span> </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li class="access-icon rbt-user-wrapper right-align-dropdown d-block d-xl-none">
+                        <a class="rbt-round-btn" href="#"><i class="feather-user"></i></a>
+                        <div class="rbt-user-menu-list-wrapper">
+                          <div class="inner">
+                            <div class="rbt-admin-profile">
+                              <div class="admin-thumbnail">
+                                <img th:src="@{/assets/images/team/avatar.jpg}" alt="User Images" />
+                              </div>
+                              <div class="admin-info">
+                                <span sec:authentication="name" class="name">RainbowIT</span>
+                                <a class="rbt-btn-link color-primary" th:href="@{student/student-profile}">Xem hồ sơ</a>
+                              </div>
+                            </div>
+                            <ul class="user-list-wrapper">
+                              <li>
+                                <a
+                                  th:href="@{/student/student-dashboard}"
+                                  sec:authorize="hasRole('ROLE_STUDENT') and not hasRole('ROLE_INSTRUCTOR')"
+                                >
+                                  <i class="feather-home"></i><span>Bảng điều khiển</span>
+                                </a>
+                                <a th:href="@{/instructor/dashboard}" sec:authorize="hasRole('ROLE_INSTRUCTOR')">
+                                  <i class="feather-home"></i><span>Bảng điều khiển</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a th:href="@{/student/student-enrolled-courses}">
+                                  <i class="feather-shopping-bag"></i><span>Khoá học của tôi</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a th:href="@{/student/student-certificate}">
+                                  <i class="feather-list"></i><span>Danh sách chứng chỉ</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a th:href="@{/student/student-order-history}">
+                                  <i class="feather-clock"></i><span>Lịch sử mua hàng</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a th:href="@{/logout}"> <i class="feather-log-out"></i><span>Đăng xuất</span> </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- non login -->
+                  <div class="header-info" sec:authorize="isAnonymous()">
+                    <ul class="quick-access">
+                      <li class="account-access rbt-user-wrapper right-align-dropdown d-none d-xl-block">
+                        <a th:href="@{/login}">
+                          <i class="feather-user"></i>
+                          Đăng nhập
+                        </a>
+                      </li>
+
+                      <li class="access-icon rbt-user-wrapper right-align-dropdown d-block d-xl-none">
+                        <a class="rbt-round-btn" th:href="@{/login}"><i class="feather-user"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Header Top -->
+
+        <div class="rbt-header-wrapper header-not-transparent header-sticky">
+          <div class="container">
+            <div class="mainbar-row rbt-navigation-end align-items-center">
+              <div class="header-left rbt-header-content">
+                <div class="header-info">
+                  <div class="logo logo-dark">
+                    <a th:href="@{/home}">
+                      <img th:src="@{/assets/images/logo/logo-vtt.png}" alt="Education Logo Images" />
+                    </a>
+                  </div>
+
+                  <div class="logo d-none logo-light">
+                    <a th:href="@{/home}">
+                      <img th:src="@{/assets/images/dark/logo/logo-vtt-light.png}" alt="Education Logo Images" />
+                    </a>
+                  </div>
+                </div>
+                <!-- Danh mục navbar -->
+                <div class="header-info">
+                  <div class="rbt-category-menu-wrapper">
+                    <div class="rbt-category-btn rbt-side-offcanvas-activation">
+                      <div class="rbt-offcanvas-trigger md-size icon">
+                        <span class="d-none d-xl-block">
+                          <i class="feather-grid"></i>
+                        </span>
+                        <i title="Category" class="feather-grid d-block d-xl-none"></i>
+                      </div>
+                      <span class="category-text d-none d-xl-block">Danh mục</span>
+                    </div>
+
+                    <div class="category-dropdown-menu d-none d-xl-block">
+                      <div class="category-menu-item">
+                        <div class="rbt-vertical-nav">
+                          <h3 class="rbt-short-title">Loại</h3>
+                          <ul class="rbt-vertical-nav-list-wrapper vertical-nav-menu">
+                            <li class="vertical-nav-item active">
+                              <a href="#tab1">Lập Trình - CNTT</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab2">Âm Nhạc</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab3">Ngoại Ngữ</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab4">Phát Triển Bản Thân</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab5">Kinh Doanh - Khởi Nghiệp</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab6">Thể Thao - Sức Khỏe</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab8">Nhiếp Ảnh - Dựng Phim</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab9">Thiết Kế - Đồ Họa</a>
+                            </li>
+                            <li class="vertical-nav-item">
+                              <a href="#tab10">Marketing - Bán Hàng</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="rbt-vertical-nav-content">
+                          <!-- Lập Trình - CNTT -->
+                          <div class="rbt-vertical-inner tab-content" id="tab1">
+                            <div class="rbt-vertical-single">
+                              <div class="row category-hover-area">
+                                <div class="col-lg-6 col-sm-6 col-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="frontend">
+                                        <a href="#">Lập Trình Front-end</a>
+                                      </li>
+                                      <li data-category="backend">
+                                        <a href="#">Lập Trình Back-end</a>
+                                      </li>
+                                      <li data-category="laptrinhdidong">
+                                        <a href="#">Lập Trình Ứng Dụng Di Động</a>
+                                      </li>
+                                      <li data-category="ngonngulaptrinh">
+                                        <a href="#">Ngôn Ngữ Lập Trình</a>
+                                      </li>
+                                      <li data-category="csdl">
+                                        <a href="#">Cơ Sở Dữ Liệu</a>
+                                      </li>
+                                      <li data-category="mangmaytinh">
+                                        <a href="#">Mạng Máy Tính</a>
+                                      </li>
+                                      <li data-category="thietbidientu">
+                                        <a href="#">Thiết Bị Điện Tử</a>
+                                      </li>
+                                      <li data-category="laptrinhdieukhien">
+                                        <a href="#">Lập Trình Điều Khiển</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 col-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="frontend" style="display: none">
+                                        <li><a href="#">React</a></li>
+                                        <li><a href="#">Angular</a></li>
+                                        <li><a href="#">Vue.js</a></li>
+                                        <li><a href="#">HTML & CSS</a></li>
+                                        <li><a href="#">PHP</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="backend" style="display: none">
+                                        <li><a href="#">C</a></li>
+                                        <li><a href="#">Java</a></li>
+                                        <li><a href="#">C#</a></li>
+                                        <li><a href="#">C++</a></li>
+                                        <li><a href="#">JavaScript</a></li>
+                                        <li><a href="#">Python</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="laptrinhdidong" style="display: none">
+                                        <li><a href="#">Android</a></li>
+                                        <li><a href="#">iOS</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="ngonngulaptrinh" style="display: none">
+                                        <li><a href="#">Java</a></li>
+                                        <li><a href="#">C#</a></li>
+                                        <li><a href="#">Python</a></li>
+                                        <li><a href="#">JavaScript</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="csdl" style="display: none">
+                                        <li><a href="#">SQL</a></li>
+                                        <li><a href="#">NoSQL</a></li>
+                                        <li><a href="#">MongoDB</a></li>
+                                        <li><a href="#">MySQL</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="mangmaytinh" style="display: none">
+                                        <li><a href="#">Cơ sở dữ liệu</a></li>
+                                        <li><a href="#">Mạng máy tính</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="thietbidientu" style="display: none">
+                                        <li>
+                                          <a href="#">Thiết bị điện tử</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="laptrinhdieukhien" style="display: none">
+                                        <li>
+                                          <a href="#">Lập trình điều khiển</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Âm Nhạc -->
+                          <div class="rbt-vertical-inner tab-content" id="tab2">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="nhaccu">
+                                        <a href="#">Nhạc Cụ</a>
+                                      </li>
+                                      <li data-category="sangtac">
+                                        <a href="#">Sản Xuất Và Sáng Tác</a>
+                                      </li>
+                                      <li data-category="luyenthanh">
+                                        <a href="#">Luyện Thanh</a>
+                                      </li>
+                                      <li data-category="phanmemamnhac">
+                                        <a href="#">Phần Mềm Âm Nhạc</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <!-- Nhạc Cụ -->
+                                      <ul class="subcategory" data-category="nhaccu" style="display: none">
+                                        <li><a href="#">Đàn Piano</a></li>
+                                        <li><a href="#">Đàn Guitar</a></li>
+                                        <li><a href="#">Đàn Ukulele</a></li>
+                                        <li><a href="#">Sáo Trúc</a></li>
+                                        <li><a href="#">Đàn Organ</a></li>
+                                      </ul>
+
+                                      <!-- Sản Xuất Và Sáng Tác -->
+                                      <ul class="subcategory" data-category="sangtac" style="display: none">
+                                        <li>
+                                          <a href="#">Sản xuất âm nhạc</a>
+                                        </li>
+                                        <li><a href="#">Sáng tác nhạc</a></li>
+                                      </ul>
+
+                                      <!-- Luyện Thanh -->
+                                      <ul class="subcategory" data-category="luyenthanh" style="display: none">
+                                        <li>
+                                          <a href="#">Luyện thanh Piano</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Luyện thanh Guitar</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Luyện thanh Ukulele</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Luyện thanh Organ</a>
+                                        </li>
+                                      </ul>
+
+                                      <!-- Phần Mềm Âm Nhạc -->
+                                      <ul class="subcategory" data-category="phanmemamnhac" style="display: none">
+                                        <li>
+                                          <a href="#">Phần mềm sản xuất âm nhạc</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Phần mềm chỉnh sửa âm thanh</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Phần mềm học nhạc cụ</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Phần mềm luyện thanh</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Ngoại Ngữ -->
+                          <div class="rbt-vertical-inner tab-content" id="tab3">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="tienganh">
+                                        <a href="#">Tiếng Anh</a>
+                                      </li>
+                                      <li data-category="tiengnhat">
+                                        <a href="#">Tiếng Nhật</a>
+                                      </li>
+                                      <li data-category="tiengphap">
+                                        <a href="#">Tiếng Pháp</a>
+                                      </li>
+                                      <li data-category="tiengduc">
+                                        <a href="#">Tiếng Đức</a>
+                                      </li>
+                                      <li data-category="tiengtrung">
+                                        <a href="#">Tiếng Trung</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="tienganh" style="display: none">
+                                        <li>
+                                          <a href="#">Tiếng Anh giao tiếp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tiếng Anh luyện thi TOEIC</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tiếng Anh cho người mới bắt đầu</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengnhat" style="display: none">
+                                        <li>
+                                          <a href="#">Tiếng Nhật giao tiếp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tiếng Nhật cho người mới bắt đầu</a>
+                                        </li>
+                                        <li><a href="#">Luyện thi JLPT</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengphap" style="display: none">
+                                        <li>
+                                          <a href="#">Tiếng Pháp cơ bản</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tiếng Pháp giao tiếp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Luyện thi DELF/DALF</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengduc" style="display: none">
+                                        <li>
+                                          <a href="#">Tiếng Đức giao tiếp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tiếng Đức cơ bản</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Luyện thi Goethe</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tiengtrung" style="display: none">
+                                        <li>
+                                          <a href="#">Tiếng Trung giao tiếp</a>
+                                        </li>
+                                        <li><a href="#">Tiếng Trung HSK</a></li>
+                                        <li>
+                                          <a href="#">Tiếng Trung cho người mới bắt đầu</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Phát Triển Bản Thân -->
+                          <div class="rbt-vertical-inner tab-content" id="tab4">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="quanlythoigian">
+                                        <a href="#">Quản lý thời gian</a>
+                                      </li>
+                                      <li data-category="tuduyasangtao">
+                                        <a href="#">Tư duy sáng tạo</a>
+                                      </li>
+                                      <li data-category="kynanggiaotiep">
+                                        <a href="#">Kỹ năng giao tiếp</a>
+                                      </li>
+                                      <li data-category="kynangdamphan">
+                                        <a href="#">Kỹ năng đàm phán</a>
+                                      </li>
+                                      <li data-category="kynanggiaiquyetvande">
+                                        <a href="#">Kỹ năng giải quyết vấn đề</a>
+                                      </li>
+                                      <li data-category="kynanglamviecnhom">
+                                        <a href="#">Kỹ năng làm việc nhóm</a>
+                                      </li>
+                                      <li data-category="kynangthuyettrinh">
+                                        <a href="#">Kỹ năng thuyết trình</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="quanlythoigian" style="display: none">
+                                        <li>
+                                          <a href="#">Quản lý công việc hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Lập kế hoạch và quản lý thời gian</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ năng quản lý thời gian</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="tuduyasangtao" style="display: none">
+                                        <li>
+                                          <a href="#">Kỹ năng tư duy sáng tạo</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Khóa học tư duy đổi mới</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tư duy sáng tạo trong công việc</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="kynanggiaotiep" style="display: none">
+                                        <li>
+                                          <a href="#">Kỹ năng giao tiếp hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ năng thuyết phục</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Giao tiếp trong công việc</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="kynangdamphan" style="display: none">
+                                        <li>
+                                          <a href="#">Kỹ năng đàm phán</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Đàm phán trong kinh doanh</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ năng thương lượng</a>
+                                        </li>
+                                      </ul>
+                                      <ul
+                                        class="subcategory"
+                                        data-category="kynanggiaiquyetvande"
+                                        style="display: none"
+                                      >
+                                        <li>
+                                          <a href="#">Giải quyết vấn đề trong công việc</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Phân tích và giải quyết vấn đề</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ năng ra quyết định</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="kynanglamviecnhom" style="display: none">
+                                        <li>
+                                          <a href="#">Kỹ năng làm việc nhóm hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quản lý nhóm và lãnh đạo</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ năng hợp tác trong nhóm</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="kynangthuyettrinh" style="display: none">
+                                        <li>
+                                          <a href="#">Kỹ năng thuyết trình trước đám đông</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thuyết trình trong công ty</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ năng trình bày ý tưởng</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Kinh Doanh - Khởi Nghiệp -->
+                          <div class="rbt-vertical-inner tab-content" id="tab5">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="khoinghiep">
+                                        <a href="#">Khởi nghiệp</a>
+                                      </li>
+                                      <li data-category="chienluocmarketing">
+                                        <a href="#">Chiến lược Marketing</a>
+                                      </li>
+                                      <li data-category="quanlydoanhnghiep">
+                                        <a href="#">Quản lý doanh nghiệp</a>
+                                      </li>
+                                      <li data-category="taichidoanhnghiep">
+                                        <a href="#">Tài chính doanh nghiệp</a>
+                                      </li>
+                                      <li data-category="kinhdoanhonline">
+                                        <a href="#">Kinh doanh online</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="khoinghiep" style="display: none">
+                                        <li><a href="#">Startup Funding</a></li>
+                                        <li>
+                                          <a href="#">Xây dựng thương hiệu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kế hoạch kinh doanh</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="chienluocmarketing" style="display: none">
+                                        <li><a href="#">Chiến lược SEO</a></li>
+                                        <li>
+                                          <a href="#">Marketing qua mạng xã hội</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Content Marketing</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="quanlydoanhnghiep" style="display: none">
+                                        <li><a href="#">Quản lý nhân sự</a></li>
+                                        <li>
+                                          <a href="#">Quản lý tài chính doanh nghiệp</a>
+                                        </li>
+                                        <li><a href="#">Quản lý dự án</a></li>
+                                        <li>
+                                          <a href="#">Quản lý khách hàng</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quản lý nguồn nhân lực</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="taichidoanhnghiep" style="display: none">
+                                        <li>
+                                          <a href="#">Quản lý dòng tiền</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tăng trưởng doanh thu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Phân tích tài chính</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Đầu tư và quản lý rủi ro</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="kinhdoanhonline" style="display: none">
+                                        <li>
+                                          <a href="#">Kinh doanh online hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Xây dựng website bán hàng</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quảng cáo trực tuyến</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tối ưu hóa chuyển đổi</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Thể Thao - Sức Khỏe -->
+                          <div class="rbt-vertical-inner tab-content" id="tab6">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="yoga">
+                                        <a href="#">Yoga</a>
+                                      </li>
+                                      <li data-category="chaybo">
+                                        <a href="#">Chạy bộ</a>
+                                      </li>
+                                      <li data-category="thehinh">
+                                        <a href="#">Thể hình</a>
+                                      </li>
+                                      <li data-category="thien">
+                                        <a href="#">Thiền</a>
+                                      </li>
+                                      <li data-category="dinhduongthao">
+                                        <a href="#">Dinh dưỡng thể thao</a>
+                                      </li>
+                                      <li data-category="suckhoetamly">
+                                        <a href="#">Sức khỏe tâm lý</a>
+                                      </li>
+                                      <li data-category="chamsocsuckhoe">
+                                        <a href="#">Chăm sóc sức khỏe</a>
+                                      </li>
+                                      <li data-category="gymfitness">
+                                        <a href="#">Gym - Fitness</a>
+                                      </li>
+                                      <li data-category="calisthenics">
+                                        <a href="#">Calisthenics</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="yoga" style="display: none">
+                                        <li>
+                                          <a href="#">Yoga cho người mới bắt đầu</a>
+                                        </li>
+                                        <li><a href="#">Yoga nâng cao</a></li>
+                                        <li><a href="#">Yoga hiệu quả</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="chaybo" style="display: none">
+                                        <li>
+                                          <a href="#">Chạy bộ hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chạy bộ cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chạy bộ nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chạy bộ đường dài</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="thehinh" style="display: none">
+                                        <li>
+                                          <a href="#">Tập thể hình tại nhà</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tập thể hình cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tập thể hình nâng cao</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="thien" style="display: none">
+                                        <li>
+                                          <a href="#">Thiền cho người mới bắt đầu</a>
+                                        </li>
+                                        <li><a href="#">Thiền sâu</a></li>
+                                        <li>
+                                          <a href="#">Thiền mindfulness</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="dinhduongthao" style="display: none">
+                                        <li>
+                                          <a href="#">Chế độ ăn cho vận động viên</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Dinh dưỡng cho người tập thể hình</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Dinh dưỡng cho người chạy bộ</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="suckhoetamly" style="display: none">
+                                        <li>
+                                          <a href="#">Tâm lý trong thể thao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quản lý stress trong thể thao</a>
+                                        </li>
+                                        <li><a href="#">Tâm lý thi đấu</a></li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="chamsocsuckhoe" style="display: none">
+                                        <li>
+                                          <a href="#">Chăm sóc sức khỏe toàn diện</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chăm sóc sức khỏe cho người cao tuổi</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chăm sóc sức khỏe trẻ em</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chăm sóc sức khỏe phụ nữ</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chăm sóc sức khỏe cho người già</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="gymfitness" style="display: none">
+                                        <li><a href="#">Tập Gym tại nhà</a></li>
+                                        <li>
+                                          <a href="#">Fitness cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Fitness nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tập Gym hiệu quả</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="calisthenics" style="display: none">
+                                        <li>
+                                          <a href="#">Calisthenics cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Bài tập Calisthenics nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Calisthenics tại nhà</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Calisthenics hiệu quả</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Nhiếp Ảnh - Dựng Phim -->
+                          <div class="rbt-vertical-inner tab-content" id="tab8">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="nhiephanh">
+                                        <a href="#">Nhiếp ảnh</a>
+                                      </li>
+                                      <li data-category="dungphim">
+                                        <a href="#">Dựng phim</a>
+                                      </li>
+                                      <li data-category="chupanhchandung">
+                                        <a href="#">Chụp ảnh chân dung</a>
+                                      </li>
+                                      <li data-category="chupanhsanpham">
+                                        <a href="#">Chụp ảnh sản phẩm</a>
+                                      </li>
+                                      <li data-category="chupanhthiennhien">
+                                        <a href="#">Chụp ảnh thiên nhiên</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="nhiephanh" style="display: none">
+                                        <li>
+                                          <a href="#">Nhiếp ảnh cơ bản</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Nhiếp ảnh nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Nhiếp ảnh chuyên nghiệp</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="dungphim" style="display: none">
+                                        <li>
+                                          <a href="#">Dựng phim bằng Adobe Premiere</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Dựng phim với Final Cut Pro</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ thuật dựng phim nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Dựng phim chuyên nghiệp</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="chupanhchandung" style="display: none">
+                                        <li>
+                                          <a href="#">Chụp ảnh chân dung cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh chân dung nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh chân dung chuyên nghiệp</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="chupanhsanpham" style="display: none">
+                                        <li>
+                                          <a href="#">Chụp ảnh sản phẩm cho eCommerce</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ thuật chụp ảnh sản phẩm sáng tạo</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh sản phẩm chuyên nghiệp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh sản phẩm nâng cao</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="chupanhthiennhien" style="display: none">
+                                        <li>
+                                          <a href="#">Chụp ảnh thiên nhiên cơ bản</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh thiên nhiên chuyên nghiệp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh thiên nhiên nâng cao</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chụp ảnh thiên nhiên sáng tạo</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Thiết Kế - Đồ Họa -->
+                          <div class="rbt-vertical-inner tab-content" id="tab9">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="thietkeweb">
+                                        <a href="#">Thiết kế web</a>
+                                      </li>
+                                      <li data-category="thietkedohoa">
+                                        <a href="#">Thiết kế đồ họa</a>
+                                      </li>
+                                      <li data-category="thietkexuiui">
+                                        <a href="#">Thiết kế UX/UI</a>
+                                      </li>
+                                      <li data-category="photoshop">
+                                        <a href="#">Photoshop</a>
+                                      </li>
+                                      <li data-category="illustrator">
+                                        <a href="#">Illustrator</a>
+                                      </li>
+                                      <li data-category="figma">
+                                        <a href="#">Figma</a>
+                                      </li>
+                                      <li data-category="adobe">
+                                        <a href="#">Adobe</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="thietkeweb" style="display: none">
+                                        <li>
+                                          <a href="#">Thiết kế giao diện web</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Responsive Web Design</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế web cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế web nâng cao</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="thietkedohoa" style="display: none">
+                                        <li><a href="#">Thiết kế logo</a></li>
+                                        <li>
+                                          <a href="#">Thiết kế áp phích</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế đồ họa cho mạng xã hội</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế đồ họa cho in ấn</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="thietkexuiui" style="display: none">
+                                        <li>
+                                          <a href="#">Thiết kế UX cho website</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế UI cho mobile app</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế UX/UI cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế UX/UI nâng cao</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="photoshop" style="display: none">
+                                        <li>
+                                          <a href="#">Chỉnh sửa ảnh với Photoshop</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Làm việc với Layer trong Photoshop</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế đồ họa với Photoshop</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế logo với Photoshop</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="illustrator" style="display: none">
+                                        <li>
+                                          <a href="#">Thiết kế vector với Illustrator</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tạo poster với Illustrator</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế đồ họa với Illustrator</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế logo với Illustrator</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="figma" style="display: none">
+                                        <li>
+                                          <a href="#">Thiết kế giao diện với Figma</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Làm việc nhóm trên Figma</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế UX/UI với Figma</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế prototype với Figma</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="adobe" style="display: none">
+                                        <li>
+                                          <a href="#">Sử dụng Adobe XD</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Làm việc với Adobe After Effects</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế đồ họa với Adobe</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Làm việc với Adobe Premiere</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Làm việc với Adobe Lightroom</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Thiết kế logo với Adobe Illustrator</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Marketing - Bán Hàng -->
+                          <div class="rbt-vertical-inner tab-content" id="tab10">
+                            <div class="rbt-vertical-single">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục</h3>
+                                    <ul class="rbt-vertical-nav-list-wrapper parent-list">
+                                      <li data-category="digitalmarketing">
+                                        <a href="#">Digital Marketing</a>
+                                      </li>
+                                      <li data-category="socialmedia">
+                                        <a href="#">Social Media</a>
+                                      </li>
+                                      <li data-category="banhangonline">
+                                        <a href="#">Bán hàng online</a>
+                                      </li>
+                                      <li data-category="contentmarketing">
+                                        <a href="#">Content Marketing</a>
+                                      </li>
+                                      <li data-category="seo">
+                                        <a href="#">SEO</a>
+                                      </li>
+                                      <li data-category="ppcadvertising">
+                                        <a href="#">PPC Advertising</a>
+                                      </li>
+                                      <li data-category="emailmarketing">
+                                        <a href="#">Email Marketing</a>
+                                      </li>
+                                      <li data-category="affiliatemarketing">
+                                        <a href="#">Affiliate Marketing</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="vartical-nav-content-menu">
+                                    <h3 class="rbt-short-title">Danh mục con</h3>
+                                    <div class="subcategories">
+                                      <ul class="subcategory" data-category="digitalmarketing" style="display: none">
+                                        <li>
+                                          <a href="#">Digital Marketing Strategy</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Marketing Automation</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Digital Marketing Consulting</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="socialmedia" style="display: none">
+                                        <li>
+                                          <a href="#">Social Media Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Facebook Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Instagram Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">TikTok Marketing</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="banhangonline" style="display: none">
+                                        <li>
+                                          <a href="#">Bán hàng qua Facebook</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tăng trưởng doanh thu bán hàng online</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ thuật bán hàng online</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Bán hàng trên sàn thương mại điện tử</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="contentmarketing" style="display: none">
+                                        <li>
+                                          <a href="#">Content Marketing cho doanh nghiệp</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tạo nội dung hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chiến lược Content Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Kỹ thuật Content Marketing</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="seo" style="display: none">
+                                        <li><a href="#">SEO cho website</a></li>
+                                        <li>
+                                          <a href="#">Kỹ thuật SEO nâng cao</a>
+                                        </li>
+                                        <li><a href="#">Tối ưu hóa SEO</a></li>
+                                        <li>
+                                          <a href="#">SEO cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">SEO cho người cao tuổi</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="ppcadvertising" style="display: none">
+                                        <li>
+                                          <a href="#">Quảng cáo Google AdWords</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quảng cáo PPC hiệu quả</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quảng cáo trên mạng xã hội</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quảng cáo trên YouTube</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quảng cáo trên Facebook</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Quảng cáo trên Instagram</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="emailmarketing" style="display: none">
+                                        <li>
+                                          <a href="#">Chiến lược Email Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Công cụ Email Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tối ưu hóa Email Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Email Marketing cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Email Marketing nâng cao</a>
+                                        </li>
+                                      </ul>
+                                      <ul class="subcategory" data-category="affiliatemarketing" style="display: none">
+                                        <li>
+                                          <a href="#">Affiliate Marketing cho người mới bắt đầu</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Tăng thu nhập với Affiliate Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Chiến lược Affiliate Marketing</a>
+                                        </li>
+                                        <li>
+                                          <a href="#">Affiliate Marketing nâng cao</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Nội dung của thanh điều hướng chính sẽ được hiển thị ở đây. -->
+              <div class="rbt-main-navigation d-none d-xl-block">
+                <nav class="mainmenu-nav">
+                  <ul class="mainmenu">
+                    <li><a th:href="@{/courses}">Khóa học</a></li>
+                    <li><a th:href="@{/bai-viet}">Bài viết</a></li>
+                    <li><a th:href="@{/contact}">Liên hệ</a></li>
+                    <li><a tH:href="@{/about}">Giới thiệu</a></li>
+                  </ul>
+                </nav>
+              </div>
+
+              <div class="header-right">
+                <div class="rbt-btn-wrapper d-none d-xl-block">
+                  <a class="rbt-btn rbt-switch-btn btn-gradient btn-sm hover-transform-none" href="#">
+                    <span data-text="Tham gia ngay">Tham gia ngay</span>
+                  </a>
+                </div>
+                <!-- Start Mobile-Menu-Bar -->
+                <div class="mobile-menu-bar d-block d-xl-none">
+                  <div class="hamberger">
+                    <button class="hamberger-button rbt-round-btn">
+                      <i class="feather-menu"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- Start Mobile-Menu-Bar -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Mobile Menu Section -->
+      <div class="popup-mobile-menu">
+        <div class="inner-wrapper">
+          <div class="inner-top">
+            <div class="content">
+              <div class="logo">
+                <div class="logo logo-dark">
+                  <a th:href="@{/home}">
+                    <img th:src="@{/assets/images/logo/logo-vtt.png}" alt="Education Logo Images" />
+                  </a>
+                </div>
+
+                <div class="logo d-none logo-light">
+                  <a th:href="@{/home}">
+                    <img th:src="@{/assets/images/dark/logo/logo-vtt-light.png}" alt="Education Logo Images" />
+                  </a>
+                </div>
+              </div>
+              <div class="rbt-btn-close">
+                <button class="close-button rbt-round-btn">
+                  <i class="feather-x"></i>
+                </button>
+              </div>
+            </div>
+            <p class="description">Viettutor là mẫu trang web giáo dục. Bạn có thể tùy chỉnh tất cả.</p>
+            <ul class="navbar-top-left rbt-information-list justify-content-start">
+              <li>
+                <a href="mailto:hello@example.com">
+                  <i class="feather-mail"></i>
+                  viettutor@pro.edu.vn
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="feather-phone"></i>
+                  (302) 555-0107
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <nav class="mainmenu-nav">
+            <ul class="mainmenu">
+              <li><a th:href="@{/courses}"> Khoá học </a></li>
+              <li><a th:href="@{/bai-viet}"> Bài viết </a></li>
+              <li><a th:href="@{/contact}"> Liên hệ </a></li>
+              <li><a th:href="@{/about}"> Giới thiệu </a></li>
+            </ul>
+          </nav>
+
+          <div class="mobile-menu-bottom">
+            <div class="rbt-btn-wrapper mb--20">
+              <a
+                class="rbt-btn btn-border-gradient radius-round btn-sm hover-transform-none w-100 justify-content-center text-center"
+                href="#"
+              >
+                <span>Đăng ký ngay</span>
+              </a>
+            </div>
+
+            <div class="social-share-wrapper">
+              <span class="rbt-short-title d-block">Tìm chúng tôi</span>
+              <ul class="social-icon social-default transparent-with-border justify-content-start mt--20">
+                <li>
+                  <a href="https://www.facebook.com/">
+                    <i class="feather-facebook"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.twitter.com/">
+                    <i class="feather-twitter"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.instagram.com/">
+                    <i class="feather-instagram"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.linkdin.com/">
+                    <i class="feather-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <th:block th:fragment="header-scripts">
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const parentItems = document.querySelectorAll(".parent-list li[data-category]");
+          const subcategories = document.querySelectorAll(".subcategory");
+
+          // Lắng nghe sự kiện hover vào mỗi mục cha
+          parentItems.forEach((item) => {
+            item.addEventListener("mouseenter", function () {
+              // Ẩn tất cả các danh mục con
+              subcategories.forEach((sub) => {
+                sub.classList.remove("active");
+              });
+
+              // Lấy giá trị category của mục cha và hiển thị danh mục con tương ứng
+              const cat = item.getAttribute("data-category");
+              const sub = document.querySelector('.subcategory[data-category="' + cat + '"]');
+
+              if (sub) {
+                sub.classList.add("active"); // Hiển thị danh mục con tương ứng
+              }
+            });
+
+            // Lắng nghe sự kiện rời chuột khỏi mục cha
+            item.addEventListener("mouseleave", function () {
+              // Không ẩn danh mục con ở đây nữa, vì khi chuột ra ngoài vẫn cần giữ danh mục con hiển thị
+            });
+          });
+
+          // Lắng nghe sự kiện mouseenter cho các danh mục con để giữ chúng hiển thị khi di chuột vào danh mục con
+          subcategories.forEach((sub) => {
+            sub.addEventListener("mouseenter", function () {
+              sub.classList.add("active"); // Giữ danh mục con hiển thị khi chuột vào
+            });
+
+            sub.addEventListener("mouseleave", function () {
+              // Không ẩn ngay danh mục con khi chuột rời khỏi danh mục con
+            });
+          });
+
+          // Ẩn tất cả danh mục con khi chuột rời khỏi vùng danh mục (category-hover-area)
+          const hoverArea = document.querySelector(".category-hover-area");
+          if (hoverArea) {
+            hoverArea.addEventListener("mouseleave", function () {
+              subcategories.forEach((sub) => {
+                sub.classList.remove("active"); // Ẩn tất cả danh mục con khi chuột rời khỏi vùng hover
+              });
+            });
+          }
+        });
+      </script>
+    </th:block>
+  </body>
+</html>
