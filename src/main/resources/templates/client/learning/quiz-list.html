@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body class="rbt-header-sticky">
+    <div th:fragment="content">
+      <div class="rbt-lesson-area bg-color-white">
+        <div class="rbt-lesson-content-wrapper">
+          <div th:replace="~{client/learning/learning-sidebar :: learning-sidebar}"></div>
+
+          <div class="rbt-lesson-rightsidebar overflow-hidden">
+            <div class="lesson-top-bar">
+              <div class="lesson-top-left">
+                <h5>Danh sách Quiz</h5>
+              </div>
+            </div>
+
+            <div class="inner">
+              <div class="content">
+                <ul class="list-group">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    th:each="quiz : ${quizzes}"
+                  >
+                    <a th:href="@{/quiz/{id}(id=${quiz.quizId})}" th:text="${quiz.title}">Quiz Title</a>
+                    <span th:if="${quizCompletionMap[quiz.quizId]}" class="badge bg-success text-white">
+                      ✔ Đã hoàn thành
+                    </span>
+                    <span th:if="${!quizCompletionMap[quiz.quizId]}" class="badge bg-secondary">Chưa làm</span>
+                  </li>
+                </ul>
+
+                <div class="mt--30">
+                  <a th:href="@{/course-details/{id}(id=${course.courseId})}" class="btn btn-secondary">
+                    Quay lại khóa học
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rbt-progress-parent">
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+          <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+      </div>
+    </div>
+  </body>
+</html>
