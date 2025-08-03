@@ -58,7 +58,7 @@ public class AdminThongKeController {
         model.addAttribute("totalAdmins", userService.getAllAdmins().size());
         model.addAttribute("totalInstructors", userService.getAllInstructors().size());
         model.addAttribute("totalStudents", userService.getAllStudents().size());
-        model.addAttribute("title", "Tài khoản");
+        model.addAttribute("title", "Thống kê tài khoản");
         model.addAttribute("content", "admin/thongKe/tongTaiKhoan");
         model.addAttribute("scripts", "admin/thongKe/tongTaiKhoan");
         return "admin/layout/index";
@@ -68,13 +68,9 @@ public class AdminThongKeController {
     public String showKqQuiz(Model model) {
         List<User> user = userService.getAllInstructorsAndStudents();
         model.addAttribute("users", user);
-        model.addAttribute("totalUsers", user.size());
-        model.addAttribute("totalAdmins", userService.getAllAdmins().size());
-        model.addAttribute("totalInstructors", userService.getAllInstructors().size());
-        model.addAttribute("totalStudents", userService.getAllStudents().size());
-        model.addAttribute("title", "Tài khoản");
-        model.addAttribute("content", "admin/thongKe/tongTaiKhoan");
-        model.addAttribute("scripts", "admin/thongKe/tongTaiKhoan");
+        model.addAttribute("title", "Thống kê kết quả quiz");
+        model.addAttribute("content", "admin/thongKe/tongQuiz");
+        model.addAttribute("scripts", "admin/thongKe/tongQuiz");
         return "admin/layout/index";
     }
 
