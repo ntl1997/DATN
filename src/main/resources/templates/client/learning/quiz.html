@@ -40,6 +40,12 @@
                       <strong th:if="${correctAnswers == null}" th:text="${quiz.totalScore}">1/10</strong>
                     </span>
                   </div>
+                  <div id="questionProgress" class="mt--20 text-end fw-bold" style="font-size: 16px">
+                    Câu
+                    <span id="currentPage">1</span>
+                    /
+                    <span id="totalPages">1</span>
+                  </div>
                 </div>
                 <hr />
                 <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30 overflow-hidden">
@@ -132,12 +138,6 @@
                       </p>
                     </div>
                   </form>
-                  <div id="questionProgress" class="mt--20 text-end fw-bold" style="font-size: 16px">
-                    Câu
-                    <span id="currentPage">1</span>
-                    /
-                    <span id="totalPages">1</span>
-                  </div>
 
                   <!-- JavaScript điều khiển hiển thị -->
                   <th:block th:fragment="scripts">
@@ -168,12 +168,21 @@
                         const nextBtn = document.getElementById("nextBtn");
                         const prevBtn = document.getElementById("prevBtn");
                         const submitBtn = document.getElementById("submitBtn");
+                        const currentPageEl = document.getElementById("currentPage");
+                        const totalPagesEl = document.getElementById("totalPages");
 
                         function showQuestion(index) {
-                          questions.forEach((q, i) => (q.style.display = i === index ? "block" : "none"));
+                          questions.forEach((q, i) => {
+                            q.style.display = i === index ? "block" : "none";
+                          });
+
                           prevBtn.style.display = index === 0 ? "none" : "inline-block";
                           nextBtn.style.display = index === questions.length - 1 ? "none" : "inline-block";
                           submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+
+                          // Cập nhật số câu
+                          currentPageEl.textContent = index + 1;
+                          totalPagesEl.textContent = questions.length;
                         }
 
                         prevBtn.addEventListener("click", () => {
@@ -190,7 +199,9 @@
                           }
                         });
 
-                        if (questions.length > 0) showQuestion(0);
+                        if (questions.length > 0) {
+                          showQuestion(0);
+                        }
                       });
                     </script>
                   </th:block>
