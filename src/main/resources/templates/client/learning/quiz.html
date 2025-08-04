@@ -40,11 +40,13 @@
                       <strong th:if="${correctAnswers == null}" th:text="${quiz.totalScore}">1/10</strong>
                     </span>
                   </div>
-                  <div id="questionProgress" class="text-end fw-bold" style="font-size: 16px; white-space: nowrap">
-                    Câu
-                    <span id="currentPage">1</span>
-                    /
-                    <span id="totalPages">1</span>
+                  <div id="questionProgress" class="text-end fw-bold" style="font-size: 16px">
+                    <span style="display: inline-flex; white-space: nowrap; gap: 4px">
+                      <span>Câu</span>
+                      <span id="currentPage">1</span>
+                      <span>/</span>
+                      <span id="totalPages">2</span>
+                    </span>
                   </div>
                 </div>
                 <hr />
