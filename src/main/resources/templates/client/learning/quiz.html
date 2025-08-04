@@ -165,8 +165,11 @@
                         const nextBtn = document.getElementById("nextBtn");
                         const prevBtn = document.getElementById("prevBtn");
                         const submitBtn = document.getElementById("submitBtn");
-                        const currentPageEl = document.getElementById("currentPage");
-                        const totalPagesEl = document.getElementById("totalPages");
+                        const progressText = document.getElementById("progressText");
+
+                        function updateProgressText(current, total) {
+                          progressText.textContent = `Câu ${current}/${total}`;
+                        }
 
                         function showQuestion(index) {
                           questions.forEach((q, i) => {
@@ -177,9 +180,7 @@
                           nextBtn.style.display = index === questions.length - 1 ? "none" : "inline-block";
                           submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
 
-                          // Cập nhật số câu
-                          currentPageEl.textContent = index + 1;
-                          totalPagesEl.textContent = questions.length;
+                          updateProgressText(index + 1, questions.length);
                         }
 
                         prevBtn.addEventListener("click", () => {
