@@ -103,6 +103,7 @@
 
                     <!-- Điều hướng + Submit -->
                     <div class="rbt-button-group mt--30 d-flex gap-3">
+                      <!-- Nút Previous -->
                       <a
                         id="prevBtn"
                         class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"
@@ -112,11 +113,23 @@
                         <span class="btn-text">Previous</span>
                       </a>
 
+                      <!-- Nút Next -->
                       <a id="nextBtn" class="rbt-btn icon-hover btn-md" href="javascript:void(0)">
                         <span class="btn-text">Next</span>
                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                       </a>
 
+                      <!-- ✅ Nút Xem kết quả (chỉ hiện nếu đã làm trước đó) -->
+                      <a
+                        th:if="${latestSubmission != null}"
+                        th:href="@{/quiz/result/{id}(id=${quiz.quizId})}"
+                        class="rbt-btn icon-hover btn-md bg-color-info-opacity"
+                      >
+                        <span class="btn-icon" style="margin-right: 15px"><i class="feather-eye"></i></span>
+                        <span class="btn-text">View result</span>
+                      </a>
+
+                      <!-- Nút Submit -->
                       <button
                         id="submitBtn"
                         style="display: none"
