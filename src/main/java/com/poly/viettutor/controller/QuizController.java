@@ -30,25 +30,32 @@ public class QuizController {
 
     @GetMapping("/{id}")
     public String getQuizById(@PathVariable("id") Long id,
-            @RequestParam(value = "error", required = false) Boolean error,
-            Model model) {
-        Quiz quiz = quizService.findById(id);
-        if (quiz == null) {
-            return "redirect:/error";
-        }
+        @RequestParam(value = "error", required = false) Boolean error,
+        Model model) {
+    Quiz quiz = quizService.findById(id);
+    if (quiz == null) {
+        return "redirect:/error";
+    }
 
-        User user = userService.getCurrentUser();
-        int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
-        boolean quizLimitReached = submissionCount >= 3;
-        Course course = quiz.getModule().getCourse();
+    User user = userService.getCurrentUser();
+    int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
+    boolean quizLimitReached = submissionCount >= 3;
+    Course course = quiz.getModule().getCourse();
 
-        model.addAttribute("quiz", quiz);
-        model.addAttribute("course", course);
-        model.addAttribute("quizLimitReached", quizLimitReached);
-        model.addAttribute("error", error != null && error);
-        model.addAttribute("title", "Chi tiết Quiz");
-        model.addAttribute("content", "client/learning/quiz");
-        return "client/layout/index";
+    // ✅ Lấy lần nộp gần nhất của user hiện tại
+    QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
+        .filter(sub -> sub.getUser().getId().equals(user.getId()))
+        .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
+        .orElse(null);
+
+    model.addAttribute("quiz", quiz);
+    model.addAttribute("course", course);
+    model.addAttribute("quizLimitReached", quizLimitReached);
+    model.addAttribute("latestSubmission", latestSubmission); // ✅ Thêm dòng này
+    model.addAttribute("error", error != null && error);
+    model.addAttribute("title", "Chi tiết Quiz");
+    model.addAttribute("content", "client/learning/quiz");
+    return "client/layout/index";
     }
 
     @PostMapping
