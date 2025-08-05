@@ -56,4 +56,30 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
             """, nativeQuery = true)
     List<Object[]> getQuizSubmissionsByInstructorId(@Param("instructorId") Long instructorId);
 
+    @Query(value = """
+            WITH TotalQuizzesCTE AS (
+                SELECT c.CourseId, COUNT(q.QuizId) AS TotalQuizzes
+                FROM Courses c
+                JOIN CourseModules cm ON cm.CourseId = c.CourseId
+                JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+                WHERE c.Title = :courseTitle
+                GROUP BY c.CourseId
+            )
+            SELECT
+                u.FullName AS fullName,
+                u.Email AS email,
+                CONCAT(COUNT(DISTINCT qs.SubmissionId), '/', tq.TotalQuizzes) AS quizzesProgress,
+                CONCAT(CAST(COUNT(DISTINCT qs.SubmissionId) * 100.0 / tq.TotalQuizzes AS INT), '%') AS completionPercentage,
+                MAX(qs.SubmittedAt) AS lastSubmittedAt
+            FROM Courses c
+            JOIN CourseModules cm ON cm.CourseId = c.CourseId
+            JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+            JOIN QuizSubmissions qs ON qs.QuizId = q.QuizId
+            JOIN Users u ON u.UserId = qs.UserId
+            JOIN TotalQuizzesCTE tq ON tq.CourseId = c.CourseId
+            WHERE c.Title = :courseTitle
+            GROUP BY u.FullName, u.Email, u.PhoneNumber, tq.TotalQuizzes
+            ORDER BY u.FullName
+            """, nativeQuery = true)
+    List<Object[]> findQuizProgressByCourseTitle(@Param("courseTitle") String courseTitle);
 }
