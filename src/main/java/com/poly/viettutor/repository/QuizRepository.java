@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.poly.viettutor.model.CourseModule;
 import com.poly.viettutor.model.Quiz;
+
 import java.util.List;
 
 @Repository
@@ -82,4 +83,33 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
             ORDER BY u.FullName
             """, nativeQuery = true)
     List<Object[]> findQuizProgressByCourseTitle(@Param("courseTitle") String courseTitle);
+
+    @Query(value = """
+            WITH TotalQuizzesCTE AS (
+                SELECT c.CourseId, COUNT(q.QuizId) AS TotalQuizzes
+                FROM Courses c
+                JOIN CourseModules cm ON cm.CourseId = c.CourseId
+                JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+                WHERE (:courseTitle IS NULL OR c.Title = :courseTitle)
+                GROUP BY c.CourseId
+            )
+            SELECT
+                c.Title AS title,
+                CONCAT(COUNT(DISTINCT qs.SubmissionId), '/', tq.TotalQuizzes) AS quizzesProgress,
+                CONCAT(CAST(COUNT(DISTINCT qs.SubmissionId) * 100.0 / tq.TotalQuizzes AS INT), '%') AS completionPercentage,
+                MAX(qs.SubmittedAt) AS lastSubmittedAt
+            FROM Courses c
+            JOIN CourseModules cm ON cm.CourseId = c.CourseId
+            JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+            JOIN QuizSubmissions qs ON qs.QuizId = q.QuizId
+            JOIN Users u ON u.UserId = qs.UserId
+            JOIN TotalQuizzesCTE tq ON tq.CourseId = c.CourseId
+            WHERE (:courseTitle IS NULL OR c.Title = :courseTitle)
+            AND u.UserId = :userId
+            GROUP BY c.Title, u.PhoneNumber, tq.TotalQuizzes
+            ORDER BY c.Title
+            """, nativeQuery = true)
+    List<Object[]> findQuizProgressByCourseTitleAndUserId(@Param("courseTitle") String courseTitle,
+            @Param("userId") long userId);
+
 }

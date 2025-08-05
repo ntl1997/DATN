@@ -12,13 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.viettutor.model.Certificate;
+import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CertificateService;
+import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.OrderDetail;
 import com.poly.viettutor.model.Wishlist;
 import com.poly.viettutor.service.OrderService;
+import com.poly.viettutor.service.QuizService;
 import com.poly.viettutor.service.UserService;
 import com.poly.viettutor.service.WishListService;
 import com.poly.viettutor.utils.FileUtils;
@@ -35,6 +38,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+
+    @Autowired
+    private QuizService quizService;
+
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     private OrderService orderService;
@@ -269,4 +278,31 @@ public class StudentController {
         }
         return "/";
     }
+
+    @GetMapping("/quizzes-progress")
+    public String instructorThongKeQuizz(
+            @RequestParam(value = "courseTitle", required = false) String courseTitle,
+            Model model) {
+
+        User currentUser = userService.getCurrentUser();
+        List<Course> courses = courseService.findByStatus("Publish");
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("courses", courses);
+        model.addAttribute("courseTitle", courseTitle); // Truyền param lên view
+
+        if (courseTitle != null && courseTitle.trim().isEmpty()) {
+            courseTitle = null;
+        }
+
+        long userId = currentUser.getId();
+        List<Object[]> quizProgressList = quizService.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
+
+        model.addAttribute("quizProgressList", quizProgressList);
+        model.addAttribute("title", "Tiến độ Quizz");
+        model.addAttribute("content", "client/student/quizz-progress");
+
+        return "client/layout/index";
+    }
+
 }
