@@ -163,4 +163,13 @@ public class QuizService {
 
         return formattedResults;
     }
+
+    public List<Object[]> getQuizProgressByCourseTitle(String courseTitle) {
+        return quizRepository.findQuizProgressByCourseTitle(courseTitle);
+    }
+
+    public List<Object[]> findQuizProgressByCourseTitleAndUserId(String courseTitle, long userId) {
+        return quizRepository.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
+    }
+
 }
