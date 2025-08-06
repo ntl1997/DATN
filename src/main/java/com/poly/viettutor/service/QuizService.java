@@ -31,14 +31,15 @@ public class QuizService {
     }
 
     public List<Quiz> findByModuleId(Long moduleId) {
-    return quizRepository.findAll().stream()
-            .filter(q -> q.getModule() != null && moduleId.equals(q.getModule().getModuleId()))
-            .collect(Collectors.toList());
+        return quizRepository.findAll().stream()
+                .filter(q -> q.getModule() != null && moduleId.equals(q.getModule().getModuleId()))
+                .collect(Collectors.toList());
     }
 
     public int evaluateQuiz(Long quizId, Map<String, String> answers) {
         Quiz quiz = findById(quizId);
-        if (quiz == null) return 0;
+        if (quiz == null)
+            return 0;
 
         int correctAnswers = 0;
         for (Question question : quiz.getQuestions()) {
@@ -113,31 +114,35 @@ public class QuizService {
     }
 
     public int countSubmissionsByUserAndQuiz(Long userId, Long quizId) {
-    List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quizId);
-    return submissions != null ? submissions.size() : 0;
+        List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quizId);
+        return submissions != null ? submissions.size() : 0;
     }
 
     public boolean hasCompletedAllQuizzes(Integer courseId, Long userId) {
-    if (userId == null) return false;
+        if (userId == null)
+            return false;
 
-    List<Quiz> quizzes = getQuizzesByCourseId(courseId);
-    if (quizzes.isEmpty()) return false;
+        List<Quiz> quizzes = getQuizzesByCourseId(courseId);
+        if (quizzes.isEmpty())
+            return false;
 
-    for (Quiz quiz : quizzes) {
-        List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quiz.getQuizId());
+        for (Quiz quiz : quizzes) {
+            List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId,
+                    quiz.getQuizId());
 
-        boolean hasPassed = submissions.stream().anyMatch(sub -> {
-            List<Question> questions = quiz.getQuestions();
-            int totalScore = (questions != null)
-            ? questions.stream().mapToInt(Question::getScore).sum()
-            : 0;
-            return sub.getScore() != null && sub.getScore() >= totalScore / 2;
-        });
+            boolean hasPassed = submissions.stream().anyMatch(sub -> {
+                List<Question> questions = quiz.getQuestions();
+                int totalScore = (questions != null)
+                        ? questions.stream().mapToInt(Question::getScore).sum()
+                        : 0;
+                return sub.getScore() != null && sub.getScore() >= totalScore / 2;
+            });
 
-        if (!hasPassed) return false;
-    }
+            if (!hasPassed)
+                return false;
+        }
 
-    return true;
+        return true;
     }
 
     public List<Map<String, Object>> getQuizSubmissionsByCourseTitle(String courseTitle) {
@@ -179,11 +184,21 @@ public class QuizService {
     }
 
     public boolean hasUserCompletedQuiz(Long quizId, Long userId) {
-    List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quizId);
-    Quiz quiz = findById(quizId);
-    if (quiz == null) return false;
+        List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quizId);
+        Quiz quiz = findById(quizId);
+        if (quiz == null)
+            return false;
 
-    int totalScore = quiz.getQuestions().stream().mapToInt(Question::getScore).sum();
-    return submissions.stream().anyMatch(s -> s.getScore() != null && s.getScore() >= totalScore / 2);
+        int totalScore = quiz.getQuestions().stream().mapToInt(Question::getScore).sum();
+        return submissions.stream().anyMatch(s -> s.getScore() != null && s.getScore() >= totalScore / 2);
     }
+
+    public List<Object[]> getQuizProgressByCourseTitle(String courseTitle) {
+        return quizRepository.findQuizProgressByCourseTitle(courseTitle);
+    }
+
+    public List<Object[]> findQuizProgressByCourseTitleAndUserId(String courseTitle, long userId) {
+        return quizRepository.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
+    }
+
 }

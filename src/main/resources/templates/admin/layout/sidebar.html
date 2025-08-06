@@ -1,91 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <body>
-    <div id="sidebar" class="active" th:fragment="sidebar">
-      <div class="sidebar-wrapper active">
-        <div class="sidebar-header">
-          <div class="d-flex justify-content-between">
-            <div class="logo">
-              <a th:href="@{/admin/dashboard}">
-                <img th:src="@{/assets/images/logo/logo-vtt.png}" alt="Logo" style="width: 200px; height: auto" />
-              </a>
-            </div>
-            <div class="toggler">
-              <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-            </div>
+
+<body>
+  <div id="sidebar" class="active" th:fragment="sidebar">
+    <div class="sidebar-wrapper active">
+      <div class="sidebar-header">
+        <div class="d-flex justify-content-between">
+          <div class="logo">
+            <a th:href="@{/admin/dashboard}">
+              <img th:src="@{/assets/images/logo/logo-vtt.png}" alt="Logo" style="width: 200px; height: auto" />
+            </a>
+          </div>
+          <div class="toggler">
+            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
           </div>
         </div>
-        <div class="sidebar-menu">
-          <ul class="menu">
-            <li class="sidebar-title">Menu</li>
+      </div>
+      <div class="sidebar-menu">
+        <ul class="menu">
+          <li class="sidebar-title">Menu</li>
 
-            <li class="sidebar-item active">
-              <a th:href="@{/admin/dashboard}" class="sidebar-link">
-                <i class="bi bi-grid-fill"></i>
-                <span>Tổng quan</span>
-              </a>
-            </li>
+          <li class="sidebar-item active">
+            <a th:href="@{/admin/dashboard}" class="sidebar-link">
+              <i class="bi bi-grid-fill"></i>
+              <span>Tổng quan</span>
+            </a>
+          </li>
 
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-people-fill"></i>
-                <span>Quản lý tài khoản</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a th:href="@{/admin/account/admins}">Quản trị viên</a>
-                </li>
-                <li class="submenu-item">
-                  <a th:href="@{/admin/account/users}">Giảng viên, học viên</a>
-                </li>
-              </ul>
-            </li>
+          <li class="sidebar-item has-sub">
+            <a href="#" class="sidebar-link">
+              <i class="bi bi-people-fill"></i>
+              <span>Quản lý tài khoản</span>
+            </a>
+            <ul class="submenu">
+              <li class="submenu-item">
+                <a th:href="@{/admin/account/admins}">Quản trị viên</a>
+              </li>
+              <li class="submenu-item">
+                <a th:href="@{/admin/account/users}">Giảng viên, học viên</a>
+              </li>
+            </ul>
+          </li>
 
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-collection-fill"></i>
-                <span>Chức năng</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a th:href="@{/admin/function/course-approval}">Phê duyệt khoá học</a>
-                </li>
-                <li class="submenu-item">
-                  <a th:href="@{/admin/course-enroll}">Thêm vào khóa học</a>
-                </li>
-              </ul>
-            </li>
+          <li class="sidebar-item has-sub">
+            <a href="#" class="sidebar-link">
+              <i class="bi bi-collection-fill"></i>
+              <span>Chức năng</span>
+            </a>
+            <ul class="submenu">
+              <li class="submenu-item">
+                <a th:href="@{/admin/function/course-approval}">Phê duyệt khoá học</a>
+              </li>
+              <li class="submenu-item">
+                <a th:href="@{/admin/course-enroll}">Thêm vào khóa học</a>
+              </li>
+            </ul>
+          </li>
 
-            <li class="sidebar-item">
-              <a th:href="@{/admin/categories}" class="sidebar-link">
-                <i class="bi bi-tags-fill"></i>
-                <span>Danh mục</span>
-              </a>
-            </li>
+          <li class="sidebar-item">
+            <a th:href="@{/admin/categories}" class="sidebar-link">
+              <i class="bi bi-tags-fill"></i>
+              <span>Danh mục</span>
+            </a>
+          </li>
 
-            <li class="sidebar-item has-sub">
-              <a href="#" class="sidebar-link">
-                <i class="bi bi-stack"></i>
-                <span>Thống kê</span>
-              </a>
-              <ul class="submenu">
-                <li class="submenu-item">
-                  <a th:href="@{/admin/KhoaHocDuocHocNhieuNhat}">Khóa học được học nhiều nhất</a>
-                </li>
-                <li class="submenu-item">
-                  <a th:href="@{/admin/Top5GiangVien}">Giảng viên được học nhiều nhất</a>
-                </li>
-              </ul>
-            </li>
+          <li class="sidebar-item has-sub">
+            <a href="#" class="sidebar-link">
+              <i class="bi bi-stack"></i>
+              <span>Thống kê</span>
+            </a>
+            <ul class="submenu">
+              <li class="submenu-item">
+                <a th:href="@{/admin/KhoaHocDuocHocNhieuNhat}">Khóa học được học nhiều nhất</a>
+              </li>
+              <li class="submenu-item">
+                <a th:href="@{/admin/Top5GiangVien}">Giảng viên được học nhiều nhất</a>
+              </li>
+            </ul>
+          </li>
 
-            <li class="sidebar-item">
-              <a th:href="@{/admin/logout}" class="sidebar-link">
-                <i class="bi bi-box-arrow-left"></i>
-                <span>Đăng xuất</span>
-              </a>
-            </li>
+          <li class="sidebar-item">
+            <a th:href="@{/admin/logout}" class="sidebar-link">
+              <i class="bi bi-box-arrow-left"></i>
+              <span>Đăng xuất</span>
+            </a>
+          </li>
 
-            <!-- <li class="sidebar-item has-sub">
+          <!-- <li class="sidebar-item has-sub">
             <a href="#" class="sidebar-link">
               <i class="bi bi-collection-fill"></i>
               <span>Extra Components</span>
@@ -364,10 +365,11 @@
               <span>Donate</span>
             </a>
           </li> -->
-          </ul>
-        </div>
-        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+        </ul>
       </div>
+      <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

@@ -35,28 +35,24 @@
                 <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
                   <div class="content">
                     <div class="section-title">
-                      <h4 class="rbt-title-style-3">Lịch sử Quizz của học sinh</h4>
+                      <h4 class="rbt-title-style-3">Thống kê Quizz</h4>
                     </div>
 
                     <!-- Start Filter -->
                     <div class="rbt-dashboard-filter-wrapper">
                       <div class="row g-5">
-                        <form method="get" action="/instructor/instructor-quiz-attempts" id="courseFilterForm">
+                        <form method="get" action="/instructor/thongKeQuizz" id="courseFilterForm">
                           <div class="row g-3 align-items-end">
-                            <!-- Courses Dropdown -->
                             <div class="col-lg-5">
                               <div class="filter-select rbt-modern-select">
-                                <span class="select-label d-block"></span>
-                                <!-- Dropdown đơn giản -->
                                 <select class="w-100" name="courseTitle" title="Chọn khóa học...">
-                                  <option th:value="null">Tất cả khóa học</option>
+                                  <option value="">Tất cả khóa học</option>
                                   <option th:each="course : ${courses}" th:value="${course.title}"
-                                    th:text="${course.title}"></option>
+                                    th:text="${course.title}" th:selected="${course.title == courseTitle}">
+                                  </option>
                                 </select>
                               </div>
                             </div>
-
-                            <!-- Filter Button -->
                             <div class="col-lg-2 d-flex align-items-end justify-content-center">
                               <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fs-5 w-100">
                                 <i class="feather-filter me-2"></i> Lọc
@@ -74,46 +70,23 @@
                       <table class="rbt-table table table-borderless">
                         <thead>
                           <tr>
-                            <th>Date</th>
-                            <th>Quiz</th>
                             <th>Student</th>
                             <th>Email</th>
-                            <th>Score</th>
-                            <th>Total</th>
-                            <th>Result</th>
+                            <th>Quizz đã làm</th>
+                            <th>Quá trình làm Quizz</th>
+                            <th>Date</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr th:each="submission : ${quizSubmissions}">
-                            <td>
-                              <p class="b3 mb--5"
-                                th:text="${#dates.format(submission['submittedAt'], 'MMMM dd, yyyy')}">
-                                July 20, 2025
-                              </p>
-                            </td>
-                            <td>
-                              <span class="h6 mb--5" th:text="${submission['quizTitle']}">Quiz Title</span>
-                            </td>
-                            <td>
-                              <p class="b3" th:text="${submission['fullName']}">Student Name</p>
-                            </td>
-                            <td>
-                              <p class="b3" th:text="${submission['email']}">Student Name</p>
-                            </td>
-                            <td>
-                              <p class="b3" th:text="${submission['score']}">0</p>
-                            </td>
-                            <td>
-                              <p class="b3" th:text="${submission['totalScore']}">0</p>
-                            </td>
-                            <td>
-                              <span
-                                th:if="${submission['score'] != null and submission['totalScore'] != null and submission['score'] >= submission['totalScore'] / 2}"
-                                class="rbt-badge-5 bg-color-success-opacity color-success">Pass</span>
-                              <span
-                                th:if="${submission['score'] == null or submission['totalScore'] == null or submission['score'] < submission['totalScore'] / 2}"
-                                class="rbt-badge-5 bg-color-danger-opacity color-danger">Fail</span>
-                            </td>
+                          <tr th:each="row : ${quizProgressList}">
+                            <td th:text="${row[0]}">FullName</td>
+                            <td th:text="${row[1]}">Email</td>
+                            <td th:text="${row[2]}">QuizzesProgress</td>
+                            <td th:text="${row[3]}">CompletionPercentage</td>
+                            <td th:text="${#dates.format(row[4], 'yyyy-MM-dd HH:mm:ss')}">LastSubmittedAt</td>
+                          </tr>
+                          <tr th:if="${#lists.isEmpty(quizProgressList)}">
+                            <td colspan="5" class="text-center">Không có dữ liệu thống kê</td>
                           </tr>
                         </tbody>
                       </table>

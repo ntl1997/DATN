@@ -19,9 +19,9 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     // ✅ THÊM: Tìm tất cả quiz trong 1 khóa học
     @Query("""
-        SELECT q FROM Quiz q
-        WHERE q.module.course.courseId = :courseId
-    """)
+                SELECT q FROM Quiz q
+                WHERE q.module.course.courseId = :courseId
+            """)
     List<Quiz> findByCourseId(@Param("courseId") Long courseId);
 
     @Query(value = """
@@ -63,4 +63,60 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
             ORDER BY qs.SubmittedAt DESC
             """, nativeQuery = true)
     List<Object[]> getQuizSubmissionsByInstructorId(@Param("instructorId") Long instructorId);
+
+    @Query(value = """
+            WITH TotalQuizzesCTE AS (
+                SELECT c.CourseId, COUNT(q.QuizId) AS TotalQuizzes
+                FROM Courses c
+                JOIN CourseModules cm ON cm.CourseId = c.CourseId
+                JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+                WHERE c.Title = :courseTitle
+                GROUP BY c.CourseId
+            )
+            SELECT
+                u.FullName AS fullName,
+                u.Email AS email,
+                CONCAT(COUNT(DISTINCT qs.SubmissionId), '/', tq.TotalQuizzes) AS quizzesProgress,
+                CONCAT(CAST(COUNT(DISTINCT qs.SubmissionId) * 100.0 / tq.TotalQuizzes AS INT), '%') AS completionPercentage,
+                MAX(qs.SubmittedAt) AS lastSubmittedAt
+            FROM Courses c
+            JOIN CourseModules cm ON cm.CourseId = c.CourseId
+            JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+            JOIN QuizSubmissions qs ON qs.QuizId = q.QuizId
+            JOIN Users u ON u.UserId = qs.UserId
+            JOIN TotalQuizzesCTE tq ON tq.CourseId = c.CourseId
+            WHERE c.Title = :courseTitle
+            GROUP BY u.FullName, u.Email, u.PhoneNumber, tq.TotalQuizzes
+            ORDER BY u.FullName
+            """, nativeQuery = true)
+    List<Object[]> findQuizProgressByCourseTitle(@Param("courseTitle") String courseTitle);
+
+    @Query(value = """
+            WITH TotalQuizzesCTE AS (
+                SELECT c.CourseId, COUNT(q.QuizId) AS TotalQuizzes
+                FROM Courses c
+                JOIN CourseModules cm ON cm.CourseId = c.CourseId
+                JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+                WHERE c.Title LIKE CONCAT('%', :courseTitle, '%')
+                GROUP BY c.CourseId
+            )
+            SELECT
+                c.Title AS title,
+                CONCAT(COUNT(DISTINCT qs.SubmissionId), '/', tq.TotalQuizzes) AS quizzesProgress,
+                CONCAT(CAST(COUNT(DISTINCT qs.SubmissionId) * 100.0 / tq.TotalQuizzes AS INT), '%') AS completionPercentage,
+                MAX(qs.SubmittedAt) AS lastSubmittedAt
+            FROM Courses c
+            JOIN CourseModules cm ON cm.CourseId = c.CourseId
+            JOIN Quizzes q ON q.ModuleId = cm.ModuleId
+            JOIN QuizSubmissions qs ON qs.QuizId = q.QuizId
+            JOIN Users u ON u.UserId = qs.UserId
+            JOIN TotalQuizzesCTE tq ON tq.CourseId = c.CourseId
+            WHERE c.Title LIKE CONCAT('%', :courseTitle, '%')
+            AND u.UserId = :userId
+            GROUP BY c.Title, u.PhoneNumber, tq.TotalQuizzes
+            ORDER BY c.Title
+            """, nativeQuery = true)
+    List<Object[]> findQuizProgressByCourseTitleAndUserId(@Param("courseTitle") String courseTitle,
+            @Param("userId") long userId);
+
 }

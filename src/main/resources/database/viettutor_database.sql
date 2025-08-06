@@ -705,12 +705,13 @@ VALUES
     (12, N'Xây dựng hệ quản trị cơ sở dữ liệu', 0),
     (12, N'Tạo game trong Python', 0);
 
--- 26. Dữ liệu mẫu bài làm quiz
+-- DỮ LIỆU MẪU LÀM BÀI QUIZZ
 -- INSERT INTO QuizSubmissions
 --     (QuizId, UserId, Score, SubmittedAt)
--- VALUES
+--  VALUES
 --     (2, 3, 10, GETDATE()),
---     (3, 3, 5, GETDATE());
+--     (3, 3, 5, GETDATE()),
+--     (5, 3, 8, GETDATE());
 
 -- INSERT INTO QuizAnswers
 --     (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)
