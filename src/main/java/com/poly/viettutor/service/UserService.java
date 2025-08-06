@@ -1,15 +1,22 @@
 package com.poly.viettutor.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Iterator;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.poly.viettutor.dto.RegisterRequest;
 import com.poly.viettutor.dto.UpdateUserInfoDTO;
@@ -29,6 +36,37 @@ public class UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    // Tạo tài khoản hàng loạt bằng excel
+    @Async
+    public void importUsersFromExcel(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+        Workbook workbook = new XSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next(); // bỏ dòng tiêu đề
+
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+
+            String fullName = row.getCell(1).getStringCellValue();
+            String email = row.getCell(2).getStringCellValue();
+            String phoneNumber = row.getCell(3).getStringCellValue();
+
+            if (!userRepository.existsByEmail(email)) {
+                RegisterRequest request = RegisterRequest.builder()
+                        .fullname(fullName)
+                        .email(email)
+                        .phoneNumber(phoneNumber)
+                        .password("123456")
+                        .build();
+
+                register(request);
+            }
+        }
+
+        workbook.close();
     }
 
     // đăng ký tài khoản

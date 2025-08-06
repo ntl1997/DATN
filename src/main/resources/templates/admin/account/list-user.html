@@ -13,20 +13,6 @@
           <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
               <h3>Danh sách giảng viên, học viên</h3>
-              <div th:if="${param.createSuccess}" class="alert alert-success">
-                <i class="bi bi-check-circle"></i> Thêm tài khoản thành công!
-              </div>
-              <div th:if="${param.updateSuccess}" class="alert alert-success">
-                <i class="bi bi-check-circle"></i> Cập nhật tài khoản thành công!
-              </div>
-              <div th:if="${createError}" class="alert alert-danger">
-                <i class="bi bi-file-excel"></i> Tạo tài khoản thất bại!
-                <p th:text="${createError}"></p>
-              </div>
-              <div th:if="${updateError}" class="alert alert-danger">
-                <i class="bi bi-file-excel"></i> Cập nhật tài khoản thất bại!
-                <p th:text="${updateError}"></p>
-              </div>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
               <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -150,6 +136,29 @@
           </div>
         </div>
       </div>
+
+      <!-- Toast Container -->
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+        <div
+          id="toast-message"
+          class="toast align-items-center text-white bg-success border-0"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex">
+            <div class="toast-body" id="toast-body">
+              <!-- Nội dung sẽ được set bằng JS -->
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <th:block th:fragment="scripts">
@@ -223,6 +232,47 @@
           document.getElementById("file-upload").value = "";
           document.getElementById("excel-preview").style.display = "none";
         }
+
+        window.addEventListener("DOMContentLoaded", function () {
+          const urlParams = new URLSearchParams(window.location.search);
+          let toastBody = document.getElementById("toast-body");
+          let toastElement = document.getElementById("toast-message");
+
+          if (urlParams.has("createSuccess")) {
+            toastBody.textContent = "Tạo tài khoản thành công!";
+            toastElement.classList.remove("bg-danger");
+            toastElement.classList.add("bg-success");
+            new bootstrap.Toast(toastElement).show();
+          }
+
+          if (urlParams.has("createError")) {
+            toastBody.textContent = "Tạo tài khoản thất bại!";
+            toastElement.classList.remove("bg-success");
+            toastElement.classList.add("bg-danger");
+            new bootstrap.Toast(toastElement).show();
+          }
+
+          if (urlParams.has("updateSuccess")) {
+            toastBody.textContent = "Cập nhật khoản thành công!";
+            toastElement.classList.remove("bg-danger");
+            toastElement.classList.add("bg-success");
+            new bootstrap.Toast(toastElement).show();
+          }
+
+          if (urlParams.has("updateError")) {
+            toastBody.textContent = "Cập nhật khoản thất bại!";
+            toastElement.classList.remove("bg-success");
+            toastElement.classList.add("bg-danger");
+            new bootstrap.Toast(toastElement).show();
+          }
+
+          if (urlParams.has("importStarted")) {
+            toastBody.textContent = "Đang nhập tài khoản từ Excel. Quá trình có thể mất vài phút.";
+            toastElement.classList.remove("bg-danger");
+            toastElement.classList.add("bg-info");
+            new bootstrap.Toast(toastElement).show();
+          }
+        });
       </script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     </th:block>

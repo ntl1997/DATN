@@ -3,8 +3,6 @@ package com.poly.viettutor.controller.admin;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,41 +145,11 @@ public class AdminAccountController {
     @PostMapping("/import-excel-users-account")
     public String importExcel(@RequestParam("file") MultipartFile file) {
         try {
-            // Đọc dữ liệu từ file Excel
-            InputStream inputStream = file.getInputStream();
-            Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet sheet = workbook.getSheetAt(0);
-
-            // Duyệt qua các dòng trong sheet
-            Iterator<Row> rowIterator = sheet.iterator();
-            rowIterator.next(); // Bỏ qua dòng tiêu đề
-
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-
-                String fullName = row.getCell(1).getStringCellValue();
-                String email = row.getCell(2).getStringCellValue();
-                String phoneNumber = row.getCell(3).getStringCellValue();
-
-                if (!userService.isEmailExists(email)) {
-                    // Tạo học viên và thêm vào cơ sở dữ liệu
-                    RegisterRequest request = RegisterRequest.builder()
-                            .fullname(fullName)
-                            .email(email)
-                            .phoneNumber(phoneNumber)
-                            .password("123456")
-                            .build();
-
-                    // Đăng ký tài khoản mới
-                    userService.register(request);
-                }
-            }
-
-            workbook.close();
-            return "redirect:/admin/account/users?createError=true";
+            userService.importUsersFromExcel(file);
+            return "redirect:/admin/account/users?importStarted=true";
         } catch (IOException e) {
             log.error("register account by excel fail", e);
-            return "redirect:/admin/account/users?createSuccess=true";
+            return "redirect:/admin/account/users?createError=true";
         }
     }
 
