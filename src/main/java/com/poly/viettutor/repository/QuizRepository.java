@@ -17,6 +17,13 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     List<Quiz> findByModule(CourseModule module);
 
+    // ✅ THÊM: Tìm tất cả quiz trong 1 khóa học
+    @Query("""
+                SELECT q FROM Quiz q
+                WHERE q.module.course.courseId = :courseId
+            """)
+    List<Quiz> findByCourseId(@Param("courseId") Long courseId);
+
     @Query(value = """
             SELECT
                 u.FullName,

@@ -110,24 +110,26 @@ public class StudentController {
     // Hiển thị chi tiết chứng chỉ theo ID
     @GetMapping("/student-certificate/{id}")
     public String showCertificateDetail(@PathVariable("id") Integer id, Model model) {
-        Certificate certificate = certificateService.getCertificateById(id);
+    Certificate certificate = certificateService.getCertificateById(id);
 
-        if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
-            model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
-            model.addAttribute("content", "client/error");
-            model.addAttribute("title", "Lỗi");
-            return "client/layout/index";
-        }
-
-        model.addAttribute("certificate", certificate);
-        model.addAttribute("content", "client/student/student-certificate-detail");
-        model.addAttribute("title", "Chi tiết chứng chỉ");
-
-        // ✅ Nhúng style fragment từ file chứng chỉ
-        model.addAttribute("styles", "client/student/student-certificate-detail");
-
+    if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
+        model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
+        model.addAttribute("content", "client/error");
+        model.addAttribute("title", "Lỗi");
         return "client/layout/index";
     }
+
+    model.addAttribute("certificate", certificate);
+    model.addAttribute("content", "client/student/student-certificate-detail");
+    model.addAttribute("title", "Chi tiết chứng chỉ");
+
+    // ✅ Nhúng style và script fragment từ file chứng chỉ
+    model.addAttribute("styles", "client/student/student-certificate-detail");
+    model.addAttribute("scripts", "client/student/student-certificate-detail");
+
+    return "client/layout/index";
+    }
+
 
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {

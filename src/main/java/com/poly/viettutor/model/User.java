@@ -38,7 +38,7 @@ public class User {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId", nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "FullName", nullable = false)
     @NotBlank(message = "Họ tên không được để trống")

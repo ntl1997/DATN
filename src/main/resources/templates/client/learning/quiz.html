@@ -22,41 +22,50 @@
                     th:href="@{/course-details/{id}(id=${course.courseId})}"
                     title="Go Back to Course"
                     class="rbt-round-btn"
-                    ><i class="feather-x"></i
-                  ></a>
+                  >
+                    <i class="feather-x"></i>
+                  </a>
                 </div>
               </div>
             </div>
             <div class="inner">
               <div class="content">
-                <div class="quize-top-meta">
+                <div class="quize-top-meta d-flex justify-content-between align-items-center">
                   <div class="quize-top-left">
                     <span>
                       Tổng điểm:
-                      <strong th:if="${correctAnswers != null}" th:text="${correctAnswers} + '/' + ${totalQuestions}"
-                        >1/10</strong
-                      >
+                      <strong th:if="${correctAnswers != null}" th:text="${correctAnswers} + '/' + ${totalQuestions}">
+                        1/10
+                      </strong>
                       <strong th:if="${correctAnswers == null}" th:text="${quiz.totalScore}">1/10</strong>
                     </span>
+                  </div>
+                  <div id="questionProgress" class="text-end fw-bold" style="font-size: 16px">
+                    <span id="progressText"></span>
                   </div>
                 </div>
                 <hr />
                 <div class="rbt-dashboard-table table-responsive mobile-table-750 mt--30 overflow-hidden">
-                  <form th:action="@{/quiz}" method="post">
+                  <form th:action="@{/quiz}" method="post" onsubmit="return validateBeforeSubmit()">
                     <input type="hidden" name="quizId" th:value="${quiz.quizId}" />
+
                     <div
                       th:each="question, iterStat : ${quiz.questions}"
-                      class="mb--80"
+                      class="mb--80 quiz-question"
                       th:id="'question-' + ${iterStat.index + 1}"
+                      style="display: none"
                     >
                       <div class="rbt-single-quiz">
                         <h4>
                           <span th:text="${iterStat.index + 1} + '.'"></span>
                           <span th:text="${question.questionText}"></span>
                           <span class="question-score" style="font-weight: normal; font-size: 0.95em; color: #888">
-                            (Điểm: <span th:text="${question.score}"></span>)
+                            (Điểm:
+                            <span th:text="${question.score}"></span>
+                            )
                           </span>
                         </h4>
+
                         <div class="row g-3">
                           <div class="col-lg-6" th:each="op, opStat : ${question.options}">
                             <p class="rbt-checkbox-wrapper mb--5">
@@ -71,31 +80,62 @@
                                 th:for="'option-' + ${op.optionId}"
                                 th:text="${op.optionText}"
                                 th:classappend="${op.optionId == question.selectedOptionId} ? (op.isCorrect ? 'text-success' : 'text-danger') : ''"
-                              />
+                              ></label>
 
                               <span
                                 th:if="${op.optionId == question.selectedOptionId and op.isCorrect}"
                                 style="color: green; font-weight: bold"
-                                >✔</span
                               >
+                                ✔
+                              </span>
 
                               <span
                                 th:if="${op.optionId == question.selectedOptionId and !op.isCorrect}"
                                 style="color: red; font-weight: bold"
-                                >✘</span
                               >
+                                ✘
+                              </span>
                             </p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div class="quiz-action-buttons d-flex gap-3 mt--20">
+                    <!-- Điều hướng + Submit -->
+                    <div class="rbt-button-group mt--30 d-flex gap-3">
+                      <!-- Nút Previous -->
+                      <a
+                        id="prevBtn"
+                        class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity"
+                        href="javascript:void(0)"
+                      >
+                        <span class="btn-icon"><i class="feather-arrow-left"></i></span>
+                        <span class="btn-text">Previous</span>
+                      </a>
+
+                      <!-- Nút Next -->
+                      <a id="nextBtn" class="rbt-btn icon-hover btn-md" href="javascript:void(0)">
+                        <span class="btn-text">Next</span>
+                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                      </a>
+
+                      <!-- ✅ Nút Xem kết quả (chỉ hiện nếu đã làm trước đó) -->
+                      <a
+                        th:if="${latestSubmission != null}"
+                        th:href="@{/quiz/result/{id}(id=${quiz.quizId})}"
+                        class="rbt-btn icon-hover btn-md bg-color-info-opacity"
+                      >
+                        <span class="btn-icon" style="margin-right: 15px"><i class="feather-eye"></i></span>
+                        <span class="btn-text">View result</span>
+                      </a>
+
+                      <!-- Nút Submit -->
                       <button
+                        id="submitBtn"
+                        style="display: none"
                         th:if="${!quizLimitReached}"
-                        onclick="return confirm('Bạn chắc chắn muốn nộp bài?')"
                         type="submit"
-                        class="rbt-btn btn-gradient hover-icon-reverse"
+                        class="rbt-btn btn-gradient hover-icon-reverse btn-md"
                       >
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">Submit Quiz</span>
@@ -106,32 +146,76 @@
                       <p th:if="${quizLimitReached}" class="text-danger fw-bold mt--10">
                         Bạn đã làm tối đa 3 lần. Vui lòng xem kết quả.
                       </p>
-
-                      <a
-                        th:href="@{/quiz/result/{id}(id=${quiz.quizId})}"
-                        class="rbt-btn btn-gradient hover-icon-reverse"
-                      >
-                        <span class="icon-reverse-wrapper">
-                          <span class="btn-text">View Result</span>
-                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                        </span>
-                      </a>
                     </div>
                   </form>
-                </div>
-              </div>
 
-              <div class="bg-color-extra2 ptb--15 overflow-hidden">
-                <div class="rbt-button-group">
-                  <a class="rbt-btn icon-hover icon-hover-left btn-md bg-primary-opacity" href="#">
-                    <span class="btn-icon"><i class="feather-arrow-left"></i></span>
-                    <span class="btn-text">Previous</span>
-                  </a>
+                  <!-- JavaScript điều khiển hiển thị -->
+                  <th:block th:fragment="scripts">
+                    <script>
+                      function validateBeforeSubmit() {
+                        const questions = document.querySelectorAll(".quiz-question");
+                        const unanswered = [];
 
-                  <a class="rbt-btn icon-hover btn-md" href="#">
-                    <span class="btn-text">Next</span>
-                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                  </a>
+                        questions.forEach((question, index) => {
+                          const radios = question.querySelectorAll("input[type='radio']");
+                          const isAnswered = [...radios].some((r) => r.checked);
+                          if (!isAnswered) {
+                            unanswered.push(index + 1);
+                          }
+                        });
+
+                        if (unanswered.length > 0) {
+                          alert("Bạn chưa chọn đáp án cho câu: " + unanswered.join(", "));
+                          return false;
+                        }
+
+                        return confirm("Bạn chắc chắn muốn nộp bài?");
+                      }
+
+                      document.addEventListener("DOMContentLoaded", function () {
+                        let currentQuestion = 0;
+                        const questions = document.querySelectorAll(".quiz-question");
+                        const nextBtn = document.getElementById("nextBtn");
+                        const prevBtn = document.getElementById("prevBtn");
+                        const submitBtn = document.getElementById("submitBtn");
+                        const progressText = document.getElementById("progressText");
+
+                        function updateProgressText(current, total) {
+                          progressText.textContent = `Câu ${current}/${total}`;
+                        }
+
+                        function showQuestion(index) {
+                          questions.forEach((q, i) => {
+                            q.style.display = i === index ? "block" : "none";
+                          });
+
+                          prevBtn.style.display = index === 0 ? "none" : "inline-block";
+                          nextBtn.style.display = index === questions.length - 1 ? "none" : "inline-block";
+                          submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+
+                          updateProgressText(index + 1, questions.length);
+                        }
+
+                        prevBtn.addEventListener("click", () => {
+                          if (currentQuestion > 0) {
+                            currentQuestion--;
+                            showQuestion(currentQuestion);
+                          }
+                        });
+
+                        nextBtn.addEventListener("click", () => {
+                          if (currentQuestion < questions.length - 1) {
+                            currentQuestion++;
+                            showQuestion(currentQuestion);
+                          }
+                        });
+
+                        if (questions.length > 0) {
+                          showQuestion(0);
+                        }
+                      });
+                    </script>
+                  </th:block>
                 </div>
               </div>
             </div>
