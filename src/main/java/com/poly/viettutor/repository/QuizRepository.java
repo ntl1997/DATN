@@ -90,7 +90,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
                 FROM Courses c
                 JOIN CourseModules cm ON cm.CourseId = c.CourseId
                 JOIN Quizzes q ON q.ModuleId = cm.ModuleId
-                WHERE (:courseTitle IS NULL OR c.Title = :courseTitle)
+                WHERE c.Title LIKE CONCAT('%', :courseTitle, '%')
                 GROUP BY c.CourseId
             )
             SELECT
@@ -104,7 +104,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
             JOIN QuizSubmissions qs ON qs.QuizId = q.QuizId
             JOIN Users u ON u.UserId = qs.UserId
             JOIN TotalQuizzesCTE tq ON tq.CourseId = c.CourseId
-            WHERE (:courseTitle IS NULL OR c.Title = :courseTitle)
+            WHERE c.Title LIKE CONCAT('%', :courseTitle, '%')
             AND u.UserId = :userId
             GROUP BY c.Title, u.PhoneNumber, tq.TotalQuizzes
             ORDER BY c.Title

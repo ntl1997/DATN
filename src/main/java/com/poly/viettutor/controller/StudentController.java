@@ -285,19 +285,13 @@ public class StudentController {
             Model model) {
 
         User currentUser = userService.getCurrentUser();
+        long userId = currentUser.getId();
         List<Course> courses = courseService.findByStatus("Publish");
+        List<Object[]> quizProgressList = quizService.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
 
         model.addAttribute("user", currentUser);
         model.addAttribute("courses", courses);
         model.addAttribute("courseTitle", courseTitle); // Truyền param lên view
-
-        if (courseTitle != null && courseTitle.trim().isEmpty()) {
-            courseTitle = null;
-        }
-
-        long userId = currentUser.getId();
-        List<Object[]> quizProgressList = quizService.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
-
         model.addAttribute("quizProgressList", quizProgressList);
         model.addAttribute("title", "Tiến độ Quizz");
         model.addAttribute("content", "client/student/quizz-progress");
