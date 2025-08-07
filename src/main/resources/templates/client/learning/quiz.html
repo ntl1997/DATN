@@ -114,7 +114,7 @@
                       </a>
 
                       <!-- Nút Next -->
-                      <a id="nextBtn" class="rbt-btn icon-hover btn-md" href="javascript:void(0)">
+                      <a id="nextBtn" class="rbt-btn icon-hover btn-md bg-primary-opacity" href="javascript:void(0)">
                         <span class="btn-text">Next</span>
                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                       </a>
@@ -123,10 +123,13 @@
                       <a
                         th:if="${latestSubmission != null}"
                         th:href="@{/quiz/result/{id}(id=${quiz.quizId})}"
-                        class="rbt-btn icon-hover btn-md bg-color-info-opacity"
+                        class="rbt-btn btn-gradient hover-icon-reverse btn-md"
                       >
-                        <span class="btn-icon" style="margin-right: 15px"><i class="feather-eye"></i></span>
-                        <span class="btn-text">View result</span>
+                        <span class="icon-reverse-wrapper">
+                          <span class="btn-text">View result</span>
+                          <span class="btn-icon"><i class="feather-eye"></i></span>
+                          <span class="btn-icon"><i class="feather-eye"></i></span>
+                        </span>
                       </a>
 
                       <!-- Nút Submit -->
@@ -139,6 +142,7 @@
                       >
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">Submit Quiz</span>
+                          <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                           <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                         </span>
                       </button>
