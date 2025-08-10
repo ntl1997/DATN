@@ -61,7 +61,7 @@ public class AdminThongKeController {
 
     @GetMapping("/admin/totalUsers")
     public String showTaiKhoan(Model model) {
-        List<User> user = userService.getAllInstructorsAndStudents();
+        List<User> user = userService.findAll();
         model.addAttribute("users", user);
         model.addAttribute("totalUsers", user.size());
         model.addAttribute("totalAdmins", userService.getAllAdmins().size());
