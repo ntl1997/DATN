@@ -1,27 +1,13 @@
 package com.poly.viettutor.controller;
 
-import com.poly.viettutor.model.Certificate;
-import com.poly.viettutor.model.Course;
-import com.poly.viettutor.model.Option;
-import com.poly.viettutor.model.Question;
-import com.poly.viettutor.model.Quiz;
-import com.poly.viettutor.model.QuizAnswer;
-import com.poly.viettutor.model.QuizSubmission;
-import com.poly.viettutor.model.User;
-import com.poly.viettutor.service.CertificateService;
-import com.poly.viettutor.service.OptionService;
-import com.poly.viettutor.service.QuestionService;
-import com.poly.viettutor.service.QuizService;
-import com.poly.viettutor.service.UserService; // Import UserService
+import com.poly.viettutor.model.*;
+import com.poly.viettutor.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/quiz")
@@ -31,39 +17,45 @@ public class QuizController {
     private QuizService quizService;
 
     @Autowired
-    private UserService userService; // Inject UserService
+    private UserService userService;
 
     @Autowired
     private CertificateService certificateService;
 
     @Autowired
-    private QuestionService questionService; // Inject QuestionService
-    // Inject QuestionService
+    private QuestionService questionService;
 
     @Autowired
-    private OptionService optionService; // Inject OptionService
+    private OptionService optionService;
 
     @GetMapping("/{id}")
     public String getQuizById(@PathVariable("id") Long id,
-            @RequestParam(value = "error", required = false) Boolean error,
-            Model model) {
-        Quiz quiz = quizService.findById(id);
-        if (quiz == null) {
-            return "redirect:/error";
-        }
+        @RequestParam(value = "error", required = false) Boolean error,
+        Model model) {
+    Quiz quiz = quizService.findById(id);
+    if (quiz == null) {
+        return "redirect:/error";
+    }
 
-        User user = userService.getCurrentUser();
-        int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
-        boolean quizLimitReached = submissionCount >= 3;
-        Course course = quiz.getModule().getCourse();
+    User user = userService.getCurrentUser();
+    int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
+    boolean quizLimitReached = submissionCount >= 3;
+    Course course = quiz.getModule().getCourse();
 
-        model.addAttribute("quiz", quiz);
-        model.addAttribute("course", course);
-        model.addAttribute("quizLimitReached", quizLimitReached); // ✅ truyền ra Thymeleaf để ẩn nút
-        model.addAttribute("error", error != null && error); // ✅ để hiển thị lỗi nếu có
-        model.addAttribute("title", "Chi tiết Quiz");
-        model.addAttribute("content", "client/learning/quiz");
-        return "client/layout/index";
+    // ✅ Lấy lần nộp gần nhất của user hiện tại
+    QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
+        .filter(sub -> sub.getUser().getId().equals(user.getId()))
+        .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
+        .orElse(null);
+
+    model.addAttribute("quiz", quiz);
+    model.addAttribute("course", course);
+    model.addAttribute("quizLimitReached", quizLimitReached);
+    model.addAttribute("latestSubmission", latestSubmission); // ✅ Thêm dòng này
+    model.addAttribute("error", error != null && error);
+    model.addAttribute("title", "Chi tiết Quiz");
+    model.addAttribute("content", "client/learning/quiz");
+    return "client/layout/index";
     }
 
     @PostMapping
@@ -125,20 +117,22 @@ public class QuizController {
                 .sum();
 
         boolean granted = false;
-        if (correctAnswers >= (totalScore / 2)) {
-            var course = quiz.getModule().getCourse();
+        var course = quiz.getModule().getCourse();
+        boolean passedThisQuiz = correctAnswers >= (totalScore / 2);
 
-            boolean hasCertificate = certificateService.getCertificatesByUserId(user.getId())
-                    .stream()
-                    .anyMatch(cert -> cert.getCourse().getCourseId().equals(course.getCourseId()));
+        boolean hasCertificate = certificateService.getCertificatesByUserId(user.getId())
+                .stream()
+                .anyMatch(cert -> cert.getCourse().getCourseId().equals(course.getCourseId()));
 
-            if (!hasCertificate) {
+        if (passedThisQuiz && !hasCertificate) {
+            boolean completedAll = quizService.hasCompletedAllQuizzes(course.getCourseId(), user.getId());
+            if (completedAll) {
                 certificateService.saveCertificate(
                         Certificate.builder()
                                 .user(user)
                                 .course(course)
                                 .issuedAt(new Date())
-                                .description("Chứng chỉ hoàn thành quiz với kết quả đạt yêu cầu")
+                                .description("Hoàn thành toàn bộ quiz trong khóa học")
                                 .build());
                 granted = true;
             }
@@ -162,7 +156,6 @@ public class QuizController {
             return "redirect:/error";
         }
 
-        // Lấy lần submit cuối cùng
         QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
                 .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
                 .orElse(null);
@@ -210,9 +203,31 @@ public class QuizController {
         model.addAttribute("latestSubmission", latestSubmission);
         model.addAttribute("correctAnswers", correctAnswers);
         model.addAttribute("incorrectAnswers", incorrectAnswers);
-        model.addAttribute("certGranted", cert != null && cert); // ✅ Gửi ra để hiển thị thông báo
+        model.addAttribute("certGranted", cert != null && cert);
         model.addAttribute("title", "Chi tiết Quiz");
         model.addAttribute("content", "client/learning/quiz-result");
         return "client/layout/index";
+    }
+    
+    @GetMapping("/module/{moduleId}")
+    public String viewQuizListByModule(@PathVariable("moduleId") Long moduleId, Model model) {
+    List<Quiz> quizzes = quizService.findByModuleId(moduleId);
+    User user = userService.getCurrentUser();
+
+    // Map trạng thái hoàn thành từng quiz
+    Map<Long, Boolean> quizCompletionMap = new HashMap<>();
+    for (Quiz quiz : quizzes) {
+        boolean completed = quizService.hasUserCompletedQuiz(quiz.getQuizId(), user.getId());
+        quizCompletionMap.put(quiz.getQuizId(), completed);
+    }
+
+    Course course = quizzes.isEmpty() ? null : quizzes.get(0).getModule().getCourse();
+
+    model.addAttribute("quizzes", quizzes);
+    model.addAttribute("quizCompletionMap", quizCompletionMap);
+    model.addAttribute("course", course);
+    model.addAttribute("title", "Danh sách Quiz");
+    model.addAttribute("content", "client/learning/quiz-list");
+    return "client/layout/index";
     }
 }

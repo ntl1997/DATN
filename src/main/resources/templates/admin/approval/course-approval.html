@@ -1,120 +1,130 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<body>
+  <body>
     <div id="main" th:fragment="content">
-        <header class="mb-3">
-            <a href="#" class="burger-btn d-block d-xl-none">
-                <i class="bi bi-justify fs-3"></i>
-            </a>
-        </header>  
-        <div class="page-heading">
-                <div class="page-title">
-                    <div class="row">
-                        <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>DataTable</h3>
-                            <p class="text-subtitle text-muted">For user to check they list</p>
-                        </div>
-                        <div class="col-12 col-md-6 order-md-2 order-first">
-                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">DataTable</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-                <section class="section">
-                    <div class="card">
-                        <div class="card-header">
-                            Simple Datatable
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped" id="table1">
-                                <thead>
-                                    <tr>
-                                        <th>Mã Khoá Học</th>
-                                        <th>Tên Khóa Học</th>
-                                        <th>Ngày Tạo</th>
-                                        <th>Giảng Viên</th>
-                                        <th>Ngày Duyệt</th>
-                                        <th>Ghi Chú</th>
-                                        <th>Người Duyệt</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Hành Động</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="course : ${courses}">
-                                        <td th:text="${course.courseId}"></td>
-                                        <td th:text="${course.title}"></td>
-                                        <td th:text="${course.createdAt}"></td>
-                                        <td th:text="${course.createdBy != null ? course.createdBy.fullname : 'N/A'}"></td>
-                                        <td th:text="${course.approvedAt}"></td>
-                                        <td th:text="${course.note != null ? course.note : 'N/A'}"></td>
-                                        <td th:text="${course.approvedBy != null ? course.approvedBy.fullname : 'N/A'}"></td>
-                                        <td>
-                                            <!-- Hiển thị trạng thái -->
-                                            <span th:classappend="'badge bg-' + 
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+      <div class="page-heading">
+        <div class="page-title">
+          <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+              <h3>Phê duyệt khóa học</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+              <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Phê duyệt khóa học</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <section class="section">
+          <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body">
+              <table class="table table-striped" id="table1">
+                <thead>
+                  <tr>
+                    <th>Mã Khoá Học</th>
+                    <th>Tên Khóa Học</th>
+                    <th>Ngày Tạo</th>
+                    <th>Giảng Viên</th>
+                    <th>Ngày Duyệt</th>
+                    <th>Ghi Chú</th>
+                    <th>Người Duyệt</th>
+                    <th>Trạng Thái</th>
+                    <th>Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="course : ${courses}">
+                    <td th:text="${course.courseId}"></td>
+                    <td th:text="${course.title}"></td>
+                    <td th:text="${course.createdAt}"></td>
+                    <td th:text="${course.createdBy != null ? course.createdBy.fullname : 'N/A'}"></td>
+                    <td th:text="${course.approvedAt}"></td>
+                    <td th:text="${course.note != null ? course.note : 'N/A'}"></td>
+                    <td th:text="${course.approvedBy != null ? course.approvedBy.fullname : 'N/A'}"></td>
+                    <td>
+                      <!-- Hiển thị trạng thái -->
+                      <span
+                        th:classappend="'badge bg-' + 
                                                 (${#strings.toLowerCase(course.status)} == 'publish' ? 'success' : 
                                                 (${#strings.toLowerCase(course.status)} == 'pending' ? 'warning' : 
                                                 (${#strings.toLowerCase(course.status)} == 'draft' ? 'info' : 
                                                 (${#strings.toLowerCase(course.status)} == 'hidden' ? 'secondary' : 'light'))))"
-                                                th:text="${course.status}"></span>
-                                        </td>
-                                        <td>
-                                            <!-- Nếu trạng thái là publish -->
-                                            <div th:if="${#strings.toLowerCase(course.status)} == 'publish'">
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    th:attr="onclick=|showHideForm('hide-form-' + ${course.courseId})|">
-                                                    Ẩn
-                                                </button>
-                                                <form th:id="'hide-form-' + ${course.courseId}" th:action="@{/admin/function/course-hide}" method="post"
-                                                    style="display:none; margin-top:5px;">
-                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
-                                                    <input type="text" name="note" placeholder="Lý do ẩn..." required style="width:120px;" />
-                                                    <button type="submit" class="btn btn-sm btn-primary">Xác nhận ẩn</button>
-                                                </form>
-                                            </div>
-                                            <!-- Nếu trạng thái là pending -->
-                                            <div th:if="${#strings.toLowerCase(course.status)} == 'pending'">
-                                                <form th:action="@{/admin/function/course-publish}" method="post" style="display:inline;">
-                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
-                                                    <button type="submit" class="btn btn-sm btn-success">Phê duyệt</button>
-                                                </form>
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    th:attr="onclick=|showHideForm('reject-form-' + ${course.courseId})|">
-                                                    Từ chối
-                                                </button>
-                                                <form th:id="'reject-form-' + ${course.courseId}" th:action="@{/admin/function/course-reject}" method="post"
-                                                    style="display:none; margin-top:5px;">
-                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
-                                                    <input type="text" name="note" placeholder="Lý do từ chối..." required style="width:120px;" />
-                                                    <button type="submit" class="btn btn-sm btn-primary">Xác nhận từ chối</button>
-                                                </form>
-                                            </div>
-                                            <!-- Nếu trạng thái là draft -->
-                                            <div th:if="${#strings.toLowerCase(course.status)} == 'draft'">
-                                                <span class="text-muted">Chờ hoàn thiện</span>
-                                            </div>
-                                            <!-- Nếu trạng thái là hidden -->
-                                            <div th:if="${#strings.toLowerCase(course.status)} == 'hidden'">
-                                                <form th:action="@{/admin/function/course-publish}" method="post" style="margin-top:5px;">
-                                                    <input type="hidden" name="courseId" th:value="${course.courseId}" />
-                                                    <button type="submit" class="btn btn-sm btn-warning">Bỏ Ẩn</button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </section>
+                        th:text="${course.status}"
+                      ></span>
+                    </td>
+                    <td>
+                      <!-- Nếu trạng thái là publish -->
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'publish'">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-danger"
+                          th:attr="onclick=|showHideForm('hide-form-' + ${course.courseId})|"
+                        >
+                          Ẩn
+                        </button>
+                        <form
+                          th:id="'hide-form-' + ${course.courseId}"
+                          th:action="@{/admin/function/course-hide}"
+                          method="post"
+                          style="display: none; margin-top: 5px"
+                        >
+                          <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                          <input type="text" name="note" placeholder="Lý do ẩn..." required style="width: 120px" />
+                          <button type="submit" class="btn btn-sm btn-primary">Xác nhận ẩn</button>
+                        </form>
+                      </div>
+                      <!-- Nếu trạng thái là pending -->
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'pending'">
+                        <form th:action="@{/admin/function/course-publish}" method="post" style="display: inline">
+                          <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                          <button type="submit" class="btn btn-sm btn-success">Phê duyệt</button>
+                        </form>
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-danger"
+                          th:attr="onclick=|showHideForm('reject-form-' + ${course.courseId})|"
+                        >
+                          Từ chối
+                        </button>
+                        <form
+                          th:id="'reject-form-' + ${course.courseId}"
+                          th:action="@{/admin/function/course-reject}"
+                          method="post"
+                          style="display: none; margin-top: 5px"
+                        >
+                          <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                          <input type="text" name="note" placeholder="Lý do từ chối..." required style="width: 120px" />
+                          <button type="submit" class="btn btn-sm btn-primary">Xác nhận từ chối</button>
+                        </form>
+                      </div>
+                      <!-- Nếu trạng thái là draft -->
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'draft'">
+                        <span class="text-muted">Chờ hoàn thiện</span>
+                      </div>
+                      <!-- Nếu trạng thái là hidden -->
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'hidden'">
+                        <form th:action="@{/admin/function/course-publish}" method="post" style="margin-top: 5px">
+                          <input type="hidden" name="courseId" th:value="${course.courseId}" />
+                          <button type="submit" class="btn btn-sm btn-warning">Bỏ Ẩn</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-    
+          </div>
+        </section>
+      </div>
     </div>
 
     <!-- <th:block th:fragment="styles">
@@ -122,8 +132,12 @@
     </th:block> -->
 
     <th:block th:fragment="scripts">
-        <script th:src="@{/admin-assets/js/approval.js}"></script>
+      <script th:src="@{/admin-assets/js/approval.js}"></script>
+      <script>
+        // Simple Datatable
+        let table1 = document.querySelector("#table1");
+        let dataTable = new simpleDatatables.DataTable(table1);
+      </script>
     </th:block>
-</body>
-
+  </body>
 </html>

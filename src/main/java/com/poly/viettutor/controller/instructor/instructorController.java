@@ -1,5 +1,6 @@
 package com.poly.viettutor.controller.instructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -90,12 +91,17 @@ public class instructorController {
             @RequestParam(name = "courseTitle", required = false) String courseTitle,
             Model model) {
 
-        // System.out.println("Course Titles = " + courseTitles);
+        // System.out.println("Course Title = " + courseTitle);
 
         User currentUser = userService.getCurrentUser();
 
         // Lấy danh sách khóa học đã publish của instructor
         List<Course> courses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(), "Publish");
+
+        // for (Course course : courses) {
+        // System.out.println("Course: " + course.getTitle());
+        // }
+
         model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
 
@@ -119,6 +125,31 @@ public class instructorController {
         model.addAttribute("quizSubmissions", quizSubmissions);
         model.addAttribute("title", "Lịch sử Quizz của học sinh");
         model.addAttribute("content", "client/instructor/instructor-quiz-attempts");
+
+        return "client/layout/index";
+    }
+
+    @GetMapping("/instructor/thongKeQuizz")
+    public String instructorThongKeQuizz(
+            @RequestParam(value = "courseTitle", required = false) String courseTitle,
+            Model model) {
+
+        User currentUser = userService.getCurrentUser();
+        List<Course> courses = courseService.findCoursesByInstructorIdAndStatus(currentUser.getId(), "Publish");
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("courses", courses);
+        model.addAttribute("courseTitle", courseTitle); // Truyền param lên view
+
+        if (courseTitle != null && !courseTitle.isEmpty()) {
+            List<Object[]> quizProgressList = quizService.getQuizProgressByCourseTitle(courseTitle);
+            model.addAttribute("quizProgressList", quizProgressList);
+        } else {
+            model.addAttribute("quizProgressList", new ArrayList<>());
+        }
+
+        model.addAttribute("title", "Thống kê Quizz");
+        model.addAttribute("content", "client/instructor/thongKeQuizz");
 
         return "client/layout/index";
     }

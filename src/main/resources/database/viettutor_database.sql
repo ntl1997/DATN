@@ -129,7 +129,7 @@ CREATE TABLE Enrollments
     UserId BIGINT FOREIGN KEY REFERENCES Users(UserId),
     CourseId BIGINT FOREIGN KEY REFERENCES Courses(CourseId),
     EnrolledAt DATETIME DEFAULT GETDATE(),
-    EnrolledBy BIGINT DEFAULT NULL
+    EnrolledBy BIGINT FOREIGN KEY REFERENCES Users(UserId) DEFAULT NULL
 );
 GO
 
@@ -576,28 +576,28 @@ INSERT INTO Questions
     (QuizId, QuestionText, Score)
 VALUES
     -- Quiz 1: Giới thiệu Python
-    (1, N'Python là ngôn ngữ thông dịch?', 1),
-    (1, N'Kiểu dữ liệu nào không có trong Python?', 1),
+    (1, N'Python là ngôn ngữ thông dịch?', 5),
+    (1, N'Kiểu dữ liệu nào không có trong Python?', 5),
 
     -- Quiz 2: Biến và Kiểu dữ liệu
-    (2, N'Biến trong Python có thể đổi kiểu dữ liệu sau khi gán?', 1),
-    (2, N'Kiểu dữ liệu nào trong Python biểu diễn số thực?', 1),
+    (2, N'Biến trong Python có thể đổi kiểu dữ liệu sau khi gán?', 5),
+    (2, N'Kiểu dữ liệu nào trong Python biểu diễn số thực?', 5),
 
     -- Quiz 3: HTML cơ bản
-    (3, N'Thẻ HTML nào dùng để tạo tiêu đề?', 1),
-    (3, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 1),
+    (3, N'Thẻ HTML nào dùng để tạo tiêu đề?', 5),
+    (3, N'Thẻ nào dùng để tạo đường liên kết trong HTML?', 5),
 
     -- Quiz 4: Thẻ HTML nâng cao
-    (4, N'Thẻ HTML nào dùng để chèn ảnh?', 1),
-    (4, N'Thẻ nào dùng để tạo danh sách có thứ tự?', 1),
+    (4, N'Thẻ HTML nào dùng để chèn ảnh?', 5),
+    (4, N'Thẻ nào dùng để tạo danh sách có thứ tự?', 5),
 
     -- Quiz 5: Giới thiệu Phân tích Dữ liệu
-    (5, N'Dữ liệu là gì trong phân tích dữ liệu?', 1),
-    (5, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 1),
+    (5, N'Dữ liệu là gì trong phân tích dữ liệu?', 5),
+    (5, N'Thư viện nào phổ biến trong Python để phân tích dữ liệu?', 5),
 
     -- Quiz 6: Công cụ Phân tích Dữ liệu
-    (6, N'Công cụ nào dùng để vẽ biểu đồ trong phân tích dữ liệu?', 1),
-    (6, N'Jupyter Notebook thường dùng cho mục đích nào?', 1);
+    (6, N'Công cụ nào dùng để vẽ biểu đồ trong phân tích dữ liệu?', 5),
+    (6, N'Jupyter Notebook thường dùng cho mục đích nào?', 5);
 
 
 -- 25. Đáp án cho từng câu hỏi
@@ -705,12 +705,13 @@ VALUES
     (12, N'Xây dựng hệ quản trị cơ sở dữ liệu', 0),
     (12, N'Tạo game trong Python', 0);
 
--- 26. Dữ liệu mẫu bài làm quiz
+-- DỮ LIỆU MẪU LÀM BÀI QUIZZ
 -- INSERT INTO QuizSubmissions
 --     (QuizId, UserId, Score, SubmittedAt)
--- VALUES
+--  VALUES
 --     (2, 3, 10, GETDATE()),
---     (3, 3, 5, GETDATE());
+--     (3, 3, 5, GETDATE()),
+--     (5, 3, 8, GETDATE());
 
 -- INSERT INTO QuizAnswers
 --     (SubmissionId, QuestionId, SelectedOptionId, IsCorrect)

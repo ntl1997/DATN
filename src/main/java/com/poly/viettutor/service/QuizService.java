@@ -1,21 +1,13 @@
 package com.poly.viettutor.service;
 
-import com.poly.viettutor.model.Quiz;
-import com.poly.viettutor.model.Question;
-import com.poly.viettutor.model.Option;
-import com.poly.viettutor.model.QuizAnswer;
-import com.poly.viettutor.model.QuizSubmission;
+import com.poly.viettutor.model.*;
 import com.poly.viettutor.repository.QuizRepository;
 import com.poly.viettutor.repository.QuizAnswerRepository;
 import com.poly.viettutor.repository.QuizSubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +28,12 @@ public class QuizService {
 
     public Quiz findById(Long id) {
         return quizRepository.findById(id).orElse(null);
+    }
+
+    public List<Quiz> findByModuleId(Long moduleId) {
+        return quizRepository.findAll().stream()
+                .filter(q -> q.getModule() != null && moduleId.equals(q.getModule().getModuleId()))
+                .collect(Collectors.toList());
     }
 
     public int evaluateQuiz(Long quizId, Map<String, String> answers) {
@@ -84,12 +82,11 @@ public class QuizService {
                 score += question.getScore();
             }
 
-            // Chuyển đổi questionId từ Integer sang Long nếu cần thiết
-            Long questionId = Long.valueOf(question.getQuestionId().longValue()); // Chuyển Integer sang Long
+            Long questionId = Long.valueOf(question.getQuestionId().longValue());
 
             QuizAnswer answer = QuizAnswer.builder()
                     .submission(submission)
-                    .questionId(questionId) // Sử dụng Long ở đây
+                    .questionId(questionId)
                     .selectedOptionId(selectedOptionId)
                     .isCorrect(isCorrect)
                     .build();
@@ -112,21 +109,44 @@ public class QuizService {
     public List<Quiz> getQuizzesByCourseId(Integer courseId) {
         return quizRepository.findAll().stream()
                 .filter(quiz -> quiz.getModule() != null && quiz.getModule().getCourse() != null
-                        && quiz.getModule().getCourse().getCourseId().equals(courseId))
+                        && Objects.equals(quiz.getModule().getCourse().getCourseId(), courseId))
                 .collect(Collectors.toList());
     }
 
     public int countSubmissionsByUserAndQuiz(Long userId, Long quizId) {
-        return (int) quizSubmissionRepository.findAll().stream()
-                .filter(submission -> submission.getUser().getId() == userId
-                        && submission.getQuiz().getQuizId().equals(quizId))
-                .count();
+        List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quizId);
+        return submissions != null ? submissions.size() : 0;
+    }
+
+    public boolean hasCompletedAllQuizzes(Integer courseId, Long userId) {
+        if (userId == null)
+            return false;
+
+        List<Quiz> quizzes = getQuizzesByCourseId(courseId);
+        if (quizzes.isEmpty())
+            return false;
+
+        for (Quiz quiz : quizzes) {
+            List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId,
+                    quiz.getQuizId());
+
+            boolean hasPassed = submissions.stream().anyMatch(sub -> {
+                List<Question> questions = quiz.getQuestions();
+                int totalScore = (questions != null)
+                        ? questions.stream().mapToInt(Question::getScore).sum()
+                        : 0;
+                return sub.getScore() != null && sub.getScore() >= totalScore / 2;
+            });
+
+            if (!hasPassed)
+                return false;
+        }
+
+        return true;
     }
 
     public List<Map<String, Object>> getQuizSubmissionsByCourseTitle(String courseTitle) {
-        // Lấy dữ liệu raw từ repo (List<Object[]>)
         List<Object[]> rawResults = quizRepository.getQuizSubmissionsByCourseTitles(courseTitle);
-
         List<Map<String, Object>> formattedResults = new ArrayList<>();
 
         for (Object[] row : rawResults) {
@@ -146,7 +166,6 @@ public class QuizService {
 
     public List<Map<String, Object>> getQuizSubmissionsByInstructorId(Long instructorId) {
         List<Object[]> rawResults = quizRepository.getQuizSubmissionsByInstructorId(instructorId);
-
         List<Map<String, Object>> formattedResults = new ArrayList<>();
 
         for (Object[] row : rawResults) {
@@ -163,4 +182,23 @@ public class QuizService {
 
         return formattedResults;
     }
+
+    public boolean hasUserCompletedQuiz(Long quizId, Long userId) {
+        List<QuizSubmission> submissions = quizSubmissionRepository.findByUserIdAndQuizQuizId(userId, quizId);
+        Quiz quiz = findById(quizId);
+        if (quiz == null)
+            return false;
+
+        int totalScore = quiz.getQuestions().stream().mapToInt(Question::getScore).sum();
+        return submissions.stream().anyMatch(s -> s.getScore() != null && s.getScore() >= totalScore / 2);
+    }
+
+    public List<Object[]> getQuizProgressByCourseTitle(String courseTitle) {
+        return quizRepository.findQuizProgressByCourseTitle(courseTitle);
+    }
+
+    public List<Object[]> findQuizProgressByCourseTitleAndUserId(String courseTitle, long userId) {
+        return quizRepository.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
+    }
+
 }

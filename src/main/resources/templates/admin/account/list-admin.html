@@ -50,8 +50,8 @@
                       <span th:each="role : ${user.roles}" th:text="${role.roleName}"></span>
                     </td>
                     <td>
-                      <span class="badge bg-success" th:if="${user.status == 'Active'}">Active</span>
-                      <span class="badge bg-danger" th:if="${user.status == 'Inactive'}">Inactive</span>
+                      <span class="badge bg-success" th:if="${user.status}">Active</span>
+                      <span class="badge bg-danger" th:unless="${user.status}">Inactive</span>
                     </td>
                   </tr>
                 </tbody>

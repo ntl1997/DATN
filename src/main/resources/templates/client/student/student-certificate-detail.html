@@ -37,7 +37,7 @@
 
         .certificate-title {
           position: absolute;
-          top: 305px; /* Điều chỉnh lại đúng dòng */
+          top: 305px;
           left: 60px;
           font-size: 26px;
           font-weight: bold;
@@ -50,7 +50,7 @@
 
         .certificate-name {
           position: absolute;
-          top: 425px; /* Sát dưới "PRESENTED TO" */
+          top: 425px;
           left: 60px;
           font-size: 26px;
           font-weight: bold;
@@ -67,7 +67,7 @@
           left: 722px;
           font-size: 24px;
           font-weight: bold;
-          color: #ffffff;
+          color: #d4af37;
           font-family: "Georgia", serif;
           white-space: nowrap;
           text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
@@ -85,10 +85,9 @@
   <body>
     <div th:fragment="content">
       <div class="certificate-wrapper">
-        <div class="certificate-frame">
+        <div class="certificate-frame" id="certificate">
           <img src="/assets/images/others/background-certificate.png" alt="Certificate Background" />
 
-          <!-- Các dòng text đè lên ảnh -->
           <div class="certificate-title" th:text="${certificate.course.title}">Khóa học Lập trình Python</div>
           <div class="certificate-name" th:text="${certificate.user.fullname}">Jane Student</div>
           <div class="certificate-year" th:text="${#dates.format(certificate.issuedAt, 'yyyy')}">2025</div>
@@ -96,8 +95,39 @@
       </div>
 
       <div class="btn-back">
+        <button id="downloadBtn" class="btn btn-success">📄 Tải về PDF</button>
         <a th:href="@{/student/student-certificate}" class="btn btn-secondary">← Quay lại danh sách</a>
       </div>
     </div>
+
+    <th:block th:fragment="scripts">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const btn = document.getElementById("downloadBtn");
+          if (btn) {
+            btn.addEventListener("click", function () {
+              const element = document.getElementById("certificate");
+
+              html2canvas(element, {
+                scale: 3,
+                useCORS: true,
+              }).then((canvas) => {
+                const imgData = canvas.toDataURL("image/png");
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                  orientation: "landscape",
+                  unit: "px",
+                  format: [canvas.width, canvas.height],
+                });
+                pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+                pdf.save("certificate.pdf");
+              });
+            });
+          }
+        });
+      </script>
+    </th:block>
   </body>
 </html>

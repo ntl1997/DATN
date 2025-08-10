@@ -12,13 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.poly.viettutor.model.Certificate;
+import com.poly.viettutor.model.Course;
 import com.poly.viettutor.model.Enrollment;
 import com.poly.viettutor.model.User;
 import com.poly.viettutor.service.CertificateService;
+import com.poly.viettutor.service.CourseService;
 import com.poly.viettutor.model.Order;
 import com.poly.viettutor.model.OrderDetail;
 import com.poly.viettutor.model.Wishlist;
 import com.poly.viettutor.service.OrderService;
+import com.poly.viettutor.service.QuizService;
 import com.poly.viettutor.service.UserService;
 import com.poly.viettutor.service.WishListService;
 import com.poly.viettutor.utils.FileUtils;
@@ -35,6 +38,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+
+    @Autowired
+    private QuizService quizService;
+
+    @Autowired
+    private CourseService courseService;
 
     @Autowired
     private OrderService orderService;
@@ -101,24 +110,26 @@ public class StudentController {
     // Hiển thị chi tiết chứng chỉ theo ID
     @GetMapping("/student-certificate/{id}")
     public String showCertificateDetail(@PathVariable("id") Integer id, Model model) {
-        Certificate certificate = certificateService.getCertificateById(id);
+    Certificate certificate = certificateService.getCertificateById(id);
 
-        if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
-            model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
-            model.addAttribute("content", "client/error");
-            model.addAttribute("title", "Lỗi");
-            return "client/layout/index";
-        }
-
-        model.addAttribute("certificate", certificate);
-        model.addAttribute("content", "client/student/student-certificate-detail");
-        model.addAttribute("title", "Chi tiết chứng chỉ");
-
-        // ✅ Nhúng style fragment từ file chứng chỉ
-        model.addAttribute("styles", "client/student/student-certificate-detail");
-
+    if (certificate == null || certificate.getUser() == null || certificate.getCourse() == null) {
+        model.addAttribute("errorMessage", "Không tìm thấy chứng chỉ với ID: " + id);
+        model.addAttribute("content", "client/error");
+        model.addAttribute("title", "Lỗi");
         return "client/layout/index";
     }
+
+    model.addAttribute("certificate", certificate);
+    model.addAttribute("content", "client/student/student-certificate-detail");
+    model.addAttribute("title", "Chi tiết chứng chỉ");
+
+    // ✅ Nhúng style và script fragment từ file chứng chỉ
+    model.addAttribute("styles", "client/student/student-certificate-detail");
+    model.addAttribute("scripts", "client/student/student-certificate-detail");
+
+    return "client/layout/index";
+    }
+
 
     @GetMapping("/student-profile")
     public String showStudentProfile(Model model) {
@@ -269,4 +280,25 @@ public class StudentController {
         }
         return "/";
     }
+
+    @GetMapping("/quizzes-progress")
+    public String instructorThongKeQuizz(
+            @RequestParam(value = "courseTitle", required = false) String courseTitle,
+            Model model) {
+
+        User currentUser = userService.getCurrentUser();
+        long userId = currentUser.getId();
+        List<Course> courses = courseService.findByStatus("Publish");
+        List<Object[]> quizProgressList = quizService.findQuizProgressByCourseTitleAndUserId(courseTitle, userId);
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("courses", courses);
+        model.addAttribute("courseTitle", courseTitle); // Truyền param lên view
+        model.addAttribute("quizProgressList", quizProgressList);
+        model.addAttribute("title", "Tiến độ Quizz");
+        model.addAttribute("content", "client/student/quizz-progress");
+
+        return "client/layout/index";
+    }
+
 }
