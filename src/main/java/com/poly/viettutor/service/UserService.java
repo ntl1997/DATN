@@ -140,6 +140,10 @@ public class UserService {
                 .anyMatch(role -> role.getRoleName().equalsIgnoreCase(roleName));
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
     public Optional<User> findById(long id) {
         return userRepository.findById(id);
     }
