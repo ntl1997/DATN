@@ -32,7 +32,7 @@
                 <div class="col-md-4">
                   <label>Chọn khoá học:</label>
                   <select name="courseId" class="form-select" onchange="this.form.submit()">
-                    <option th:value="" th:selected="${selectedCourseId == null}">-- Tất cả khoá học --</option>
+                    <option th:value="''" th:selected="${selectedCourseId == null}">-- Tất cả khoá học --</option>
                     <option th:each="c : ${courses}"
                             th:value="${c.courseId}"
                             th:text="${c.title}"
