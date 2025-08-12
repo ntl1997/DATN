@@ -92,10 +92,12 @@
                   <div class="header-info">
                     <div class="rbt-search-field">
                       <div class="search-field">
-                        <input type="text" placeholder="Tìm kiếm khoá học" />
-                        <button class="rbt-round-btn serach-btn" type="submit">
-                          <i class="feather-search"></i>
-                        </button>
+                        <form th:action="@{/courses}" method="get">
+                          <input type="text" name="keyword" placeholder="Tìm kiếm khoá học" />
+                          <button class="rbt-round-btn serach-btn" type="submit">
+                            <i class="feather-search"></i>
+                          </button>
+                        </form>
                       </div>
                     </div>
                   </div>
