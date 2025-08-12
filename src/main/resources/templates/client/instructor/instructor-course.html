@@ -570,29 +570,44 @@
       <script>
         document.addEventListener("DOMContentLoaded", function () {
           const urlParams = new URLSearchParams(window.location.search);
-          const cloneSuccess = urlParams.get("deleteSuccess");
 
-          if (cloneSuccess === "true") {
-            // Hiển thị thông báo thành công (có thể dùng toast, sweetalert2, ...)
-            console.log("Tạo bản sao khóa học thành công");
+          // Danh sách tham số và thông báo tương ứng
+          const messages = {
+            createSuccess: "🎉 Tạo khóa học thành công!",
+            createFailed: "❌ Tạo khóa học thất bại!",
+            updateSuccess: "🎉 Cập nhật khóa học thành công!",
+            updateFailed: "❌ Cập nhật khóa học thất bại!",
+            deleteSuccess: "🎉 Xóa khóa học thành công!",
+            deleteFailed: "❌ Xóa khóa học thất bại!",
+            requestApprove: "📩 Yêu cầu phê duyệt đã được gửi!",
+          };
 
-            // Ví dụ: hiển thị toast đơn giản
+          // Hàm hiển thị toast
+          function showToast(message, success = true) {
             const toast = document.createElement("div");
-            toast.textContent = "🎉 Xóa bản nháp khóa học thành công!";
+            toast.textContent = message;
             toast.style.position = "fixed";
             toast.style.bottom = "20px";
             toast.style.right = "20px";
             toast.style.padding = "10px 15px";
-            toast.style.backgroundColor = "#4CAF50";
+            toast.style.backgroundColor = success ? "#4CAF50" : "#F44336"; // xanh thành công, đỏ thất bại
             toast.style.color = "#fff";
             toast.style.borderRadius = "6px";
             toast.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+            toast.style.zIndex = "9999";
             document.body.appendChild(toast);
 
-            // Tự động ẩn sau 3s
             setTimeout(() => {
               toast.remove();
             }, 3000);
+          }
+
+          // Duyệt qua từng tham số để kiểm tra
+          for (const [param, message] of Object.entries(messages)) {
+            const value = urlParams.get(param);
+            if (value === "true") {
+              showToast(message, !param.toLowerCase().includes("failed"));
+            }
           }
         });
       </script>

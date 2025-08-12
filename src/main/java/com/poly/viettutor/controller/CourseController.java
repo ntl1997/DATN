@@ -173,10 +173,10 @@ public class CourseController {
             courseService.create(user, courseDTO, imageFile, materialFiles);
         } catch (Exception e) {
             log.error("Create course failed", e);
-            return "redirect:/instructor/dashboard?createFailed=true";
+            return "redirect:/instructor/courses?createFailed=true";
         }
 
-        return "redirect:/instructor/dashboard?createSuccess=true";
+        return "redirect:/instructor/courses?createSuccess=true";
     }
 
     @GetMapping("/instructor/edit-course/{id}")
@@ -223,7 +223,7 @@ public class CourseController {
         }
 
         courseService.updateStatus(course, "pending");
-        return "redirect:/instructor/courses";
+        return "redirect:/instructor/courses?requestApprove=true";
     }
 
     @PutMapping("/instructor/update-course")
@@ -274,10 +274,10 @@ public class CourseController {
             courseService.updateCourse(user, courseDTO, imageFile, materialFiles);
         } catch (Exception e) {
             log.error("Update course failed", e);
-            return "redirect:/instructor/dashboard?updateFailed=true";
+            return "redirect:/instructor/courses?updateFailed=true";
         }
 
-        return "redirect:/instructor/dashboard?updateSuccess=true";
+        return "redirect:/instructor/courses?updateSuccess=true";
     }
 
     @PostMapping("/instructor/clone-course")
