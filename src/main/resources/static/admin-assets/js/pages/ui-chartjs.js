@@ -307,7 +307,7 @@ var myBar = new Chart(ctxBar, {
     scales: {
       y: {
         beginAtZero: true,
-        suggestedMax: 1000,
+        suggestedMax: 100,
         ticks: {
           padding: 10,
         },
