@@ -829,13 +829,20 @@
                       </a>
                     </div> -->
 
-                    <div class="add-to-card-button mt--15" th:unless="${isEnrolled}">
+                    <!-- <div class="add-to-card-button mt--15" th:unless="${isEnrolled}">
                       <a
                         class="rbt-btn btn-gradient icon-hover w-100 d-block text-center register-now"
                         th:href="@{/enroll-course/{id}(id=${course.courseId})}"
                       >
                         <span class="btn-text">Tham gia ngay</span>
-                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        <span class="btn-icon"><i class="feather-user-plus"></i></span>
+                      </a>
+                    </div> -->
+
+                    <div class="add-to-card-button mt--15" th:unless="${isEnrolled}">
+                      <a class="rbt-btn bg-secondary w-100 text-center">
+                        <span class="btn-text">Bạn chưa tham gia khóa học này</span>
+                        <span class="btn-icon"><i class="feather-lock"></i></span>
                       </a>
                     </div>
 
