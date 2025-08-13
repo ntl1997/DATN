@@ -1,286 +1,366 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<body>
+  <body>
     <div id="main" th:fragment="content">
-        <header class="mb-3">
-            <a href="#" class="burger-btn d-block d-xl-none">
-                <i class="bi bi-justify fs-3"></i>
-            </a>
-        </header>
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
 
-        <div class="page-heading">
-            <h3>Tổng quan</h3>
-        </div>
-        <div class="page-content">
-            <section class="row">
-                <div class="col-12 col-lg-9">
+      <div class="page-heading">
+        <h3>Tổng quan</h3>
+      </div>
+      <div class="page-content">
+        <section class="row">
+          <div class="col-12 col-lg-9">
+            <!-- KPI cards -->
+            <div class="row">
+              <div class="col-6 col-lg-3 col-md-6">
+                <div class="card">
+                  <div class="card-body px-3 py-4-5">
                     <div class="row">
-                        <div class="col-6 col-lg-3 col-md-6">
-                            <div class="card">
-                                <div class="card-body px-3 py-4-5">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="stats-icon purple">
-                                                <i class="iconly-boldShow"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">Profile Views</h6>
-                                            <h6 class="font-extrabold mb-0">112.000</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                      <div class="col-md-4">
+                        <div class="stats-icon purple">
+                          <i class="bi bi-person-plus-fill"></i>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
-                            <div class="card">
-                                <div class="card-body px-3 py-4-5">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="stats-icon blue">
-                                                <i class="iconly-boldProfile"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">Followers</h6>
-                                            <h6 class="font-extrabold mb-0">183.000</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-3 col-md-6">
-                            <div class="card">
-                                <div class="card-body px-3 py-4-5">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="stats-icon green">
-                                                <i class="iconly-boldAdd-User"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">Following</h6>
-                                            <h6 class="font-extrabold mb-0">80.000</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-3 col-md-6">
-                            <div class="card">
-                                <div class="card-body px-3 py-4-5">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="stats-icon red">
-                                                <i class="iconly-boldBookmark"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">Saved Post</h6>
-                                            <h6 class="font-extrabold mb-0">112</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <h6 class="text-muted font-semibold">
+                          Học viên mới (7 ngày)
+                        </h6>
+                        <h6 class="font-extrabold mb-0" id="kpi-new-users">
+                          —
+                        </h6>
+                      </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Profile Visit</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div id="chart-profile-visit"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-xl-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Profile Visit</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="d-flex align-items-center">
-                                                <svg class="bi text-primary" width="32" height="32" fill="blue"
-                                                    style="width:10px">
-                                                    <use
-                                                        xlink:href="/admin-assets/vendors/bootstrap-icons/bootstrap-icons.svg#circle-fill" />
-                                                </svg>
-                                                <h5 class="mb-0 ms-3">Europe</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <h5 class="mb-0">862</h5>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="chart-europe"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="d-flex align-items-center">
-                                                <svg class="bi text-success" width="32" height="32" fill="blue"
-                                                    style="width:10px">
-                                                    <use
-                                                        xlink:href="/admin-assets/vendors/bootstrap-icons/bootstrap-icons.svg#circle-fill" />
-                                                </svg>
-                                                <h5 class="mb-0 ms-3">America</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <h5 class="mb-0">375</h5>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="chart-america"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="d-flex align-items-center">
-                                                <svg class="bi text-danger" width="32" height="32" fill="blue"
-                                                    style="width:10px">
-                                                    <use
-                                                        xlink:href="/admin-assets/vendors/bootstrap-icons/bootstrap-icons.svg#circle-fill" />
-                                                </svg>
-                                                <h5 class="mb-0 ms-3">Indonesia</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <h5 class="mb-0">1025</h5>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="chart-indonesia"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-xl-8">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4>Latest Comments</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover table-lg">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Comment</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="col-3">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar avatar-md">
-                                                                <img th:src="@{../admin-assets/images/faces/5.jpg}">
-                                                            </div>
-                                                            <p class="font-bold ms-3 mb-0">Si Cantik</p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="col-auto">
-                                                        <p class=" mb-0">Congratulations on your graduation!</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="col-3">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="avatar avatar-md">
-                                                                <img th:src="@{../admin-assets/images/faces/2.jpg}">
-                                                            </div>
-                                                            <p class="font-bold ms-3 mb-0">Si Ganteng</p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="col-auto">
-                                                        <p class=" mb-0">Wow amazing design! Can you make another
-                                                            tutorial for
-                                                            this design?</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-                <div class="col-12 col-lg-3">
-                    <div class="card">
-                        <div class="card-body py-4 px-5">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar avatar-xl">
-                                    <img th:src="@{../admin-assets/images/faces/1.jpg}" alt="Face 1">
-                                </div>
-                                <div class="ms-3 name">
-                                    <h5 class="font-bold">John Duck</h5>
-                                    <h6 class="text-muted mb-0">@johnducky</h6>
-                                </div>
-                            </div>
+              </div>
+
+              <div class="col-6 col-lg-3 col-md-6">
+                <div class="card">
+                  <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="stats-icon blue">
+                          <i class="bi bi-journal-plus"></i>
                         </div>
+                      </div>
+                      <div class="col-md-8">
+                        <h6 class="text-muted font-semibold">
+                          Enroll mới (7 ngày)
+                        </h6>
+                        <h6 class="font-extrabold mb-0" id="kpi-new-enrolls">
+                          —
+                        </h6>
+                      </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Recent Messages</h4>
-                        </div>
-                        <div class="card-content pb-4">
-                            <div class="recent-message d-flex px-4 py-3">
-                                <div class="avatar avatar-lg">
-                                    <img th:src="@{../admin-assets/images/faces/4.jpg}">
-                                </div>
-                                <div class="name ms-4">
-                                    <h5 class="mb-1">Hank Schrader</h5>
-                                    <h6 class="text-muted mb-0">@johnducky</h6>
-                                </div>
-                            </div>
-                            <div class="recent-message d-flex px-4 py-3">
-                                <div class="avatar avatar-lg">
-                                    <img th:src="@{../admin-assets/images/faces/5.jpg}">
-                                </div>
-                                <div class="name ms-4">
-                                    <h5 class="mb-1">Dean Winchester</h5>
-                                    <h6 class="text-muted mb-0">@imdean</h6>
-                                </div>
-                            </div>
-                            <div class="recent-message d-flex px-4 py-3">
-                                <div class="avatar avatar-lg">
-                                    <img th:src="@{../admin-assets/images/faces/1.jpg}">
-                                </div>
-                                <div class="name ms-4">
-                                    <h5 class="mb-1">John Dodol</h5>
-                                    <h6 class="text-muted mb-0">@dodoljohn</h6>
-                                </div>
-                            </div>
-                            <div class="px-4">
-                                <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>Start
-                                    Conversation</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Visitors Profile</h4>
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-visitors-profile"></div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </section>
-        </div>
+              </div>
+
+              <div class="col-6 col-lg-3 col-md-6">
+                <div class="card">
+                  <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="stats-icon green">
+                          <i class="bi bi-check2-square"></i>
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <h6 class="text-muted font-semibold">
+                          Tỉ lệ hoàn thành
+                        </h6>
+                        <h6
+                          class="font-extrabold mb-0"
+                          id="kpi-completion-rate"
+                        >
+                          —
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 col-lg-3 col-md-6">
+                <div class="card">
+                  <div class="card-body px-3 py-4-5">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="stats-icon red">
+                          <i class="bi bi-hourglass-split"></i>
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <h6 class="text-muted font-semibold">Chờ xử lý</h6>
+                        <h6 class="font-extrabold mb-0" id="kpi-pending">—</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="row">
+              <div class="col-12 col-xl-7">
+                <div class="card">
+                  <div class="card-header"><h4>Giờ học theo tuần</h4></div>
+                  <div class="card-body">
+                    <div id="chart-learning-hours"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-xl-5">
+                <div class="card">
+                  <div class="card-header"><h4>Phễu học tập</h4></div>
+                  <div class="card-body">
+                    <div id="chart-learning-funnel" class="mb-2"></div>
+                    <div class="text-muted small">
+                      <span class="me-3"
+                        ><i class="bi bi-circle-fill me-1"></i>Enroll</span
+                      >
+                      <span class="me-3"
+                        ><i class="bi bi-circle-fill me-1"></i>≥25% video</span
+                      >
+                      <span class="me-3"
+                        ><i class="bi bi-circle-fill me-1"></i>≥75% video</span
+                      >
+                      <span
+                        ><i class="bi bi-circle-fill me-1"></i>Hoàn thành</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Work queue -->
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header"><h4>Việc cần xử lý</h4></div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Loại</th>
+                            <th>Tiêu đề</th>
+                            <th>Người gửi</th>
+                            <th>Ngày</th>
+                            <th>Hành động</th>
+                          </tr>
+                        </thead>
+                        <tbody id="todo-body">
+                          <!-- JS sẽ đổ dữ liệu mẫu vào đây -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-muted small">
+                      Dữ liệu minh họa. Kết nối API sau thì thay bằng fetch().
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side -->
+          <div class="col-12 col-lg-3">
+            <div class="card">
+              <div class="card-header"><h4>Tóm tắt hôm nay</h4></div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                  <span class="text-muted">Đăng ký mới</span
+                  ><strong id="today-enrolls">—</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                  <span class="text-muted">Giờ học</span
+                  ><strong id="today-hours">—</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="text-muted">Bài cần chấm</span
+                  ><strong id="today-grade">—</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><h4>Top khóa cần chú ý</h4></div>
+              <div class="card-content pb-3">
+                <ul class="list-group list-group-flush" id="alert-courses">
+                  <!-- JS đổ dữ liệu -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><h4>Phân bổ danh mục</h4></div>
+              <div class="card-body"><div id="chart-category-pie"></div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ApexCharts CDN (nếu template của bạn đã có thì bỏ 2 dòng dưới) -->
+      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+      <script>
+        // ====== DỮ LIỆU GIẢ LẬP ======
+        const mock = {
+          kpis: {
+            newUsers: 48,
+            newEnrolls: 126,
+            completionRate: 62, // %
+            pending: 17,
+            today: { enrolls: 21, hours: 134, grade: 6 },
+          },
+          learningHoursWeekly: [210, 260, 190, 320, 280, 350, 300],
+          funnel: [1000, 760, 520, 310], // Enroll -> 25% -> 75% -> Complete
+          todos: [
+            {
+              type: "Duyệt khóa học",
+              title: "Khóa học Lập trình Python",
+              by: "John Instructor",
+              date: "11/08/2025",
+            },
+            {
+              type: "Chấm Assignment",
+              title: "Project Web cơ bản",
+              by: "Jane Student",
+              date: "11/08/2025",
+            },
+            {
+              type: "Duyệt quiz",
+              title: "Quiz Giới thiệu Data",
+              by: "Admin User",
+              date: "10/08/2025",
+            },
+            {
+              type: "Báo cáo nội dung",
+              title: "Video bài 3 bị lỗi âm thanh",
+              by: "Phạm Tuấn Tài",
+              date: "10/08/2025",
+            },
+          ],
+          alertCourses: [
+            { name: "Python Cơ Bản", issue: "Tỉ lệ trượt quiz cao" },
+            { name: "Thiết kế Web", issue: "Tỉ lệ bỏ học tăng" },
+            { name: "Phân tích Dữ liệu", issue: "Nhiều assignment tồn" },
+          ],
+          categoryPie: [
+            { label: "Lập trình", value: 42 },
+            { label: "Data", value: 25 },
+            { label: "Marketing", value: 15 },
+            { label: "Thiết kế", value: 12 },
+            { label: "Khác", value: 6 },
+          ],
+        };
+
+        // ====== GÁN KPI ======
+        document.getElementById("kpi-new-users").innerText = mock.kpis.newUsers;
+        document.getElementById("kpi-new-enrolls").innerText =
+          mock.kpis.newEnrolls;
+        document.getElementById("kpi-completion-rate").innerText =
+          mock.kpis.completionRate + "%";
+        document.getElementById("kpi-pending").innerText = mock.kpis.pending;
+        document.getElementById("today-enrolls").innerText =
+          mock.kpis.today.enrolls;
+        document.getElementById("today-hours").innerText =
+          mock.kpis.today.hours + " h";
+        document.getElementById("today-grade").innerText =
+          mock.kpis.today.grade;
+
+        // ====== BẢNG VIỆC CẦN XỬ LÝ ======
+        document.getElementById("todo-body").innerHTML = mock.todos
+          .map(
+            (t) => `
+  <tr>
+    <td><span class="badge bg-primary">${t.type}</span></td>
+    <td>${t.title}</td>
+    <td>${t.by}</td>
+    <td>${t.date}</td>
+    <td><button class="btn btn-sm btn-success">Xử lý</button></td>
+  </tr>
+`
+          )
+          .join("");
+
+        // ====== TOP KHÓA CẦN CHÚ Ý ======
+        document.getElementById("alert-courses").innerHTML = mock.alertCourses
+          .map(
+            (c) => `
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    ${c.name}
+    <span class="badge bg-danger">${c.issue}</span>
+  </li>
+`
+          )
+          .join("");
+
+        // ====== CHART: Giờ học theo tuần ======
+        new ApexCharts(document.querySelector("#chart-learning-hours"), {
+          chart: { type: "bar", height: 320, toolbar: { show: false } },
+          series: [{ name: "Giờ học", data: mock.learningHoursWeekly }],
+          xaxis: {
+            categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          },
+          dataLabels: { enabled: false },
+          plotOptions: { bar: { borderRadius: 4 } },
+        }).render();
+
+        // ====== CHART: Phễu học tập ======
+        new ApexCharts(document.querySelector("#chart-learning-funnel"), {
+          chart: { type: "donut", height: 300 },
+          series: mock.funnel,
+          labels: ["Enroll", "≥25% video", "≥75% video", "Hoàn thành"],
+          legend: { show: true, position: "bottom" },
+        }).render();
+
+        // ====== CHART: Phân bổ danh mục ======
+        new ApexCharts(document.querySelector("#chart-category-pie"), {
+          chart: { type: "pie", height: 300 },
+          series: mock.categoryPie.map((i) => i.value),
+          labels: mock.categoryPie.map((i) => i.label),
+          legend: { position: "bottom" },
+        }).render();
+      </script>
+
+      <style>
+        /* Nhẹ nhàng chỉnh icon màu như template cũ */
+        .stats-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+        }
+        .stats-icon.purple {
+          background: #7c3aed;
+        }
+        .stats-icon.blue {
+          background: #2563eb;
+        }
+        .stats-icon.green {
+          background: #16a34a;
+        }
+        .stats-icon.red {
+          background: #dc2626;
+        }
+      </style>
     </div>
 
     <th:block th:fragment="scripts">
-        <script th:src="@{/admin-assets/vendors/apexcharts/apexcharts.js}"></script>
-        <script th:src="@{/admin-assets/js/pages/dashboard.js}"></script>
+      <script
+        th:src="@{/admin-assets/vendors/apexcharts/apexcharts.js}"
+      ></script>
+      <script th:src="@{/admin-assets/js/pages/dashboard.js}"></script>
     </th:block>
-</body>
-
+  </body>
 </html>
