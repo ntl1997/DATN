@@ -79,7 +79,24 @@
           const links = document.querySelectorAll("[data-video-url]");
           const player = document.getElementById("lecturePlayer");
 
-          console.log("Iframe DOM: ", player); // THÊM DÒNG NÀY
+          function toEmbedUrl(url) {
+            if (!url) return "";
+
+            // Trường hợp: https://www.youtube.com/watch?v=abc123
+            if (url.includes("watch?v=")) {
+              const videoId = url.split("watch?v=")[1].split("&")[0];
+              return "https://www.youtube.com/embed/" + videoId;
+            }
+
+            // Trường hợp: https://youtu.be/abc123
+            if (url.includes("youtu.be/")) {
+              const videoId = url.split("youtu.be/")[1].split("?")[0];
+              return "https://www.youtube.com/embed/" + videoId;
+            }
+
+            // Nếu đã là dạng embed rồi hoặc link khác -> giữ nguyên
+            return url;
+          }
 
           if (!player) {
             console.error("Không tìm thấy iframe #lecturePlayer");
@@ -89,9 +106,11 @@
           links.forEach(function (link) {
             link.addEventListener("click", function (event) {
               event.preventDefault();
-              const videoUrl = link.getAttribute("data-video-url");
-              console.log("Đã click vào bài giảng:", videoUrl);
-              player.setAttribute("src", videoUrl);
+              let videoUrl = link.getAttribute("data-video-url");
+              let embedUrl = toEmbedUrl(videoUrl);
+
+              console.log("Đã click vào bài giảng:", embedUrl);
+              player.setAttribute("src", embedUrl);
             });
           });
         });
