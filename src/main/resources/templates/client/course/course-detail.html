@@ -161,8 +161,66 @@
                       <h4 class="rbt-title-style-3">Nội dung khóa học</h4>
                     </div>
                     <div class="rbt-accordion-style rbt-accordion-02 accordion">
-                      <p th:unless="${isEnrolled}">Tham gia khóa học để hiển thị nội dung!</p>
+                      <p th:unless="${isEnrolled}" sec:authorize="not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
+                        Tham gia khóa học để hiển thị nội dung!
+                      </p>
                       <div class="accordion" id="accordionExampleb2" th:if="${isEnrolled}">
+                        <div class="accordion-item card" th:each="module, iterStat : ${course.modules}">
+                          <h2 class="accordion-header card-header" th:id="'heading-module-' + ${iterStat.index}">
+                            <button
+                              class="accordion-button collapsed"
+                              type="button"
+                              data-bs-toggle="collapse"
+                              th:attr="data-bs-target='#collapse-module-' + ${iterStat.index}, aria-controls='collapse-module-' + ${iterStat.index}"
+                              aria-expanded="false"
+                              th:text="${module.moduleTitle}"
+                            ></button>
+                          </h2>
+                          <div
+                            class="accordion-collapse collapse"
+                            th:id="'collapse-module-' + ${iterStat.index}"
+                            th:attr="aria-labelledby='heading-module-' + ${iterStat.index}"
+                          >
+                            <div class="accordion-body card-body pr--0">
+                              <ul class="rbt-course-main-content liststyle">
+                                <li th:each="lecture : ${module.lectures}">
+                                  <a th:href="@{'/lesson/' + ${course.courseId}}">
+                                    <div class="course-content-left">
+                                      <i class="feather-play-circle"></i>
+                                      <span class="text" th:text="${lecture.lectureTitle}">Course Intro</span>
+                                    </div>
+                                    <div class="course-content-right">
+                                      <span class="min-lable" th:text="${lecture.duration} + ' phút'">30 min</span>
+                                      <span class="rbt-badge variation-03 bg-primary-opacity"
+                                        ><i class="feather-eye"></i> Preview</span
+                                      >
+                                    </div>
+                                  </a>
+                                </li>
+                                <li th:each="quiz : ${module.quizzes}">
+                                  <a th:href="@{/quiz/{id}(id=${quiz.quizId})}">
+                                    <div class="course-content-left">
+                                      <i class="feather-help-circle"></i>
+                                      <span class="text" th:text="${quiz.title}">Course Intro</span>
+                                    </div>
+                                    <div class="course-content-right">
+                                      <span class="min-lable" th:text="${quiz.timeLimit + ' phút'}">30 min</span>
+                                      <span class="rbt-badge variation-03 bg-primary-opacity"
+                                        ><i class="feather-eye"></i> Preview</span
+                                      >
+                                    </div>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="accordion"
+                        id="accordionExampleb2"
+                        sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
+                      >
                         <div class="accordion-item card" th:each="module, iterStat : ${course.modules}">
                           <h2 class="accordion-header card-header" th:id="'heading-module-' + ${iterStat.index}">
                             <button
@@ -839,17 +897,32 @@
                       </a>
                     </div> -->
 
-                    <div class="add-to-card-button mt--15" th:unless="${isEnrolled}">
+                    <div
+                      class="add-to-card-button mt--15"
+                      th:unless="${isEnrolled}"
+                      sec:authorize="not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
+                    >
                       <a class="rbt-btn bg-secondary w-100 text-center">
                         <span class="btn-text">Bạn chưa tham gia khóa học này</span>
                         <span class="btn-icon"><i class="feather-lock"></i></span>
                       </a>
                     </div>
 
-                    <div class="add-to-card-button mt--15" th:if="${isEnrolled}">
+                    <div
+                      class="add-to-card-button mt--15"
+                      th:if="${isEnrolled}"
+                      sec:authorize="not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
+                    >
                       <a class="rbt-btn bg-primary w-100 text-center">
                         <span class="btn-text">Bạn đã tham gia khóa học</span>
                         <span class="btn-icon"><i class="feather-check-circle"></i></span>
+                      </a>
+                    </div>
+
+                    <div class="add-to-card-button mt--15" sec:authorize="hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')">
+                      <a class="rbt-btn bg-info w-100 text-center">
+                        <span class="btn-text">Preview</span>
+                        <span class="btn-icon"><i class="feather-eye"></i></span>
                       </a>
                     </div>
 
