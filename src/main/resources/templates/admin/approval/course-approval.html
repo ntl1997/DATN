@@ -62,8 +62,14 @@
                       ></span>
                     </td>
                     <td>
+                      <!-- preview khóa học -->
+                      <div style="display: inline">
+                        <a class="btn btn-sm btn-info" th:href="@{/course-details/{id}(id=${course.courseId})}">
+                          Preview
+                        </a>
+                      </div>
                       <!-- Nếu trạng thái là publish -->
-                      <div th:if="${#strings.toLowerCase(course.status)} == 'publish'">
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'publish'" style="display: inline">
                         <button
                           type="button"
                           class="btn btn-sm btn-danger"
@@ -83,7 +89,7 @@
                         </form>
                       </div>
                       <!-- Nếu trạng thái là pending -->
-                      <div th:if="${#strings.toLowerCase(course.status)} == 'pending'">
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'pending'" style="display: inline">
                         <form
                           th:action="@{/admin/function/course-publish}"
                           method="post"
@@ -113,12 +119,12 @@
                         </form>
                       </div>
                       <!-- Nếu trạng thái là draft -->
-                      <div th:if="${#strings.toLowerCase(course.status)} == 'draft'">
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'draft'" style="display: inline">
                         <span class="text-muted">Chờ hoàn thiện</span>
                       </div>
                       <!-- Nếu trạng thái là hidden -->
-                      <div th:if="${#strings.toLowerCase(course.status)} == 'hidden'">
-                        <form th:action="@{/admin/function/course-publish}" method="post" style="margin-top: 5px">
+                      <div th:if="${#strings.toLowerCase(course.status)} == 'hidden'" style="display: inline">
+                        <form th:action="@{/admin/function/course-publish}" method="post" style="display: inline">
                           <input type="hidden" name="courseId" th:value="${course.courseId}" />
                           <button type="submit" class="btn btn-sm btn-warning">Bỏ Ẩn</button>
                         </form>
