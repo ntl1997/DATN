@@ -71,7 +71,7 @@
                                 <td>
                                   <span class="b3">
                                     Course:
-                                    <a th:href="@{/course/{id}(id=${review.course.courseId})}"
+                                    <a th:href="@{/course-details/{id}(id=${review.course.courseId})}"
                                       th:text="${review.course.title}">Course Title</a>
                                   </span>
                                   <div class="rbt-review">
@@ -105,7 +105,7 @@
                             <tbody>
                               <tr th:each="review : ${reviewsGive}">
                                 <th>
-                                  <a th:href="@{/course/{id}(id=${review.course.courseId})}"
+                                  <a th:href="@{/course-details/{id}(id=${review.course.courseId})}"
                                     th:text="${review.course.title}">Course Title</a>
                                 </th>
                                 <td>

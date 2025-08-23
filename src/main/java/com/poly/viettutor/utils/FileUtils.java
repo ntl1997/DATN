@@ -29,8 +29,8 @@ public final class FileUtils {
     }
 
     public static void deleteImageIfExists(String fileName, String folderPath) {
-        if (fileName == null || fileName.equals("user-icon.png")) {
-            return; // Không xóa ảnh mặc định hoặc null
+        if (fileName == null || fileName.equals("user-icon.png") || fileName.startsWith("http")) {
+            return; // Không xóa ảnh mặc định, null, hoặc URL ngoài
         }
         Path filePath = Paths.get(folderPath).resolve(fileName);
         try {
