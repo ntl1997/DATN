@@ -41,7 +41,11 @@
                       <div class="rbt-card variation-01 rbt-hover">
                         <div class="rbt-card-img">
                           <a th:href="@{|/course-details/${item.course.courseId}|}">
-                            <img th:src="@{${item.course.courseImage}}" alt="Card image" />
+                            <img
+                              th:src="@{'/uploads/course/' + ${item.course.courseImage}}"
+                              onerror="this.onerror=null; this.src='/assets/images/course/course-default.jpg';"
+                              alt="Card image"
+                            />
                           </a>
                         </div>
                         <div class="rbt-card-body">
