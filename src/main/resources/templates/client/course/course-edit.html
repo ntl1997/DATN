@@ -29,6 +29,7 @@
                       <a
                         class="rbt-btn hover-icon-reverse bg-primary-opacity w-100 text-center"
                         th:href="@{/instructor/request-approve-course/{id}(id=${course.courseId})}"
+                        onclick="return confirm('Bạn có chắc chắn muốn gửi yêu cầu phê duyệt khóa học này không?')"
                       >
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">Yêu cầu phê duyệt</span>
