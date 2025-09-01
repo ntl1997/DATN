@@ -10,7 +10,11 @@
 
           <div class="lesson-search-wrapper">
             <form action="#" class="rbt-search-style-1">
-              <input class="rbt-search-active" type="text" placeholder="Tìm kiếm bài giảng" />
+              <input
+                class="rbt-search-active"
+                type="text"
+                placeholder="Tìm kiếm bài giảng"
+              />
               <button class="search-btn disabled">
                 <i class="feather-search"></i>
               </button>
@@ -19,11 +23,19 @@
 
           <hr class="mt--10" />
 
-          <div class="rbt-accordion-style rbt-accordion-02 for-right-content accordion">
+          <div
+            class="rbt-accordion-style rbt-accordion-02 for-right-content accordion"
+          >
             <div class="accordion" id="accordionExampleb2">
               <div class="accordion-item card">
-                <div class="accordion-item card" th:each="module, iterStat : ${course.modules}">
-                  <h2 class="accordion-header card-header" th:id="'heading-module-' + ${iterStat.index}">
+                <div
+                  class="accordion-item card"
+                  th:each="module, iterStat : ${course.modules}"
+                >
+                  <h2
+                    class="accordion-header card-header"
+                    th:id="'heading-module-' + ${iterStat.index}"
+                  >
                     <button
                       class="accordion-button collapsed"
                       type="button"
@@ -47,11 +59,21 @@
                           >
                             <div class="course-content-left">
                               <i class="feather-play-circle"></i>
-                              <span class="text" th:text="${lecture.lectureTitle}">Values and Variables</span>
+                              <span
+                                class="text"
+                                th:text="${lecture.lectureTitle}"
+                                >Values and Variables</span
+                              >
                             </div>
                             <div class="course-content-right">
-                              <span class="min-lable" th:text="${lecture.duration + ' min'}">20 min</span>
-                              <span class="rbt-check unread"><i class="feather-circle"></i></span>
+                              <span
+                                class="min-lable"
+                                th:text="${lecture.duration + ' min'}"
+                                >20 min</span
+                              >
+                              <span class="rbt-check unread"
+                                ><i class="feather-circle"></i
+                              ></span>
                             </div>
                           </a>
                         </li>
@@ -60,11 +82,19 @@
                           <a th:href="@{/quiz/{id}(id=${quiz.quizId})}">
                             <div class="course-content-left">
                               <i class="feather-help-circle"></i>
-                              <span class="text" th:text="${quiz.title}">Quiz</span>
+                              <span class="text" th:text="${quiz.title}"
+                                >Quiz</span
+                              >
                             </div>
                             <div class="course-content-right">
-                              <span class="min-lable" th:text="${quiz.timeLimit + ' min'}">15 min</span>
-                              <span class="rbt-check unread"><i class="feather-circle"></i></span>
+                              <span
+                                class="min-lable"
+                                th:text="${quiz.timeLimit + ' min'}"
+                                >15 min</span
+                              >
+                              <span class="rbt-check unread"
+                                ><i class="feather-circle"></i
+                              ></span>
                             </div>
                           </a>
                         </li>
@@ -74,6 +104,16 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="chatbot-container text-center my-3">
+            <button
+              id="chatbotToggle"
+              type="button"
+              class="btn btn-primary px-4 py-3 fs-5 rounded shadow"
+            >
+              <i class="feather-message-circle me-2"></i> Chat với trợ lý
+            </button>
           </div>
         </div>
       </div>
