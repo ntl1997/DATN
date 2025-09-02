@@ -108,10 +108,15 @@ public class CourseController {
 
         int totalDuration = courseService.totalDuration(course);
         boolean isEnrolled = enrollmentService.isEnrolled(user, course);
+        boolean isOwner = course.getCreatedBy().getId() == user.getId();
+        boolean isAdmin = userService.hasRole(user, "ADMIN");
+        System.out.println("isOwner: " + isOwner + ", isAdmin: " + isAdmin);
 
         model.addAttribute("course", course); // Thêm danh sách mục tiêu khóa học vào mô hình
         model.addAttribute("totalDuration", totalDuration); // Tổng thời gian của khóa học
         model.addAttribute("isEnrolled", isEnrolled); // Kiểm tra đã tham gia khóa học chưa
+        model.addAttribute("isOwner", isOwner); // Kiểm tra là chủ sở hữu khóa học không
+        model.addAttribute("isAdmin", isAdmin); // Kiểm tra là admin không
         model.addAttribute("title", "Chi tiết khóa học"); // tiêu đề trang (title)
         model.addAttribute("content", "client/course/course-detail"); // nội dung trang (phần content)
         model.addAttribute("scripts", "client/course/course-detail");
