@@ -28,34 +28,39 @@ public class QuizController {
     @Autowired
     private OptionService optionService;
 
+    @Autowired
+    private EnrollmentService enrollmentService;
+
     @GetMapping("/{id}")
     public String getQuizById(@PathVariable("id") Long id,
-        @RequestParam(value = "error", required = false) Boolean error,
-        Model model) {
-    Quiz quiz = quizService.findById(id);
-    if (quiz == null) {
-        return "redirect:/error";
-    }
+            @RequestParam(value = "error", required = false) Boolean error,
+            Model model) {
+        Quiz quiz = quizService.findById(id);
+        if (quiz == null) {
+            return "redirect:/error";
+        }
 
-    User user = userService.getCurrentUser();
-    int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
-    boolean quizLimitReached = submissionCount >= 3;
-    Course course = quiz.getModule().getCourse();
+        User user = userService.getCurrentUser();
+        int submissionCount = quizService.countSubmissionsByUserAndQuiz(user.getId(), id);
+        boolean quizLimitReached = submissionCount >= 3;
+        Course course = quiz.getModule().getCourse();
+        boolean isEnrolled = enrollmentService.isEnrolled(user, course);
 
-    // ✅ Lấy lần nộp gần nhất của user hiện tại
-    QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
-        .filter(sub -> sub.getUser().getId().equals(user.getId()))
-        .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
-        .orElse(null);
+        // ✅ Lấy lần nộp gần nhất của user hiện tại
+        QuizSubmission latestSubmission = quiz.getQuizSubmissions().stream()
+                .filter(sub -> sub.getUser().getId().equals(user.getId()))
+                .max(Comparator.comparing(QuizSubmission::getSubmittedAt))
+                .orElse(null);
 
-    model.addAttribute("quiz", quiz);
-    model.addAttribute("course", course);
-    model.addAttribute("quizLimitReached", quizLimitReached);
-    model.addAttribute("latestSubmission", latestSubmission); // ✅ Thêm dòng này
-    model.addAttribute("error", error != null && error);
-    model.addAttribute("title", "Chi tiết Quiz");
-    model.addAttribute("content", "client/learning/quiz");
-    return "client/layout/index";
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("course", course);
+        model.addAttribute("isEnrolled", isEnrolled);
+        model.addAttribute("quizLimitReached", quizLimitReached);
+        model.addAttribute("latestSubmission", latestSubmission); // ✅ Thêm dòng này
+        model.addAttribute("error", error != null && error);
+        model.addAttribute("title", "Chi tiết Quiz");
+        model.addAttribute("content", "client/learning/quiz");
+        return "client/layout/index";
     }
 
     @PostMapping
@@ -208,26 +213,26 @@ public class QuizController {
         model.addAttribute("content", "client/learning/quiz-result");
         return "client/layout/index";
     }
-    
+
     @GetMapping("/module/{moduleId}")
     public String viewQuizListByModule(@PathVariable("moduleId") Long moduleId, Model model) {
-    List<Quiz> quizzes = quizService.findByModuleId(moduleId);
-    User user = userService.getCurrentUser();
+        List<Quiz> quizzes = quizService.findByModuleId(moduleId);
+        User user = userService.getCurrentUser();
 
-    // Map trạng thái hoàn thành từng quiz
-    Map<Long, Boolean> quizCompletionMap = new HashMap<>();
-    for (Quiz quiz : quizzes) {
-        boolean completed = quizService.hasUserCompletedQuiz(quiz.getQuizId(), user.getId());
-        quizCompletionMap.put(quiz.getQuizId(), completed);
-    }
+        // Map trạng thái hoàn thành từng quiz
+        Map<Long, Boolean> quizCompletionMap = new HashMap<>();
+        for (Quiz quiz : quizzes) {
+            boolean completed = quizService.hasUserCompletedQuiz(quiz.getQuizId(), user.getId());
+            quizCompletionMap.put(quiz.getQuizId(), completed);
+        }
 
-    Course course = quizzes.isEmpty() ? null : quizzes.get(0).getModule().getCourse();
+        Course course = quizzes.isEmpty() ? null : quizzes.get(0).getModule().getCourse();
 
-    model.addAttribute("quizzes", quizzes);
-    model.addAttribute("quizCompletionMap", quizCompletionMap);
-    model.addAttribute("course", course);
-    model.addAttribute("title", "Danh sách Quiz");
-    model.addAttribute("content", "client/learning/quiz-list");
-    return "client/layout/index";
+        model.addAttribute("quizzes", quizzes);
+        model.addAttribute("quizCompletionMap", quizCompletionMap);
+        model.addAttribute("course", course);
+        model.addAttribute("title", "Danh sách Quiz");
+        model.addAttribute("content", "client/learning/quiz-list");
+        return "client/layout/index";
     }
 }

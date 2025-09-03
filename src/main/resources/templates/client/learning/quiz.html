@@ -136,10 +136,9 @@
                       <button
                         id="submitBtn"
                         style="display: none"
-                        th:if="${!quizLimitReached}"
+                        th:if="${!quizLimitReached && isEnrolled}"
                         type="submit"
                         class="rbt-btn btn-gradient hover-icon-reverse btn-md"
-                        sec:authorize="not hasAnyRole('ROLE_INSTRUCTOR', 'ROLE_ADMIN')"
                       >
                         <span class="icon-reverse-wrapper">
                           <span class="btn-text">Submit Quiz</span>
